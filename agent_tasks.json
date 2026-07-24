@@ -8998,7 +8998,7 @@
     },
     {
       "id": "mcp-dynamic-tool-registration-v7-unique-12345",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Dynamic Tool Registration V7",
@@ -20216,6 +20216,57 @@
         "Rate limiter tracks tool executions per session using a token bucket approach.",
         "Exceeding the limit raises a RateLimitExceeded error.",
         "Tests verify the rate limiting logic and error raising."
+      ]
+    },
+    {
+      "id": "git-worktree-cleanup-manager-v2-10492",
+      "status": "todo",
+      "area": "agents",
+      "risk": "medium",
+      "title": "Git Worktree Cleanup Manager V2",
+      "description": "Inspired by Claude Teams trends: Implement an explicit fallback cleanup mechanism for GitWorktreeManager that periodically scans and removes detached worktrees exceeding their timeout limits to prevent disk exhaustion.",
+      "allowed_paths": [
+        "magda_agent/isolation/git_worktree_cleanup_v2.py",
+        "tests/test_git_worktree_cleanup_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "GitWorktreeCleanupV2 module is implemented.",
+        "Tests verify detached worktrees are correctly identified and removed."
+      ]
+    },
+    {
+      "id": "a2a-peer-capability-cache-v1-9391",
+      "status": "todo",
+      "area": "multi_agent",
+      "risk": "medium",
+      "title": "A2A Peer Capability Cache V1",
+      "description": "Inspired by A2A trends: Implement a capability cache for discovered A2A peers to reduce network broadcasts during task delegation, with TTL invalidation.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_capability_cache_v1.py",
+        "tests/test_a2a_capability_cache_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2ACapabilityCache class implemented with TTL invalidation.",
+        "Tests mock peer discovery and verify cache hits/misses."
+      ]
+    },
+    {
+      "id": "openclaw-rl-skill-usage-tracker-v1-4029",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "title": "OpenClaw RL Skill Usage Tracker",
+      "description": "Inspired by OpenClaw trends: Implement a skill usage tracker that logs the frequency and success rate of tool executions to a persistent SQLite metric table for long-term skill pruning.",
+      "allowed_paths": [
+        "magda_agent/learning/skill_usage_tracker_v1.py",
+        "tests/test_skill_usage_tracker_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Skill usage tracker is implemented with SQLite persistence.",
+        "Tests verify that tool executions correctly update usage counts and success rates."
       ]
     }
   ]
