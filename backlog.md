@@ -187,6 +187,7 @@
 * [x] FEATURE: Claude Agent Teams Dependency Graph (claude-agent-teams-dependency-graph-a5bf63e6)
 * [ ] FEATURE: MCP Tool Sandboxing Enhancements (mcp-tool-sandboxing-enhancements)
 * [ ] FEATURE: Context Engine Paging Pattern (openclaw-context-engine-paging-pattern)
+* [x] FEATURE: Context Engine Plugin Lifecycle V6 (context-engine-plugin-lifecycle-v6-unique-12345)
 
 ## 🛠️ Запланированные Skills
 * [x] FEATURE: OpenClaw Canvas Live Visualization (2026-06-15)
