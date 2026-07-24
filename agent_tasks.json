@@ -8981,7 +8981,7 @@
     },
     {
       "id": "openclaw-canvas-visualizer-v3",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "medium",
       "title": "OpenClaw Canvas Detailed Logging V3",
