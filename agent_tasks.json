@@ -9015,7 +9015,7 @@
     },
     {
       "id": "a2a-peer-delegation-discovery-v5-unique-12345",
-      "status": "todo",
+      "status": "done",
       "area": "agents",
       "risk": "high",
       "title": "A2A Peer Delegation Discovery V5",
@@ -20267,6 +20267,57 @@
       "acceptance": [
         "Skill usage tracker is implemented with SQLite persistence.",
         "Tests verify that tool executions correctly update usage counts and success rates."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-paging-pattern-246b8242",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Context Engine Paging Pattern",
+      "description": "Inspired by MemGPT and OpenClaw trends: Implement a Context Engine Paging Pattern to selectively page older working memory entries into long-term storage when context exceeds bounds.",
+      "allowed_paths": [
+        "magda_agent/memory/context_paging_v1.py",
+        "tests/test_context_paging_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ContextPaging module is implemented.",
+        "Tests verify that paging correctly moves tokens from working memory to long-term storage."
+      ]
+    },
+    {
+      "id": "mcp-tool-sandboxing-enhancements-v2-58287845",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Tool Sandboxing Enhancements V2",
+      "description": "Inspired by MCP kernel trends: Implement enhanced sandboxing for MCP tools to isolate their execution context and limit filesystem and network access dynamically.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_sandbox_v2.py",
+        "tests/test_mcp_sandbox_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP sandbox V2 implemented with resource limitations.",
+        "Tests verify isolated execution and restricted accesses."
+      ]
+    },
+    {
+      "id": "claude-subagent-spawning-compression-v1-79b263c9",
+      "status": "todo",
+      "area": "agents",
+      "risk": "medium",
+      "title": "Claude Subagent Spawning Context Compression",
+      "description": "Inspired by Claude Agent Teams trends: Compress the main agent context into a dense state representation before spawning a subagent to reduce token overhead during delegation.",
+      "allowed_paths": [
+        "magda_agent/agents/context_compression_v1.py",
+        "tests/test_context_compression_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context compression logic is implemented.",
+        "Tests verify token reduction before subagent execution."
       ]
     }
   ]
