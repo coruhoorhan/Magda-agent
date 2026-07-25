@@ -14,14 +14,17 @@ class VirtualContextManagerV2:
     explicitly paging out old short-term memory (WorkingMemory) into EpisodicMemory,
     and paging it back in when requested.
     """
-    def __init__(self, llm_client: Optional['LLMClient'] = None) -> None:
+    def __init__(self, llm_client: Optional['LLMClient'] = None, max_tokens: int = 1000000) -> None:
         """
         Initializes the VirtualContextManagerV2.
 
         Args:
             llm_client: An optional LLMClient for advanced summarization during compression.
+            max_tokens: The maximum number of tokens to support in the LargeContextWindow (default 1M).
         """
         self.llm_client = llm_client
+        from magda_agent.memory.large_context import LargeContextWindow
+        self.large_context_window = LargeContextWindow(max_tokens=max_tokens)
 
     async def compress_context(self, entries: List['MemoryEntry']) -> 'MemoryEntry':
         """
@@ -104,6 +107,17 @@ class VirtualContextManagerV2:
             )
             logging.debug(f"Paged out memory entry {entry.id} for user {user_id}")
 
+            # Also index the paged-out entry in the LargeContextWindow for fast in-memory access
+            tokens = self.get_token_length([entry])
+            self.large_context_window.add_chunk(
+                content=entry.content,
+                tokens=tokens,
+                metadata={
+                    "user_id": user_id,
+                    "importance": entry.importance,
+                }
+            )
+
         for orig_entry in original_to_remove:
             working_memory.remove(orig_entry.id, user_id=user_id)
 
@@ -119,16 +133,37 @@ class VirtualContextManagerV2:
             query: The semantic search query.
             top_k: The number of results to fetch.
         """
+        # Retrieve from LargeContextWindow if available
+        retrieved_from_lcw = []
+        if hasattr(self, 'large_context_window'):
+            retrieved_chunks = self.large_context_window.retrieve(query, max_results=top_k)
+            for chunk in retrieved_chunks:
+                chunk_metadata = chunk.get("metadata", {})
+                if chunk_metadata.get("user_id") == user_id:
+                    retrieved_from_lcw.append(chunk["content"])
+
+        # Also recall from EpisodicMemory
         events = episodic_memory.recall_events(query=query, top_k=top_k, user_id=user_id)
-        for event_text in events:
-            entry = MemoryEntry(
-                content=event_text,
-                importance=0.5,
-                emotional_state=PADState(0, 0, 0),
-                user_id=user_id
-            )
-            await working_memory.add(entry)
-            logging.debug(f"Paged in explicit memory entry for user {user_id}: {event_text[:30]}...")
+
+        # Combine results to ensure robust, comprehensive, and duplicate-free recall
+        all_events = []
+        seen = set()
+        for text in retrieved_from_lcw + events:
+            if text not in seen:
+                seen.add(text)
+                all_events.append(text)
+
+        for event_text in all_events[:top_k]:
+            current_contents = [e.content for e in working_memory.get_entries(user_id=user_id)]
+            if event_text not in current_contents:
+                entry = MemoryEntry(
+                    content=event_text,
+                    importance=0.5,
+                    emotional_state=PADState(0, 0, 0),
+                    user_id=user_id
+                )
+                await working_memory.add(entry)
+                logging.debug(f"Paged in explicit memory entry for user {user_id}: {event_text[:30]}...")
 
     async def paginate_explicit_memory_blocks(self, working_memory: 'WorkingMemory', episodic_memory: 'EpisodicMemory', user_id: int, block_size: int = 2) -> None:
         """
@@ -196,15 +231,49 @@ class VirtualContextManagerV2:
             user_id: The ID of the user.
             max_tokens: The maximum token length allowed before paging out.
         """
-        entries = working_memory.get_entries(user_id=user_id)
-        if not entries:
+        if getattr(self, '_in_maintenance', False):
             return
+        self._in_maintenance = True
 
-        current_tokens = self.get_token_length(entries)
-        if current_tokens <= max_tokens:
-            return
+        try:
+            entries = working_memory.get_entries(user_id=user_id)
+            if not entries:
+                return
 
-        logging.info(f"Working memory context length ({current_tokens} tokens) exceeds limit ({max_tokens} tokens). Paging out...")
+            # If any individual entry exceeds max_tokens, chunk it into smaller blocks
+            for entry in list(entries):
+                entry_tokens = self.get_token_length([entry])
+                if entry_tokens > max_tokens:
+                    logging.info(f"Entry {entry.id} is extremely large ({entry_tokens} tokens). Chunking it...")
+                    words = entry.content.split()
+                    chunk_words_limit = max(10, int(max_tokens / 1.3 / 2))
+                    chunks = [" ".join(words[i:i + chunk_words_limit]) for i in range(0, len(words), chunk_words_limit)]
 
-        count_to_remove = max(1, len(entries) // 2)
-        await self.page_out_explicit(working_memory, episodic_memory, user_id, count=count_to_remove)
+                    working_memory.remove(entry.id, user_id=user_id)
+
+                    for idx, chunk_content in enumerate(chunks):
+                        chunk_entry = MemoryEntry(
+                            content=chunk_content,
+                            importance=entry.importance,
+                            emotional_state=entry.emotional_state,
+                            user_id=user_id,
+                            tags=(entry.tags or []) + [f"chunk_{idx}"]
+                        )
+                        await working_memory.add(chunk_entry)
+
+            # Re-fetch entries after potential chunking
+            entries = working_memory.get_entries(user_id=user_id)
+            current_tokens = self.get_token_length(entries)
+
+            if current_tokens <= max_tokens:
+                return
+
+            logging.info(f"Working memory context length ({current_tokens} tokens) exceeds limit ({max_tokens} tokens). Paging out...")
+
+            # Iteratively page out oldest entries until the total token count is within max_tokens
+            while self.get_token_length(entries) > max_tokens and len(entries) > 0:
+                count_to_remove = max(1, len(entries) // 2)
+                await self.page_out_explicit(working_memory, episodic_memory, user_id, count=count_to_remove)
+                entries = working_memory.get_entries(user_id=user_id)
+        finally:
+            self._in_maintenance = False

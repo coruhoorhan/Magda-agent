@@ -160,3 +160,46 @@ async def test_virtual_context_v2_maintain_limits_no_page_out() -> None:
 
     entries = wm.get_entries(user_id=1)
     assert len(entries) == 1
+
+@pytest.mark.asyncio
+async def test_virtual_context_v2_large_entry_chunking() -> None:
+    wm = WorkingMemory(limit=10)
+    em = EpisodicMemory(persist_directory=":memory:")
+    em.collection_name = "test_episodic_memory_v2_chunking"
+    em.collection = em.client.get_or_create_collection(name=em.collection_name)
+    vcm = VirtualContextManagerV2()
+
+    # Link for backward compatibility
+    wm.virtual_context_manager = vcm
+    wm.episodic_memory = em
+
+    state = PADState(0, 0, 0)
+
+    # 40 words -> ~52 tokens
+    large_text = " ".join([f"word{i}" for i in range(40)])
+    huge_entry = MemoryEntry(large_text, 0.8, state, user_id=1)
+
+    await wm.add(huge_entry)
+
+    # Maintain with max_tokens = 20. The entry exceeds this and should be chunked.
+    # Each chunk will have max(10, int(20 / 1.3 / 2)) = 10 words (approx 13 tokens).
+    # Since 40 words, it will create 4 chunks.
+    # Total tokens for 4 chunks is 52.
+    # To bring it under 20 tokens, it will iteratively page out chunks until we have
+    # <= 20 tokens (meaning only 1 chunk of 10 words / 13 tokens remains in working memory).
+    await vcm.maintain_working_memory_limits(wm, em, user_id=1, max_tokens=20)
+
+    entries = wm.get_entries(user_id=1)
+    # Only 1 chunk should remain to be under the 20 tokens limit (13 tokens < 20 tokens)
+    assert len(entries) == 1
+    assert "chunk_3" in entries[0].tags
+
+    # The other chunks should have been paged out explicitly to episodic memory
+    events = em.get_all_events(user_id=1)
+    # The first 2 chunks are compressed into 1 event, and the 3rd chunk is paged out as 1 event.
+    # So there should be exactly 2 events in EpisodicMemory.
+    assert len(events) == 2
+    # Check that they contain correct words
+    paged_contents = [event["text"] for event in events]
+    assert any("Summary" in content and "word0" in content for content in paged_contents)
+    assert any("word20" in content for content in paged_contents)
