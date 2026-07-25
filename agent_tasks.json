@@ -9049,7 +9049,7 @@
     },
     {
       "id": "letta-virtual-context-management-v2-124e0720",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Letta Virtual Context Management v2",
