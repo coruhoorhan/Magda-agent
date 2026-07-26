@@ -20167,7 +20167,7 @@
     },
     {
       "id": "mcp-dynamic-capability-negotiation-v6",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Dynamic Capability Negotiation V6",
@@ -20354,6 +20354,42 @@
         "Guardrail timeout fallback logic implemented.",
         "Partial compliance states correctly audited.",
         "Tests verify timeout scenarios and logging."
+      ]
+    },
+    {
+      "id": "claude-evaluator-semantic-diff-v1-dc3ad5f0",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "Claude Evaluator Semantic Diff Check",
+      "description": "Inspired by Claude Evaluator agent trend: Implement an evaluation module that performs semantic diff analysis of proposed code changes before merge, comparing the semantic intent against the generated DependencyGraph to ensure code aligns with the plan.",
+      "allowed_paths": [
+        "magda_agent/evaluation/semantic_diff_v1.py",
+        "tests/test_semantic_diff_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "SemanticDiffEvaluator is implemented.",
+        "It successfully identifies discrepancies between intent and actual diff using mocked LLM outputs.",
+        "Tests pass verifying correct mismatch detection."
+      ]
+    },
+    {
+      "id": "openclaw-rl-episodic-memory-pruning-v1-20ab53f9",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw RL Episodic Memory Pruning",
+      "description": "Inspired by OpenClaw virtual context management: Implement a reinforcement learning based pruning strategy for episodic memory that removes low-salience memories based on negative reward signals during long interactions.",
+      "allowed_paths": [
+        "magda_agent/memory/episodic_pruning_v1.py",
+        "tests/test_episodic_pruning_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Episodic memory pruning strategy based on RL weights is implemented.",
+        "Low-salience memories are correctly identified and removed.",
+        "Tests verify pruning logic with mocked reward matrices."
       ]
     }
   ]

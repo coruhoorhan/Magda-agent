@@ -290,5 +290,7 @@
 * [ ] FEATURE: A2A Agent Discovery via Agent Cards (a2a-agent-discovery-cards-v3-202606)
 * [ ] FEATURE: A2A Peer-to-Peer Task Delegation V7 (a2a-peer-task-delegation-v7-202606)
 * [ ] FEATURE: OpenAI Agents SDK Tool Schema Caching (openai-agents-schema-cache-v1-d24c8b9a)
-* [ ] FEATURE: MCP Dynamic Capability Negotiation V6 (mcp-dynamic-capability-negotiation-v6)
+* [x] FEATURE: MCP Dynamic Capability Negotiation V6 (mcp-dynamic-capability-negotiation-v6)
 * [ ] FEATURE: Hermes Online Skill Pruning V1 (hermes-online-skill-pruning-v1)
+* [ ] FEATURE: Claude Evaluator Semantic Diff Check (claude-evaluator-semantic-diff-v1)
+* [ ] FEATURE: OpenClaw RL Episodic Memory Pruning (openclaw-rl-episodic-memory-pruning-v1)
