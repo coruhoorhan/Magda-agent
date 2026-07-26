@@ -9151,7 +9151,7 @@
     },
     {
       "id": "hermes-skill-marketplace-sync-v1-d6be4114",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "Hermes-inspired agentskills.io Sync CLI",
@@ -20593,6 +20593,60 @@
       "acceptance": [
         "MCP negotiation logic handles capabilities handshake.",
         "Tests mock negotiation and verify fallback behaviors."
+      ]
+    },
+    {
+      "id": "openclaw-rl-conversation-summarizer-v1-e5d4c3b2",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw RL Conversation Summarizer V1",
+      "description": "Inspired by MemGPT and OpenClaw memory patterns: Implement a periodic summarizer that compresses old context and extracts semantic facts during idle time, storing them into EpisodicMemory.",
+      "allowed_paths": [
+        "magda_agent/memory/conversation_summarizer.py",
+        "tests/test_conversation_summarizer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ConversationSummarizer extracts semantic facts and updates episodic memory.",
+        "Old context is compressed dynamically based on limits.",
+        "Tests verify semantic fact extraction."
+      ]
+    },
+    {
+      "id": "acs-policy-dynamic-update-v1-a1b2c3d4",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "ACS Policy Dynamic Update Module V1",
+      "description": "Inspired by ACS agent trends: Create an A2A-compatible endpoint that allows for dynamic reception and update of ACS guardrail policies without requiring application restart.",
+      "allowed_paths": [
+        "magda_agent/safety/policy_dynamic_updater.py",
+        "tests/test_policy_dynamic_updater.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Dynamic policy updates are securely received and applied via an A2A endpoint.",
+        "Policy updates take effect immediately for subsequent tool calls.",
+        "Tests verify security verification and dynamic policy injection."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-deprecation-v1-8c7d6e5f",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Tool Deprecation V1",
+      "description": "Inspired by MCP and Agent Teams trends: Implement an automated background routine to dynamically deprecate and deregister MCP tools if they consistently timeout or fail telemetry thresholds.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_tool_deprecation.py",
+        "tests/test_mcp_tool_deprecation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tool deprecation module deregisters tools exceeding failure thresholds.",
+        "Logs deprecation events into the audit trail.",
+        "Tests verify tools are correctly disabled under simulated failures."
       ]
     }
   ]
