@@ -20188,7 +20188,7 @@
       "description": "Inspired by OpenClaw trends: Implement a conversational momentum tracker that monitors interaction speed and depth, using it as an implicit RL reward signal to tune agent response brevity.",
       "area": "learning",
       "risk": "medium",
-      "status": "todo",
+      "status": "done",
       "allowed_paths": [
         "magda_agent/learning/momentum_tracker_v1.py",
         "tests/test_momentum_tracker_v1.py",
@@ -20390,6 +20390,57 @@
         "Episodic memory pruning strategy based on RL weights is implemented.",
         "Low-salience memories are correctly identified and removed.",
         "Tests verify pruning logic with mocked reward matrices."
+      ]
+    },
+    {
+      "id": "mcp-tool-sandboxing-enhancements-v3-70e98b9e",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Tool Sandboxing Enhancements V3",
+      "description": "Inspired by MCP kernel trends: Implement enhanced sandboxing for MCP tools to isolate their execution context and limit filesystem and network access dynamically.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_sandbox_v3.py",
+        "tests/test_mcp_sandbox_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP sandbox V3 implemented with resource limitations.",
+        "Tests verify isolated execution and restricted accesses."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-auth-handshake-v1-4ffcb75b",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Enterprise Auth Handshake V1",
+      "description": "Inspired by A2A standard trends: Implement a secure token exchange handshake between peer agents before task delegation to ensure enterprise-grade authorization.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_auth_handshake_v1.py",
+        "tests/test_a2a_auth_handshake_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A token exchange handshake is implemented.",
+        "Tests verify successful handshake and rejected invalid tokens."
+      ]
+    },
+    {
+      "id": "claude-worktree-auto-resolver-v1-d26754bc",
+      "status": "todo",
+      "area": "agents",
+      "risk": "medium",
+      "title": "Claude Worktree Git Conflict Auto-Resolver V1",
+      "description": "Inspired by Claude Agent Teams: Implement a subagent capability to automatically resolve simple Git merge conflicts across parallel worktrees before merging results into the main branch.",
+      "allowed_paths": [
+        "magda_agent/isolation/git_conflict_resolver_v1.py",
+        "tests/test_git_conflict_resolver_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Git conflict auto-resolver is implemented.",
+        "Tests verify detection and resolution of simple merge conflicts."
       ]
     }
   ]
