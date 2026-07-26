@@ -295,3 +295,8 @@
 * [ ] FEATURE: Hermes Online Skill Pruning V1 (hermes-online-skill-pruning-v1)
 * [ ] FEATURE: Claude Evaluator Semantic Diff Check (claude-evaluator-semantic-diff-v1)
 * [ ] FEATURE: OpenClaw RL Episodic Memory Pruning (openclaw-rl-episodic-memory-pruning-v1)
+
+* [x] FEATURE: OpenClaw Online RL Loop v6 (openclaw-online-rl-dialogue-v6-e9301cfc)
+* [ ] FEATURE: Claude Agent Teams Subagent Spawner V2 (claude-agent-teams-subagent-spawner-v2)
+* [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
+* [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7)

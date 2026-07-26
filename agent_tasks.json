@@ -9117,7 +9117,7 @@
     },
     {
       "id": "openclaw-online-rl-dialogue-v6-e9301cfc",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "high",
       "title": "OpenClaw Online RL Loop v6",
@@ -20542,6 +20542,57 @@
       "acceptance": [
         "ACS Guardrail V7 implemented with pre-execution validation checks.",
         "Tests verify policy enforcement and expected exceptions on violations."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-subagent-spawner-v2",
+      "status": "todo",
+      "area": "agents",
+      "risk": "medium",
+      "title": "Claude Agent Teams Subagent Spawner V2",
+      "description": "Inspired by Claude Agent Teams: Implement a robust subagent spawner for parallel tasks.",
+      "allowed_paths": [
+        "magda_agent/agents/subagent_spawner_v2.py",
+        "tests/test_subagent_spawner_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Spawner can spawn independent agents",
+        "Tests mock worktree provisioning and agent execution"
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-hooks-v6",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Hooks V6",
+      "description": "Inspired by OpenClaw trends: Implement advanced Context Engine hooks to manage token truncation dynamically.",
+      "allowed_paths": [
+        "magda_agent/memory/advanced_context_hooks_v6.py",
+        "tests/test_advanced_context_hooks_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context engine lifecycle correctly prioritizes high-salience tokens during context truncation.",
+        "Tests verify truncation skips prioritized context items."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v7",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Negotiation V7",
+      "description": "Inspired by MCP trends: Implement robust capability negotiation logic for tool handshakes.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v7.py",
+        "tests/test_mcp_negotiation_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP negotiation logic handles capabilities handshake.",
+        "Tests mock negotiation and verify fallback behaviors."
       ]
     }
   ]
