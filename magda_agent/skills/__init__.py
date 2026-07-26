@@ -69,6 +69,7 @@ def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegi
     )
 
 
+    from magda_agent.skills.experience_generator_v2 import ExperienceGeneratorV2
     from magda_agent.skills.hermes_skills import HermesSkillCreator
     from magda_agent.skills.skill_generator import SkillGenerator
     def generate_skill_sync(skill_name: str, description: str, instructions: str) -> str:
@@ -115,6 +116,37 @@ def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegi
         except RuntimeError:
             pass
         return asyncio.run(generator.generate_skill_from_queries(queries))
+
+
+    def generate_skill_from_traces_sync(traces: list, skill_name: str, description: str) -> Optional[str]:
+        """
+        Synchronously wraps the generate_skill_from_traces coroutine.
+        """
+        import asyncio
+        from magda_agent.llm_client import LLMClient
+        client = LLMClient()
+        generator = ExperienceGeneratorV2(llm_client=client)
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                import threading
+                result = None
+                def run_in_thread():
+                    nonlocal result
+                    result = asyncio.run(generator.generate_skill_from_traces(traces, skill_name, description))
+                t = threading.Thread(target=run_in_thread)
+                t.start()
+                t.join()
+                return result
+        except RuntimeError:
+            pass
+        return asyncio.run(generator.generate_skill_from_traces(traces, skill_name, description))
+
+    registry.register_skill(
+        name="experience_generator_v2",
+        func=generate_skill_from_traces_sync,
+        description="Generates a Python skill module from a sequence of successful execution traces. Input: 'traces' list of dicts, 'skill_name' string, 'description' string."
+    )
 
     registry.register_skill(
         name="hermes_skill_creator",
