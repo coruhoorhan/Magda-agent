@@ -9083,7 +9083,7 @@
     },
     {
       "id": "magentic-one-orchestration-v3-37c4eb76",
-      "status": "todo",
+      "status": "done",
       "area": "agents",
       "risk": "high",
       "title": "Magentic-One Multi-Agent Pattern V3",
@@ -20113,24 +20113,6 @@
       ]
     },
     {
-      "id": "mcp-action-tool-caching-v1",
-      "status": "todo",
-      "area": "skills",
-      "risk": "low",
-      "title": "MCP Action Tool Caching Layer",
-      "description": "Inspired by MCP trends: Implement an intelligent caching layer for deterministic read-only MCP action tools to reduce redundant external calls and improve context assembly speed.",
-      "allowed_paths": [
-        "magda_agent/skills/mcp_caching_v1.py",
-        "tests/test_mcp_caching_v1.py",
-        "agent_tasks.json"
-      ],
-      "acceptance": [
-        "Caching layer intercepts MCP calls and caches responses.",
-        "Respects TTL and cache-invalidation signals.",
-        "Tests verify cache hit and miss behavior with mock tools."
-      ]
-    },
-    {
       "id": "acs-guardrail-context-awareness-v1",
       "status": "todo",
       "area": "safety",
@@ -20441,6 +20423,74 @@
       "acceptance": [
         "Git conflict auto-resolver is implemented.",
         "Tests verify detection and resolution of simple merge conflicts."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-tracing-v1-unique-7890",
+      "status": "todo",
+      "area": "multi_agent",
+      "risk": "medium",
+      "title": "A2A Protocol Async Tracing V1 Unique",
+      "description": "Inspired by A2A Protocol trends: Implement an async tracer that uses contextvars to generate trace correlation IDs across concurrent A2A asynchronous tasks, preventing trace contamination.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_tracing_v1_unique.py",
+        "tests/test_a2a_tracing_v1_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2ATracer uses contextvars for async-safe correlation ID propagation.",
+        "Tests pass and verify no cross-task trace contamination."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-caching-v1-unique-8901",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Tool Action Result Caching V1 Unique",
+      "description": "Inspired by MCP kernel trends: Implement an explicit caching mechanism for MCP read-only tools to improve efficiency and reduce LLM overhead.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_caching_v1_unique.py",
+        "tests/test_mcp_caching_v1_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP tool cache is implemented.",
+        "Tests verify cache hits and misses appropriately."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-evaluation-v3-unique-9012",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "OpenClaw Trajectory Evaluation V3 Unique",
+      "description": "Inspired by OpenClaw Trajectory Quality Evaluation trends: Evaluate RL multi-turn trajectories to measure interaction quality dynamically.",
+      "allowed_paths": [
+        "magda_agent/evaluation/trajectory_eval_v3_unique.py",
+        "tests/test_trajectory_eval_v3_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Trajectory evaluator scores interactions successfully.",
+        "Tests pass on mocked trace logs."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-caching-v1",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Tool Action Result Caching",
+      "description": "Inspired by MCP kernel trends: Implement an explicit caching mechanism for MCP read-only tools to improve efficiency and reduce LLM overhead.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_caching_v1.py",
+        "tests/test_mcp_caching_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP tool cache is implemented.",
+        "Tests verify cache hits and misses appropriately."
       ]
     }
   ]

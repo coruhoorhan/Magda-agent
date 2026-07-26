@@ -291,6 +291,7 @@
 * [ ] FEATURE: A2A Peer-to-Peer Task Delegation V7 (a2a-peer-task-delegation-v7-202606)
 * [ ] FEATURE: OpenAI Agents SDK Tool Schema Caching (openai-agents-schema-cache-v1-d24c8b9a)
 * [x] FEATURE: MCP Dynamic Capability Negotiation V6 (mcp-dynamic-capability-negotiation-v6)
+* [x] FEATURE: Magentic-One Multi-Agent Pattern V3 (magentic-one-orchestration-v3-37c4eb76)
 * [ ] FEATURE: Hermes Online Skill Pruning V1 (hermes-online-skill-pruning-v1)
 * [ ] FEATURE: Claude Evaluator Semantic Diff Check (claude-evaluator-semantic-diff-v1)
 * [ ] FEATURE: OpenClaw RL Episodic Memory Pruning (openclaw-rl-episodic-memory-pruning-v1)
