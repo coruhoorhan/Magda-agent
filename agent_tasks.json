@@ -9100,7 +9100,7 @@
     },
     {
       "id": "hermes-skill-experience-generation-v2-08bcfded",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "Hermes-inspired Skill Creation v2",
@@ -20491,6 +20491,57 @@
       "acceptance": [
         "MCP tool cache is implemented.",
         "Tests verify cache hits and misses appropriately."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v5-2906d098",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Negotiation V5",
+      "description": "Inspired by MCP kernel trends: Implement multi-turn capability negotiation for MCP tools to ensure client and server agree on supported features before execution.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v5.py",
+        "tests/test_mcp_negotiation_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability negotiation logic is implemented.",
+        "Tests verify successful capability handshake and fallback mechanisms."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-selective-pruning-v1-2d841559",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Selective Pruning V1",
+      "description": "Inspired by Virtual context management trends (MemGPT/Letta): Implement a selective pruning strategy for virtual context that removes low-salience episodic memories during long-running interactions.",
+      "allowed_paths": [
+        "magda_agent/memory/selective_pruning_v1.py",
+        "tests/test_selective_pruning_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Selective pruning mechanism is implemented.",
+        "Tests verify low-salience memories are correctly identified and pruned."
+      ]
+    },
+    {
+      "id": "acs-compliance-guardrail-v7-a0293a81",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "ACS Compliance Guardrail V7",
+      "description": "Inspired by Agent Control Specification (ACS) trends: Implement a robust guardrail validation checkpoint that runs strictly before tool execution to verify policy compliance.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_guardrail_v7.py",
+        "tests/test_acs_guardrail_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ACS Guardrail V7 implemented with pre-execution validation checks.",
+        "Tests verify policy enforcement and expected exceptions on violations."
       ]
     }
   ]
