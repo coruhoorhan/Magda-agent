@@ -22,6 +22,20 @@ def test_validate_schema_valid() -> None:
     # Should not raise any exception
     MCPActionToolValidator.validate_schema(schema)
 
+def test_validate_schema_invalid_json_schema() -> None:
+    schema = {
+        "name": "test_tool",
+        "description": "A test tool",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "arg1": {"type": "invalid_type"} # invalid json schema type
+            }
+        }
+    }
+    with pytest.raises(jsonschema.exceptions.ValidationError, match="Invalid JSON Schema"):
+        MCPActionToolValidator.validate_schema(schema)
+
 def test_validate_schema_missing_name() -> None:
     schema = {
         "description": "A test tool"
@@ -114,6 +128,24 @@ def test_mcp_registry_interceptor_invalid() -> None:
         "description": "Missing inputSchema structure.",
         "inputSchema": {
             "type": "array"  # Should be object
+        }
+    }
+    with pytest.raises(MCPRegistrationError) as exc_info:
+        registry.load_tool(invalid_schema)
+
+    assert "Schema validation failed" in str(exc_info.value)
+
+def test_mcp_registry_interceptor_invalid_json_schema() -> None:
+    """Test that an invalid inner json schema raises MCPRegistrationError during load_tool."""
+    registry = MCPRegistry()
+    invalid_schema = {
+        "name": "invalid_tool",
+        "description": "Valid structure but invalid inner json schema",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "arg1": {"type": "invalid_type"}
+            }
         }
     }
     with pytest.raises(MCPRegistrationError) as exc_info:

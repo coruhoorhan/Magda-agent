@@ -30,6 +30,7 @@ class MCPActionToolValidator:
     def validate_schema(cls, schema: Dict[str, Any]) -> None:
         """
         Validates the provided schema against the MCP_TOOL_SCHEMA standard.
+        Also validates the JSON schema definition in 'inputSchema' if present.
 
         Args:
             schema (Dict[str, Any]): The MCP tool schema.
@@ -38,6 +39,14 @@ class MCPActionToolValidator:
             jsonschema.exceptions.ValidationError: If the schema is invalid.
         """
         jsonschema.validate(instance=schema, schema=cls.MCP_TOOL_SCHEMA)
+
+        # Additionally validate the inputSchema to ensure it's a valid JSON schema
+        input_schema = schema.get("inputSchema")
+        if input_schema is not None:
+            try:
+                jsonschema.Draft7Validator.check_schema(input_schema)
+            except jsonschema.exceptions.SchemaError as e:
+                raise jsonschema.exceptions.ValidationError(f"Invalid JSON Schema in inputSchema: {e}") from e
 
 def validate_mcp_tool(func: Callable) -> Callable:
     """
