@@ -1,5 +1,11 @@
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Callable
+
+class MCPRegistrationError(ValueError):
+    """
+    Raised when an MCP tool fails schema validation or interceptor checks during registration.
+    """
+    pass
 
 class MCPRegistry:
     """
@@ -9,6 +15,22 @@ class MCPRegistry:
     def __init__(self) -> None:
         """Initialize the MCP Registry."""
         self.mcp_tools: Dict[str, Dict[str, Any]] = {}
+        self._interceptors: List[Callable[[Dict[str, Any]], None]] = []
+
+        # Automatically register the default schema validation interceptor
+        from magda_agent.skills.mcp_validator import MCPActionToolValidator
+        self._interceptors.append(MCPActionToolValidator.validate_schema)
+
+    def add_interceptor(self, interceptor: Callable[[Dict[str, Any]], None]) -> None:
+        """
+        Dynamically registers a new interceptor to the MCPRegistry.
+
+        Args:
+            interceptor (Callable[[Dict[str, Any]], None]): The interceptor function.
+        """
+        if not hasattr(self, "_interceptors"):
+            self._interceptors = []
+        self._interceptors.append(interceptor)
 
     def load_tool(self, tool_schema: Dict[str, Any]) -> bool:
         """
@@ -20,9 +42,24 @@ class MCPRegistry:
         Returns:
             bool: True if loaded successfully, False otherwise.
         """
+        # Perform basic schema verification first to maintain backward compatibility
         if not self._is_valid_schema(tool_schema):
             logging.error(f"Failed to load MCP tool: Invalid schema {tool_schema}")
             return False
+
+        if not hasattr(self, "_interceptors"):
+            from magda_agent.skills.mcp_validator import MCPActionToolValidator
+            self._interceptors = [MCPActionToolValidator.validate_schema]
+
+        import jsonschema
+        # Run all registered interceptors next
+        for interceptor in self._interceptors:
+            try:
+                interceptor(tool_schema)
+            except jsonschema.exceptions.ValidationError as e:
+                raise MCPRegistrationError(f"Schema validation failed: {e}") from e
+            except Exception as e:
+                raise MCPRegistrationError(f"Registration interceptor error: {e}") from e
 
         name: str = tool_schema["name"]
         self.mcp_tools[name] = tool_schema

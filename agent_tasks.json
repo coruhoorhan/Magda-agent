@@ -9176,6 +9176,7 @@
       "description": "Inspired by MCP Compatibility trend: Add an interceptor to the MCPRegistry to automatically validate dynamic action tool parameters using jsonschema.",
       "allowed_paths": [
         "magda_agent/skills/mcp_validator.py",
+        "magda_agent/skills/mcp_registry.py",
         "tests/test_mcp_validator*.py",
         "agent_tasks.json"
       ],
