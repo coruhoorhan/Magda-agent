@@ -2,6 +2,7 @@ import functools
 import jsonschema
 import inspect
 from typing import Dict, Any, Callable
+from magda_agent.skills.mcp_registry import MCPRegistrationError
 
 class MCPActionToolValidator:
     """
