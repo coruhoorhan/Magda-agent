@@ -17760,7 +17760,7 @@
     },
     {
       "id": "acs-safety-checkpoints-persistence-v10-def34",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ACS Safety Checkpoints Persistence V10",
@@ -20648,6 +20648,57 @@
         "Tool deprecation module deregisters tools exceeding failure thresholds.",
         "Logs deprecation events into the audit trail.",
         "Tests verify tools are correctly disabled under simulated failures."
+      ]
+    },
+    {
+      "id": "claude-evaluator-subagent-isolation-v2",
+      "title": "Claude Evaluator Subagent Isolation V2",
+      "description": "Inspired by Claude Agent SDK: Implement Git worktree isolation for spawned evaluator subagents to avoid context bleeding when reviewing planner outputs concurrently.",
+      "area": "agents",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/agents/evaluator_subagent_isolation.py",
+        "tests/test_evaluator_subagent_isolation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator subagents run inside isolated Git worktrees.",
+        "Tests verify clean execution and cleanup."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-evaluation-v4-abc12",
+      "title": "OpenClaw RL Trajectory Quality Evaluation v4",
+      "description": "Inspired by OpenClaw RL Trend: Enhance trajectory evaluation to include user sentiment shifts specifically from image multimodal outputs.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_quality_v4.py",
+        "tests/test_trajectory_quality_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Trajectory Evaluator assesses multimodal rollouts.",
+        "Tests mock trajectory parsing and multimodal feedback."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v8",
+      "title": "MCP Dynamic Capability Negotiation V8",
+      "description": "Inspired by MCP Trends: Introduce multi-turn capability negotiation resolving capability mismatch using LLM fallback inference when strict schema fails.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v8.py",
+        "tests/test_mcp_negotiation_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negotiation protocol handles multi-turn fallback resolution.",
+        "Tests mock the negotiation fallback loop."
       ]
     }
   ]
