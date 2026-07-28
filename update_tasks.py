@@ -1,70 +1,71 @@
 import json
 
-tasks_file = 'agent_tasks.json'
-with open(tasks_file, 'r') as f:
+with open('agent_tasks.json', 'r') as f:
     data = json.load(f)
 
-# Update current task
 for task in data['tasks']:
-    if task['id'] == 'openclaw-online-rl-dialogue-v6-e9301cfc':
+    if task['id'] == 'mcp-action-tool-concurrency-v2-d30c8711':
         task['status'] = 'done'
 
-# Add 3 new tasks
 new_tasks = [
     {
-        "id": "claude-agent-teams-subagent-spawner-v2",
-        "status": "todo",
-        "area": "agents",
-        "risk": "medium",
-        "title": "Claude Agent Teams Subagent Spawner V2",
-        "description": "Inspired by Claude Agent Teams: Implement a robust subagent spawner for parallel tasks.",
-        "allowed_paths": [
-            "magda_agent/agents/subagent_spawner_v2.py",
-            "tests/test_subagent_spawner_v2.py",
-            "agent_tasks.json"
-        ],
-        "acceptance": [
-            "Spawner can spawn independent agents",
-            "Tests mock worktree provisioning and agent execution"
-        ]
+      "id": "mcp-dynamic-tool-permissions-v1-unique",
+      "title": "MCP Dynamic Tool Permissions v1",
+      "description": "Inspired by MCP and A2A trends: Implement a dynamic tool permission system where specific Magda skills can be selectively exported or granted to remote A2A agents based on role-based access control.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_permissions_v1.py",
+        "tests/test_mcp_permissions_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Role-based access control implemented for MCP tools.",
+        "Tests verify tool execution blocking for unauthorized agents."
+      ]
     },
     {
-        "id": "openclaw-context-engine-hooks-v6",
-        "status": "todo",
-        "area": "memory",
-        "risk": "medium",
-        "title": "OpenClaw Context Engine Hooks V6",
-        "description": "Inspired by OpenClaw trends: Implement advanced Context Engine hooks to manage token truncation dynamically.",
-        "allowed_paths": [
-            "magda_agent/memory/advanced_context_hooks_v6.py",
-            "tests/test_advanced_context_hooks_v6.py",
-            "agent_tasks.json"
-        ],
-        "acceptance": [
-            "Context engine lifecycle correctly prioritizes high-salience tokens during context truncation.",
-            "Tests verify truncation skips prioritized context items."
-        ]
+      "id": "openclaw-rl-engagement-feedback-v1-unique",
+      "title": "OpenClaw RL Engagement Feedback v1",
+      "description": "Inspired by OpenClaw RL online learning trend: Expand implicit feedback extraction to monitor user engagement metrics (like response delay or interaction length) to tune conversational brevity weights.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/engagement_feedback_v1.py",
+        "tests/test_engagement_feedback_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Engagement metrics extracted from user interactions.",
+        "RL weights adjusted dynamically based on engagement trends.",
+        "Tests verify habit weight shifts."
+      ]
     },
     {
-        "id": "mcp-dynamic-capability-negotiation-v7",
-        "status": "todo",
-        "area": "integration",
-        "risk": "medium",
-        "title": "MCP Dynamic Capability Negotiation V7",
-        "description": "Inspired by MCP trends: Implement robust capability negotiation logic for tool handshakes.",
-        "allowed_paths": [
-            "magda_agent/integration/mcp_negotiation_v7.py",
-            "tests/test_mcp_negotiation_v7.py",
-            "agent_tasks.json"
-        ],
-        "acceptance": [
-            "MCP negotiation logic handles capabilities handshake.",
-            "Tests mock negotiation and verify fallback behaviors."
-        ]
+      "id": "claude-agent-teams-context-distillation-v1-unique",
+      "title": "Claude Agent Teams Context Distillation v1",
+      "description": "Inspired by Claude Agent Teams trend: Implement a context distillation mechanism where subagents compress their final outputs into dense semantic representations before returning them to the parent agent, minimizing context window explosion.",
+      "status": "todo",
+      "area": "agents",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/agents/context_distillation_v1.py",
+        "tests/test_context_distillation_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent output is distilled before returning.",
+        "Parent agent receives and parses compressed context successfully.",
+        "Tests verify compression and parsing functionality."
+      ]
     }
 ]
 
 data['tasks'].extend(new_tasks)
 
-with open(tasks_file, 'w') as f:
+with open('agent_tasks.json', 'w', encoding='utf-8') as f:
     f.write(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+
+print("Updated agent_tasks.json")
