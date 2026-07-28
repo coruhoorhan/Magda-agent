@@ -107,6 +107,33 @@ class MCPRegistry:
         """
         return list(self.mcp_tools.keys())
 
+    def reload_tool(self, tool_schema: Dict[str, Any]) -> bool:
+        """
+        Dynamically hot-reloads an MCP tool configuration.
+
+        Args:
+            tool_schema (Dict[str, Any]): The updated MCP tool schema dictionary.
+
+        Returns:
+            bool: True if reloaded successfully, False otherwise.
+        """
+        if not isinstance(tool_schema, dict) or "name" not in tool_schema:
+            logging.error(f"Failed to reload MCP tool: Invalid schema {tool_schema}")
+            return False
+
+        name = tool_schema["name"]
+
+        if name in self.mcp_tools:
+            self.unload_tool(name)
+            logging.info(f"Unloaded existing MCP tool for reload: {name}")
+
+        success = self.load_tool(tool_schema)
+        if success:
+            logging.info(f"Successfully hot-reloaded MCP tool: {name}")
+        else:
+            logging.error(f"Failed to load MCP tool during reload: {name}")
+        return success
+
     def unload_tool(self, name: str) -> bool:
         """
         Dynamically unregisters and removes an MCP tool from the registry.

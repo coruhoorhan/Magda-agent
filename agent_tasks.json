@@ -9256,7 +9256,7 @@
     },
     {
       "id": "mcp-config-reload-v1-5152d2ba-9858-4470-b742-f0071a62b5e7",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "low",
       "title": "MCP Configuration Hot-Reload",
@@ -20913,6 +20913,40 @@
         "MCP Negotiation supports dynamic runtime renegotiation.",
         "Existing sessions can upgrade or downgrade capabilities safely.",
         "Tests correctly mock and pass renegotiation scenarios."
+      ]
+    },
+    {
+      "id": "mcp-websocket-streaming-v1",
+      "title": "MCP WebSocket Streaming Protocol",
+      "description": "Inspired by MCP trend: Implement a WebSocket-based streaming mechanism for MCP actions to handle long-running tools and stream intermediate progress chunks.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_websocket_v1.py",
+        "tests/test_mcp_websocket_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP integration handles WebSocket connections.",
+        "Intermediate streaming updates are processed."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-reflection-v1",
+      "title": "Hermes Cron Daily Reflection Background Job",
+      "description": "Inspired by Hermes Agent trend: Create a persistent background cron job that aggregates daily episodic memories, condenses them into semantic rules, and saves them to procedural memory.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/daily_reflection_cron.py",
+        "tests/test_daily_reflection_cron.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job aggregates daily logs.",
+        "Episodic memory is condensed correctly."
       ]
     }
   ]

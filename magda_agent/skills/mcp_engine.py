@@ -74,3 +74,26 @@ class MCPEngine:
         )
 
         logging.info(f"Dynamically wrapped MCP tool '{tool_name}' into Magda skill registry.")
+
+    def reload_mcp_tool(self, tool_def: Dict[str, Any], connection_info: Dict[str, Any], server_name: str = None) -> None:
+        """
+        Hot-reloads an existing MCP tool by dynamically re-importing its definition and connection info.
+
+        Args:
+            tool_def (Dict[str, Any]): Definition containing at least "name" and "description".
+                                       Optionally contains "inputSchema".
+            connection_info (Dict[str, Any]): Information needed to execute the remote tool.
+            server_name (str, optional): An optional server name to prefix the tool name to avoid conflicts.
+        """
+        tool_name = tool_def.get("name")
+        if not tool_name:
+            raise ValueError("MCP tool definition must include a 'name'.")
+
+        effective_name = f"{server_name}__{tool_name}" if server_name else tool_name
+
+        if self.registry.has_skill(effective_name):
+            logging.info(f"Reloading existing MCP tool '{effective_name}'.")
+        else:
+            logging.info(f"MCP tool '{effective_name}' not found. Registering as new.")
+
+        self.import_mcp_tool(tool_def, connection_info, server_name)
