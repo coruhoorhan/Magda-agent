@@ -9188,7 +9188,7 @@
     },
     {
       "id": "anthropic-agent-teams-evaluator-3d382f01",
-      "status": "todo",
+      "status": "done",
       "area": "evaluation",
       "risk": "medium",
       "title": "Agent Teams Evaluator V2",
@@ -20699,6 +20699,57 @@
       "acceptance": [
         "Negotiation protocol handles multi-turn fallback resolution.",
         "Tests mock the negotiation fallback loop."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-evaluation-v2-xyz123",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Trajectory Quality Evaluation",
+      "description": "Inspired by OpenClaw RL Trend: Implement trajectory quality evaluation module to assess full multi-turn conversational rollouts against standard metrics for online learning.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_quality_v2_xyz.py",
+        "tests/test_trajectory_quality_v2_xyz.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Trajectory Quality Evaluator module is created.",
+        "Tests mock trajectory parsing and metric calculation."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v1-xyz456",
+      "status": "todo",
+      "area": "isolation",
+      "risk": "medium",
+      "title": "Claude Worktree Pruning and Resource Optimizer",
+      "description": "Inspired by Claude Agent Teams Trend: Create an optimizer to prune inactive Git worktrees and manage disk resources utilized by concurrent parallel subagents.",
+      "allowed_paths": [
+        "magda_agent/isolation/worktree_pruning_v1_xyz.py",
+        "tests/test_worktree_pruning_v1_xyz.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Worktree Pruning Optimizer module is created.",
+        "Tests mock disk operations and verify correct worktrees are pruned based on TTL."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v5-xyz789",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Negotiation V5",
+      "description": "Inspired by MCP Trend: Implement multi-turn capability negotiation for MCP tools, allowing dynamic capability discovery at runtime.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_capability_negotiation_v5_xyz.py",
+        "tests/test_mcp_capability_negotiation_v5_xyz.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP Capability Negotiation V5 module is created.",
+        "Tests verify multi-turn negotiation and fallback."
       ]
     }
   ]
