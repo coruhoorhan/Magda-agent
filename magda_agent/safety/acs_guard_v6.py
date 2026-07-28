@@ -6,6 +6,7 @@ from magda_agent.safety.audit_trail import AuditTrail
 from magda_agent.safety.taint import is_tainted
 from magda_agent.safety.acs_sandboxing import ACSToolSandbox
 from magda_agent.safety.acs_persistence import ACSPersistence
+from magda_agent.safety.acs_persistence_v10 import ACSPersistenceV10
 
 _SENSITIVE_PATTERNS = (
     re.compile(r"api[_-]?key|token|password|private[_-]?key|secret[_-]?key", re.IGNORECASE),
@@ -43,6 +44,7 @@ class ACSGuardV6:
         self.policy_layer = policy_layer or PolicyLayer()
         self.audit_trail = audit_trail or AuditTrail()
         self.persistence = persistence or ACSPersistence()
+        self.persistence_v10 = ACSPersistenceV10()
         self.tool_sandbox = ACSToolSandbox()
 
     def checkpoint_1_input_validation(self, workflow_data: Dict[str, Any]) -> Tuple[bool, str]:

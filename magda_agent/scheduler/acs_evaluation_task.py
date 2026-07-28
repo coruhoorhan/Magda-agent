@@ -2,6 +2,7 @@ import logging
 from typing import Dict, Any, List
 
 from magda_agent.safety.acs_persistence_v12 import ACSPersistenceV12
+from magda_agent.safety.acs_persistence_v10 import ACSPersistenceV10
 
 class ACSSecurityEvaluationTask:
     """
@@ -18,6 +19,7 @@ class ACSSecurityEvaluationTask:
         """
         self.logger = logging.getLogger(__name__)
         self.persistence = ACSPersistenceV12(db_path=db_path)
+        self.persistence_v10 = ACSPersistenceV10(db_path=db_path.replace('_v12', '_v10'))
 
     def run_evaluation(self, threshold: float = 0.1) -> List[Dict[str, Any]]:
         """
