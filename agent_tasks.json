@@ -9205,7 +9205,7 @@
     },
     {
       "id": "openclaw-online-rl-dialogue-v7-af571aae",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "high",
       "title": "OpenClaw Online RL Loop v7",
@@ -20750,6 +20750,60 @@
       "acceptance": [
         "MCP Capability Negotiation V5 module is created.",
         "Tests verify multi-turn negotiation and fallback."
+      ]
+    },
+    {
+      "id": "hermes-nightly-background-skills-creator-v1",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Nightly Background Skills Creator V1",
+      "description": "Inspired by Hermes Agent trend: Implement a background job that extracts experiences from the trajectory logs and auto-generates Python skills using an LLM during nightly scheduled downtime.",
+      "allowed_paths": [
+        "magda_agent/skills/nightly_skills_creator.py",
+        "tests/test_nightly_skills_creator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Nightly skills creator analyzes trajectory logs.",
+        "Generates minimal valid skills and registers them.",
+        "Tests confirm mock skills are extracted correctly."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-lifecycle-manager-v2",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V2",
+      "description": "Inspired by MemGPT/Letta patterns (2026): Create a Plugin for separating Episodic vs Semantic memory during eviction so only episodic logs are summarized while semantic facts are preserved uncompressed.",
+      "allowed_paths": [
+        "magda_agent/memory/context_lifecycle_manager_v2.py",
+        "tests/test_context_lifecycle_manager_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context plugin accurately identifies memory types.",
+        "Semantic facts are bypassed during eviction hooks.",
+        "Tests verify correct routing of eviction blocks."
+      ]
+    },
+    {
+      "id": "mcp-to-a2a-bridge-protocol-v1",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "title": "MCP to A2A Bridge Protocol V1",
+      "description": "Inspired by MCP & A2A convergence: Implement a dynamic bridge allowing A2A sub-agents to advertise their local MCP tools seamlessly to peer discovery networks.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_a2a_bridge_v1.py",
+        "tests/test_mcp_a2a_bridge_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Bridge correctly maps MCP schemas to A2A capability signatures.",
+        "Sub-agents can invoke peer's MCP tools via A2A.",
+        "Tests confirm standard schemas convert successfully."
       ]
     }
   ]
