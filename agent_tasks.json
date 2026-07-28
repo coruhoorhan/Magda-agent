@@ -9169,7 +9169,7 @@
     },
     {
       "id": "mcp-action-tool-validator-v1-9b382453",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "high",
       "title": "MCP Tool Registry Interceptor",
