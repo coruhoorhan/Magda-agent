@@ -9239,7 +9239,7 @@
     },
     {
       "id": "a2a-delegation-retry-v1-33968cf9-506d-412d-b908-b180f27ea1ae",
-      "status": "todo",
+      "status": "done",
       "area": "agents",
       "risk": "medium",
       "title": "A2A Delegation Resiliency",
@@ -20857,6 +20857,62 @@
         "Subagent output is distilled before returning.",
         "Parent agent receives and parses compressed context successfully.",
         "Tests verify compression and parsing functionality."
+      ]
+    },
+    {
+      "id": "acs-guardrail-latency-metrics-2026",
+      "status": "todo",
+      "area": "safety",
+      "risk": "low",
+      "title": "ACS Guardrail Latency Metrics Tracking",
+      "description": "Inspired by trend: ACS (Agent Control Specification) standardization for safety controls. Track the latency of each ACS guardrail layer (INPUT, EXECUTION, OUTPUT) to monitor overhead and log metrics for longitudinal tracking.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_adaptive_v1.py",
+        "magda_agent/safety/acs_guardrails.py",
+        "tests/test_acs_latency.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Latency for each ACS validation checkpoint is measured.",
+        "Metrics are persistently tracked in a longitudinal store.",
+        "Tests pass verifying latency tracking logic."
+      ]
+    },
+    {
+      "id": "openclaw-rl-negative-feedback-2026",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Negative Feedback Decay",
+      "description": "Inspired by trend: OpenClaw-RL (online reinforcement learning from user feedback). Process negative user feedback ('stop', 'wrong', 'no') to rapidly decay associated behavior weights in procedural memory.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_metrics.py",
+        "magda_agent/learning/openclaw_behavior_plugin.py",
+        "tests/test_openclaw_negative_feedback.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negative sentiment from user replies triggers weight decay.",
+        "Behavior plugins integrate with decay mechanisms.",
+        "Pytest coverage verifies RL weight modification."
+      ]
+    },
+    {
+      "id": "mcp-capabilities-negotiation-v2-2026",
+      "status": "todo",
+      "area": "integration",
+      "risk": "low",
+      "title": "Dynamic MCP Capabilities Renegotiation",
+      "description": "Inspired by trend: MCP tools proliferation. Enhance the MCP Capability Negotiator to allow dynamic renegotiation of capabilities without tearing down the existing context session.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v6.py",
+        "tests/test_mcp_negotiation_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP Negotiation supports dynamic runtime renegotiation.",
+        "Existing sessions can upgrade or downgrade capabilities safely.",
+        "Tests correctly mock and pass renegotiation scenarios."
       ]
     }
   ]

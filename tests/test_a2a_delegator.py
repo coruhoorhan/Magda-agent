@@ -192,3 +192,59 @@ async def test_delegate_task_http_error(peer_card_json: str) -> None:
 
     assert result["status"] == "error"
     assert "500" in result["message"]
+
+from magda_agent.integration.a2a_delegator import A2ADelegator
+import httpx
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_a2a_delegator_retry_success() -> None:
+    """
+    Tests that A2ADelegator correctly retries on transient errors and eventually succeeds.
+    """
+    delegator = A2ADelegator(max_retries=3, base_delay=0.1)
+
+    # Mock 2 failures followed by 1 success
+    route = respx.post("http://peer-retry/rpc/delegate").mock(side_effect=[
+        httpx.ConnectError("Connection failed", request=httpx.Request("POST", "http://peer-retry/rpc/delegate")),
+        Response(503, json={"error": "Service Unavailable"}),
+        Response(200, json={"status": "success", "result": "Done"})
+    ])
+
+    result = await delegator.delegate_task("http://peer-retry/rpc/delegate", {"task": "do something"})
+
+    assert result == {"status": "success", "result": "Done"}
+    assert route.call_count == 3
+
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_a2a_delegator_retry_exhausted() -> None:
+    """
+    Tests that A2ADelegator raises an error after exhausting maximum retries.
+    """
+    delegator = A2ADelegator(max_retries=2, base_delay=0.1)
+
+    # Mock consistent 500 errors
+    route = respx.post("http://peer-exhaust/rpc/delegate").mock(return_value=Response(500, json={"error": "Internal Server Error"}))
+
+    with pytest.raises(httpx.HTTPStatusError):
+        await delegator.delegate_task("http://peer-exhaust/rpc/delegate", {"task": "do something"})
+
+    assert route.call_count == 3  # 1 initial + 2 retries
+
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_a2a_delegator_no_retry_on_400() -> None:
+    """
+    Tests that A2ADelegator does not retry on non-transient client errors like 400 Bad Request.
+    """
+    delegator = A2ADelegator(max_retries=3, base_delay=0.1)
+
+    route = respx.post("http://peer-400/rpc/delegate").mock(return_value=Response(400, json={"error": "Bad Request"}))
+
+    with pytest.raises(httpx.HTTPStatusError):
+        await delegator.delegate_task("http://peer-400/rpc/delegate", {"task": "do something"})
+
+    assert route.call_count == 1  # No retries

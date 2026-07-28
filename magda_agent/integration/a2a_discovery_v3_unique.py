@@ -2,6 +2,7 @@ from typing import Dict, List, Optional, Any
 import json
 import logging
 import httpx
+from magda_agent.integration.a2a_delegator import A2ADelegator
 from magda_agent.integration.a2a_cards import AgentCardV3
 
 
@@ -96,10 +97,8 @@ class A2ADiscoveryServiceV3Unique:
 
         logging.info(f"Delegating task to {peer_agent_id} at {rpc_endpoint}")
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{rpc_endpoint}/delegate",
-                json=task_payload
-            )
-            response.raise_for_status()
-            return response.json()
+        delegator = A2ADelegator()
+        return await delegator.delegate_task(
+            f"{rpc_endpoint}/delegate",
+            task_payload
+        )
