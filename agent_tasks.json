@@ -9274,7 +9274,7 @@
     },
     {
       "id": "ai-agent-trend-e90ceb2b",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Agent Teams Parallel Git Worktree Subagent Enhancements",
