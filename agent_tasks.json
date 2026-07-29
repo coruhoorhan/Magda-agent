@@ -9326,7 +9326,7 @@
     },
     {
       "id": "openclaw-context-engine-virtual-context-ce0c6f0b",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "OpenClaw Context Engine Virtual Context",
@@ -21035,6 +21035,40 @@
       "acceptance": [
         "Auth requirements from MCP servers are correctly parsed and validated.",
         "Tests verify tool routing fails safely when auth is missing."
+      ]
+    },
+    {
+      "id": "claude-evaluator-subagent-isolation-v3",
+      "title": "Claude Evaluator Subagent Isolation V3",
+      "description": "Inspired by Claude Agent SDK: Implement deeper Git worktree isolation for spawned evaluator subagents, handling symlink verification and submodules to avoid context bleeding.",
+      "area": "agents",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/agents/evaluator_subagent_isolation_v3.py",
+        "tests/test_evaluator_subagent_isolation_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator subagents run inside isolated Git worktrees mapping symlinks and submodules safely.",
+        "Tests verify clean execution and sub-repository handling."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-permissions-v2-unique",
+      "title": "MCP Dynamic Tool Permissions v2",
+      "description": "Inspired by MCP and A2A trends: Implement a dynamic tool permission system where specific Magda skills can be selectively exported or granted to remote A2A agents based on JWT or SAML role-based access control.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_permissions_v2.py",
+        "tests/test_mcp_permissions_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Role-based access control implemented for MCP tools via JWT validation.",
+        "Tests verify tool execution blocking for unauthorized agents missing scopes."
       ]
     }
   ]

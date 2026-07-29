@@ -304,3 +304,11 @@
 * [ ] FEATURE: Hermes Nightly Background Skills Creator V1 (hermes-nightly-background-skills-creator-v1)
 * [ ] FEATURE: OpenClaw Virtual Context Lifecycle Manager V2 (openclaw-virtual-context-lifecycle-manager-v2)
 * [ ] FEATURE: MCP to A2A Bridge Protocol V1 (mcp-to-a2a-bridge-protocol-v1)
+
+* [x] FEATURE: OpenClaw Online RL Loop v6 (openclaw-online-rl-dialogue-v6-e9301cfc)
+* [ ] FEATURE: Claude Agent Teams Subagent Spawner V2 (claude-agent-teams-subagent-spawner-v2)
+* [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
+* [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7)
+* [ ] FEATURE: Claude Evaluator Subagent Isolation V3 (claude-evaluator-subagent-isolation-v3)
+* [ ] FEATURE: MCP Dynamic Tool Permissions v2 (mcp-dynamic-tool-permissions-v2-unique)
+* [x] FEATURE: OpenClaw Context Engine Virtual Context (openclaw-context-engine-virtual-context-ce0c6f0b)
