@@ -37,6 +37,7 @@ from magda_agent.learning.openclaw_rl import OpenClawInteractiveLearner
 from magda_agent.learning.online_feedback_rl import OnlineFeedbackRL
 from magda_agent.learning.feedback_loop import FeedbackLoop
 from magda_agent.learning.openclaw_rl_metrics import OpenClawRLMetrics
+from magda_agent.learning.reward_heuristic_v1 import OpenClawRewardHeuristicV1
 from magda_agent.attention.salience import SalienceNetwork
 from magda_agent.attention.workspace import GlobalWorkspace
 from magda_agent.memory.context_engine import ContextEngine
@@ -129,6 +130,7 @@ class Consciousness:
         self.user_model = user_model
         self.mental_states = MentalStates()
         self.openclaw_rl_metrics = OpenClawRLMetrics()
+        self.reward_heuristic = OpenClawRewardHeuristicV1()
 
         if self.global_workspace:
             self.global_workspace.register_listener(self._broadcast_event)
@@ -189,8 +191,19 @@ class Consciousness:
         if self.online_rl_v6:
             await self.online_rl_v6.adjust_behavior(user_input, last_context, user_id)
 
-        # Update OpenClaw RL Metrics
-        if self.mirror_neurons:
+        # Process interactive explicit rewards
+        if self.reward_heuristic:
+            # We assume "dialogue_skill" as the default context here
+            # In a more advanced setup, this would be the skill used in the last turn
+            reward_weight = self.reward_heuristic.process_user_reply(user_input, "dialogue_skill")
+            if reward_weight is not None and self.openclaw_rl_metrics:
+                # Mirror the parsed rating reward into the metrics
+                self.openclaw_rl_metrics.add_reward("dialogue_skill", reward_weight, user_id=user_id)
+                current_q = self.openclaw_rl_metrics.q_values.get("dialogue_skill", 0.0)
+                self.openclaw_rl_metrics.update_q_value("dialogue_skill", current_q + reward_weight * 0.1)
+
+        # Update OpenClaw RL Metrics from implicit/MirrorNeuron feedback if no explicit rating found
+        elif self.mirror_neurons:
             p_shift, _, _ = self.mirror_neurons.empathize(user_input)
             if p_shift != 0.0:
                 # Use p_shift as a reward signal
