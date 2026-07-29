@@ -9308,7 +9308,7 @@
     },
     {
       "id": "hermes-skill-marketplace-publish-cli-2488a5db",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "Hermes-inspired agentskills.io Publish CLI",
@@ -21001,6 +21001,40 @@
         "A2A module correctly wraps and sends MCP action payloads to peer agents.",
         "Delegator properly handles asynchronous responses and capability mismatches.",
         "Tests verify the generation of valid A2A payload signatures for complex MCP tools."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-distillation-v1-unique",
+      "title": "OpenClaw RL Trajectory Distillation v1",
+      "description": "Inspired by OpenClaw RL online learning trend: Distill long episodic memory trajectories containing multiple tool interactions into reusable macro-skills stored in procedural memory, updating behavior weights upon successful deployment.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_distillation_v1.py",
+        "tests/test_trajectory_distillation_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Macro-skills are extracted from trajectory logs.",
+        "Tests verify macro-skill generation and RL weight adjustments."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v1-unique",
+      "title": "MCP Dynamic Capability Auth v1",
+      "description": "Inspired by MCP standardization: Dynamically parse and enforce authentication schema constraints from external MCP server capabilities before attempting to route actions to them.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_v1.py",
+        "tests/test_mcp_auth_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auth requirements from MCP servers are correctly parsed and validated.",
+        "Tests verify tool routing fails safely when auth is missing."
       ]
     }
   ]
