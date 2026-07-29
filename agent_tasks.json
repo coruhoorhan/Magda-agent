@@ -9291,7 +9291,7 @@
     },
     {
       "id": "ai-agent-trend-59cb1cef",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "high",
       "title": "OpenClaw RL Delayed Rewards Support",
@@ -20947,6 +20947,60 @@
       "acceptance": [
         "Cron job aggregates daily logs.",
         "Episodic memory is condensed correctly."
+      ]
+    },
+    {
+      "id": "mcp-agent-teams-sub-server-v1",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "MCP Temporary Sub-Servers for Agent Teams",
+      "description": "Inspired by MCP and Agent Teams trends: Implement an ephemeral MCP sub-server instantiation process for each spawned Git-isolated subagent, allowing secure and independent tool execution without blocking the main orchestrator server.",
+      "allowed_paths": [
+        "magda_agent/architecture/mcp_sub_server_v1.py",
+        "tests/test_mcp_sub_server_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Main orchestrator spawns a distinct MCP server per subagent.",
+        "Subagent tool executions are routed exclusively to their ephemeral server.",
+        "Tests mock subagent spawning and verify proper tool routing and isolation."
+      ]
+    },
+    {
+      "id": "acs-context-engine-compression-guard-v1",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Guardrails for Context Engine Compression",
+      "description": "Inspired by ACS Safety and Context Engine trends: Implement a safety checkpoint within the Context Engine compression lifecycle that intercepts aggressive memory truncation to ensure critical safety assertions and policy constraints are never dropped from the active context window.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_compression_guard_v1.py",
+        "tests/test_acs_compression_guard_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ACS Guardrail hooks into the Context Engine eviction/compression lifecycle.",
+        "Critical policy tokens and system prompts are explicitly protected from being compressed or dropped.",
+        "Tests mock memory pressure events and verify protected tokens survive compression."
+      ]
+    },
+    {
+      "id": "a2a-distributed-mcp-action-delegation-v1",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "title": "A2A Distributed MCP Action Delegation",
+      "description": "Inspired by A2A Protocol and MCP Action tools trends: Enhance the A2A Delegator to serialize and transmit complex state-mutating MCP action intents to remote peer agents, securely negotiating resource limits before execution.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mcp_action_delegation_v1.py",
+        "tests/test_a2a_mcp_action_delegation_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A module correctly wraps and sends MCP action payloads to peer agents.",
+        "Delegator properly handles asynchronous responses and capability mismatches.",
+        "Tests verify the generation of valid A2A payload signatures for complex MCP tools."
       ]
     }
   ]
