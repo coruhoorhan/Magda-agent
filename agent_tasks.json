@@ -9344,7 +9344,7 @@
     },
     {
       "id": "mcp-action-tool-runtime-permission-scoping-70e7d016",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "MCP Tool Runtime Permission Scoping",
@@ -21069,6 +21069,60 @@
       "acceptance": [
         "Role-based access control implemented for MCP tools via JWT validation.",
         "Tests verify tool execution blocking for unauthorized agents missing scopes."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-auth-refresh-v1-unique",
+      "title": "MCP Dynamic Authentication Refresh",
+      "description": "Inspired by MCP trend: Implement a transparent mechanism to dynamically refresh expired OAuth or JWT tokens when an MCP tool execution fails with a 401 Unauthorized, automatically retrying the action without bubbling up the error to the LLM context.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_refresh.py",
+        "tests/test_mcp_auth_refresh.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Authentication errors during MCP execution are intercepted.",
+        "Tokens are refreshed and tool is re-invoked transparently.",
+        "Tests verify correct retry logic and token management."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-reward-v1-unique",
+      "title": "OpenClaw RL Implicit Reward Tracking",
+      "description": "Inspired by OpenClaw RL online learning trend: Track implicit positive feedback (e.g., when the user advances the conversation to a new topic without issuing corrections) to slightly increment behavior weights for the preceding actions.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_implicit_reward.py",
+        "tests/test_openclaw_implicit_reward.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implicit approval signals are detected from conversation flow.",
+        "RL behavior weights receive minor positive updates.",
+        "Tests verify implicit reward extraction logic."
+      ]
+    },
+    {
+      "id": "a2a-capability-gossiping-v1-unique",
+      "title": "A2A Capability Gossip Protocol",
+      "description": "Inspired by A2A standard trend: Implement a decentralized gossip protocol module for the A2A Discovery Service, enabling agents to periodically broadcast and cache neighboring agent capabilities to reduce discovery latency.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_protocol.py",
+        "tests/test_a2a_gossip_protocol.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent capabilities are broadcast asynchronously to known peers.",
+        "Peer cache is updated securely with latest Agent Cards.",
+        "Tests verify gossip propagation and cache integrity."
       ]
     }
   ]
