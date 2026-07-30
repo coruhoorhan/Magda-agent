@@ -1,7 +1,7 @@
 import pytest
 from typing import Dict, Any, List
 from unittest.mock import MagicMock, AsyncMock
-from magda_agent.skills.mcp_exporter import MCPSkillExporter
+from magda_agent.integration.mcp_exporter import MCPExporter
 from magda_agent.skills.registry import SkillRegistry
 
 @pytest.fixture
@@ -29,13 +29,13 @@ def registry() -> SkillRegistry:
     return reg
 
 @pytest.fixture
-def exporter(registry: SkillRegistry) -> MCPSkillExporter:
-    """Creates an MCPSkillExporter fixture."""
-    return MCPSkillExporter(registry)
+def mcp_exporter_inst(registry: SkillRegistry) -> MCPExporter:
+    """Creates an MCPExporter fixture."""
+    return MCPExporter(registry)
 
-def test_export_tools(exporter: MCPSkillExporter) -> None:
+def test_export_tools(mcp_exporter_inst: MCPExporter) -> None:
     """Tests if tools are correctly exported via the adapter."""
-    tools: List[Dict[str, Any]] = exporter.list_tools()
+    tools: List[Dict[str, Any]] = mcp_exporter_inst.export_tools()
     assert len(tools) == 3
     names: List[str] = [t["name"] for t in tools]
     assert "dummy_skill" in names
@@ -58,7 +58,7 @@ def test_export_tools(exporter: MCPSkillExporter) -> None:
     assert "f" not in schema["required"]
 
 @pytest.mark.asyncio
-async def test_handle_rpc_request_success(exporter: MCPSkillExporter) -> None:
+async def test_handle_rpc_request_success(mcp_exporter_inst: MCPExporter) -> None:
     """Tests a successful JSON-RPC tool execution request."""
     req = {
         "jsonrpc": "2.0",
@@ -66,7 +66,7 @@ async def test_handle_rpc_request_success(exporter: MCPSkillExporter) -> None:
         "params": {"param1": "test"},
         "id": 1
     }
-    res: Dict[str, Any] = await exporter.handle_rpc_request(req)
+    res: Dict[str, Any] = await mcp_exporter_inst.handle_rpc_request(req)
     assert res["jsonrpc"] == "2.0"
     assert res["id"] == 1
     assert "result" in res
@@ -74,7 +74,23 @@ async def test_handle_rpc_request_success(exporter: MCPSkillExporter) -> None:
     assert res["result"]["content"][0]["text"] == "Result: test"
 
 @pytest.mark.asyncio
-async def test_handle_rpc_request_invalid_method(exporter: MCPSkillExporter) -> None:
+async def test_handle_rpc_request_arguments_unwrap(mcp_exporter_inst: MCPExporter) -> None:
+    """Tests unwrap of params when arguments is inside params."""
+    req = {
+        "jsonrpc": "2.0",
+        "method": "dummy_skill",
+        "params": {"arguments": {"param1": "test-unwrap"}},
+        "id": 10
+    }
+    res: Dict[str, Any] = await mcp_exporter_inst.handle_rpc_request(req)
+    assert res["jsonrpc"] == "2.0"
+    assert res["id"] == 10
+    assert "result" in res
+    assert not res["result"]["isError"]
+    assert res["result"]["content"][0]["text"] == "Result: test-unwrap"
+
+@pytest.mark.asyncio
+async def test_handle_rpc_request_invalid_method(mcp_exporter_inst: MCPExporter) -> None:
     """Tests handling of an invalid JSON-RPC method."""
     req = {
         "jsonrpc": "2.0",
@@ -82,25 +98,24 @@ async def test_handle_rpc_request_invalid_method(exporter: MCPSkillExporter) -> 
         "params": {},
         "id": 2
     }
-    res: Dict[str, Any] = await exporter.handle_rpc_request(req)
+    res: Dict[str, Any] = await mcp_exporter_inst.handle_rpc_request(req)
     assert "error" in res
     assert res["error"]["code"] == -32601
 
 @pytest.mark.asyncio
-async def test_handle_rpc_request_invalid_jsonrpc(exporter: MCPSkillExporter) -> None:
+async def test_handle_rpc_request_invalid_jsonrpc(mcp_exporter_inst: MCPExporter) -> None:
     """Tests handling of an invalid JSON-RPC version."""
     req = {
         "method": "dummy_skill",
         "params": {"param1": "test"},
         "id": 3
     }
-    res: Dict[str, Any] = await exporter.handle_rpc_request(req)
+    res: Dict[str, Any] = await mcp_exporter_inst.handle_rpc_request(req)
     assert "error" in res
     assert res["error"]["code"] == -32600
 
-
 @pytest.mark.asyncio
-async def test_handle_rpc_request_error_in_tool(exporter: MCPSkillExporter) -> None:
+async def test_handle_rpc_request_error_in_tool(mcp_exporter_inst: MCPExporter) -> None:
     """Tests error handling when the underlying tool raises an exception."""
     req = {
         "jsonrpc": "2.0",
@@ -108,8 +123,8 @@ async def test_handle_rpc_request_error_in_tool(exporter: MCPSkillExporter) -> N
         "params": {}, # Missing required param
         "id": 4
     }
-    res: Dict[str, Any] = await exporter.handle_rpc_request(req)
+    res: Dict[str, Any] = await mcp_exporter_inst.handle_rpc_request(req)
     # The adapter wraps it, but the exporter now properly returns a JSON-RPC error.
     assert "error" in res
     assert res["error"]["code"] == -32000
-    assert res["error"]["message"].startswith("Error executing skill")
+    assert res["error"]["message"].startswith("Error executing skill dummy_skill")
