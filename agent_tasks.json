@@ -9362,7 +9362,7 @@
     },
     {
       "id": "mcp-tool-exporter-34ceaf62-d284-49ab-821e-44827c99a556",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Tool Exporter Plugin",

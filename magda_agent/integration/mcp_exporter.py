@@ -33,6 +33,9 @@ class MCPExporter:
         method = request.get("method")
         params: Dict[str, Any] = request.get("params", {})
 
+        # Unwrap parameters if they are wrapped in an "arguments" key (common in some MCP clients)
+        arguments: Dict[str, Any] = params.get("arguments", params) if isinstance(params, dict) else params
+
         if request.get("jsonrpc") != "2.0":
             return {
                 "jsonrpc": "2.0",
@@ -54,12 +57,15 @@ class MCPExporter:
                 "error": {"code": -32601, "message": f"Method '{method}' not found"}
             }
 
-        adapter_result = await self.adapter.call_tool_async(method, params)
+        adapter_result = await self.adapter.call_tool_async(method, arguments)
 
         # Check if the adapter explicitly reported an error, or if it returned a string
         # that starts with 'Error' (which happens when registry.execute_skill returns an error string).
         is_error: bool = adapter_result.get("isError", False)
-        error_msg: str = adapter_result.get("content", [{"text": ""}])[0].get("text", "")
+        content = adapter_result.get("content", [])
+        error_msg = ""
+        if content and isinstance(content, list) and len(content) > 0:
+            error_msg = content[0].get("text", "")
 
         if is_error or str(error_msg).startswith("Error"):
             return {
