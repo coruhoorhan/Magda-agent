@@ -1,5 +1,8 @@
 import pytest
 import json
+import respx
+import httpx
+from dataclasses import asdict
 from magda_agent.integration.a2a_discovery_v2 import AgentCardV2, A2ADiscoveryV2
 
 @pytest.fixture
@@ -93,3 +96,86 @@ async def test_fetch_invalid_card_json_v2(local_card_v2: AgentCardV2) -> None:
 
     # No agents should be discovered
     assert len(discovery._discovered_agents) == 0
+
+@pytest.mark.asyncio
+async def test_find_agents_by_capabilities_filtering(local_card_v2: AgentCardV2, remote_card_1_v2: AgentCardV2, remote_card_2_v2: AgentCardV2) -> None:
+    discovery = A2ADiscoveryV2(local_card=local_card_v2)
+
+    network_envelopes = [
+        json.dumps({"type": "a2a_discovery_broadcast", "version": "2.0", "payload": remote_card_1_v2.to_json()}),
+        json.dumps({"type": "a2a_discovery_broadcast", "version": "2.0", "payload": remote_card_2_v2.to_json()})
+    ]
+
+    await discovery.fetch_cards(network_envelopes=network_envelopes)
+
+    # Remote 1: "image_generation", "chat"
+    # Remote 2: "code_execution", "linting"
+
+    # Match all (intersection check)
+    match_both = discovery.find_agents_by_capabilities(["chat", "image_generation"], match_all=True)
+    assert len(match_both) == 1
+    assert match_both[0].agent_id == remote_card_1_v2.agent_id
+
+    match_non_existent = discovery.find_agents_by_capabilities(["chat", "code_execution"], match_all=True)
+    assert len(match_non_existent) == 0
+
+    # Match any (union check)
+    match_any = discovery.find_agents_by_capabilities(["chat", "code_execution"], match_all=False)
+    assert len(match_any) == 2
+    agent_ids = {a.agent_id for a in match_any}
+    assert remote_card_1_v2.agent_id in agent_ids
+    assert remote_card_2_v2.agent_id in agent_ids
+
+    # Empty capabilities input should return all discovered agents
+    match_empty = discovery.find_agents_by_capabilities([])
+    assert len(match_empty) == 2
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_register_with_registry_v2(local_card_v2: AgentCardV2) -> None:
+    discovery = A2ADiscoveryV2(local_card=local_card_v2)
+    registry_url = "http://discovery-registry-v2.local"
+
+    # Mock the registration endpoint
+    route = respx.post(f"{registry_url}/register").mock(return_value=httpx.Response(201))
+
+    success = await discovery.register_with_registry(registry_url, auth_token="test-token-v2")
+
+    assert success is True
+    assert route.called
+    assert route.calls.last.request.headers["Authorization"] == "Bearer test-token-v2"
+
+    # Verify the payload
+    sent_data = json.loads(route.calls.last.request.content)
+    assert sent_data["agent_id"] == local_card_v2.agent_id
+    assert sent_data["protocol_version"] == "v2"
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_discover_from_registry_v2(local_card_v2: AgentCardV2, remote_card_1_v2: AgentCardV2, remote_card_2_v2: AgentCardV2) -> None:
+    discovery = A2ADiscoveryV2(local_card=local_card_v2)
+    registry_url = "http://discovery-registry-v2.local"
+
+    # Mock the discovery endpoint
+    cards_data = [asdict(remote_card_1_v2), asdict(remote_card_2_v2)]
+    route = respx.get(f"{registry_url}/cards").mock(return_value=httpx.Response(200, json=cards_data))
+
+    discovered = await discovery.discover_from_registry(registry_url)
+
+    assert len(discovered) == 2
+    assert route.called
+    assert discovery.get_agent_by_id(remote_card_1_v2.agent_id).name == remote_card_1_v2.name
+    assert discovery.get_agent_by_id(remote_card_2_v2.agent_id).name == remote_card_2_v2.name
+    assert remote_card_1_v2.name in [c.name for c in discovery.find_agents_by_capabilities(["chat"])]
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_register_with_registry_failure_v2(local_card_v2: AgentCardV2) -> None:
+    discovery = A2ADiscoveryV2(local_card=local_card_v2)
+    registry_url = "http://discovery-registry-v2.local"
+
+    # Mock a failure
+    respx.post(f"{registry_url}/register").mock(return_value=httpx.Response(500))
+
+    success = await discovery.register_with_registry(registry_url)
+    assert success is False
