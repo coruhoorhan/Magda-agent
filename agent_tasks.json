@@ -18262,7 +18262,7 @@
     },
     {
       "id": "mcp-dynamic-auto-discovery-v1-98a2f",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Dynamic Tool Auto-Discovery V1",
@@ -21159,6 +21159,42 @@
         "Detects high latency or task failure from an assigned A2A peer.",
         "Redistributes the sub-task securely to an alternate peer from the capability cache.",
         "Tests mock peer failures and verify seamless task redistribution."
+      ]
+    },
+    {
+      "id": "openclaw-live-canvas-visualizer-v2-1a2b3c",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "title": "OpenClaw Canvas Visualizer Update V2",
+      "description": "Inspired by OpenClaw trends: Implement a Canvas module with structured websocket diffing for the ContextEngine, streaming only modified working memory fragments instead of full state updates.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_diff_v2.py",
+        "tests/test_canvas_diff_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Canvas visualizer correctly calculates JSON diffs.",
+        "Diffs are broadcast to clients over websocket.",
+        "Tests verify payload correctly reflects memory changes using mocks."
+      ]
+    },
+    {
+      "id": "a2a-agent-capabilities-health-checker-v1-4d5e6f",
+      "status": "todo",
+      "area": "multi_agent",
+      "risk": "low",
+      "title": "A2A Capabilities Health Checker",
+      "description": "Inspired by A2A Protocol trends: Implement a periodic cron job to ping discovered A2A peers from the capability cache, removing unresponsive agents from the known registry.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_health_checker_v1.py",
+        "tests/test_a2a_health_checker_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job periodically iterates through discovered peers.",
+        "Unresponsive peers are purged from the cache.",
+        "Tests mock network timeouts and verify removal."
       ]
     }
   ]
