@@ -18663,7 +18663,7 @@
     },
     {
       "id": "hermes-portal-resource-sandbox-v1-3c9b8a",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "Hermes Portal Resource-Bounded Skill Sandbox",
@@ -21599,6 +21599,58 @@
         "RL weights are updated based on momentum shifts.",
         "Tests verify calculations and updates using mock interaction data."
       ]
+    },
+    {
+      "id": "openai-agents-sdk-concurrency-prioritization-v15",
+      "title": "OpenAI Agents SDK Concurrency Prioritization V15",
+      "description": "Inspired by OpenAI Agents SDK concurrent tool execution trend: Develop a priority-aware tool execution router that schedules and executes concurrent tool calls based on their priority and energy requirements.",
+      "allowed_paths": [
+        "magda_agent/skills/priority_concurrency_v15.py",
+        "tests/test_priority_concurrency_v15.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Priority router executes high-priority tools first.",
+        "Tests verify concurrent scheduling and priority execution rules."
+      ],
+      "risk": "medium",
+      "area": "skills",
+      "status": "todo"
+    },
+    {
+      "id": "openclaw-rl-cognitive-overload-v15",
+      "title": "OpenClaw RL Cognitive Overload Mitigator V15",
+      "description": "Inspired by OpenClaw-RL trend: Implement a feedback mechanism that monitors RL-associated memory consumption and reduces prompt token overhead when the agent detects a negative reward trend.",
+      "allowed_paths": [
+        "magda_agent/learning/cognitive_overload_v15.py",
+        "tests/test_cognitive_overload_v15.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Triggers prompt/context pruning when negative rewards signal high cognitive load.",
+        "Tests mock RL trends and verify reduction in simulated prompt size."
+      ],
+      "risk": "medium",
+      "area": "learning",
+      "status": "todo"
+    },
+    {
+      "id": "claude-code-git-conflict-resolver-v16",
+      "title": "Claude Code Git Conflict Auto-Resolver V16",
+      "description": "Inspired by Claude Code CLI trends: Implement an automated Git conflict resolver capability for subagents working on parallel branches, allowing them to parse conflict markers and propose clean resolutions.",
+      "allowed_paths": [
+        "magda_agent/isolation/git_conflict_resolver_v16.py",
+        "tests/test_git_conflict_resolver_v16.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The resolver parses and extracts Git conflict blocks from workspace files.",
+        "Proposes or applies resolution strategies cleanly based on simple rules.",
+        "Tests verify correct conflict block extraction and resolution."
+      ],
+      "risk": "medium",
+      "area": "multi-agent",
+      "status": "todo"
     }
   ]
 }
