@@ -83,6 +83,7 @@ async def test_handle_request_empty_batch(handler):
     res = json.loads(res_str)
     assert res["error"]["code"] == -32600
 
+
 # --- Tests for MCPConcurrentSkillExecutor ---
 from unittest.mock import MagicMock
 from magda_agent.skills.mcp_concurrency import MCPConcurrentSkillExecutor
@@ -202,3 +203,123 @@ async def test_execute_mcp_tools_concurrently_sync_blocking():
     assert end_time - start_time < 0.3
     assert results[0] == "server1-tool_a_sync_res"
     assert results[1] == "server2-tool_b_sync_res"
+
+
+# --- Tests for MCPConcurrencyManager ---
+from magda_agent.execution.mcp_concurrency import MCPConcurrencyManager
+
+class DummyMCPRegistry:
+    def __init__(self):
+        self.skills = {
+            "get_status": self.get_status,
+            "generate_summary": self.generate_summary,
+        }
+
+    async def get_status(self, **kwargs):
+        return "online"
+
+    async def generate_summary(self, **kwargs):
+        await asyncio.sleep(0.05)
+        return "summary_generated"
+
+    async def execute_skill(self, name, **kwargs):
+        return await self.skills[name](**kwargs)
+
+class DummyMCPServer:
+    def __init__(self, prefix):
+        self.prefix = prefix
+        self.skills = {"read_data": self.read_data}
+
+    async def read_data(self, **kwargs):
+        await asyncio.sleep(0.05)
+        return f"data_from_{self.prefix}"
+
+    async def execute_skill(self, name, **kwargs):
+        return await self.skills[name](**kwargs)
+
+@pytest.fixture
+def mcp_manager():
+    registry = DummyMCPRegistry()
+    servers = {
+        "srv1": DummyMCPServer("srv1"),
+        "srv2": DummyMCPServer("srv2")
+    }
+    return MCPConcurrencyManager(
+        mcp_client=registry,
+        servers=servers,
+        max_concurrency_per_server=2,
+        global_max_concurrency=4,
+        rate_limit_per_second=10.0,
+        timeout_seconds=0.5
+    )
+
+@pytest.mark.asyncio
+async def test_mcp_manager_resolve_tool(mcp_manager):
+    prefix, server, unprefixed = mcp_manager._resolve_tool("srv1__read_data")
+    assert prefix == "srv1"
+    assert unprefixed == "read_data"
+
+    prefix2, server2, unprefixed2 = mcp_manager._resolve_tool("srv2-read_data")
+    assert prefix2 == "srv2"
+    assert unprefixed2 == "read_data"
+
+    prefix3, server3, unprefixed3 = mcp_manager._resolve_tool("get_status")
+    assert prefix3 is None
+    assert unprefixed3 == "get_status"
+
+@pytest.mark.asyncio
+async def test_mcp_manager_execute_single_call(mcp_manager):
+    res = await mcp_manager._execute_single_call("get_status", {})
+    assert res == "online"
+
+    res_remote = await mcp_manager._execute_single_call("srv1__read_data", {})
+    assert res_remote == "data_from_srv1"
+
+@pytest.mark.asyncio
+async def test_mcp_manager_execute_concurrently(mcp_manager):
+    calls = [
+        {"name": "srv1__read_data"},
+        {"name": "srv2__read_data"},
+        {"name": "get_status"},
+        {"name": "generate_summary"}
+    ]
+    results = await mcp_manager.execute_concurrently(calls)
+    assert len(results) == 4
+    assert results[0] == "data_from_srv1"
+    assert results[1] == "data_from_srv2"
+    assert results[2] == "online"
+    assert results[3] == "summary_generated"
+
+@pytest.mark.asyncio
+async def test_mcp_manager_exception_isolation(mcp_manager):
+    # Register an invalid skill or trigger failure
+    calls = [
+        {"name": "get_status"},
+        {"name": "srv1__invalid_tool"}, # should fail
+        {"name": "srv2__read_data"}
+    ]
+    results = await mcp_manager.execute_concurrently(calls)
+    assert len(results) == 3
+    assert results[0] == "online"
+    assert "Error:" in results[1]
+    assert results[2] == "data_from_srv2"
+
+@pytest.mark.asyncio
+async def test_mcp_manager_timeout(mcp_manager):
+    # Set timeout to extremely low
+    mcp_manager.timeout_seconds = 0.01
+    calls = [{"name": "generate_summary"}]
+    results = await mcp_manager.execute_concurrently(calls)
+    assert len(results) == 1
+    assert "timed out" in results[0]
+
+@pytest.mark.asyncio
+async def test_mcp_manager_backpressure(mcp_manager):
+    mcp_manager.global_semaphore = asyncio.Semaphore(1)
+    mcp_manager._max_queue_size = 2
+
+    calls = [{"name": "generate_summary"} for _ in range(5)]
+    results = await mcp_manager.execute_concurrently(calls)
+
+    backpressure_errors = [r for r in results if isinstance(r, str) and "BackpressureError" in r]
+    assert len(backpressure_errors) > 0
