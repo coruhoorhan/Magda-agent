@@ -9570,7 +9570,7 @@
     },
     {
       "id": "mcp-server-tool-concurrency-5ec68904-3f7f-4a2e-81c2-14dc184faf34",
-      "status": "todo",
+      "status": "done",
       "area": "execution",
       "risk": "medium",
       "title": "MCP Server-Prefixed Tool Concurrency",
@@ -21650,6 +21650,57 @@
       ],
       "risk": "medium",
       "area": "multi-agent",
+      "status": "todo"
+    },
+    {
+      "id": "a2a-distributed-telemetry-exporter-v1",
+      "title": "A2A Distributed Telemetry Exporter v1",
+      "description": "Inspired by A2A Protocol trend (June 2026): Implement an exporter that broadcasts agent execution metrics and telemetry to an A2A observability mesh for decentralized monitoring.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_exporter_v1.py",
+        "tests/test_a2a_exporter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter pushes structured telemetry via A2A protocol.",
+        "Tests verify format and mocked broadcast execution."
+      ],
+      "risk": "low",
+      "area": "telemetry",
+      "status": "todo"
+    },
+    {
+      "id": "openclaw-rl-multimodal-audio-feedback-v1",
+      "title": "OpenClaw RL Audio Feedback Alignment v1",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse user audio tone/inflection shifts from voice inputs as next-state reward signals.",
+      "allowed_paths": [
+        "magda_agent/learning/audio_sentiment_v1.py",
+        "tests/test_audio_sentiment_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Audio sentiment signals successfully update habit weights.",
+        "Tests verify weight adjustments using mock audio signals."
+      ],
+      "risk": "medium",
+      "area": "learning",
+      "status": "todo"
+    },
+    {
+      "id": "mcp-websocket-streaming-v2-unique",
+      "title": "MCP Server WebSocket Transport v2",
+      "description": "Inspired by MCP trend (June 2026): Implement a WebSocket transport for the MCP server to support real-time full-duplex communication with external agents.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_websocket_v2_unique.py",
+        "tests/test_mcp_websocket_v2_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket transport successfully handles JSON-RPC messages.",
+        "Tests mock WebSocket connections and message parsing."
+      ],
+      "risk": "medium",
+      "area": "integration",
       "status": "todo"
     }
   ]
