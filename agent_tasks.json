@@ -9483,7 +9483,7 @@
     },
     {
       "id": "mcp-preflight-validation-v5-unique-695ce70f",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Tool Pre-flight Validation V5",
@@ -21333,6 +21333,60 @@
       "acceptance": [
         "Auth requirements from MCP servers are correctly validated.",
         "Tests verify tool execution blocks securely."
+      ]
+    },
+    {
+      "id": "acs-mcp-integration-v1",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "ACS-MCP Integration Layer V1",
+      "description": "Inspired by ACS trend: Integrate MCP pre-flight validation deeply with ACS runtime controls to provide a holistic Agent Guard policy layer that tracks violations in SQLite.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_mcp_integration_v1.py",
+        "tests/test_acs_mcp_integration_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP preflight violations are routed to ACS persistence.",
+        "Violations are tracked accurately in SQLite.",
+        "Tests mock ACS components to verify logging."
+      ]
+    },
+    {
+      "id": "openclaw-rl-metrics-v2",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "title": "OpenClaw RL Live Metric Graphing V2",
+      "description": "Inspired by OpenClaw trends: Implement real-time streaming graphing support for Q-value updates inside the Canvas UI by broadcasting update deltas over WebSockets.",
+      "allowed_paths": [
+        "magda_agent/visualization/rl_graphing_v2.py",
+        "tests/test_rl_graphing_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Q-value update streams are formatted for Canvas UI graphing.",
+        "Websocket broadcaster successfully pushes delta events.",
+        "Tests verify message payload schema."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-v3",
+      "status": "todo",
+      "area": "multi_agent",
+      "risk": "high",
+      "title": "Claude Agent Teams Workspace Isolation V3",
+      "description": "Inspired by Claude Agent Teams multi-agent architectures: Implement a manager that spawns sub-agents into entirely isolated Git Worktrees to prevent concurrent multi-agent Git state corruption.",
+      "allowed_paths": [
+        "magda_agent/multi_agent/worktree_manager_v3.py",
+        "tests/test_worktree_manager_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sub-agents initialize in isolated worktrees.",
+        "Worktree state changes do not affect main branch until merged.",
+        "Tests verify worktree lifecycle hooks (create, execute, cleanup)."
       ]
     }
   ]
