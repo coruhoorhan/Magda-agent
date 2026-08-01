@@ -8,17 +8,17 @@ from typing import Optional, AsyncGenerator, Callable, Coroutine, Any, TypeVar
 
 T = TypeVar("T")
 
-class GitWorktreeManagerV13:
+class GitWorktreeManager:
     """
-    V13 Git Worktree Manager designed to handle isolated workspaces for SubAgents.
+    Git Worktree Manager designed to handle isolated workspaces for SubAgents.
     Ensures that multi-agent tasks do not suffer from context bleeding or file collisions
     by executing concurrent subtasks within completely isolated git worktrees.
     Provides robust lifecycle guarantees, automatic cleanup, and execution timeout protection.
     """
 
-    def __init__(self, base_dir: str = "/tmp/magda_worktrees_v13") -> None:
+    def __init__(self, base_dir: str = "/tmp/magda_worktrees") -> None:
         """
-        Initializes the V13 Git Worktree Manager.
+        Initializes the Git Worktree Manager.
 
         Args:
             base_dir: The directory under which worktree checkouts will be created.

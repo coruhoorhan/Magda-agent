@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 from magda_agent.agents.worktree_enhancements import ParallelWorktreeSubagentSpawner
 from magda_agent.llm_client import LLMClient
-from magda_agent.isolation.git_worktree_v13 import GitWorktreeManagerV13
+from magda_agent.isolation.git_worktree_manager import GitWorktreeManager
 from magda_agent.memory.virtual_context import VirtualContextManager
 
 @pytest.fixture
@@ -18,8 +18,8 @@ def mock_llm() -> MagicMock:
 
 @pytest.fixture
 def mock_worktree_manager() -> MagicMock:
-    """Fixture to create a mocked GitWorktreeManagerV13."""
-    manager = MagicMock(spec=GitWorktreeManagerV13)
+    """Fixture to create a mocked GitWorktreeManager."""
+    manager = MagicMock(spec=GitWorktreeManager)
     # Return unique paths to simulate distinct worktrees
     manager.create_worktree_async = AsyncMock(side_effect=lambda: f"/tmp/mock_worktrees/worktree_{id(MagicMock())}")
     manager.remove_worktree_async = AsyncMock()
