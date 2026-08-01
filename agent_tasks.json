@@ -9466,7 +9466,7 @@
     },
     {
       "id": "openclaw-rl-canvas-metrics-v4-unique-d77f4f61",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "medium",
       "title": "OpenClaw-RL Canvas Metrics V4",
@@ -21282,6 +21282,57 @@
       "acceptance": [
         "Automated pruning runs correctly on older memory entries.",
         "Tests verify memory retention limits."
+      ]
+    },
+    {
+      "id": "claude-evaluator-git-worktree-v16",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "Claude Evaluator Git Worktree V16",
+      "description": "Inspired by Claude Agent Teams multi-agent architectures: Run the evaluator subagent inside an isolated git worktree.",
+      "allowed_paths": [
+        "magda_agent/evaluation/evaluator_worktree_v16.py",
+        "tests/test_evaluator_worktree_v16.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator subagent utilizes Git Worktree isolation.",
+        "Tests verify isolated execution."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swapper-v16",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Swapper V16",
+      "description": "Inspired by OpenClaw memory virtualization trends: Implement a context swapper that efficiently pages semantic facts to local file storage when context exceeds the token limit.",
+      "allowed_paths": [
+        "magda_agent/memory/context_swapper_v16.py",
+        "tests/test_context_swapper_v16.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ContextSwapper pages context effectively based on token limits.",
+        "Tests mock LLM tokens and verify swapper action."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-permissions-v16",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Dynamic Tool Permissions V16",
+      "description": "Inspired by MCP standardization: Dynamically parse and enforce authentication schema constraints from external MCP server capabilities before routing actions.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_permissions_v16.py",
+        "tests/test_mcp_permissions_v16.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auth requirements from MCP servers are correctly validated.",
+        "Tests verify tool execution blocks securely."
       ]
     }
   ]
