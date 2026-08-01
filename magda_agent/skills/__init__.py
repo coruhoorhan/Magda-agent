@@ -169,6 +169,23 @@ def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegi
     )
 
 
+    # Register MCP Auto-Discovery V1
+    from magda_agent.skills.mcp_auto_discovery_v1 import MCPAutoDiscoveryV1
+    from magda_agent.skills.mcp_registry_v7 import MCPRegistryV7
+    mcp_registry_v7 = MCPRegistryV7()
+    mcp_discoverer = MCPAutoDiscoveryV1(registry=mcp_registry_v7)
+
+    def run_mcp_auto_discovery(directory: str) -> str:
+        """Runs the auto discovery and returns the list of registered tools."""
+        mcp_discoverer.discover_and_register(directory)
+        return f"Discovered and registered: {mcp_registry_v7.list_tools()}"
+
+    registry.register_skill(
+        name="mcp_auto_discovery_v1",
+        func=run_mcp_auto_discovery,
+        description="Scans a specified directory to dynamically discover and register MCP tool schemas from Python files. Input: 'directory' string."
+    )
+
     # Register Marketplace Sync Routine
     from magda_agent.skills.marketplace_sync import MarketplaceSyncRoutine
     def sync_marketplace_sync() -> int:
