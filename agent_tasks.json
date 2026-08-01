@@ -9430,7 +9430,7 @@
     },
     {
       "id": "letta-virtual-context-eviction-v2-a82b4b8e",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Letta Virtual Context Eviction Manager",
@@ -21195,6 +21195,42 @@
         "Cron job periodically iterates through discovered peers.",
         "Unresponsive peers are purged from the cache.",
         "Tests mock network timeouts and verify removal."
+      ]
+    },
+    {
+      "id": "openclaw-agent-swarm-health-monitoring-v1",
+      "title": "OpenClaw Swarm Health Monitoring",
+      "description": "Inspired by OpenClaw trends: Implement a distributed swarm health monitoring module using a lightweight ping-pong protocol to ensure all active subagents remain responsive during long-horizon tasks.",
+      "status": "todo",
+      "area": "multi_agent",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/multi_agent/health_monitor_v1.py",
+        "tests/test_health_monitor_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Swarm monitor periodically pings subagents.",
+        "Unresponsive subagents are marked and logged.",
+        "Tests verify detection of failed subagents."
+      ]
+    },
+    {
+      "id": "claude-evaluator-semantic-diff-metrics-v1",
+      "title": "Claude Evaluator Semantic Diff Metrics",
+      "description": "Inspired by Claude SDK trends: Implement semantic diff tracking for the Evaluator agent to measure not just line changes, but semantic structural changes between PR iterations for better evaluation criteria.",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/evaluation/semantic_diff_v1.py",
+        "tests/test_semantic_diff_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Semantic diff metric is computed using AST parsing.",
+        "Diff score accurately reflects structural changes.",
+        "Tests mock PR changes and verify semantic diff computation."
       ]
     }
   ]
