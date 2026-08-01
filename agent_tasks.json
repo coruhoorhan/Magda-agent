@@ -9413,7 +9413,7 @@
     },
     {
       "id": "mcp-tool-concurrency-pattern-92ab35d2",
-      "status": "todo",
+      "status": "done",
       "area": "execution",
       "risk": "high",
       "title": "MCP Server-Prefixed Tool Concurrency Engine",
