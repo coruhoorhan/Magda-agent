@@ -9553,7 +9553,7 @@
     },
     {
       "id": "claude-agent-dependency-graph-planner-4e97937f-c458-4ee5-9063-0cf7d76f8d48",
-      "status": "todo",
+      "status": "done",
       "area": "planning",
       "risk": "medium",
       "title": "Claude Agent SDK Dependency Graph Planner",
@@ -21545,6 +21545,59 @@
         "Agent capabilities are broadcast asynchronously to known peers.",
         "Peer cache is updated securely with latest Agent Cards.",
         "Tests verify gossip propagation and cache integrity."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-caching-v2-unique-f80dc552",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Tool Action Result Caching V2 Unique",
+      "description": "Inspired by MCP kernel trends: Implement an explicit caching mechanism for MCP read-only tools to improve efficiency and reduce LLM overhead.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_caching_v2_unique.py",
+        "tests/test_mcp_caching_v2_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP tool cache is implemented.",
+        "Tests verify cache hits and misses appropriately."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-strategy-v3-unique-b7561ae1",
+      "status": "todo",
+      "area": "multi_agent",
+      "risk": "medium",
+      "title": "A2A Swarm Intelligence Strategy V3 Unique",
+      "description": "Inspired by A2A Protocol trends: Implement dynamic task redistribution across peer agents when latency spikes or task failures are detected on an assigned peer.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_swarm_strategy_v3_unique.py",
+        "tests/test_a2a_swarm_strategy_v3_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Detects high latency or task failure from an assigned A2A peer.",
+        "Redistributes the sub-task securely to an alternate peer from the capability cache.",
+        "Tests mock peer failures and verify seamless task redistribution."
+      ]
+    },
+    {
+      "id": "openclaw-rl-conversation-momentum-v2-unique-8c4516ea",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Conversation Momentum Tracking V2 Unique",
+      "description": "Inspired by OpenClaw trends: Implement a conversational momentum tracker that monitors interaction speed and depth, using it as an implicit RL reward signal to tune agent response brevity.",
+      "allowed_paths": [
+        "magda_agent/learning/momentum_tracker_v2_unique.py",
+        "tests/test_momentum_tracker_v2_unique.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MomentumTracker calculates interaction speed and depth.",
+        "RL weights are updated based on momentum shifts.",
+        "Tests verify calculations and updates using mock interaction data."
       ]
     }
   ]
