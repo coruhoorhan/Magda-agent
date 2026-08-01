@@ -190,6 +190,7 @@
 * [x] FEATURE: Context Engine Plugin Lifecycle V6 (context-engine-plugin-lifecycle-v6-unique-12345)
 
 ## 🛠️ Запланированные Skills
+* [x] FEATURE: Hermes Self-Improving Skills Loop (hermes-self-improving-skills-loop-9c22cc29)
 * [x] FEATURE: OpenClaw Canvas Live Visualization (2026-06-15)
 * [x] FEATURE: OpenClaw RL Next-State Signals
 * [x] FEATURE: Claude Subagent Spawning
@@ -316,3 +317,6 @@
 * [ ] FEATURE: OpenClaw Canvas Visualizer Update V2 (openclaw-canvas-visualizer-v2-d668530a)
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7-102c3849)
 * [ ] FEATURE: A2A Capabilities Health Checker (a2a-agent-capabilities-health-checker-v1-c4bd1a6c)
+* [ ] FEATURE: Hermes Cron Nightly Backup (hermes-cron-nightly-backup-v1)
+* [ ] FEATURE: OpenClaw Canvas Multi-Agent UI Streamer (openclaw-canvas-multi-agent-ui-v1)
+* [ ] FEATURE: Claude Code Git Migration Checkpoints (claude-code-git-migration-checkpoint-v1)
