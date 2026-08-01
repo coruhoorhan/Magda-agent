@@ -9517,7 +9517,7 @@
     },
     {
       "id": "hermes-self-improving-skills-loop-9c22cc29",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "Hermes Self-Improving Skills Loop",
@@ -21440,6 +21440,58 @@
         "Cron job periodically iterates through discovered peers.",
         "Unresponsive peers are purged from the cache.",
         "Tests mock network timeouts and verify removal."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backup-v1",
+      "status": "todo",
+      "area": "scheduler",
+      "risk": "medium",
+      "title": "Hermes Cron Nightly Backup",
+      "description": "Inspired by Hermes Agent trend: cron scheduler for nightly backups. Implement a scheduled task that securely archives episodic memory ChromaDB collections and SQLite persistence DBs into compressed snapshots.",
+      "allowed_paths": [
+        "magda_agent/scheduler/nightly_backup.py",
+        "tests/test_nightly_backup.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Backup task executes periodically based on cron rules.",
+        "Successfully creates compressed archives of memory stores.",
+        "Tests mock filesystem and verify archiving logic."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-multi-agent-ui-v1",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas Multi-Agent UI Streamer",
+      "description": "Inspired by OpenClaw Canvas visualization and Agent Teams trends: Implement an extension to the Canvas streamer that multiplexes the cognitive state from multiple concurrent sub-agents into isolated channels for UI debugging.",
+      "allowed_paths": [
+        "magda_agent/visualization/multi_agent_stream.py",
+        "tests/test_multi_agent_stream.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer correctly segregates state updates by sub-agent ID.",
+        "Tests verify multiplexed websocket payloads."
+      ]
+    },
+    {
+      "id": "claude-code-git-migration-checkpoint-v1",
+      "status": "todo",
+      "area": "isolation",
+      "risk": "medium",
+      "title": "Claude Code Git Migration Checkpoints",
+      "description": "Inspired by Claude Code use-cases: Implement controlled checkpoints for large code migrations where sub-agents run refactors but halt and request validation before finalizing commits.",
+      "allowed_paths": [
+        "magda_agent/isolation/migration_checkpoint.py",
+        "tests/test_migration_checkpoint.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Checkpoint mechanism halts sub-agent progress pending approval.",
+        "Tests verify checkpoint state pausing and resumption."
       ]
     }
   ]
