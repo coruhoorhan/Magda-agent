@@ -6,7 +6,7 @@ import uuid
 from typing import List, Dict, Any, Optional
 
 from magda_agent.llm_client import LLMClient
-from magda_agent.isolation.git_worktree_v13 import GitWorktreeManagerV13
+from magda_agent.isolation.git_worktree_manager import GitWorktreeManager
 from magda_agent.memory.virtual_context import VirtualContextManager
 from magda_agent.memory.working import WorkingMemory, MemoryEntry
 from magda_agent.memory.episodic import EpisodicMemory
@@ -24,7 +24,7 @@ class ParallelWorktreeSubagentSpawner:
     def __init__(
         self,
         llm: LLMClient,
-        worktree_manager: Optional[GitWorktreeManagerV13] = None,
+        worktree_manager: Optional[GitWorktreeManager] = None,
         base_dir: str = "/tmp/magda_worktrees_enhanced",
         cleanup_memory_dirs: bool = True
     ) -> None:
@@ -38,7 +38,7 @@ class ParallelWorktreeSubagentSpawner:
             cleanup_memory_dirs: Whether to clean up individual episodic memory directories on task completion.
         """
         self.llm = llm
-        self.worktree_manager = worktree_manager or GitWorktreeManagerV13(base_dir=base_dir)
+        self.worktree_manager = worktree_manager or GitWorktreeManager(base_dir=base_dir)
         self.cleanup_memory_dirs = cleanup_memory_dirs
 
     async def run_parallel_tasks(self, tasks: List[Dict[str, Any]], base_context: str) -> List[str]:

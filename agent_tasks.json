@@ -9535,7 +9535,7 @@
     },
     {
       "id": "claude-git-worktree-isolation-43b47a54",
-      "status": "todo",
+      "status": "done",
       "area": "isolation",
       "risk": "high",
       "title": "Claude Git Worktree Isolation for Sub-Agents",
@@ -21492,6 +21492,59 @@
       "acceptance": [
         "Checkpoint mechanism halts sub-agent progress pending approval.",
         "Tests verify checkpoint state pausing and resumption."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v2-unique",
+      "title": "MCP Dynamic Capability Auth v2",
+      "description": "Inspired by MCP standardization: Dynamically parse and enforce authentication schema constraints from external MCP server capabilities before attempting to route actions to them.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_v2.py",
+        "tests/test_mcp_auth_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auth requirements from MCP servers are correctly parsed and validated.",
+        "Tests verify tool routing fails safely when auth is missing."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-reward-v2-unique",
+      "title": "OpenClaw RL Implicit Reward Tracking v2",
+      "description": "Inspired by OpenClaw RL online learning trend: Track implicit positive feedback (e.g., when the user advances the conversation to a new topic without issuing corrections) to slightly increment behavior weights for the preceding actions.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_implicit_reward_v2.py",
+        "tests/test_openclaw_implicit_reward_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implicit approval signals are detected from conversation flow.",
+        "RL behavior weights receive minor positive updates.",
+        "Tests verify implicit reward extraction logic."
+      ]
+    },
+    {
+      "id": "a2a-capability-gossiping-v2-unique",
+      "title": "A2A Capability Gossip Protocol v2",
+      "description": "Inspired by A2A standard trend: Implement a decentralized gossip protocol module for the A2A Discovery Service, enabling agents to periodically broadcast and cache neighboring agent capabilities to reduce discovery latency.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_protocol_v2.py",
+        "tests/test_a2a_gossip_protocol_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent capabilities are broadcast asynchronously to known peers.",
+        "Peer cache is updated securely with latest Agent Cards.",
+        "Tests verify gossip propagation and cache integrity."
       ]
     }
   ]
