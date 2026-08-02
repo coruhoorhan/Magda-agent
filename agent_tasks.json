@@ -9587,7 +9587,7 @@
     },
     {
       "id": "hermes-agent-skills-creation-d35b0b7e",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "Hermes-inspired dynamic skills creation from text",
