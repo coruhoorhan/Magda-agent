@@ -6,6 +6,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from magda_agent.visualization.server import CanvasServer
+from magda_agent.visualization.canvas_streamer import CanvasMemoryStreamer
+
 from magda_agent.architecture.gateway import LocalFirstGateway
 from magda_agent.visualization.canvas_api_v2 import get_canvas_v2_router
 from pydantic import BaseModel
@@ -239,6 +241,7 @@ autonomous_executor = AutonomousExecutor(
 )
 
 
+canvas_memory_streamer = CanvasMemoryStreamer(working_memory=memory_system.working_memory)
 canvas_server = CanvasServer(consciousness=consciousness)
 a2a_server = A2AServer(planner=planner, security_context=a2a_security)
 rpc_manager = SubAgentRPCManager(llm=llm_client)
@@ -258,6 +261,7 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(daily_report_scheduler.start())
     asyncio.create_task(operations_scheduler.start())
     await autonomous_executor.start()
+    asyncio.create_task(canvas_memory_streamer.start_streaming())
     asyncio.create_task(canvas_server.start_streaming())
     asyncio.create_task(discord_bridge.start())
     yield
@@ -266,6 +270,7 @@ async def lifespan(app: FastAPI):
     await daily_report_scheduler.stop()
     await operations_scheduler.stop()
     await autonomous_executor.stop()
+    await canvas_memory_streamer.stop_streaming()
     await canvas_server.stop_streaming()
     await discord_bridge.stop()
     memory_system.close()
@@ -413,3 +418,16 @@ async def websocket_canvas(websocket: WebSocket):
             data = await websocket.receive_text()
     except WebSocketDisconnect:
         canvas_server.disconnect(websocket)
+
+@app.websocket("/ws/canvas/memory")
+async def websocket_canvas_memory(websocket: WebSocket):
+    token = websocket.query_params.get("token")
+    if not _configured_api_token() or not hmac.compare_digest(token or "", _configured_api_token() or ""):
+        await websocket.close(code=1008)
+        return
+    await canvas_memory_streamer.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+    except WebSocketDisconnect:
+        canvas_memory_streamer.disconnect(websocket)
