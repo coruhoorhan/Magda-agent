@@ -9655,7 +9655,7 @@
     },
     {
       "id": "f8acf4d1-72cb-44bf-bb54-97f8b5f7f6cf",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "Claude Code Sandbox Isolation Enhancements",
@@ -21807,6 +21807,57 @@
         "WebSocket streamer correctly sends Q-value updates.",
         "Tests mock RL updates and verify the WebSocket payload format."
       ]
+    },
+    {
+      "id": "mcp-context-compression-v1",
+      "title": "MCP Context Compression v1",
+      "description": "Inspired by Claude Agent SDK context compression trend (June 2026): Implement an MCP context compression middleware that automatically summarizes older conversation turns when the tool payload exceeds a threshold token limit.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_context_compression.py",
+        "tests/test_mcp_context_compression.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Middleware compresses context payload.",
+        "Tests verify compression execution using a mock LLM."
+      ],
+      "risk": "medium",
+      "area": "integration",
+      "status": "todo"
+    },
+    {
+      "id": "a2a-agent-capability-mesh-v1",
+      "title": "A2A Agent Capability Mesh v1",
+      "description": "Inspired by A2A Protocol trend (June 2026): Develop a dynamic registry that maintains peer agent capabilities across the network, resolving Agent Cards continuously to keep a mesh routing table updated.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_capability_mesh.py",
+        "tests/test_a2a_capability_mesh.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Mesh registry resolves and caches capabilities.",
+        "Tests mock network discovery and verify caching behavior."
+      ],
+      "risk": "low",
+      "area": "integration",
+      "status": "todo"
+    },
+    {
+      "id": "canvas-procedural-memory-stream-v1",
+      "title": "Canvas Procedural Memory Stream v1",
+      "description": "Inspired by OpenClaw Canvas live visualization trend (June 2026): Create a WebSocket streamer for the Canvas UI that specifically visualizes updates to procedural memory weights and skill acquisition in real-time.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_procedural_stream.py",
+        "tests/test_canvas_procedural_stream.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket endpoint correctly streams procedural memory state diffs.",
+        "Tests mock procedural memory updates and verify stream format."
+      ],
+      "risk": "low",
+      "area": "visualization",
+      "status": "todo"
     }
   ]
 }

@@ -1,5 +1,6 @@
 import ast
 from magda_agent.security.mcp_kernel_taint import is_tainted
+from magda_agent.security.mcp_kernel_fs import MCPKernelFS
 
 import builtins
 from typing import Any, Dict, Optional, Set
@@ -17,7 +18,8 @@ class MCPKernel:
     generator/comprehension frame tricks, and reassignment of allowed builtins.
     """
 
-    def __init__(self, allowed_builtins: Optional[Set[str]] = None):
+    def __init__(self, allowed_builtins: Optional[Set[str]] = None, allowed_fs: Optional[MCPKernelFS] = None):
+        self.allowed_fs = allowed_fs
         self.allowed_builtins = allowed_builtins or {
             "print", "len", "range", "int", "str", "float", "list", "dict",
             "set", "tuple", "bool",
@@ -48,7 +50,21 @@ class MCPKernel:
         if not self.is_safe(code):
             raise SecurityError("Code contains unsafe operations and was blocked by MCPKernel taint tracking.")
 
+
         safe_builtins = {name: getattr(builtins, name) for name in self.allowed_builtins if hasattr(builtins, name)}
+
+        # Support file operations if sandboxed FS is provided
+        if self.allowed_fs:
+            safe_builtins["open"] = self.allowed_fs.open
+            if "open" in self._unsafe_names:
+                self._unsafe_names.remove("open")
+            self.allowed_builtins.add("open")
+        else:
+            if "open" not in self._unsafe_names:
+                self._unsafe_names.add("open")
+            if "open" in self.allowed_builtins:
+                self.allowed_builtins.remove("open")
+
         execution_globals: Dict[str, Any] = {}
         if globals_dict:
             execution_globals.update({k: v for k, v in globals_dict.items() if k != "__builtins__"})
