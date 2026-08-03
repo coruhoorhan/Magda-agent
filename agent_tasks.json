@@ -9621,7 +9621,7 @@
     },
     {
       "id": "51f91ae6-38f6-46c9-8710-6a8bda48741a",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw Dynamic Skill Weight Decay",
