@@ -9638,7 +9638,7 @@
     },
     {
       "id": "96950c3b-415c-4de7-b5af-3c6d656c1277",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "OpenAI Agents SDK Hand-off Protocol",
@@ -21755,6 +21755,57 @@
         "Dynamically routes control flow between agents upon handover execution.",
         "Tests verify state preservation and successful routing across different handoffs.",
         "No external APIs are called, everything is mock-tested."
+      ]
+    },
+    {
+      "id": "mcp-server-prefixed-tool-names-v1",
+      "status": "todo",
+      "area": "skills",
+      "risk": "low",
+      "title": "MCP Server-Prefixed Tool Names V1",
+      "description": "Inspired by OpenAI Agents SDK trends (June 2026): Implement automatic tool name prefixing for MCP servers to prevent tool naming collisions when connecting to multiple MCP servers.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_prefixing_v1.py",
+        "tests/test_mcp_prefixing_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tool names are automatically prefixed with the MCP server name.",
+        "Tests verify that prefixing works and avoids collisions."
+      ]
+    },
+    {
+      "id": "acs-realtime-guardrail-fallback-v1",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Realtime Guardrail Fallback V1",
+      "description": "Inspired by OpenAI Agents SDK realtime guardrail fallback: Implement a mechanism that gracefully falls back to a safer default tool or prompt when an ACS runtime validation checkpoint blocks an execution.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_fallback_v1.py",
+        "tests/test_acs_fallback_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Graceful fallback happens when a checkpoint fails.",
+        "Tests mock the checkpoint failure and verify fallback execution."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-visualizer-v3",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw RL Live Canvas Visualizer V3",
+      "description": "Inspired by OpenClaw Canvas live visualization: Implement a real-time web-based canvas streamer that exposes RL Q-value updates over a WebSocket for debugging agent behavior.",
+      "allowed_paths": [
+        "magda_agent/visualization/rl_canvas_v3.py",
+        "tests/test_rl_canvas_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket streamer correctly sends Q-value updates.",
+        "Tests mock RL updates and verify the WebSocket payload format."
       ]
     }
   ]
