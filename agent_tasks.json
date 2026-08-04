@@ -9672,7 +9672,7 @@
     },
     {
       "id": "hermes-agent-quality-metrics-cd63f5e3-81ff-4e12-a5eb-c54f1b5c8326",
-      "status": "todo",
+      "status": "done",
       "area": "evaluation",
       "risk": "medium",
       "title": "Hermes-inspired Longitudinal Quality Metrics",
