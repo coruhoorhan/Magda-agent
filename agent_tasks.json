@@ -9743,7 +9743,7 @@
     },
     {
       "id": "f6d81948-9139-4c7e-931b-be57b6b56f28",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "low",
       "title": "Skill Execution Experience Extraction",
@@ -22027,6 +22027,59 @@
       "acceptance": [
         "Reward tracker infers positive weights from implicit metrics.",
         "Tests verify weight adjustments based on mocked engagement data."
+      ]
+    },
+    {
+      "id": "mcp-advanced-routing-strategy-2026-abc",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Advanced Routing Strategy",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement a specialized handover router strategy for routing external MCP tool invocations efficiently to sub-agents based on their capabilities.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_advanced_routing.py",
+        "tests/test_mcp_advanced_routing.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Router correctly directs MCP tool requests to sub-agents with appropriate capabilities.",
+        "Tests mock sub-agent capability mapping and tool routing correctly."
+      ]
+    },
+    {
+      "id": "openclaw-rl-tool-ranking-system-xyz",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Tool Ranking System",
+      "description": "Inspired by OpenClaw RL trend: Implement a ranking system for tools and skills that updates their expected utility scores in real-time based on success rates and user satisfaction.",
+      "allowed_paths": [
+        "magda_agent/learning/tool_ranking.py",
+        "tests/test_tool_ranking.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ToolRankingSystem calculates utility scores based on success feedback.",
+        "Planner/Basal Ganglia uses updated rankings to select tools.",
+        "Tests verify score adjustment and tool selection bias."
+      ]
+    },
+    {
+      "id": "a2a-service-health-monitor-v2-123",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "low",
+      "title": "A2A Service Health Monitor v2",
+      "description": "Inspired by A2A Protocol trend: Enhance A2A discovery with active health checking. The monitor pings discovered peers and ejects unresponsive agents from the known cluster.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_health_monitor_v2.py",
+        "tests/test_a2a_health_monitor_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Health monitor actively pings peers.",
+        "Unresponsive peers are removed from the capability mesh.",
+        "Tests mock network timeouts and verify removal behavior."
       ]
     }
   ]

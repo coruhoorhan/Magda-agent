@@ -2,6 +2,8 @@ from magda_agent.agents.planner_agent import PlannerAgent
 from magda_agent.agents.generator_agent import GeneratorAgent
 from magda_agent.agents.evaluator_agent import EvaluatorAgent
 import logging
+from magda_agent.learning.skill_hints import SkillHintsExtractor
+
 from typing import List, Dict, Any, Optional
 from magda_agent.llm_client import LLMClient
 from magda_agent.emotions.engine import EmotionalEngine
@@ -476,6 +478,26 @@ class Consciousness:
         if getattr(self, 'dialogue_online_learner_v4', None):
             self.dialogue_online_learner_v4.capture_state_action(user_input, response)
 
+
+        if getattr(self, 'skill_hints_extractor', None) and self.tracer:
+            try:
+                steps = self.tracer.get_trace()
+                tool_logs = []
+                for step in steps:
+                    if step['step_type'] == 'tool_execution':
+                        tool_logs.append({
+                            'tool_name': step['data'].get('tool_name'),
+                            'arguments': step['data'].get('arguments', {}),
+                            'success': step['data'].get('success', False)
+                        })
+                if tool_logs:
+                    hints = self.skill_hints_extractor.extract_hints(tool_logs)
+                    for tool, hint in hints.items():
+                        logging.info(f"Generated Skill Hint for {tool}: {hint}")
+                        if self.procedural_memory:
+                            self.procedural_memory.store_procedure(name=f"{tool}_hint", procedure=hint)
+            except Exception as e:
+                logging.error(f"Error extracting skill hints: {e}")
         if self.online_rl_integrator:
             await self.online_rl_integrator.process_feedback(user_input, "last_action_context", user_id)
 
