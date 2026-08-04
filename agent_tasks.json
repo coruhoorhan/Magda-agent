@@ -21705,7 +21705,7 @@
     },
     {
       "id": "openclaw-canvas-state-sync-patching-v5-abc",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw Canvas State Sync Patching V5",
@@ -21925,6 +21925,57 @@
       "acceptance": [
         "MCP tool exposure requires validated mTLS certificates.",
         "Tests mock TLS connections and verify unauthorized requests are dropped."
+      ]
+    },
+    {
+      "id": "a2a-agent-teams-scaling-v2",
+      "status": "todo",
+      "area": "orchestration",
+      "risk": "medium",
+      "title": "A2A Agent Teams Scaling v2",
+      "description": "Inspired by June 2026 Claude Agent SDK trends (Agent Teams scaling): Implement a dynamic subagent scaler that automatically spawns and registers new A2A-compatible worker nodes when the current task load exceeds threshold.",
+      "allowed_paths": [
+        "magda_agent/orchestration/a2a_scaler_v2.py",
+        "tests/test_a2a_scaler_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A scaler automatically monitors task load and provisions subagent nodes.",
+        "Tests verify spawning behavior under mocked load."
+      ]
+    },
+    {
+      "id": "multi-agent-context-sync-v1",
+      "status": "todo",
+      "area": "memory",
+      "risk": "low",
+      "title": "Multi-Agent Memory Synchronization v1",
+      "description": "Inspired by June 2026 Multi-Agent Memory Synchronization trends: Implement a context synchronization module that aggregates semantic and procedural updates from distributed worker nodes back to the central episodic memory.",
+      "allowed_paths": [
+        "magda_agent/memory/context_sync_v1.py",
+        "tests/test_context_sync_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module correctly synchronizes distributed state to a central mock memory store.",
+        "Tests verify accurate state aggregation without data loss."
+      ]
+    },
+    {
+      "id": "openclaw-procedural-memory-visualizer-v2",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Procedural Memory Visualizer v2",
+      "description": "Inspired by OpenClaw Canvas Live Visualization trend: Create a visualizer that takes live JSON patch output from the backend procedural memory stream and correctly displays skill weight updates in a real-time UI structure.",
+      "allowed_paths": [
+        "magda_agent/visualization/procedural_ui_v2.py",
+        "tests/test_procedural_ui_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Visualizer accurately maps JSON patches to frontend skill representations.",
+        "Tests verify proper parsing and structural output of the visualizer module."
       ]
     }
   ]
