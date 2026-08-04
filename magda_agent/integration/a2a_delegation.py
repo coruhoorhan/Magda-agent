@@ -1,5 +1,6 @@
 from typing import Dict, Any
 import logging
+from magda_agent.architecture.a2a_handshake import A2AHandshakeProtocol
 from magda_agent.integration.a2a_discovery import A2ADiscovery
 from magda_agent.integration.a2a_tracing import A2ATracer
 from magda_agent.integration.a2a_security import A2ASecurityContext
@@ -15,6 +16,8 @@ class A2ADelegator:
         """
         self.discovery = discovery
         self.security_context = getattr(discovery, 'security_context', None) or A2ASecurityContext()
+        import os
+        self.handshake_protocol = A2AHandshakeProtocol(os.getenv('A2A_SECRET_KEY', 'dev_default_key'))
 
 
 
@@ -81,11 +84,15 @@ class A2ADelegator:
         if not endpoint:
             return f"Agent {target_agent.name} missing MCP endpoint"
 
+        local_id = getattr(getattr(self.discovery, 'local_card', None), 'agent_id', "unknown_local")
+        context_copy = dict(plan_context)
+        handshake_payload = self.handshake_protocol.create_handshake(local_id, target_agent.agent_id, context_copy)
+
         payload = {
             "jsonrpc": "2.0",
             "id": 1,
             "method": "execute_subplan",
-            "params": {"context": plan_context}
+            "params": {"context": plan_context, "_a2a_handshake": handshake_payload}
         }
 
         headers = {}
@@ -160,11 +167,17 @@ class A2ADelegator:
         if not endpoint:
             return f"Agent {target_agent.name} missing MCP endpoint"
 
+        # GENERATE HANDSHAKE
+        local_id = getattr(getattr(self.discovery, 'local_card', None), 'agent_id', "unknown_local")
+        context_copy = dict(plan_context)
+        handshake_payload = self.handshake_protocol.create_handshake(local_id, target_agent.agent_id, context_copy)
+
+        # We attach it directly to the payload's params
         payload = {
             "jsonrpc": "2.0",
             "id": 1,
             "method": "execute_subplan",
-            "params": {"capability": capability, "context": plan_context}
+            "params": {"capability": capability, "context": plan_context, "_a2a_handshake": handshake_payload}
         }
 
         headers = {}

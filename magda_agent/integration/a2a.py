@@ -1,5 +1,7 @@
 from typing import Dict, Any, List, Optional, Union
 import logging
+import os
+from magda_agent.architecture.a2a_handshake import A2AHandshakeProtocol
 from magda_agent.integration.a2a_discovery import AgentCard, A2ADiscovery
 from magda_agent.integration.a2a_discovery_v2 import AgentCardV2, A2ADiscoveryV2
 from magda_agent.integration.a2a_cards import AgentCardV3, A2ADiscoveryV3
@@ -13,13 +15,14 @@ class A2AManager:
     of sub-plans/tasks to capable peers in a peer-to-peer network.
     Inspired by A2A Protocol trends.
     """
-    def __init__(self, local_card: Union[AgentCard, AgentCardV2, AgentCardV3, AgentCardV4]) -> None:
+    def __init__(self, local_card: Union[AgentCard, AgentCardV2, AgentCardV3, AgentCardV4], secret_key: Optional[str] = None) -> None:
         """
         Initializes the manager with the local agent's identity and capabilities.
 
         Args:
             local_card: The AgentCard, AgentCardV2, AgentCardV3, or AgentCardV4 representing this agent.
         """
+        self.handshake_protocol = A2AHandshakeProtocol(secret_key or os.getenv('A2A_SECRET_KEY', 'dev_default_key'))
         self.local_card_version = 1
         if isinstance(local_card, AgentCardV4):
             self.discovery = A2ADiscoveryRegistryV4()
@@ -84,25 +87,46 @@ class A2AManager:
     async def delegate_task(self, capability: str, task_context: Dict[str, Any]) -> str:
         """
         Delegates a task to a discovered peer that supports the required capability.
-
-        Args:
-            capability: The required capability (e.g., 'code_execution').
-            task_context: The context or sub-plan of the task to delegate.
-
-        Returns:
-            A string indicating the outcome of the delegation.
         """
         logging.info(f"A2AManager attempting to delegate task requiring capability: {capability}")
+
+        # We find a target agent to use for the handshake
+        target_agent_id = None
+
         if self.local_card_version == 4:
-            # Simple matching for V4
             for agent in self.discovery.get_all_agents():
                 if capability in agent.capabilities and agent.agent_id != self.local_card.agent_id:
-                    return f"Delegated to Agent {agent.name}"
+                    target_agent_id = agent.agent_id
+                    break
+        else:
+            local_id = getattr(self.discovery, 'local_card', None)
+            local_agent_id = local_id.agent_id if local_id else "unknown_local"
+            # Avoid private _discovered_agents if possible, but for v1-v3 this is the pattern used in original code
+            # In original code get_known_peers returns list(self.discovery._discovered_agents.values())
+            for agent in self.get_known_peers():
+                if capability in agent.capabilities and agent.agent_id != local_agent_id:
+                    target_agent_id = agent.agent_id
+                    break
+
+        # If we found a target, we attach the handshake to the context before proceeding
+        if target_agent_id:
+            local_id = self.local_card.agent_id if self.local_card_version == 4 else getattr(getattr(self.discovery, 'local_card', None), 'agent_id', "unknown_local")
+
+            # Create a shallow copy of the context for the payload to avoid circular reference
+            # when we assign the handshake back to task_context
+            context_copy = dict(task_context)
+            handshake_payload = self.handshake_protocol.create_handshake(local_id, target_agent_id, context_copy)
+            # Use a new dict instead of mutating input
+            task_context = dict(task_context)
+            task_context["_a2a_handshake"] = handshake_payload
+
+        if self.local_card_version == 4:
+            if target_agent_id:
+                agent_name = next((a.name for a in self.discovery.get_all_agents() if a.agent_id == target_agent_id), target_agent_id)
+                return f"Delegated to Agent {agent_name}"
             return "No agent found"
 
         return await self.delegator.delegate_subplan(capability, task_context)
-
-
     async def broadcast_status(self, is_available: bool, active_tasks: int) -> bool:
         """
         Broadcasts the current agent status using the A2AStatusBroadcaster.

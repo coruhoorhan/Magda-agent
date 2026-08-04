@@ -1,5 +1,6 @@
 import json
 import logging
+from magda_agent.architecture.a2a_handshake import A2AHandshakeProtocol
 from typing import Any, Dict, Optional, List
 from fastapi import FastAPI, Request, Response
 from magda_agent.planning.planner import Planner
@@ -11,9 +12,11 @@ class A2AServer:
     A JSON-RPC 2.0 Server interface for the A2A (Agent-to-Agent) Protocol.
     Receives and parses A2A task delegation requests and routes them to the Planner.
     """
-    def __init__(self, planner: Planner, security_context: Optional[A2ASecurityContext] = None) -> None:
+    def __init__(self, planner: Planner, security_context: Optional[A2ASecurityContext] = None, handshake_protocol: Optional[A2AHandshakeProtocol] = None, agent_id: str = 'default_target') -> None:
         """Initializes the A2AServer with a planner module and optional security context."""
         self.planner = planner
+        self.handshake_protocol = handshake_protocol
+        self.agent_id = agent_id
         self.security_context = security_context
         self.app = FastAPI(title="A2A JSON-RPC Server")
 
@@ -87,6 +90,49 @@ class A2AServer:
             }), media_type="application/json", status_code=400)
 
         if method in ["delegate_task", "execute_subplan"]:
+            if not isinstance(params, dict):
+                if is_notification:
+                    return Response(status_code=204)
+                return Response(content=json.dumps({
+                    "jsonrpc": "2.0",
+                    "error": {"code": -32602, "message": "Invalid params"},
+                    "id": req_id
+                }), media_type="application/json", status_code=400)
+
+            if self.handshake_protocol and "_a2a_handshake" in params:
+                handshake_data = params.pop("_a2a_handshake")
+
+                # Verify the signature and target ID
+                if not self.handshake_protocol.verify_handshake(handshake_data, expected_target_id=self.agent_id):
+                    if is_notification:
+                        return Response(status_code=204)
+                    return Response(content=json.dumps({
+                        "jsonrpc": "2.0",
+                        "error": {"code": -32002, "message": "Unauthorized: Invalid or expired handshake"},
+                        "id": req_id
+                    }), media_type="application/json", status_code=401)
+
+                # VULNERABILITY FIX: Ensure the signed context matches the actual params being executed!
+                signed_context = handshake_data.get("payload", {}).get("context", {})
+                if signed_context != params:
+                    if is_notification:
+                        return Response(status_code=204)
+                    return Response(content=json.dumps({
+                        "jsonrpc": "2.0",
+                        "error": {"code": -32002, "message": "Unauthorized: Payload mismatch detected"},
+                        "id": req_id
+                    }), media_type="application/json", status_code=401)
+
+            elif self.handshake_protocol:
+                if is_notification:
+                    return Response(status_code=204)
+                return Response(content=json.dumps({
+                    "jsonrpc": "2.0",
+                    "error": {"code": -32002, "message": "Unauthorized: Missing handshake"},
+                    "id": req_id
+                }), media_type="application/json", status_code=401)
+
+
             if not isinstance(params, dict):
                 if is_notification:
                     return Response(status_code=204)
