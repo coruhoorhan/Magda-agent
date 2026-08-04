@@ -9726,7 +9726,7 @@
     },
     {
       "id": "9e919a81-f62d-429c-a775-97c065058d4b",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "A2A Workflow Handshake Verification",
@@ -21976,6 +21976,57 @@
       "acceptance": [
         "Visualizer accurately maps JSON patches to frontend skill representations.",
         "Tests verify proper parsing and structural output of the visualizer module."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v5-uuid",
+      "status": "todo",
+      "area": "security",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Auth v5",
+      "description": "Inspired by MCP June 2026 trends (Tool execution permissions): Implement a granular capability authorization layer for MCP tools that validates request tokens before passing execution context to the underlying capability.",
+      "allowed_paths": [
+        "magda_agent/security/mcp_cap_auth_v5.py",
+        "tests/test_mcp_cap_auth_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability auth layer correctly validates or rejects execution based on tokens.",
+        "Tests verify mocked token validation logic."
+      ]
+    },
+    {
+      "id": "a2a-capability-gossiping-v5-uuid",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Capability Gossip Protocol v5",
+      "description": "Inspired by A2A standard trend (June 2026): Implement an asynchronous gossip protocol for A2A capabilities mesh, allowing distributed agents to propagate capability updates across a network.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_v5.py",
+        "tests/test_a2a_gossip_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Gossip protocol diffuses capability updates.",
+        "Tests verify gossip diffusion mechanics using mocked network endpoints."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-reward-v5-uuid",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "title": "OpenClaw RL Implicit Reward Tracking v5",
+      "description": "Inspired by OpenClaw online RL trend (June 2026): Create a reward tracker that infers implicit positive rewards from user engagement metrics (e.g., response latency and follow-up depth) rather than explicit ratings.",
+      "allowed_paths": [
+        "magda_agent/learning/implicit_reward_v5.py",
+        "tests/test_implicit_reward_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Reward tracker infers positive weights from implicit metrics.",
+        "Tests verify weight adjustments based on mocked engagement data."
       ]
     }
   ]
