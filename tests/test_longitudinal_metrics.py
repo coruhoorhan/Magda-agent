@@ -35,6 +35,37 @@ def test_record_and_retrieve_metric(test_db_path):
 
     assert len(empty_history) == 0
 
+def test_in_memory_metrics_and_skills_collection():
+    """
+    Verifies that metrics and skill success/failure events can be stored and retrieved
+    correctly when using an in-memory SQLite database.
+    """
+    tracker = LongitudinalMetricsTracker(db_path=":memory:")
+
+    # 1. Record metrics
+    tracker.record_metric("test_coverage", 91.0)
+    coverage_history = tracker.get_metrics_history("test_coverage", limit=10)
+    assert len(coverage_history) == 1
+    assert coverage_history[0]["value"] == 91.0
+
+    # 2. Record skill results
+    tracker.record_skill_result("skill_A", True)
+    tracker.record_skill_result("skill_A", False)
+    tracker.record_skill_result("skill_A", True)
+    tracker.record_skill_result("skill_B", True)
+    tracker.record_skill_result("skill_B", True)
+
+    # 3. Retrieve and assert success rates per skill
+    assert tracker.get_skill_success_rate("skill_A") == pytest.approx(2/3)
+    assert tracker.get_skill_success_rate("skill_B") == pytest.approx(1.0)
+    assert tracker.get_skill_success_rate("non_existent_skill") is None
+
+    # 4. Retrieve all skills success rates
+    all_rates = tracker.get_all_skills_success_rates()
+    assert len(all_rates) == 2
+    assert all_rates["skill_A"] == pytest.approx(2/3)
+    assert all_rates["skill_B"] == pytest.approx(1.0)
+
 def create_mock_evaluator():
     evaluator = LongitudinalEvaluator(":memory:")
     # We need to artificially set timestamps to ensure correct DESC ordering
