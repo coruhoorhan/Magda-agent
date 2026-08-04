@@ -9708,7 +9708,7 @@
     },
     {
       "id": "claude-subagent-spawning-cc8646b1-345e-4f9b-8283-4d9b7ac86e43",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "Claude SDK Sub-agent Spawning",
@@ -21892,6 +21892,40 @@
       "risk": "medium",
       "area": "integration",
       "status": "todo"
+    },
+    {
+      "id": "openclaw-rl-multimodal-vision-feedback-v1",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Vision Feedback Alignment v1",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse visual feedback from user-uploaded images and screens as next-state reward signals.",
+      "allowed_paths": [
+        "magda_agent/learning/vision_sentiment_v1.py",
+        "tests/test_vision_sentiment_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Vision sentiment signals successfully update habit weights.",
+        "Tests verify weight adjustments using mock image sentiment signals."
+      ]
+    },
+    {
+      "id": "mcp-server-auth-tls-v1",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "title": "MCP Server TLS Auth Enforcement",
+      "description": "Inspired by MCP standardization: Enforce strictly mutual TLS authentication when exposing Magda's internal skills as MCP tools to prevent unauthorized executions.",
+      "allowed_paths": [
+        "magda_agent/mcp/tls_auth.py",
+        "tests/test_tls_auth.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP tool exposure requires validated mTLS certificates.",
+        "Tests mock TLS connections and verify unauthorized requests are dropped."
+      ]
     }
   ]
 }
