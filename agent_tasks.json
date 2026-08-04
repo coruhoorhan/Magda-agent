@@ -9690,7 +9690,7 @@
     },
     {
       "id": "openclaw-rl-learning-2532fea2-ee21-45aa-b438-c0599d239720",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "high",
       "title": "OpenClaw-RL Online Reinforcement Learning Module",
@@ -21857,6 +21857,40 @@
       ],
       "risk": "low",
       "area": "visualization",
+      "status": "todo"
+    },
+    {
+      "id": "a2a-distributed-telemetry-metrics-v2-d6ed7d0f",
+      "title": "A2A Distributed Telemetry Metrics v2",
+      "description": "Inspired by A2A Protocol trend (June 2026): Implement an exporter that broadcasts agent execution metrics and telemetry to an A2A observability mesh for decentralized monitoring.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_exporter_v2.py",
+        "tests/test_a2a_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter pushes structured telemetry via A2A protocol.",
+        "Tests verify format and mocked broadcast execution."
+      ],
+      "risk": "low",
+      "area": "telemetry",
+      "status": "todo"
+    },
+    {
+      "id": "mcp-server-websocket-streaming-v3-d7740cf3",
+      "title": "MCP Server WebSocket Streaming v3",
+      "description": "Inspired by MCP trend (June 2026): Implement a WebSocket transport for the MCP server to support real-time full-duplex communication with external agents.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_websocket_v3.py",
+        "tests/test_mcp_websocket_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket transport successfully handles JSON-RPC messages.",
+        "Tests mock WebSocket connections and message parsing."
+      ],
+      "risk": "medium",
+      "area": "integration",
       "status": "todo"
     }
   ]
