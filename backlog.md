@@ -314,7 +314,7 @@
 * [ ] FEATURE: MCP Dynamic Tool Permissions v2 (mcp-dynamic-tool-permissions-v2-unique)
 * [x] FEATURE: OpenClaw Context Engine Virtual Context (openclaw-context-engine-virtual-context-ce0c6f0b)
 
-* [ ] FEATURE: OpenClaw Canvas Visualizer Update V2 (openclaw-canvas-visualizer-v2-d668530a)
+* [x] FEATURE: OpenClaw Canvas Visualizer Update V2 (openclaw-canvas-visualizer-v2-d668530a)
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7-102c3849)
 * [ ] FEATURE: A2A Capabilities Health Checker (a2a-agent-capabilities-health-checker-v1-c4bd1a6c)
 * [ ] FEATURE: Hermes Cron Nightly Backup (hermes-cron-nightly-backup-v1)
