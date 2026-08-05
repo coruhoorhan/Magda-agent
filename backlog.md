@@ -328,3 +328,7 @@
 * [ ] FEATURE: MCP Dynamic Capability Auth V2 (mcp-dynamic-capability-auth-v2-unique)
 * [ ] FEATURE: OpenClaw RL Implicit Reward Tracking v2 (openclaw-rl-implicit-reward-v2-unique)
 * [ ] FEATURE: A2A Capability Gossip Protocol v2 (a2a-capability-gossiping-v2-unique)
+* [x] FEATURE: Claude SDK Task Dependency Graph (claude-sdk-dependency-graph-349b69ad-bc6f-42a8-a788-2e6327348fef)
+* [ ] FEATURE: A2A Swarm Intelligence Strategy V4 (a2a-swarm-intelligence-strategy-v4)
+* [ ] FEATURE: Claude Worktree Pruning and Resource Optimizer V2 (claude-worktree-pruning-optimizer-v2)
+* [ ] FEATURE: OpenClaw RL Multi-agent Feedback Exchange V2 (openclaw-rl-multiagent-feedback-v2)
