@@ -21963,7 +21963,7 @@
     },
     {
       "id": "openclaw-procedural-memory-visualizer-v2",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw Procedural Memory Visualizer v2",
@@ -22183,6 +22183,57 @@
       "acceptance": [
         "RL weights can be exported and imported",
         "Tests verify cross-agent weight synchronization"
+      ]
+    },
+    {
+      "id": "acs-runtime-safety-controls-v7-202606-new",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Agent Control Specification - Runtime Safety Controls",
+      "description": "Inspired by June 2026 trends (Agent Control Specification): Implement ACS runtime safety controls to standardize guardrails across agentic workflows, enforcing policy checks before and after tool execution.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_controls_v7.py",
+        "tests/test_acs_controls_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ACS runtime safety controls intercept and validate tool execution.",
+        "Tests use mocked configurations to ensure policies block unsafe operations."
+      ]
+    },
+    {
+      "id": "a2a-agent-discovery-cards-v3-202606-new",
+      "status": "todo",
+      "area": "integration",
+      "risk": "low",
+      "title": "A2A Agent Discovery via Agent Cards",
+      "description": "Inspired by June 2026 trends (A2A Protocol): Create a standardized 'Agent Card' generation and parsing module to enable robust discovery and capability sharing among peer agents on a distributed network.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_agent_cards_v3.py",
+        "tests/test_a2a_agent_cards_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent cards are correctly formatted and serialized according to the A2A spec.",
+        "Tests verify serialization and deserialization of mock agent capabilities."
+      ]
+    },
+    {
+      "id": "a2a-peer-task-delegation-v7-202606-new",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "title": "A2A Peer-to-Peer Task Delegation V7",
+      "description": "Inspired by June 2026 trends (A2A Protocol): Implement the async peer-to-peer task delegation layer. The module should allow sending serialized sub-tasks securely to discovered agents and waiting for stateful results.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_delegation_v7.py",
+        "tests/test_a2a_delegation_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully routes sub-tasks to designated peer agents.",
+        "Tests use mocked network channels to ensure data is transmitted correctly."
       ]
     }
   ]
