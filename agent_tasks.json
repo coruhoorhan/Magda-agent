@@ -9760,7 +9760,7 @@
     },
     {
       "id": "bf7d6847-f966-4be8-9ee7-403a96e0542c",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "Preemptive Tool Call Interception Audit",
