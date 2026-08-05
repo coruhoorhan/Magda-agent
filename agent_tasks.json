@@ -9777,7 +9777,7 @@
     },
     {
       "id": "hermes-multi-platform-routing-a20c6a3e-06c3-471c-8a96-a9b52d552c4f",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "Hermes Multi-Platform Request Routing",
@@ -22080,6 +22080,57 @@
         "Health monitor actively pings peers.",
         "Unresponsive peers are removed from the capability mesh.",
         "Tests mock network timeouts and verify removal behavior."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backup-v2-abc",
+      "status": "todo",
+      "area": "operations",
+      "risk": "medium",
+      "title": "Hermes Cron Nightly Backup v2",
+      "description": "Inspired by June 2026 Hermes Agent trends (Cron Scheduler): Implement a cron-scheduled nightly backup routine that securely snapshots working and episodic memory without blocking the agent.",
+      "allowed_paths": [
+        "magda_agent/operations/cron_backup_v2.py",
+        "tests/test_cron_backup_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Backup process schedules successfully within cron framework.",
+        "Tests verify mock snapshots are created and async non-blocking execution works."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-multi-agent-ui-v2-xyz",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas Multi-Agent UI Streamer v2",
+      "description": "Inspired by June 2026 OpenClaw Canvas Live Visualization trends: Expand canvas streamer to push aggregated state patches containing subagent topology and multi-agent workflow statuses to external UI clients.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_multiagent_v2.py",
+        "tests/test_canvas_multiagent_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module processes subagent topology updates into valid UI state patches.",
+        "Tests verify structural integrity and formatting of multi-agent UI patches."
+      ]
+    },
+    {
+      "id": "claude-evaluator-semantic-diff-v2-def",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "Claude Evaluator Semantic Diff Check v2",
+      "description": "Inspired by June 2026 Claude Agent SDK trends: Add a semantic diff evaluation module for the Critic/Evaluator sub-agent to compare and score the generated PR diffs structurally against natural language acceptance criteria.",
+      "allowed_paths": [
+        "magda_agent/evaluation/semantic_diff_v2.py",
+        "tests/test_semantic_diff_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Semantic diff evaluator extracts functional changes and scores them against mock criteria.",
+        "Tests use mock LLM responses to verify the semantic grading behavior."
       ]
     }
   ]
