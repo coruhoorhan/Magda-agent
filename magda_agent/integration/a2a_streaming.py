@@ -2,6 +2,7 @@ import logging
 import json
 from typing import Dict, Any, AsyncGenerator, Optional
 import httpx
+import websockets
 
 from magda_agent.integration.a2a_cards import AgentCardV3
 from magda_agent.integration.a2a_security import A2ASecurityContext
@@ -130,4 +131,65 @@ class A2AStreamingDelegatorV2(A2AStreamingDelegator):
                                 yield {"error": "Failed to decode chunk", "raw": chunk}
         except Exception as e:
             logging.error(f"V2 Streaming delegation failed: {e}")
+            yield {"error": str(e)}
+
+
+class A2AStreamingDelegatorV3(A2AStreamingDelegatorV2):
+    """
+    V3 Implementation of the streaming interface for A2A peer-to-peer task delegation.
+    Enhances long-horizon task coordination by supporting robust WebSocket streaming.
+    """
+
+    async def stream_delegation_websocket(self, target_agent: AgentCardV3, plan_context: Dict[str, Any]) -> AsyncGenerator[Dict[str, Any], None]:
+        """
+        Delegates a task to a peer agent using a WebSocket streaming interface.
+
+        Args:
+            target_agent: The target AgentCardV3 representing the peer.
+            plan_context: The task context to delegate.
+
+        Yields:
+            Chunked update dictionaries received from the peer via WebSocket.
+        """
+        logging.info(f"Initiating V3 WebSocket streaming delegation to Agent: {target_agent.name}")
+        endpoint = target_agent.endpoints.get("ws")
+        if not endpoint:
+            yield {"error": f"Agent {target_agent.name} missing ws endpoint"}
+            return
+
+        payload = {
+            "jsonrpc": "2.0",
+            "id": 3,
+            "method": "stream_subplan_v3",
+            "params": {"context": plan_context}
+        }
+
+        headers: Dict[str, str] = {}
+        A2ATracer.inject_headers(headers)
+
+        if self.security_context:
+            token = self.security_context.generate_token()
+            headers["Authorization"] = f"Bearer {token}"
+            self.security_context.trace_action("stream_delegation_websocket", {"target_agent": target_agent.name})
+
+        try:
+            async with websockets.connect(endpoint, extra_headers=headers) as websocket:
+                await websocket.send(json.dumps(payload))
+
+                async for message in websocket:
+                    if message:
+                        try:
+                            # Handle message which can be bytes or str in websockets
+                            if isinstance(message, bytes):
+                                message_str = message.decode('utf-8')
+                            else:
+                                message_str = message
+                            data = json.loads(message_str)
+                            # Identify the origin agent UUID as per the task requirements
+                            data["origin_agent_id"] = target_agent.agent_id
+                            yield data
+                        except json.JSONDecodeError:
+                            yield {"error": "Failed to decode WebSocket message", "raw": message_str}
+        except Exception as e:
+            logging.error(f"V3 WebSocket streaming delegation failed: {e}")
             yield {"error": str(e)}

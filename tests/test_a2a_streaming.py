@@ -148,3 +148,88 @@ async def test_stream_delegation_v2_success(target_agent: AgentCardV3) -> None:
         assert len(chunks) == 2
         assert chunks[0]["status"] == "v2_processing"
         assert chunks[1]["status"] == "v2_completed"
+
+from magda_agent.integration.a2a_streaming import A2AStreamingDelegatorV3
+
+@pytest.fixture
+def target_agent_v3() -> AgentCardV3:
+    """Provides a dummy target agent card with a websocket endpoint."""
+    return AgentCardV3(
+        agent_id="agent-v3-002",
+        name="TargetAgentV3",
+        description="Worker for testing websockets",
+        capabilities=["code_execution"],
+        endpoints={"rpc": "http://192.168.1.10:8080/rpc", "ws": "ws://192.168.1.10:8080/ws"}
+    )
+
+@pytest.mark.asyncio
+async def test_stream_delegation_v3_success(target_agent_v3: AgentCardV3) -> None:
+    """Tests successful V3 streaming delegation over WebSockets."""
+    security_context = A2ASecurityContext()
+    delegator = A2AStreamingDelegatorV3(security_context=security_context)
+
+    mock_websocket = AsyncMock()
+    mock_websocket.send = AsyncMock()
+
+    async def mock_message_iterator() -> AsyncGenerator[str, None]:
+        yield json.dumps({"status": "ws_processing", "progress": 20})
+        yield b'{"status": "ws_processing_bytes", "progress": 50}' # Test bytes decoding
+        yield "invalid json chunk"
+        yield json.dumps({"status": "ws_completed", "result": "done"})
+
+    # In python 3, __aiter__ should just return an object with an __anext__ method.
+    # An async generator is such an object.
+    mock_websocket.__aiter__.side_effect = lambda: mock_message_iterator()
+
+    with patch('websockets.connect', return_value=MockAsyncContextManager(mock_websocket)):
+        chunks = []
+        async for chunk in delegator.stream_delegation_websocket(target_agent_v3, {"task": "test_ws"}):
+            chunks.append(chunk)
+
+        assert len(chunks) == 4
+        assert chunks[0]["status"] == "ws_processing"
+        assert chunks[0]["origin_agent_id"] == "agent-v3-002"
+        assert chunks[1]["status"] == "ws_processing_bytes"
+        assert chunks[1]["origin_agent_id"] == "agent-v3-002"
+        assert "error" in chunks[2]
+        assert chunks[2]["raw"] == "invalid json chunk"
+        assert chunks[3]["status"] == "ws_completed"
+        assert chunks[3]["origin_agent_id"] == "agent-v3-002"
+
+        # Verify that send was called with the correct payload
+        mock_websocket.send.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_stream_delegation_v3_missing_endpoint(target_agent_v3: AgentCardV3) -> None:
+    """Tests V3 streaming delegation when the ws endpoint is missing."""
+    target_agent_v3.endpoints.pop("ws")
+    delegator = A2AStreamingDelegatorV3()
+
+    chunks = []
+    async for chunk in delegator.stream_delegation_websocket(target_agent_v3, {"task": "test"}):
+        chunks.append(chunk)
+
+    assert len(chunks) == 1
+    assert "error" in chunks[0]
+    assert "missing" in chunks[0]["error"]
+
+@pytest.mark.asyncio
+async def test_stream_delegation_v3_ws_error(target_agent_v3: AgentCardV3) -> None:
+    """Tests V3 streaming delegation when a WebSocket error occurs."""
+    delegator = A2AStreamingDelegatorV3()
+
+    class WsErrorContextManager:
+        async def __aenter__(self) -> Any:
+            raise Exception("WebSocket Connection Refused")
+
+        async def __aexit__(self, exc_type: Optional[Type[BaseException]], exc_val: Optional[BaseException], exc_tb: Optional[TracebackType]) -> None:
+            pass
+
+    with patch('websockets.connect', return_value=WsErrorContextManager()):
+        chunks = []
+        async for chunk in delegator.stream_delegation_websocket(target_agent_v3, {"task": "test"}):
+            chunks.append(chunk)
+
+        assert len(chunks) == 1
+        assert "error" in chunks[0]
+        assert "WebSocket Connection Refused" in chunks[0]["error"]

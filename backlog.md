@@ -333,3 +333,4 @@
 * [ ] FEATURE: Claude Worktree Pruning and Resource Optimizer V2 (claude-worktree-pruning-optimizer-v2)
 * [ ] FEATURE: OpenClaw RL Multi-agent Feedback Exchange V2 (openclaw-rl-multiagent-feedback-v2)
 * [x] FEATURE: MCP Tool Taint Tracking Sandbox v5 (mcp-action-tool-taint-tracking-v5-6c2393a2)
+* [x] FEATURE: A2A Task Delegation Streaming Interface v3
