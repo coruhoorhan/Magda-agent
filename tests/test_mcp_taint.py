@@ -94,3 +94,39 @@ def test_advanced_mcp_taint_tracker_clean_inputs() -> None:
     result = process(clean_data)
     assert is_tainted(result) is False
     assert result == "Processed public"
+
+def test_mcp_action_taint_sandbox_blocks_nested_dict() -> None:
+    """Tests that the sandbox blocks a critical parameter if a nested dict value is tainted."""
+    @mcp_action_taint_sandbox(critical_params=["config"])
+    def execute(config: dict) -> str:
+        return "ok"
+
+    with pytest.raises(TaintSandboxError, match="Critical parameter 'config' in 'execute' received tainted data."):
+        execute({"cmd": {"run": mark_tainted("rm -rf")}})
+
+def test_mcp_action_taint_sandbox_allows_clean_nested_dict() -> None:
+    """Tests that the sandbox allows a clean nested dict."""
+    @mcp_action_taint_sandbox(critical_params=["config"])
+    def execute(config: dict) -> str:
+        return "ok"
+
+    result = execute({"cmd": {"run": "ls"}})
+    assert result == "ok"
+
+def test_mcp_action_taint_sandbox_dot_notation() -> None:
+    """Tests that the sandbox checks specific dot-notation paths."""
+    @mcp_action_taint_sandbox(critical_params=["config.cmd.run"])
+    def execute(config: dict) -> str:
+        return "ok"
+
+    # Should block if the specific path is tainted
+    with pytest.raises(TaintSandboxError, match="Critical parameter 'config.cmd.run' in 'execute' received tainted data."):
+        execute({"cmd": {"run": mark_tainted("rm -rf")}})
+
+    # Should allow if a different path is tainted
+    result = execute({"cmd": {"run": "ls"}, "other": mark_tainted("bad")})
+    assert result == "ok"
+
+    # Should allow if the path doesn't exist
+    result2 = execute({"other": "safe"})
+    assert result2 == "ok"

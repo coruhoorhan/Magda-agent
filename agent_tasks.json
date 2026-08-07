@@ -9882,7 +9882,7 @@
     },
     {
       "id": "mcp-action-tool-taint-tracking-v5-6c2393a2",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "MCP Tool Taint Tracking Sandbox v5",
@@ -22395,6 +22395,42 @@
         "Pruner module iterates over episodic memories.",
         "Scores memory quality and evicts data below a configured threshold.",
         "Tests use mocked ChromaDB interactions to verify eviction logic."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-marketplace-v1-new-f3b1",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Marketplace Publisher V1",
+      "description": "Inspired by Hermes trends (June 2026): Implement a MarketplacePublisher module to export and publish local Magda skills directly to the agentskills.io standard registry via a REST API.",
+      "allowed_paths": [
+        "magda_agent/skills/marketplace_publisher_v1.py",
+        "tests/test_marketplace_publisher_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MarketplacePublisher formats local skills to agentskills.io JSON structure.",
+        "Module pushes formatted skills to external endpoint via HTTP POST.",
+        "Tests pass with mocked HTTP client."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-ui-streamer-v2-new-a1c2",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw RL Canvas Multi-Agent UI Streamer v2",
+      "description": "Inspired by OpenClaw Canvas UI trends: Extend Canvas UI to support Multi-Agent streams by multiplexing state diffs from multiple sub-agents into a single WebSocket connection.",
+      "allowed_paths": [
+        "magda_agent/visualization/multi_agent_canvas_streamer_v2.py",
+        "tests/test_multi_agent_canvas_streamer_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer interleaves messages from multiple sub-agent states correctly.",
+        "Each streamed JSON patch identifies the origin agent UUID.",
+        "Tests verify correct multiplexing using mock asyncio streams."
       ]
     }
   ]
