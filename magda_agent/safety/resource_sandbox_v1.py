@@ -84,7 +84,7 @@ class ResourceSandboxV1:
             if p.is_alive():
                 p.terminate()
                 p.join()
-                raise TimeoutError("Sandbox execution exceeded CPU time limit or hung.")
+                raise TimeoutError("Sandbox execution exceeded CPU time limit.")
             else:
                 raise RuntimeError(f"Sandbox execution failed to return a result (exit code {p.exitcode}).")
 
