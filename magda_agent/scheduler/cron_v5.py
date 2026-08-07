@@ -1,5 +1,8 @@
 import asyncio
 import logging
+import json
+import yaml
+from pathlib import Path
 from datetime import datetime
 from typing import Callable, Any, Coroutine, Dict, List
 from croniter import croniter
@@ -85,6 +88,57 @@ class CronScheduler:
         """
         self.schedule(cron_expr, report_func, name=name)
         logger.info(f"Registered daily report '{name}' with schedule '{cron_expr}'")
+
+    def load_config(self, config_path: str, function_registry: Dict[str, Callable[..., Coroutine[Any, Any, Any]]]) -> None:
+        """
+        Loads dynamic cron jobs from an external YAML or JSON configuration file.
+
+        Args:
+            config_path: Path to the configuration file (YAML or JSON).
+            function_registry: A dictionary mapping action names (from the config)
+                               to async callable functions.
+
+        Raises:
+            ValueError: If the file extension is unsupported or a required action is missing from the registry.
+            FileNotFoundError: If the config file does not exist.
+        """
+        path = Path(config_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Configuration file not found: {config_path}")
+
+        content = path.read_text()
+
+        if path.suffix in ('.yaml', '.yml'):
+            config_data = yaml.safe_load(content)
+        elif path.suffix == '.json':
+            config_data = json.loads(content)
+        else:
+            raise ValueError(f"Unsupported configuration file format: {path.suffix}")
+
+        if not isinstance(config_data, list):
+            # Assume it might be wrapped in a dict like {"jobs": [...]}
+            if isinstance(config_data, dict) and "jobs" in config_data:
+                config_data = config_data["jobs"]
+            else:
+                raise ValueError("Configuration must be a list of jobs or a dictionary with a 'jobs' key.")
+
+        for job_cfg in config_data:
+            name = job_cfg.get("name")
+            cron_expr = job_cfg.get("cron")
+            action_name = job_cfg.get("action")
+            args = job_cfg.get("args", [])
+            kwargs = job_cfg.get("kwargs", {})
+
+            if not all([name, cron_expr, action_name]):
+                logger.warning(f"Skipping invalid job configuration: {job_cfg}")
+                continue
+
+            if action_name not in function_registry:
+                raise ValueError(f"Action '{action_name}' for job '{name}' not found in function registry.")
+
+            func = function_registry[action_name]
+            self.schedule(cron_expr, func, name, *args, **kwargs)
+            logger.info(f"Loaded job '{name}' from config with schedule '{cron_expr}'")
 
     def task(self, cron_expr: str, name: str | None = None) -> Callable[[Callable[..., Coroutine[Any, Any, Any]]], Callable[..., Coroutine[Any, Any, Any]]]:
         """

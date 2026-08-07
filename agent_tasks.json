@@ -9829,7 +9829,7 @@
     },
     {
       "id": "ada7b54a-a81c-4956-99d3-3cc6bb40bea4",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Hermes-inspired Configurable Cron Scheduler",
@@ -22234,6 +22234,59 @@
       "acceptance": [
         "Module successfully routes sub-tasks to designated peer agents.",
         "Tests use mocked network channels to ensure data is transmitted correctly."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-tracing-2026",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Action Tool Call Tracing",
+      "description": "Inspired by June 2026 MCP Standard trends. Implement tracing middleware for the MCP server that logs JSON-RPC action tool executions (including parameters and return states) for longitudinal quality tracking.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_tracing.py",
+        "tests/test_mcp_tracing.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Middleware logs start, success, and failure for MCP action tool execution.",
+        "Tests verify mocked tool calls are properly traced."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-interface",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Plugin Interface",
+      "description": "Inspired by OpenClaw trends (June 2026). Define a formal 'Context Engine' plugin interface containing lifecycle hooks (e.g., before_retrieve, after_retrieve) to allow multiple memory retrieval strategies to seamlessly plug into the conversational pipeline.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine.py",
+        "tests/test_context_engine.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin interface protocol is defined with lifecycle hooks.",
+        "Dummy plugin implementation works and can be registered.",
+        "Tests verify hooks are fired during mock retrieval cycles."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-monitoring-2026",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Task Delegation Monitoring via Telemetry",
+      "description": "Inspired by A2A Protocol trends (June 2026). Implement a telemetry exporter for the A2A task delegation layer to emit distributed traces, enabling enterprise-ready monitoring of sub-agent task routing.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_telemetry.py",
+        "tests/test_a2a_telemetry.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry exporter successfully wraps A2A delegation calls.",
+        "Emitted traces include agent correlation IDs.",
+        "Tests use mocked network and ensure traces are generated."
       ]
     }
   ]
