@@ -9917,7 +9917,7 @@
     },
     {
       "id": "openclaw-rl-metrics-v5-f60b1d89",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw RL Metrics System v5",
@@ -22482,6 +22482,58 @@
       "acceptance": [
         "MCP action tools execute in isolated subprocesses.",
         "Tests mock execution and verify secure, isolated execution output."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-auto-refinement-v10-2026",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Auto-Refinement v10",
+      "description": "Inspired by Hermes trends (June 2026): Implement an enhanced auto-refinement module that uses an LLM evaluator to score code quality and readability of procedurally generated skills, automatically proposing refactors if the score is low.",
+      "allowed_paths": [
+        "magda_agent/skills/auto_refinement_v10.py",
+        "tests/test_auto_refinement_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auto-refinement module can evaluate skill code quality.",
+        "Module generates proposed refactors using an LLM evaluator.",
+        "Tests verify that mock skill data triggers correct refactor proposals."
+      ]
+    },
+    {
+      "id": "claude-evaluator-subagent-isolation-v4",
+      "title": "Claude Evaluator Subagent Isolation V4",
+      "description": "Inspired by Claude Agent SDK (June 2026): Implement deep Git worktree isolation for spawned evaluator subagents, applying cgroups and namespace constraints to strictly limit CPU and memory usage.",
+      "area": "agents",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/agents/evaluator_subagent_isolation_v4.py",
+        "tests/test_evaluator_subagent_isolation_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator subagents run inside isolated Git worktrees with resource constraints.",
+        "Tests verify clean execution and resource restriction handling."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-vision-feedback-v2",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Vision Feedback Alignment v2",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse visual feedback from user-uploaded images/screens, classifying user emotion (positive/negative) to act as next-state reward signals.",
+      "allowed_paths": [
+        "magda_agent/learning/vision_sentiment_v2.py",
+        "tests/test_vision_sentiment_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Vision sentiment signals successfully update habit weights.",
+        "Tests verify weight adjustments using mock image sentiment signals."
       ]
     }
   ]
