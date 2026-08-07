@@ -9847,7 +9847,7 @@
     },
     {
       "id": "bff9cf49-f2ca-4402-b1f4-7acd9ecd4699",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Service Discovery using Agent Cards",
@@ -22287,6 +22287,60 @@
         "Telemetry exporter successfully wraps A2A delegation calls.",
         "Emitted traces include agent correlation IDs.",
         "Tests use mocked network and ensure traces are generated."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-auto-refinement-v8-new-a1b2",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Auto-Refinement v8",
+      "description": "Inspired by Hermes trends: Implement an auto-refinement module that periodically reviews high-success skills and suggests code-level performance optimizations based on accumulated logs.",
+      "allowed_paths": [
+        "magda_agent/skills/auto_refinement_v8.py",
+        "tests/test_auto_refinement_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auto-refinement module analyzes high-success skills.",
+        "Generates performance improvement suggestions using LLM.",
+        "Tests pass using mock telemetry data."
+      ]
+    },
+    {
+      "id": "acs-realtime-fallback-heuristics-v2-new-c3d4",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "ACS Real-Time Guardrail Fallback Heuristics v2",
+      "description": "Inspired by ACS trends: Introduce real-time fallback heuristics for guardrails to gracefully handle policy layer timeouts, attempting an automated retry before logging partial compliance states.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_fallback_heuristics_v2.py",
+        "tests/test_acs_fallback_heuristics_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Guardrail timeout fallback logic implemented with retry mechanism.",
+        "Partial compliance states correctly audited on final failure.",
+        "Tests verify retry scenarios and logging."
+      ]
+    },
+    {
+      "id": "claude-evaluator-semantic-diff-v3-dc3ad5f0",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "Claude Evaluator Semantic Diff Check v3",
+      "description": "Inspired by Claude Evaluator agent trend: Implement an evaluation module that performs semantic diff analysis of proposed code changes, including AST structure comparison.",
+      "allowed_paths": [
+        "magda_agent/evaluation/semantic_diff_v3.py",
+        "tests/test_semantic_diff_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "SemanticDiffEvaluator incorporates AST structure comparison.",
+        "It successfully identifies deep discrepancies between intent and actual diff.",
+        "Tests pass verifying correct mismatch detection."
       ]
     }
   ]
