@@ -9968,7 +9968,7 @@
     },
     {
       "id": "mcp-tools-integration-dynamic-v2-c96eac36",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Tools Dynamic Integration v2",
@@ -22692,6 +22692,42 @@
       "acceptance": [
         "Cron job aggregates daily logs.",
         "Episodic memory is condensed correctly."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugins-v1-new",
+      "title": "OpenClaw Context Engine External Plugins V1",
+      "description": "Inspired by OpenClaw trends: Implement a context engine plugin registry that allows external developers to load Python modules dynamically and hook into working memory updates.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/context_plugins_v1.py",
+        "tests/test_context_plugins_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context engine allows dynamic registration of python modules as plugins.",
+        "Plugins can intercept memory updates safely.",
+        "Tests mock plugin behavior."
+      ]
+    },
+    {
+      "id": "claude-teams-git-subagent-isolation-v2-new",
+      "title": "Claude Teams Git Worktree Subagent Isolation V2",
+      "description": "Inspired by Claude Teams Agent trend: Extend Git worktree isolation with cgroup resource constraints for multi-agent processes to limit subagent memory/CPU directly inside the spawner.",
+      "area": "agents",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/agents/worktree_cgroups_v2.py",
+        "tests/test_worktree_cgroups_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Git worktree isolation applies cgroup constraints.",
+        "Subagents execute within confined resource bounds.",
+        "Tests mock resource limits."
       ]
     }
   ]
