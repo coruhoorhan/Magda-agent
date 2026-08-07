@@ -1,6 +1,7 @@
 import pytest
 import asyncio
 import json
+import time
 from magda_agent.integration.mcp_concurrency import MCPConcurrentHandler
 from magda_agent.integration.mcp_server import MCPServer
 from magda_agent.integration.mcp_exporter import MCPExporter
@@ -323,3 +324,77 @@ async def test_mcp_manager_backpressure(mcp_manager):
 
     backpressure_errors = [r for r in results if isinstance(r, str) and "BackpressureError" in r]
     assert len(backpressure_errors) > 0
+
+
+# --- New Tests for ConcurrentSkillExecutor ---
+from magda_agent.skills.mcp_concurrency import ConcurrentSkillExecutor
+
+@pytest.mark.asyncio
+async def test_concurrent_skill_executor_local_and_prefixed(registry):
+    """
+    Tests that ConcurrentSkillExecutor successfully executes local skills
+    and server-prefixed MCP tools concurrently.
+    """
+    class MockMCPClient:
+        async def execute(self, name, kwargs):
+            await asyncio.sleep(0.05)
+            return f"mcp_{name}_executed"
+
+    mcp_client = MockMCPClient()
+    executor = ConcurrentSkillExecutor(
+        registry=registry,
+        mcp_registry=None,
+        mcp_client=mcp_client
+    )
+
+    tool_calls = [
+        {"name": "fast_tool", "kwargs": {}},
+        {"name": "my_server-get_info", "kwargs": {}},
+        {"name": "slow_tool", "kwargs": {}}
+    ]
+
+    results = await executor.execute_concurrently(tool_calls)
+    assert len(results) == 3
+    assert results[0] == "fast"
+    assert results[1] == "mcp_my_server-get_info_executed"
+    assert results[2] == "slow"
+
+
+@pytest.mark.asyncio
+async def test_concurrent_skill_executor_performance(registry):
+    """
+    Performance tests: verify that executing multiple slow tools/skills
+    concurrently demonstrates substantial time savings vs sequential execution.
+    """
+    class MockSlowMCPClient:
+        async def execute(self, name, kwargs):
+            await asyncio.sleep(0.1)
+            return f"{name}_done"
+
+    mcp_client = MockSlowMCPClient()
+    executor = ConcurrentSkillExecutor(
+        registry=registry,
+        mcp_registry=None,
+        mcp_client=mcp_client
+    )
+
+    # 3 tools, each takes 0.1s.
+    # Sequentially, this would take at least 0.3s.
+    # Concurrently, it should take around 0.1s (definitely < 0.22s).
+    tool_calls = [
+        {"name": "my_server-tool1", "kwargs": {}},
+        {"name": "slow_tool", "kwargs": {}},  # from fixture, takes 0.1s
+        {"name": "my_server-tool2", "kwargs": {}}
+    ]
+
+    start_time = time.perf_counter()
+    results = await executor.execute_concurrently(tool_calls)
+    duration = time.perf_counter() - start_time
+
+    assert len(results) == 3
+    assert results[0] == "my_server-tool1_done"
+    assert results[1] == "slow"
+    assert results[2] == "my_server-tool2_done"
+
+    print(f"Concurrent execution of 3 x 0.1s tools took {duration:.4f}s")
+    assert duration < 0.22, f"Execution took too long: {duration}s"
