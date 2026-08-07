@@ -9934,7 +9934,7 @@
     },
     {
       "id": "agent-teams-subagent-isolation-v8-71e81f8b",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "Agent Teams Subagent Isolation v8",
@@ -22534,6 +22534,59 @@
       "acceptance": [
         "Vision sentiment signals successfully update habit weights.",
         "Tests verify weight adjustments using mock image sentiment signals."
+      ]
+    },
+    {
+      "id": "claude-evaluator-semantic-diff-v4",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "Claude Evaluator Semantic Diff Check v4",
+      "description": "Inspired by Claude Evaluator agent trend: Implement an enhanced evaluation module that performs multi-file AST structure semantic diff analysis of proposed code changes.",
+      "allowed_paths": [
+        "magda_agent/evaluation/semantic_diff_v4.py",
+        "tests/test_semantic_diff_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "SemanticDiffEvaluator incorporates multi-file AST structure comparison.",
+        "It successfully identifies deep discrepancies between intent and actual diff across multiple files.",
+        "Tests pass verifying correct mismatch detection."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-ui-streamer-v3",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw RL Canvas Multi-Agent UI Streamer v3",
+      "description": "Inspired by OpenClaw Canvas UI trends: Extend Canvas UI to support Multi-Agent streams by multiplexing state diffs and visualizing subagent working directories into a single WebSocket connection.",
+      "allowed_paths": [
+        "magda_agent/visualization/multi_agent_canvas_streamer_v3.py",
+        "tests/test_multi_agent_canvas_streamer_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer interleaves messages from multiple sub-agent states correctly, including worktree paths.",
+        "Each streamed JSON patch identifies the origin agent UUID and memory location.",
+        "Tests verify correct multiplexing using mock asyncio streams."
+      ]
+    },
+    {
+      "id": "mcp-preflight-policy-validator-v2",
+      "title": "MCP Preflight Policy Validator V2",
+      "description": "Inspired by Agent Guard and MCP standardisation trends: Implement a PreflightPolicyValidator that extends the MCP Kernel sandbox to intercept tool calls for taint tracking and blocklists before they hit the real subprocess executor.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_preflight_policy_v2.py",
+        "tests/test_mcp_preflight_policy_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "PreflightPolicyValidator intercepts and validates MCP action parameters.",
+        "Tests mock execution and verify secure, isolated execution output or block action."
       ]
     }
   ]
