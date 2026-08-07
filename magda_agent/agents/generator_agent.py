@@ -12,6 +12,7 @@ from magda_agent.skills.mcp_client import MCPClient
 from magda_agent.safety.acs_checkpoints import ACSCheckpoints
 from magda_agent.safety.policy import PolicyLayer
 from magda_agent.safety.audit_trail import AuditTrail
+from magda_agent.safety.assert_framework import AssertActionEvaluator
 
 
 class GeneratorAgent:
@@ -29,7 +30,8 @@ class GeneratorAgent:
         mcp_client: Optional[MCPClient] = None,
         tracer=None,
         policy_layer: Optional[PolicyLayer] = None,
-        audit_trail: Optional[AuditTrail] = None
+        audit_trail: Optional[AuditTrail] = None,
+        assert_action_evaluator: Optional[AssertActionEvaluator] = None
     ):
         self.llm = llm
         self.skills = skills
@@ -40,6 +42,7 @@ class GeneratorAgent:
         self.mcp_client = mcp_client
         self.tracer = tracer
         self.acs = ACSCheckpoints(policy_layer=policy_layer, audit_trail=audit_trail)
+        self.assert_action_evaluator = assert_action_evaluator
 
     async def execute_plan(self, user_input: str, user_id: Optional[str] = None) -> str:
         """
@@ -112,6 +115,25 @@ class GeneratorAgent:
                             self.planner.mark_step_id_completed(step_id, str(result), user_id=user_id)
                             if plan_stopped_early:
                                 break
+                            continue
+
+
+                    # ASSERT Policy Evaluation Framework Check
+                    if self.assert_action_evaluator:
+                        user_state = self.planner.get_user_state(user_id) if self.planner and hasattr(self.planner, 'get_user_state') else None
+                        policies = user_state.current_constraints if user_state else ["Do no harm"]
+                        if not policies:
+                            policies = ["Do no harm"]
+
+                        action_data = {"tool_name": skill_name, "args": kwargs}
+
+                        # Wait! evaluate_action is async. We need to await it. We are inside async def execute_plan.
+                        eval_result = await self.assert_action_evaluator.evaluate_action(action_data, policies)
+                        if not eval_result.get("is_compliant", True):
+                            violations = eval_result.get("violations", [])
+                            reason = f"ASSERT Policy Violation: {', '.join(violations)}"
+                            logging.warning(reason)
+                            self.planner.mark_step_id_completed(step_id, reason, user_id=user_id)
                             continue
 
                     # Execution Task

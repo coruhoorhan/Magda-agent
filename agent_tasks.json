@@ -9864,7 +9864,7 @@
     },
     {
       "id": "045ac595-8f37-4aaf-b438-cd44a66ffb0c",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ASSERT Policy Evaluation Framework Integration",
@@ -22341,6 +22341,60 @@
         "SemanticDiffEvaluator incorporates AST structure comparison.",
         "It successfully identifies deep discrepancies between intent and actual diff.",
         "Tests pass verifying correct mismatch detection."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-auto-refinement-v9-2026",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Auto-Refinement v9",
+      "description": "Inspired by Hermes trends (June 2026): Implement an enhanced auto-refinement module that analyzes under-performing skills using telemetry, and automatically proposes improvements to the procedural memory definitions.",
+      "allowed_paths": [
+        "magda_agent/skills/auto_refinement_v9.py",
+        "tests/test_auto_refinement_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auto-refinement module can query telemetry for under-performing skills.",
+        "LLM generates proposed patches to procedural memory.",
+        "Tests verify that mock telemetry triggers correct improvement proposals."
+      ]
+    },
+    {
+      "id": "claude-code-git-branch-isolation-subagent",
+      "status": "todo",
+      "area": "isolation",
+      "risk": "high",
+      "title": "Claude Code Feature Branch Protection Subagent",
+      "description": "Inspired by Claude Agent Teams Git Worktree Isolation (June 2026): Create a dedicated sub-agent that strictly manages git branching and pull request scoping, preventing context bleeding between parallel worktrees.",
+      "allowed_paths": [
+        "magda_agent/isolation/git_branch_subagent.py",
+        "tests/test_git_branch_subagent.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sub-agent is implemented to wrap GitWorktreeManager.",
+        "It validates branch scoping rules and blocks commits to protected branches.",
+        "Tests verify behavior using mock git environments."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-pruning-v3",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Trajectory Quality Evaluator and Pruner V3",
+      "description": "Inspired by OpenClaw RL trends (June 2026): Implement a module that periodically reviews episodic memory trajectories and prunes low-quality or irrelevant episodes to optimize vector storage and context relevance.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_pruner_v3.py",
+        "tests/test_trajectory_pruner_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruner module iterates over episodic memories.",
+        "Scores memory quality and evicts data below a configured threshold.",
+        "Tests use mocked ChromaDB interactions to verify eviction logic."
       ]
     }
   ]
