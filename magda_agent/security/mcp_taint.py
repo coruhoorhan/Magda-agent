@@ -1,4 +1,4 @@
-"""MCP Tool Taint Tracking Sandbox v4."""
+"""MCP Tool Taint Tracking Sandbox v5."""
 import inspect
 import functools
 from typing import Any, Callable, List, Optional
@@ -8,12 +8,27 @@ class TaintSandboxError(PolicyViolationError):
     """Raised when tainted data violates policy during MCP tool execution."""
     pass
 
+def _check_taint_by_path(value: Any, path: List[str]) -> bool:
+    """Helper to check if a nested dictionary path is tainted."""
+    if not path:
+        return is_tainted(value)
+
+    current = value
+    for key in path:
+        if isinstance(current, dict) and key in current:
+            current = current[key]
+        else:
+            return False
+    return is_tainted(current)
+
+
 def mcp_action_taint_sandbox(critical_params: Optional[List[str]] = None) -> Callable[..., Any]:
     """
     Decorator for MCP action tools to track taint and block unsafe calls.
+    Supports dot-notation in critical_params to check nested dictionary fields.
 
     Args:
-        critical_params: List of parameter names that must not receive tainted data.
+        critical_params: List of parameter names (or dot-paths) that must not receive tainted data.
 
     Returns:
         A decorator for taint tracking.
@@ -30,11 +45,15 @@ def mcp_action_taint_sandbox(critical_params: Optional[List[str]] = None) -> Cal
             bound_args.apply_defaults()
 
             # Block if any critical parameter receives tainted data
-            for param_name, param_value in bound_args.arguments.items():
-                if param_name in critical_params and is_tainted(param_value):
-                    raise TaintSandboxError(
-                        f"Critical parameter '{param_name}' in '{func.__name__}' received tainted data."
-                    )
+            for crit_param in critical_params:
+                parts = crit_param.split(".")
+                param_name = parts[0]
+                if param_name in bound_args.arguments:
+                    param_value = bound_args.arguments[param_name]
+                    if _check_taint_by_path(param_value, parts[1:]):
+                        raise TaintSandboxError(
+                            f"Critical parameter '{crit_param}' in '{func.__name__}' received tainted data."
+                        )
 
             # Execute the function
             result: Any = func(*args, **kwargs)
