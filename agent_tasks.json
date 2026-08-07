@@ -19694,7 +19694,7 @@
     },
     {
       "id": "hermes-agent-cron-scheduler-diagnostics-5989c08b",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "medium",
       "title": "Hermes Agent Cron Diagnostics Reporter",
@@ -22641,6 +22641,57 @@
         "CronScheduler dynamically parses scheduling intervals from YAML.",
         "Automated tasks correctly trigger bound functions.",
         "Tests verify parsing logic and task triggering with mocked time."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-audio-feedback-v2-new",
+      "title": "OpenClaw RL Audio Feedback Alignment v2",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse user audio tone/inflection shifts from voice inputs as next-state reward signals.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/audio_sentiment_v2.py",
+        "tests/test_audio_sentiment_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Audio sentiment signals successfully update habit weights.",
+        "Tests verify weight adjustments using mock audio signals."
+      ]
+    },
+    {
+      "id": "mcp-websocket-streaming-v4-new",
+      "title": "MCP Server WebSocket Transport v4",
+      "description": "Inspired by MCP trend (June 2026): Implement a WebSocket transport for the MCP server to support real-time full-duplex communication with external agents.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_websocket_v4.py",
+        "tests/test_mcp_websocket_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket transport successfully handles JSON-RPC messages.",
+        "Tests mock WebSocket connections and message parsing."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-reflection-v3-new",
+      "title": "Hermes Cron Daily Reflection Background Job v3",
+      "description": "Inspired by Hermes Agent trend: Create a persistent background cron job that aggregates daily episodic memories, condenses them into semantic rules, and saves them to procedural memory.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/daily_reflection_cron_v3.py",
+        "tests/test_daily_reflection_cron_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job aggregates daily logs.",
+        "Episodic memory is condensed correctly."
       ]
     }
   ]
