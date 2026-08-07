@@ -14,6 +14,7 @@ from magda_agent.planning.planner import Planner
 from magda_agent.memory.long_term import LongTermMemory
 from magda_agent.metacognition.evaluator import Evaluator
 from magda_agent.metacognition.assert_evaluator import AssertEvaluator
+from magda_agent.safety.assert_framework import AssertActionEvaluator
 from magda_agent.metacognition.confidence import ConfidenceCalibrator
 from magda_agent.learning.habits import HabitTracker
 from magda_agent.emotions.attachment import AttachmentModel
@@ -62,6 +63,7 @@ class Consciousness:
         long_term_memory: Optional[LongTermMemory] = None,
         evaluator: Optional[Evaluator] = None,
         assert_evaluator: Optional[AssertEvaluator] = None,
+        assert_action_evaluator: Optional[AssertActionEvaluator] = None,
         confidence_calibrator: Optional[ConfidenceCalibrator] = None,
         habit_tracker: Optional[HabitTracker] = None,
         attachment: Optional[AttachmentModel] = None,
@@ -99,6 +101,7 @@ class Consciousness:
         self.long_term_memory = long_term_memory
         self.evaluator = evaluator
         self.assert_evaluator = assert_evaluator
+        self.assert_action_evaluator = assert_action_evaluator
         self.confidence_calibrator = confidence_calibrator
         self.habit_tracker = habit_tracker
         self.attachment = attachment
