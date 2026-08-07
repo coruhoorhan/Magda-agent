@@ -9986,7 +9986,7 @@
     },
     {
       "id": "claude-planner-evaluation-v2-aaff5526",
-      "status": "todo",
+      "status": "done",
       "area": "planning",
       "risk": "medium",
       "title": "Claude Planner Evaluation v2",
@@ -22728,6 +22728,40 @@
         "Git worktree isolation applies cgroup constraints.",
         "Subagents execute within confined resource bounds.",
         "Tests mock resource limits."
+      ]
+    },
+    {
+      "id": "mcp-websocket-streaming-v5-new",
+      "title": "MCP Server WebSocket Transport v5",
+      "description": "Inspired by MCP trend (June 2026): Implement a WebSocket transport for the MCP server to support real-time full-duplex communication with external agents.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_websocket_v5.py",
+        "tests/test_mcp_websocket_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket transport successfully handles JSON-RPC messages.",
+        "Tests mock WebSocket connections and message parsing."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-reflection-v4-new",
+      "title": "Hermes Cron Daily Reflection Background Job v4",
+      "description": "Inspired by Hermes Agent trend: Create a persistent background cron job that aggregates daily episodic memories, condenses them into semantic rules, and saves them to procedural memory.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/daily_reflection_cron_v4.py",
+        "tests/test_daily_reflection_cron_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job aggregates daily logs.",
+        "Episodic memory is condensed correctly."
       ]
     }
   ]
