@@ -10004,7 +10004,7 @@
     },
     {
       "id": "openai-mcp-tool-concurrency-v3-8d054c4c",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "OpenAI MCP Tool Concurrency v3",
