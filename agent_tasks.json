@@ -10058,7 +10058,7 @@
     },
     {
       "id": "2d398426-c5f0-4f31-a671-5fadeb4c4d80",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Continuous Context Summarization V2",
@@ -22848,6 +22848,42 @@
       "acceptance": [
         "Vision signals successfully map to reward scalars.",
         "Tests verify weight adjustments using mock vision payload."
+      ]
+    },
+    {
+      "id": "openclaw-procedural-rl-habit-tracker-v1",
+      "title": "OpenClaw Procedural RL Habit Tracker V1",
+      "description": "Inspired by OpenClaw RL trends: Implement a habit tracker that logs the execution frequency and success rate of specific tool sequences (habits), adjusting their selection weight dynamically based on user feedback.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/habit_tracker_v1.py",
+        "tests/test_habit_tracker_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "HabitTracker logs sequences of tool calls.",
+        "Adjusts selection probability weights based on mock user feedback.",
+        "Tests verify frequency tracking and weight adjustment."
+      ]
+    },
+    {
+      "id": "claude-teams-worktree-garbage-collector-v1",
+      "title": "Claude Teams Worktree Garbage Collector V1",
+      "description": "Inspired by Claude Agent Teams multi-agent architectures: Create a periodic garbage collector that identifies and cleanly deletes abandoned or failed Git worktrees leftover by subagents to prevent disk exhaustion.",
+      "area": "agents",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/isolation/worktree_gc_v1.py",
+        "tests/test_worktree_gc_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Worktree Garbage Collector identifies stale worktrees.",
+        "Removes them safely without affecting active agents.",
+        "Tests mock file system operations to verify cleanup logic."
       ]
     }
   ]
