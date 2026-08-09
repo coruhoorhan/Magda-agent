@@ -10111,7 +10111,7 @@
     },
     {
       "id": "a2a-task-delegation-v7-ec457ae2",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "A2A Peer Task Delegation v7",
@@ -22970,6 +22970,60 @@
       "acceptance": [
         "Discovery plugin hooks into lifecycle events and scans local networks via mDNS.",
         "Tests verify network mock endpoints and correct server instantiation tracking."
+      ]
+    },
+    {
+      "id": "openclaw-rl-interactive-implicit-correction-v1-64166eed",
+      "title": "OpenClaw-RL Interactive Implicit Correction v1",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Develop a feedback loop that detects when a user implicitly corrects an agent's response by repeating their query with modified parameters, and logs a negative reward signal for the previous tool combination.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/implicit_correction_v1.py",
+        "tests/test_implicit_correction_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implicit correction is detected by comparing successive prompts.",
+        "A negative reward signal is dispatched to the RL loop.",
+        "Tests verify the extraction logic using mocked conversation logs."
+      ]
+    },
+    {
+      "id": "a2a-capability-sub-mesh-clustering-v1-f249aa04",
+      "title": "A2A Capability Sub-mesh Clustering v1",
+      "description": "Inspired by A2A Protocol trend (June 2026): Implement a mechanism in the Discovery service to organize discovered agents into sub-mesh clusters based on their capabilities, enabling faster targeted delegation.",
+      "area": "integration",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_clustering_v1.py",
+        "tests/test_a2a_clustering_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent capabilities are parsed and clustered.",
+        "Delegator can query the cluster for faster retrieval of target agents.",
+        "Tests mock the clustering logic and verify the subset structure."
+      ]
+    },
+    {
+      "id": "mcp-tool-usage-rate-limiting-v1-9b6fb412",
+      "title": "MCP Tool Usage Rate Limiting v1",
+      "description": "Inspired by MCP standard and safety trends (June 2026): Introduce a rate-limiting middleware that restricts the number of times a specific external MCP tool can be invoked per context session to prevent runaway tool loops.",
+      "area": "safety",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_rate_limiter.py",
+        "tests/test_mcp_rate_limiter.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Rate-limiter rejects tool calls that exceed the session threshold.",
+        "The error is logged gracefully in the audit trail.",
+        "Tests mock tool loops and verify the limit enforcement."
       ]
     }
   ]
