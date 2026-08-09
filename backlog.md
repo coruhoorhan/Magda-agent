@@ -289,7 +289,7 @@
 
 * [ ] FEATURE: ACS Agent Control Specification - Runtime Safety Controls (acs-runtime-safety-controls-v7-202606)
 * [ ] FEATURE: A2A Agent Discovery via Agent Cards (a2a-agent-discovery-cards-v3-202606)
-* [ ] FEATURE: A2A Peer-to-Peer Task Delegation V7 (a2a-peer-task-delegation-v7-202606)
+* [x] FEATURE: A2A Peer-to-Peer Task Delegation V7 (a2a-task-delegation-v7) (a2a-peer-task-delegation-v7-202606)
 * [ ] FEATURE: OpenAI Agents SDK Tool Schema Caching (openai-agents-schema-cache-v1-d24c8b9a)
 * [x] FEATURE: MCP Dynamic Capability Negotiation V6 (mcp-dynamic-capability-negotiation-v6)
 * [x] FEATURE: Magentic-One Multi-Agent Pattern V3 (magentic-one-orchestration-v3-37c4eb76)
