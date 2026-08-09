@@ -6,6 +6,8 @@ from fastapi import FastAPI, Request, Response
 from magda_agent.planning.planner import Planner
 from magda_agent.integration.a2a_tracing import A2ATracer
 from magda_agent.integration.a2a_security import A2ASecurityContext
+from magda_agent.security.a2a_taint import process_a2a_message, validate_a2a_execution, A2ATaintError
+from magda_agent.security.a2a_taint import process_a2a_message, validate_a2a_execution, A2ATaintError
 
 class A2AServer:
     """
@@ -90,6 +92,30 @@ class A2AServer:
             }), media_type="application/json", status_code=400)
 
         if method in ["delegate_task", "execute_subplan"]:
+
+            try:
+                tainted_params = process_a2a_message(params)
+                params = validate_a2a_execution(tainted_params)
+            except A2ATaintError as e:
+                if is_notification:
+                    return Response(status_code=204)
+                return Response(content=json.dumps({
+                    "jsonrpc": "2.0",
+                    "error": {"code": -32002, "message": str(e)},
+                    "id": req_id
+                }), media_type="application/json", status_code=403)
+                try:
+                    # Sanitize inputs to avoid prompt injections and taint attacks
+                    tainted_params = process_a2a_message(params)
+                    params = validate_a2a_execution(tainted_params)
+                except A2ATaintError as e:
+                    if is_notification:
+                        return Response(status_code=204)
+                    return Response(content=json.dumps({
+                        "jsonrpc": "2.0",
+                        "error": {"code": -32002, "message": str(e)},
+                        "id": req_id
+                    }), media_type="application/json", status_code=403)
             if not isinstance(params, dict):
                 if is_notification:
                     return Response(status_code=204)
