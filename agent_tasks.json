@@ -10076,7 +10076,7 @@
     },
     {
       "id": "48b4da15-5d63-4af2-83a0-f0ed55cfeda4",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "A2A Message Taint Sandbox Integration",
@@ -22884,6 +22884,58 @@
         "Worktree Garbage Collector identifies stale worktrees.",
         "Removes them safely without affecting active agents.",
         "Tests mock file system operations to verify cleanup logic."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-distillation-v2-unique",
+      "title": "OpenClaw RL Trajectory Distillation v2",
+      "description": "Inspired by OpenClaw RL online learning trend: Distill long episodic memory trajectories containing multiple tool interactions into reusable macro-skills stored in procedural memory, updating behavior weights upon successful deployment. Adds multi-modal support.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_distillation_v2.py",
+        "tests/test_trajectory_distillation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Macro-skills are extracted from trajectory logs, including multi-modal interactions.",
+        "Tests verify macro-skill generation and RL weight adjustments."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v3-unique",
+      "title": "MCP Dynamic Capability Auth v3",
+      "description": "Inspired by MCP standardization: Dynamically parse and enforce authentication schema constraints from external MCP server capabilities before attempting to route actions to them, using external OAuth2 token sources.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_v3.py",
+        "tests/test_mcp_auth_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auth requirements from MCP servers are correctly parsed and validated with OAuth2 flows.",
+        "Tests verify tool routing fails safely when auth is missing or expired."
+      ]
+    },
+    {
+      "id": "a2a-capability-gossiping-v3-unique",
+      "title": "A2A Capability Gossip Protocol v3",
+      "description": "Inspired by A2A standard trend: Implement a decentralized gossip protocol module for the A2A Discovery Service, enabling agents to periodically broadcast and cache neighboring agent capabilities, including peer health checks.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_protocol_v3.py",
+        "tests/test_a2a_gossip_protocol_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent capabilities and health are broadcast asynchronously to known peers.",
+        "Peer cache is updated securely with latest Agent Cards.",
+        "Tests verify gossip propagation, health check, and cache integrity."
       ]
     }
   ]
