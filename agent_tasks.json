@@ -10094,7 +10094,7 @@
     },
     {
       "id": "mcp-skill-export-tool-v2-73417b33",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Skill Export Tool v2",
@@ -22936,6 +22936,40 @@
         "Agent capabilities and health are broadcast asynchronously to known peers.",
         "Peer cache is updated securely with latest Agent Cards.",
         "Tests verify gossip propagation, health check, and cache integrity."
+      ]
+    },
+    {
+      "id": "acs-agent-validation-checkpoint-v4-new-123",
+      "title": "ACS Agent Validation Checkpoint v4",
+      "description": "Inspired by Microsoft ACS (June 2026): Implement an explicit privilege escalation checkpoint to protect sensitive local file operations, integrating it into the core agent logic.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/safety/acs_privilege_v4.py",
+        "tests/test_acs_privilege_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Validation checkpoint dynamically verifies requested access privileges against agent state.",
+        "Tests mock file operations and test both allowed and denied state flows."
+      ]
+    },
+    {
+      "id": "mcp-context-engine-discovery-plugin-v2-new-123",
+      "title": "MCP Context Engine Discovery Plugin v2",
+      "description": "Inspired by OpenClaw Context Engine trend: Implement a plugin that allows the engine to periodically query standard mDNS and detect local MCP servers without static configuration.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_discovery_plugin_v2.py",
+        "tests/test_mcp_discovery_plugin_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery plugin hooks into lifecycle events and scans local networks via mDNS.",
+        "Tests verify network mock endpoints and correct server instantiation tracking."
       ]
     }
   ]
