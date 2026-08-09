@@ -10040,7 +10040,7 @@
     },
     {
       "id": "fa66d394-fc4a-46df-8f1d-4e7eb952a52a",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "Magentic-One Pattern Subagent Orchestrator",
@@ -22813,6 +22813,41 @@
       "acceptance": [
         "Cron job aggregates daily logs.",
         "Episodic memory is condensed correctly."
+      ]
+    },
+    {
+      "id": "claude-code-dependency-tracker-v4-cb9623ab",
+      "title": "Claude Code Style Context Tracker v4",
+      "description": "Inspired by Claude Code trends: Implement a local context tracker that maintains an up-to-date representation of recent file changes and dependency additions to inform subsequent planning steps.",
+      "area": "planning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/planning/context_tracker_v4.py",
+        "tests/test_context_tracker_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context tracker stores file hashes and dependency maps.",
+        "Tracker dynamically updates on file modifications.",
+        "Tests verify accurate hash generation and updates."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-vision-feedback-v2-77a49c5e",
+      "title": "OpenClaw RL Vision Feedback Alignment v2",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse visual interaction cues (e.g., UI clicks, gaze proxy metrics) as next-state reward signals.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/vision_feedback_v2.py",
+        "tests/test_vision_feedback_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Vision signals successfully map to reward scalars.",
+        "Tests verify weight adjustments using mock vision payload."
       ]
     }
   ]
