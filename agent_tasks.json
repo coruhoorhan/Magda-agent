@@ -10249,7 +10249,7 @@
     },
     {
       "id": "dc1dd575-17d0-4d5c-b5f0-f40342a33ac6",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "low",
       "title": "Hermes-inspired Procedural Memory Generator",
@@ -23288,6 +23288,59 @@
         "Snapshots of active virtual context can be created and serialized.",
         "Context can be fully restored from a snapshot object.",
         "Tests mock memory entries and verify correct restoration."
+      ]
+    },
+    {
+      "id": "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes-inspired Dynamic Skill Refinement via RL",
+      "description": "Inspired by Hermes Agent trends: Implement a dynamic reinforcement learning loop that continually refines procedural memory skills by updating specific parameter weights based on positive user interaction feedback.",
+      "allowed_paths": [
+        "magda_agent/skills/dynamic_refinement.py",
+        "tests/test_dynamic_refinement.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The dynamic refinement module updates skill templates based on reinforcement signals.",
+        "Tests mock reinforcement signals and verify the adjusted parameter weights in the skill."
+      ]
+    },
+    {
+      "id": "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw-inspired Continuous Concept Distillation",
+      "description": "Inspired by OpenClaw trends: Create a background job that periodically analyzes EpisodicMemory to distill continuous abstract concepts and updates the SemanticMemory layer accordingly, running without interrupting normal workflows.",
+      "allowed_paths": [
+        "magda_agent/memory/concept_distillation.py",
+        "tests/test_concept_distillation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The background job identifies high-frequency patterns in episodic logs.",
+        "Semantic memory is correctly updated with the distilled abstract concepts.",
+        "Tests verify the distillation logic using mocked episodic memory data."
+      ]
+    },
+    {
+      "id": "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "title": "Claude Code-inspired Dependency Graph Optimizer",
+      "description": "Inspired by Claude Agent Team dependency graphs: Implement a subagent that exclusively resolves complex inter-task dependencies in the Planner by organizing them into a parallel-friendly DAG before assigning work to other subagents.",
+      "allowed_paths": [
+        "magda_agent/agents/dependency_optimizer.py",
+        "tests/test_dependency_optimizer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The DependencyOptimizer subagent creates optimal DAGs from linear planner output.",
+        "The DAG structure isolates parallelizable tasks successfully.",
+        "Tests mock the planner output and verify the generated DAG dependencies."
       ]
     }
   ]
