@@ -10213,7 +10213,7 @@
     },
     {
       "id": "6561db15-0289-4c6a-9a85-b1b43d7f28ca",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "Realtime Guardrail Action Interceptor",
@@ -23199,6 +23199,41 @@
       "acceptance": [
         "ToolRankingSystem calculates utility scores based on success feedback.",
         "Tests verify score adjustment and tool selection bias."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-exporter-v1-f1c7052b",
+      "title": "MCP Action Tool Exporter V1",
+      "description": "Inspired by the MCP standard trend (June 2026): Implement an exporter that converts Magda local skills into a standard JSON-RPC 2.0 MCP manifest, exposing them as standard action tools.",
+      "area": "integration",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_exporter.py",
+        "tests/test_mcp_exporter.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter successfully reads local skills and generates a valid MCP manifest.",
+        "Tests verify the manifest structure and correct formatting of JSON-RPC definitions."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-v1-9c6520a4",
+      "title": "OpenClaw Context Engine Plugin V1",
+      "description": "Inspired by OpenClaw Context Engine trends (June 2026): Implement a Context Engine plugin interface with lifecycle hooks (e.g., pre-prompt, post-response) to dynamically modify the virtual context window before generation.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/context_plugin_v1.py",
+        "tests/test_context_plugin_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context Engine allows registration of plugins via lifecycle hooks.",
+        "Plugins can safely intercept and modify the context buffer before sending to LLM.",
+        "Tests verify hook execution and context modifications."
       ]
     }
   ]
