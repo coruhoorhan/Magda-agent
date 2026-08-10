@@ -9,6 +9,8 @@ from .compressor import ContextCompressor
 from .compression_v2 import ContextCompressorV2
 from .large_context import LargeContextWindow
 
+from .context_reranker import ContextLiveRerankerPlugin
+
 __all__ = [
     "MemorySystem",
     "WorkingMemory",
@@ -21,5 +23,6 @@ __all__ = [
     "HermesPersistentMemory",
     "ContextCompressor",
     "ContextCompressorV2",
-    "LargeContextWindow"
+    "LargeContextWindow",
+    "ContextLiveRerankerPlugin",
 ]

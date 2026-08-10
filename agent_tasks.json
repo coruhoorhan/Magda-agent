@@ -10231,7 +10231,7 @@
     },
     {
       "id": "bf4a6eb8-c623-4337-b2d3-87885c4044e8",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Context Engine Live Re-ranker",
@@ -23234,6 +23234,60 @@
         "Context Engine allows registration of plugins via lifecycle hooks.",
         "Plugins can safely intercept and modify the context buffer before sending to LLM.",
         "Tests verify hook execution and context modifications."
+      ]
+    },
+    {
+      "id": "b31159b5-e7be-4889-90cc-50efbdfa7193",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "Agent Teams Sub-agent Spawning for Parallel Tasks V1",
+      "description": "Inspired by Claude Agent SDK (June 2026): Implement a mechanism to dynamically spawn isolated sub-agents to execute sub-tasks concurrently, assigning dedicated virtual contexts.",
+      "allowed_paths": [
+        "magda_agent/teams/subagent_spawner.py",
+        "tests/test_subagent_spawner.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sub-agents can be spawned dynamically and given isolated context.",
+        "Tasks are executed concurrently and merged successfully.",
+        "Tests verify context isolation and correct task delegation."
+      ]
+    },
+    {
+      "id": "d21b2512-f43f-4ea9-9df2-240b6b5e08ca",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Policy Driven Action Evaluator V1",
+      "description": "Inspired by Microsoft Agent Control Specification (ACS) trend (June 2026): Implement an action evaluation guardrail that evaluates generated tool payloads against predefined safety policies before execution.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_action_evaluator.py",
+        "tests/test_acs_action_evaluator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Action payloads are successfully validated against ACS-like policies.",
+        "Violations block execution and raise descriptive exceptions.",
+        "Tests mock valid and invalid payloads."
+      ]
+    },
+    {
+      "id": "f901b0bb-c4f0-427e-802f-904c6aaee1b7",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Memory Virtual Context Snapshot Manager V1",
+      "description": "Inspired by MemGPT/Letta pattern (June 2026): Implement a module that allows taking and restoring full snapshots of the virtual context state to support quick checkpointing of multi-agent tasks.",
+      "allowed_paths": [
+        "magda_agent/memory/context_snapshot.py",
+        "tests/test_context_snapshot.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Snapshots of active virtual context can be created and serialized.",
+        "Context can be fully restored from a snapshot object.",
+        "Tests mock memory entries and verify correct restoration."
       ]
     }
   ]
