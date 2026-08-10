@@ -10162,7 +10162,7 @@
     },
     {
       "id": "openclaw-live-canvas-telemetry-927071b0",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Live Canvas Telemetry Streaming",
@@ -23075,6 +23075,60 @@
       "acceptance": [
         "Cron job aggregates daily logs.",
         "Episodic memory is condensed correctly."
+      ]
+    },
+    {
+      "id": "openclaw-rl-self-reflection-v1",
+      "title": "OpenClaw RL Self-Reflection Loop V1",
+      "description": "Inspired by OpenClaw trends: Implement a self-reflection loop that analyzes past RL trajectories and generates synthetic experience to update policy weights during idle time.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/self_reflection_v1.py",
+        "tests/test_self_reflection_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Self-reflection loop analyzes past trajectories.",
+        "Updates policy weights based on synthetic insights.",
+        "Tests mock trajectory parsing and weight updates."
+      ]
+    },
+    {
+      "id": "claude-code-auto-documentation-v1",
+      "title": "Claude Code Auto-Documentation V1",
+      "description": "Inspired by Claude Code trends: Implement a background agent that automatically generates and updates docstrings and module documentation as code is changed.",
+      "area": "agents",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/agents/auto_doc_v1.py",
+        "tests/test_auto_doc_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "AutoDoc agent identifies undocumented code.",
+        "Generates and inserts appropriate documentation.",
+        "Tests mock code changes and verify doc generation."
+      ]
+    },
+    {
+      "id": "mcp-tool-health-monitor-v1",
+      "title": "MCP Tool Health Monitor V1",
+      "description": "Inspired by MCP trends: Implement a background monitor that periodically pings registered MCP tools to ensure availability and disables tools that fail repeatedly.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_health_monitor_v1.py",
+        "tests/test_mcp_health_monitor_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Monitor pings MCP tools at regular intervals.",
+        "Failing tools are flagged and temporarily disabled.",
+        "Tests mock ping responses and verify tool status changes."
       ]
     }
   ]
