@@ -216,3 +216,4 @@ def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegi
     return registry
 
 from magda_agent.skills.marketplace import fetch_and_register_skills
+from magda_agent.skills.dynamic_generation import DynamicSkillGenerator, TrajectoryStep
