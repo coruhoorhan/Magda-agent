@@ -10179,7 +10179,7 @@
     },
     {
       "id": "openai-mcp-tool-concurrency-a3c384a2",
-      "status": "todo",
+      "status": "done",
       "area": "execution",
       "risk": "medium",
       "title": "OpenAI Agents SDK MCP Tool Concurrency v2",
@@ -21894,23 +21894,6 @@
       "status": "todo"
     },
     {
-      "id": "openclaw-rl-multimodal-vision-feedback-v1",
-      "status": "todo",
-      "area": "learning",
-      "risk": "medium",
-      "title": "OpenClaw RL Vision Feedback Alignment v1",
-      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse visual feedback from user-uploaded images and screens as next-state reward signals.",
-      "allowed_paths": [
-        "magda_agent/learning/vision_sentiment_v1.py",
-        "tests/test_vision_sentiment_v1.py",
-        "agent_tasks.json"
-      ],
-      "acceptance": [
-        "Vision sentiment signals successfully update habit weights.",
-        "Tests verify weight adjustments using mock image sentiment signals."
-      ]
-    },
-    {
       "id": "mcp-server-auth-tls-v1",
       "status": "todo",
       "area": "security",
@@ -23129,6 +23112,59 @@
         "Monitor pings MCP tools at regular intervals.",
         "Failing tools are flagged and temporarily disabled.",
         "Tests mock ping responses and verify tool status changes."
+      ]
+    },
+    {
+      "id": "mcp-export-discovery-standard-v1-new",
+      "status": "todo",
+      "area": "integration",
+      "risk": "low",
+      "title": "MCP Skills Auto-Export Manifest V1",
+      "description": "Inspired by MCP standard trend: Implement a background task that periodically generates a standard MCP server manifest from locally active Magda skills.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_manifest_cron.py",
+        "tests/test_mcp_manifest_cron.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Background task aggregates available skills into an MCP compliant manifest.",
+        "Manifest is properly formatted and stored.",
+        "Tests mock the skills registry and verify manifest structure."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-vision-feedback-v1-new",
+      "title": "OpenClaw RL Vision Feedback Alignment v1",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse visual sentiment as next-state reward signals.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/vision_sentiment_v1_new.py",
+        "tests/test_vision_sentiment_v1_new.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Vision sentiment signals successfully update habit weights.",
+        "Tests verify weight adjustments using mock vision signals."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-dependency-graph-v1-new",
+      "title": "A2A Delegation Dependency Graph Task System",
+      "description": "Inspired by Claude Agent SDK multi-agent trend: Implement a dependency graph resolver specifically for external A2A delegated tasks, ensuring tasks are distributed to peer agents in topological order.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_dependency_graph_v1_new.py",
+        "tests/test_a2a_dependency_graph_v1_new.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Dependency graph correctly orders tasks for A2A delegation.",
+        "Tasks wait for prerequisites before delegation.",
+        "Tests verify graph resolution and delegation sequencing."
       ]
     }
   ]
