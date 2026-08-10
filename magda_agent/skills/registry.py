@@ -1,4 +1,4 @@
-from typing import Dict, Callable, Any, Optional, TYPE_CHECKING
+from typing import Dict, Callable, Any, Optional, Tuple, TYPE_CHECKING
 import logging
 
 if TYPE_CHECKING:
@@ -23,6 +23,11 @@ class SkillRegistry:
         # Initialize RealtimeGuardrail
         from magda_agent.safety.guardrails import RealtimeGuardrail
         self.realtime_guardrail = RealtimeGuardrail(policy_layer) if policy_layer else None        # Initialize ACSMemoryPolicy and chain with existing policy layer
+
+        # Initialize RealtimeGuardrailInterceptor
+        from magda_agent.safety.realtime_interceptor import RealtimeGuardrailInterceptor
+        self.realtime_interceptor = RealtimeGuardrailInterceptor(policy_layer) if policy_layer else None
+
         from magda_agent.safety.acs_memory import ACSMemoryPolicy
         self.acs_memory_policy = ACSMemoryPolicy()
 
@@ -75,9 +80,32 @@ class SkillRegistry:
 
             # 3. Execute with appropriate guard
             import time
+            import asyncio
             start_time = time.time()
             try:
-                if self.realtime_guardrail is not None:
+                if getattr(self, 'realtime_interceptor', None) is not None:
+                    # We can't use asyncio.run if there is a running event loop, and run_until_complete
+                    # cannot be called from a running event loop either.
+                    # We will invoke a synchronous version or use a separate thread
+                    import threading
+
+                    def run_async_in_thread(coro: Any) -> Tuple[bool, Any]:
+                        """Runs an async coroutine in a separate thread and returns the result."""
+                        res = []
+                        def _thread_target() -> None:
+                            try:
+                                res.append(asyncio.run(coro))
+                            except Exception as e:
+                                res.append((False, f"Thread execution error: {e}"))
+                        t = threading.Thread(target=_thread_target)
+                        t.start()
+                        t.join()
+                        return res[0] if res else (False, "Thread execution failed")
+
+                    success, result = run_async_in_thread(
+                        self.realtime_interceptor.intercept_and_execute(self.skills[name], name, kwargs)
+                    )
+                elif self.realtime_guardrail is not None:
                     result = self.realtime_guardrail.execute_with_guardrails(self.skills[name], name, **kwargs)
                 elif self.runtime_governance is not None:
                     result = self.runtime_governance.execute_tool(self.skills[name], name, **kwargs)
