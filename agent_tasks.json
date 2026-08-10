@@ -10196,7 +10196,7 @@
     },
     {
       "id": "1f3e194c-cddb-4c65-9782-1ba9b98fdc8e",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Workflow Orchestrator v2",
@@ -23165,6 +23165,40 @@
         "Dependency graph correctly orders tasks for A2A delegation.",
         "Tasks wait for prerequisites before delegation.",
         "Tests verify graph resolution and delegation sequencing."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-isolation-v5",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "Claude Agent Teams Git Worktree Isolation V5",
+      "description": "Inspired by Claude Agent SDK: Implement deep Git worktree isolation for specialized agent teams to avoid context bleeding when modifying dependencies concurrently.",
+      "allowed_paths": [
+        "magda_agent/teams/git_worktree_v5.py",
+        "tests/test_git_worktree_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Git worktree isolation applies strict namespace constraints.",
+        "Tests verify clean execution and cleanup."
+      ]
+    },
+    {
+      "id": "openclaw-rl-tool-ranking-system-v2",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Tool Ranking System V2",
+      "description": "Inspired by OpenClaw RL trend: Implement an advanced ranking system for tools that updates their expected utility scores in real-time based on success rates and multi-turn user satisfaction.",
+      "allowed_paths": [
+        "magda_agent/learning/tool_ranking_v2.py",
+        "tests/test_tool_ranking_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ToolRankingSystem calculates utility scores based on success feedback.",
+        "Tests verify score adjustment and tool selection bias."
       ]
     }
   ]
