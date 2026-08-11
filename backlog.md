@@ -335,3 +335,6 @@
 * [x] FEATURE: MCP Tool Taint Tracking Sandbox v5 (mcp-action-tool-taint-tracking-v5-6c2393a2)
 * [x] FEATURE: A2A Task Delegation Streaming Interface v3
 * [x] FEATURE: OpenClaw RL Metrics System v5 (openclaw-rl-metrics-v5-f60b1d89)
+* [ ] FEATURE: MCP Dynamic Capability Negotiation V5 (mcp-dynamic-capability-negotiation-v5)
+* [ ] FEATURE: OpenClaw RL Trajectory Quality Evaluation (openclaw-rl-trajectory-evaluation-v2)
+* [ ] FEATURE: Claude Worktree Pruning and Resource Optimizer (claude-worktree-pruning-optimizer-v1)

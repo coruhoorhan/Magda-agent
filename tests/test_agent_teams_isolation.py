@@ -107,3 +107,33 @@ async def test_git_worktree_manager_remove_success():
         mock_exec.assert_called_once()
         assert "remove" in mock_exec.call_args[0]
         assert "/tmp/test_worktrees/worktree_abc123" in mock_exec.call_args[0]
+
+from magda_agent.architecture.agent_teams_isolation import provision_isolated_workspace
+import os
+
+@pytest.mark.asyncio
+async def test_virtual_workspace_isolation() -> None:
+    """
+    Verifies that file modifications in one subagent's isolated workspace
+    do not leak into another's, without modifying os.chdir.
+    """
+    async with provision_isolated_workspace() as ws1:
+        file1 = os.path.join(ws1, "agent1_data.txt")
+        with open(file1, "w") as f:
+            f.write("agent 1 data")
+        assert os.path.exists(file1)
+
+        async with provision_isolated_workspace() as ws2:
+            assert ws1 != ws2
+
+            # The file from ws1 should not exist in the context of ws2
+            file1_in_ws2 = os.path.join(ws2, "agent1_data.txt")
+            assert not os.path.exists(file1_in_ws2)
+
+            file2 = os.path.join(ws2, "agent2_data.txt")
+            with open(file2, "w") as f:
+                f.write("agent 2 data")
+            assert os.path.exists(file2)
+
+        # Back in ws1 context
+        assert os.path.exists(file1)
