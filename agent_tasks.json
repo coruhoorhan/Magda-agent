@@ -10334,7 +10334,7 @@
     },
     {
       "id": "cb56bcba-eb6c-4e8c-a7f1-04070df46c7a",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "OpenClaw Hierarchical Swarm Orchestration",
@@ -23548,6 +23548,42 @@
       "acceptance": [
         "Negotiation protocol handles fuzzy-matching using embeddings.",
         "Tests mock vector retrieval and fallback loop logic."
+      ]
+    },
+    {
+      "id": "openai-agents-sdk-multimodal-router-v1",
+      "title": "OpenAI Agents SDK Multimodal Input Processing Router",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement a specialized router agent that pre-processes incoming user messages, categorizing them into text, image, or audio modalities before routing to the appropriate specialized subsystem.",
+      "area": "architecture",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/multimodal_router.py",
+        "tests/test_multimodal_router.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Multimodal router categorizes input correctly based on provided payloads.",
+        "Routes messages to designated mocked subsystems based on modality.",
+        "Tests verify categorization and routing logic."
+      ]
+    },
+    {
+      "id": "hermes-dynamic-environment-state-sync-v1",
+      "title": "Hermes Dynamic Environment State Sync",
+      "description": "Inspired by Hermes trends: Develop a background service that continuously monitors designated environment variables and config files, syncing their states directly into the agent's semantic memory to adapt to live environment changes without restarts.",
+      "area": "memory",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/env_state_sync.py",
+        "tests/test_env_state_sync.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Service monitors mock environment changes.",
+        "Syncs updated values directly into semantic memory.",
+        "Tests verify memory update upon simulated environment change."
       ]
     }
   ]
