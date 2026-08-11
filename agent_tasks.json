@@ -10351,7 +10351,7 @@
     },
     {
       "id": "fd499b40-cef2-46d1-b426-54ba08138ecc",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "Agent Guard runtime governance layer integration",
@@ -23584,6 +23584,60 @@
         "Service monitors mock environment changes.",
         "Syncs updated values directly into semantic memory.",
         "Tests verify memory update upon simulated environment change."
+      ]
+    },
+    {
+      "id": "new-openclaw-canvas-visualizer-diff-streamer",
+      "title": "OpenClaw Canvas Visualizer Diff Streamer",
+      "description": "Inspired by the OpenClaw Canvas trend: Implement a websocket payload optimizer that calculates diffs between visualization states to significantly lower bandwidth usage for UI syncing.",
+      "area": "visualization",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_diff_streamer.py",
+        "tests/test_canvas_diff_streamer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A diff streamer successfully calculates deltas between consecutive UI states.",
+        "Websocket messages contain diff payloads instead of full state objects.",
+        "Tests verify standard JSON patch format compatibility."
+      ]
+    },
+    {
+      "id": "new-hermes-skill-experience-synthesizer",
+      "title": "Hermes Skill Experience Synthesizer",
+      "description": "Inspired by the Hermes Self-Improving loop trend: Create a component that analyzes successful action chains in episodic memory to dynamically synthesize and propose new persistent skills for the agent registry.",
+      "area": "learning",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/skill_synthesizer.py",
+        "tests/test_skill_synthesizer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Synthesizer reads episodic memory to detect recurring successful tool sequences.",
+        "Module drafts a composite Python skill from these sequences using AST logic.",
+        "Tests mock successful memory chunks and assert valid generated skill source code."
+      ]
+    },
+    {
+      "id": "new-mcp-kernel-tool-taint-isolation-layer",
+      "title": "MCPKernel Tool Taint Isolation Layer",
+      "description": "Inspired by the MCPKernel taint tracking trend: Implement a specialized sandbox manager that uses container boundaries to enforce complete network isolation for external tools that consume user-provided (tainted) data.",
+      "area": "security",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_taint_isolation.py",
+        "tests/test_mcp_taint_isolation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Isolation layer proxies execution for tainted data inputs via a dedicated secure subprocess.",
+        "Network access is blocked for isolated tool invocations.",
+        "Tests verify invocation patterns correctly detect tainted arguments and restrict access."
       ]
     }
   ]

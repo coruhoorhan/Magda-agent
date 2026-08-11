@@ -28,6 +28,9 @@ class SkillRegistry:
         from magda_agent.safety.realtime_interceptor import RealtimeGuardrailInterceptor
         self.realtime_interceptor = RealtimeGuardrailInterceptor(policy_layer) if policy_layer else None
 
+        from magda_agent.safety.governance_layer import GovernanceLayer
+        self.governance_layer = GovernanceLayer()
+
         from magda_agent.safety.acs_memory import ACSMemoryPolicy
         self.acs_memory_policy = ACSMemoryPolicy()
 
