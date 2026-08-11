@@ -10300,7 +10300,7 @@
     },
     {
       "id": "bd4738c5-9cbd-4df5-88e6-4647c995241f",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "OpenClaw Virtual Context Engine Extensions",
@@ -23443,6 +23443,60 @@
       "acceptance": [
         "Worktree Pruning Optimizer module is created.",
         "Tests mock disk operations and verify correct worktrees are pruned based on TTL."
+      ]
+    },
+    {
+      "id": "new-hermes-skill-discovery-v2-1f4a92c3",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes-inspired Dynamic Skill Discovery V2",
+      "description": "Inspired by Hermes Agent (June 2026): Implement an automatic skill discovery mechanism that dynamically indexes available actions from agentskills.io and adds them to the agent's active procedural memory context.",
+      "allowed_paths": [
+        "magda_agent/skills/discovery_v2.py",
+        "tests/test_discovery_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Dynamic skill discovery can query simulated agentskills.io endpoints.",
+        "Discovered skills are correctly merged into procedural memory.",
+        "Tests verify skill indexing and loading."
+      ]
+    },
+    {
+      "id": "new-openclaw-canvas-diff-v3-e6b789d2",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas Diff Patching V3",
+      "description": "Inspired by OpenClaw trends: Implement a delta-based patch streamer for the Canvas visualization, significantly reducing websocket bandwidth by only sending state diffs instead of full payloads.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_diff_v3.py",
+        "tests/test_canvas_diff_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer generates valid JSON patches between state ticks.",
+        "Patches are serialized and sent over the active websocket.",
+        "Tests mock states and assert patch format."
+      ]
+    },
+    {
+      "id": "new-claude-planner-evaluator-loop-v2-a9b8c7d6",
+      "status": "todo",
+      "area": "planning",
+      "risk": "high",
+      "title": "Claude Code-inspired Pre-execution Plan Evaluator",
+      "description": "Inspired by Claude Agent SDK: Create a specialized Evaluator subagent that intercepts the output of the Planner and critiques it for safety and logical coherence before execution begins.",
+      "allowed_paths": [
+        "magda_agent/planning/pre_execution_evaluator.py",
+        "tests/test_pre_execution_evaluator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The Evaluator subagent receives the generated plan and outputs a critique.",
+        "If critique fails, the plan is rejected and sent back to the Planner.",
+        "Tests mock plan formats and evaluator LLM responses."
       ]
     }
   ]
