@@ -10317,7 +10317,7 @@
     },
     {
       "id": "d660ef26-e11f-4710-a298-033255ee0556",
-      "status": "todo",
+      "status": "done",
       "area": "execution",
       "risk": "high",
       "title": "Hermes Parallel Step Planner",
@@ -23497,6 +23497,57 @@
         "The Evaluator subagent receives the generated plan and outputs a critique.",
         "If critique fails, the plan is rejected and sent back to the Planner.",
         "Tests mock plan formats and evaluator LLM responses."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-quality-v5-abc",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Trajectory Quality Evaluator V5",
+      "description": "Inspired by OpenClaw RL Trend: Enhance trajectory evaluation to include subagent delegation accuracy and task success rates, extracting this information from the EpisodicMemory.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_quality_v5.py",
+        "tests/test_trajectory_quality_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Trajectory Evaluator assesses delegation patterns.",
+        "Tests mock trajectory parsing and evaluate accuracy correctly."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v3-def",
+      "status": "todo",
+      "area": "isolation",
+      "risk": "medium",
+      "title": "Claude Worktree Pruning and Resource Optimizer V3",
+      "description": "Inspired by Claude Agent Teams Trend: Enhance the optimizer to track and limit concurrent subagent disk usage aggressively using cgroups constraints, pruning dynamically based on system memory pressure.",
+      "allowed_paths": [
+        "magda_agent/isolation/worktree_pruning_v3.py",
+        "tests/test_worktree_pruning_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Worktree Pruning Optimizer integrates with cgroups limits.",
+        "Tests mock disk pressure events and verify correct worktrees are evicted."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v9-ghi",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Negotiation V9",
+      "description": "Inspired by MCP Trends: Introduce semantic embedding matching for capability negotiation, allowing MCP clients to fuzzy-match requested tool capabilities even when schemas differ slightly.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v9.py",
+        "tests/test_mcp_negotiation_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negotiation protocol handles fuzzy-matching using embeddings.",
+        "Tests mock vector retrieval and fallback loop logic."
       ]
     }
   ]
