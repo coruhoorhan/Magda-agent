@@ -10266,7 +10266,7 @@
     },
     {
       "id": "0d904de7-29ce-4f8d-8baf-d7d3c6300df1",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Canvas Live Event Emitter",
