@@ -20394,7 +20394,7 @@
     },
     {
       "id": "a2a-enterprise-auth-handshake-v1-4ffcb75b",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Enterprise Auth Handshake V1",
@@ -23341,6 +23341,57 @@
         "The DependencyOptimizer subagent creates optimal DAGs from linear planner output.",
         "The DAG structure isolates parallelizable tasks successfully.",
         "Tests mock the planner output and verify the generated DAG dependencies."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-handshake-revocation-v2-bb4b53da",
+      "title": "A2A Enterprise Auth Handshake Revocation System",
+      "description": "Inspired by A2A standard trends: Build upon the token exchange handshake to implement a robust revocation system where a compromised peer can be instantly blacklisted and its tokens invalidated across the A2A sub-agent mesh.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_auth_revocation.py",
+        "tests/test_a2a_auth_revocation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A token revocation registry is implemented.",
+        "Tests verify tokens are successfully revoked and denied upon subsequent handshake requests."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-caching-invalidation-v2-bf330743",
+      "title": "MCP Tool Action Result Caching Invalidation V2",
+      "description": "Inspired by MCP kernel trends: Implement an explicit caching invalidation strategy for MCP read-only tools, clearing cached results intelligently based on configurable TTLs to ensure agents do not act on stale data.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_caching_invalidation.py",
+        "tests/test_mcp_caching_invalidation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP cache TTL invalidation is implemented.",
+        "Tests mock time and verify cache correctly evicts expired data."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-failure-recovery-v1-2770fd0c",
+      "title": "OpenClaw Trajectory Failure Recovery Analysis V1",
+      "description": "Inspired by OpenClaw Trajectory Quality Evaluation trends: Build a failure recovery analyzer that parses failed multi-turn RL trajectories to identify the exact step where context loss occurred, generating a lesson for procedural memory.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_failure_recovery_v1.py",
+        "tests/test_trajectory_failure_recovery_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Failure recovery analyzer processes failed trajectories and extracts structural lessons.",
+        "Tests mock failed traces and verify lesson generation."
       ]
     }
   ]
