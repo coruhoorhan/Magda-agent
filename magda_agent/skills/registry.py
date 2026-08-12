@@ -1,5 +1,7 @@
 from typing import Dict, Callable, Any, Optional, Tuple, TYPE_CHECKING
 import logging
+import time
+from magda_agent.skills.telemetry_export import SkillTelemetryTracker
 
 if TYPE_CHECKING:
     from magda_agent.safety.policy import PolicyLayer
@@ -12,6 +14,7 @@ class SkillRegistry:
         self.skills: Dict[str, Callable] = {}
         self.descriptions: Dict[str, str] = {}
         self.policy_layer = policy_layer
+        self.telemetry_tracker = SkillTelemetryTracker()
 
         # Initialize AgentGuard if policy_layer is provided
         from magda_agent.safety.agent_guard import AgentGuard
@@ -195,8 +198,16 @@ class SkillRegistry:
                     duration=duration
                 )
 
+            self.telemetry_tracker.record_usage(name, success=True, execution_time_ms=duration * 1000)
+
             return result
         except Exception as e:
+            try:
+                exec_time = duration * 1000
+            except NameError:
+                exec_time = 0.0
+
+            self.telemetry_tracker.record_usage(name, success=False, execution_time_ms=exec_time)
             logging.error(f"Error executing skill {name}: {e}")
             return f"Error executing skill {name}: {e}"
 

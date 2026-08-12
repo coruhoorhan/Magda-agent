@@ -10405,7 +10405,7 @@
     },
     {
       "id": "b5a81083-a558-4e29-a095-ab07fb616d1c",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "Hermes-inspired Skill Telemetry Export",
@@ -23638,6 +23638,42 @@
         "Isolation layer proxies execution for tainted data inputs via a dedicated secure subprocess.",
         "Network access is blocked for isolated tool invocations.",
         "Tests verify invocation patterns correctly detect tainted arguments and restrict access."
+      ]
+    },
+    {
+      "id": "claude-code-memory-compression-v1",
+      "title": "Claude Code Memory Compression Pattern V1",
+      "description": "Inspired by Claude Code agent trend: Implement a specialized summarizer module that uses a rolling window to compress historical episodic memories into dense vector representations before token limits are exhausted.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/rolling_summarizer_v1.py",
+        "tests/test_rolling_summarizer_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Rolling summarizer module compresses episodic memory vectors successfully.",
+        "Tests mock LLM summarization and verify token limit threshold triggers.",
+        "Tests verify dense vector insertion back into the ChromaDB mock."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-vision-feedback-v4",
+      "title": "OpenClaw RL Vision Feedback Alignment v4",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Implement an image parser that processes visual UI sentiment directly from bounding boxes and UI test screenshots to serve as reward scalar signals in the agent's procedural memory weights.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/vision_sentiment_v4.py",
+        "tests/test_vision_sentiment_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Vision sentiment parser maps bounding box interactions to RL rewards.",
+        "Procedural memory weights update based on the scalar signals.",
+        "Tests verify weight adjustments using mock image payload data."
       ]
     }
   ]
