@@ -10369,7 +10369,7 @@
     },
     {
       "id": "ce9ee3b8-8915-4b7c-9d2f-b87fa445f365",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Virtual context management for working memory",
