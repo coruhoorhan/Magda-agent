@@ -1,11 +1,10 @@
 import logging
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List, Optional, Any, Callable, Awaitable
 from magda_agent.llm_client import LLMClient
 from magda_agent.emotions.engine import PADState
-from magda_agent.memory.working import MemoryEntry
+from magda_agent.memory.working import WorkingMemory, MemoryEntry
 
 if TYPE_CHECKING:
-    from magda_agent.memory.working import WorkingMemory
     from magda_agent.memory.episodic import EpisodicMemory
 
 class VirtualContextManagerV2:
@@ -277,3 +276,36 @@ class VirtualContextManagerV2:
                 entries = working_memory.get_entries(user_id=user_id)
         finally:
             self._in_maintenance = False
+
+
+class VirtualWorkingMemoryV2(WorkingMemory):
+    """
+    VirtualWorkingMemoryV2 subclass of WorkingMemory that tracks token usage
+    dynamically and automatically pages out older entries into EpisodicMemory
+    when configured token thresholds are exceeded.
+    """
+    def __init__(self, limit: int = 10, context_engine: Optional[Any] = None, token_threshold: int = 4000) -> None:
+        super().__init__(limit=limit, context_engine=context_engine)
+        self.token_threshold = token_threshold
+
+    def get_token_count(self, user_id: Optional[int] = None) -> int:
+        """
+        Dynamically and accurately tracks approximate token counts of active working memory.
+        """
+        entries = self.get_entries(user_id=user_id)
+        total_words = sum(len(e.content.split()) for e in entries)
+        return int(total_words * 1.3)
+
+    async def add(self, entry: MemoryEntry, summarizer: Optional[Callable[[List['MemoryEntry']], Awaitable['MemoryEntry']]] = None) -> None:
+        """
+        Adds a memory entry to active working memory and evaluates token usage limits,
+        automatically paging out older memories to prevent context overflow.
+        """
+        await super().add(entry, summarizer)
+
+        u_id = entry.user_id if entry.user_id is not None else -1
+        vcm = getattr(self, 'virtual_context_manager', None)
+        em = getattr(self, 'episodic_memory', None)
+
+        if vcm and em:
+            await vcm.maintain_working_memory_limits(self, em, u_id, max_tokens=self.token_threshold)

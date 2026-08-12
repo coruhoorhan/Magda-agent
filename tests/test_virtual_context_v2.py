@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock
 import pytest
-from magda_agent.memory.virtual_context_v2 import VirtualContextManagerV2
+from magda_agent.memory.virtual_context_v2 import VirtualContextManagerV2, VirtualWorkingMemoryV2
 from magda_agent.memory.working import WorkingMemory, MemoryEntry
 from magda_agent.memory.episodic import EpisodicMemory
 from magda_agent.emotions.engine import PADState
@@ -203,3 +203,55 @@ async def test_virtual_context_v2_large_entry_chunking() -> None:
     paged_contents = [event["text"] for event in events]
     assert any("Summary" in content and "word0" in content for content in paged_contents)
     assert any("word20" in content for content in paged_contents)
+
+
+@pytest.mark.asyncio
+async def test_virtual_working_memory_v2_get_token_count() -> None:
+    wm = VirtualWorkingMemoryV2(token_threshold=50)
+    state = PADState(0, 0, 0)
+
+    e1 = MemoryEntry("word1 word2 word3", 0.5, state, user_id=1)
+    await wm.add(e1)
+
+    # 3 words * 1.3 = 3 tokens
+    assert wm.get_token_count(user_id=1) == 3
+
+
+@pytest.mark.asyncio
+async def test_virtual_working_memory_v2_auto_eviction_threshold() -> None:
+    vcm = VirtualContextManagerV2()
+    wm = VirtualWorkingMemoryV2(token_threshold=15)
+    em = EpisodicMemory(persist_directory=":memory:")
+    em.collection_name = "test_episodic_memory_vwm2_auto_evict"
+    em.collection = em.client.get_or_create_collection(name=em.collection_name)
+
+    wm.virtual_context_manager = vcm
+    wm.episodic_memory = em
+
+    state = PADState(0, 0, 0)
+
+    # Each entry has 4 words -> ~5 tokens.
+    e1 = MemoryEntry("word1 word2 word3 word4", 0.5, state, user_id=1)
+    e2 = MemoryEntry("word5 word6 word7 word8", 0.6, state, user_id=1)
+    e3 = MemoryEntry("word9 word10 word11 word12", 0.7, state, user_id=1)
+
+    await wm.add(e1)
+    await wm.add(e2)
+    # Total tokens is ~10, threshold is 15.
+    assert len(wm.get_entries(user_id=1)) == 2
+    assert wm.get_token_count(user_id=1) == 10
+
+    # Add e3, total becomes 15 (which is <= threshold, so no eviction yet)
+    await wm.add(e3)
+    assert len(wm.get_entries(user_id=1)) == 3
+    assert wm.get_token_count(user_id=1) == 15
+
+    # Add e4, total becomes 20 (exceeds threshold of 15).
+    # It should page out half of the entries (i.e., page out 2 entries, leaving 2)
+    e4 = MemoryEntry("word13 word14 word15 word16", 0.8, state, user_id=1)
+    await wm.add(e4)
+
+    assert len(wm.get_entries(user_id=1)) == 2
+    # Verify episodic memory got the evicted events
+    events = em.get_all_events(user_id=1)
+    assert len(events) > 0
