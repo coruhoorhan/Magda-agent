@@ -10441,7 +10441,7 @@
     },
     {
       "id": "5b6d9420-5611-4563-9045-ad5bc4feb9dc",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "A2A Workflow Orchestration via mDNS",
@@ -23710,6 +23710,58 @@
         "Vision sentiment parser maps bounding box interactions to RL rewards.",
         "Procedural memory weights update based on the scalar signals.",
         "Tests verify weight adjustments using mock image payload data."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-worktree-pruning",
+      "title": "Claude Agent Teams Worktree Pruning",
+      "description": "Inspired by Claude Agent Teams trend (June 2026): Implement an aggressive pruning strategy for temporary Git worktrees spawned during parallel multi-agent task execution to prevent disk exhaustion.",
+      "area": "isolation",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/isolation/worktree_pruning.py",
+        "tests/test_worktree_pruning.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Worktree pruner identifies and deletes stale Git worktrees.",
+        "Tests mock disk operations and verify deletion logic."
+      ]
+    },
+    {
+      "id": "hermes-skill-marketplace-sync-v1",
+      "title": "Hermes Skill Marketplace Background Sync",
+      "description": "Inspired by Hermes Agent trend (June 2026): Implement a background process to periodically synchronize verified skills from an external agentskills.io mock registry into the local Procedural Memory.",
+      "area": "learning",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/skill_sync.py",
+        "tests/test_skill_sync.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sync service fetches skills from mock agentskills.io endpoint.",
+        "Successfully fetched skills are persisted locally.",
+        "Tests mock the HTTP call and verify local persistence."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation",
+      "title": "MCP Dynamic Capability Negotiation",
+      "description": "Inspired by MCP trends (June 2026): Introduce semantic embedding matching for capability negotiation, allowing MCP clients to fuzzy-match requested tool capabilities even when schemas differ slightly.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation.py",
+        "tests/test_mcp_negotiation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negotiation protocol handles fuzzy-matching using embeddings.",
+        "Tests mock vector retrieval and fallback loop logic."
       ]
     }
   ]
