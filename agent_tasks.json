@@ -10423,7 +10423,7 @@
     },
     {
       "id": "0cbbda33-a878-4732-a158-0e5a515d0a89",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "high",
       "title": "OpenClaw-RL Virtual Context Feedback Paging",
@@ -23668,6 +23668,42 @@
       "allowed_paths": [
         "magda_agent/learning/vision_sentiment_v4.py",
         "tests/test_vision_sentiment_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Vision sentiment parser maps bounding box interactions to RL rewards.",
+        "Procedural memory weights update based on the scalar signals.",
+        "Tests verify weight adjustments using mock image payload data."
+      ]
+    },
+    {
+      "id": "new-hermes-skill-experience-synthesizer-v2",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "Hermes-inspired Skill Experience Synthesizer v2",
+      "description": "Inspired by Hermes Agent trend (June 2026): Create a learning module that reviews past episodic memory trajectories and synthesizes new reusable Python skills, saving them to the persistent registry if they pass static AST checks.",
+      "allowed_paths": [
+        "magda_agent/learning/skill_synthesizer_v2.py",
+        "tests/test_skill_synthesizer_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module reads success signals from episodic memory.",
+        "Module drafts a composite Python skill and validates it via AST.",
+        "Tests mock successful memory chunks and assert valid generated skill source code."
+      ]
+    },
+    {
+      "id": "new-openclaw-rl-multimodal-vision-feedback-v5",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Vision Feedback Alignment v5",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Implement an image parser that processes visual UI sentiment directly from bounding boxes and UI test screenshots to serve as reward scalar signals in the agent's procedural memory weights.",
+      "allowed_paths": [
+        "magda_agent/learning/vision_sentiment_v5.py",
+        "tests/test_vision_sentiment_v5.py",
         "agent_tasks.json"
       ],
       "acceptance": [
