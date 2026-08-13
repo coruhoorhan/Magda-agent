@@ -10459,7 +10459,7 @@
     },
     {
       "id": "eb6a35a2-308e-43d6-bb87-10532e32fadb",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Context Engine Live Semantic Re-ranker",
