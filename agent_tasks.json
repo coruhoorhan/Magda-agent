@@ -10476,7 +10476,7 @@
     },
     {
       "id": "a1027164-23de-483e-b86a-070a82924066",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "high",
       "title": "OpenClaw-RL Real-time Policy Gradient Updater",
@@ -23762,6 +23762,60 @@
       "acceptance": [
         "Negotiation protocol handles fuzzy-matching using embeddings.",
         "Tests mock vector retrieval and fallback loop logic."
+      ]
+    },
+    {
+      "id": "new-openai-realtime-guardrail-fallback",
+      "title": "Realtime Guardrail Fallback mechanism",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement a realtime guardrail fallback that intercepts failed policy layers and routes immediately to a safe fallback skill without interrupting the core agent loop.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/guardrails.py",
+        "tests/test_guardrails.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Realtime fallback intercepts policy violation exceptions.",
+        "Routes execution to a safe fallback state.",
+        "Tests mock policy violations and verify safe fallback."
+      ]
+    },
+    {
+      "id": "new-claude-context-compression-v1",
+      "title": "Context Compression for Selective Retrieval",
+      "description": "Inspired by Claude Agent SDK trend: Implement a context compression module that dynamically reduces the working memory footprint by summarizing non-essential information before generating a plan.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/context_compression.py",
+        "tests/test_context_compression.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module identifies older or less important working memory context.",
+        "Compresses the context via summary while retaining semantic meaning.",
+        "Tests verify memory size reduction and semantic retention."
+      ]
+    },
+    {
+      "id": "new-claude-subagent-spawning-v1",
+      "title": "Subagent Spawning with Isolation",
+      "description": "Inspired by Claude Agent SDK trend: Implement a specialized subagent spawner module that allows the agent to spin up a focused sub-task agent in an isolated context namespace.",
+      "area": "architecture",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_spawning.py",
+        "tests/test_subagent_spawning.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent is initialized with an isolated context window.",
+        "Subagent successfully executes a mock task.",
+        "Tests verify context does not bleed between the parent and subagent."
       ]
     }
   ]
