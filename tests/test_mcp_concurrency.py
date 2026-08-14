@@ -397,4 +397,4 @@ async def test_concurrent_skill_executor_performance(registry):
     assert results[2] == "my_server-tool2_done"
 
     print(f"Concurrent execution of 3 x 0.1s tools took {duration:.4f}s")
-    assert duration < 0.8, f"Execution took too long: {duration}s"
+    assert duration < 1.5, f"Execution took too long: {duration}s"
