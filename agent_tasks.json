@@ -10583,7 +10583,7 @@
     },
     {
       "id": "openclaw-rl-next-state-feedback-v9-9794c077",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Next-State Feedback Processing V9",
@@ -24028,6 +24028,60 @@
       "acceptance": [
         "Quota enforcer bounds container execution by RAM/CPU.",
         "Tests verify OOM situations are gracefully caught and handled."
+      ]
+    },
+    {
+      "id": "new-claude-critic-evaluator-v2-377744b5",
+      "status": "todo",
+      "area": "planning",
+      "risk": "medium",
+      "title": "Claude-style Critic Evaluator Module V2",
+      "description": "Inspired by Claude Agent SDK (June 2026): Implement a standalone Critic Evaluator sub-agent module to review execution DAGs before they run and flag potentially faulty steps.",
+      "allowed_paths": [
+        "magda_agent/planning/critic_evaluator_v2.py",
+        "tests/test_critic_evaluator_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Critic Evaluator module correctly identifies flawed logic in mock DAGs.",
+        "Returns a structured review output with pass/fail and suggestions.",
+        "Tests mock execution plans and verify evaluation output."
+      ]
+    },
+    {
+      "id": "new-hermes-cron-daily-report-v1-1595d15a",
+      "status": "todo",
+      "area": "operations",
+      "risk": "low",
+      "title": "Hermes-inspired Cron Daily Digest Report",
+      "description": "Inspired by Hermes Agent cron scheduling (June 2026): Create a cron task that compiles a daily diagnostic report of user interactions and agent memory growth, saving it to disk.",
+      "allowed_paths": [
+        "magda_agent/operations/cron_daily_report_v1.py",
+        "tests/test_cron_daily_report_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron task runs and successfully aggregates a summary of the day.",
+        "Saves the structured summary as a markdown or json file.",
+        "Tests mock cron execution and verify output format."
+      ]
+    },
+    {
+      "id": "new-mcp-telemetry-canvas-v2-2e10ef3f",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "MCP Canvas Telemetry Stream V2",
+      "description": "Inspired by OpenClaw Canvas trend (June 2026): Implement an MCP-compatible telemetry streaming module that broadcasts agent tool execution states in real-time for external canvas visualization.",
+      "allowed_paths": [
+        "magda_agent/telemetry/mcp_canvas_stream_v2.py",
+        "tests/test_mcp_canvas_stream_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module properly formats tool state updates into MCP-compatible payloads.",
+        "Mocks a websocket connection and verifies payload transmission.",
+        "Tests confirm successful serialization of diverse tool execution states."
       ]
     }
   ]
