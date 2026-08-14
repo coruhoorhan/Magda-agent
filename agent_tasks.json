@@ -10529,7 +10529,7 @@
     },
     {
       "id": "0ce21fd5-94ec-46a8-bc1d-877ef8af8c35",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "A2A Workflow Subagent Spawning",
@@ -23870,6 +23870,59 @@
         "Manager successfully clones temporary worktrees for sub-agents.",
         "Sub-agents operate in isolated contexts without modifying global working directory.",
         "Tests verify worktree creation and cleanup."
+      ]
+    },
+    {
+      "id": "new-hermes-skill-market-export-v3",
+      "title": "Hermes-inspired Skill Export Format V3",
+      "description": "Inspired by Hermes Agent trend (June 2026): Update the MCPExporter to support standard agentskills.io format for skill export, facilitating broader marketplace interoperability.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_export_v3.py",
+        "tests/test_mcp_export_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter generates JSON payload compatible with agentskills.io standard.",
+        "Unit tests mock the skill registry and verify output payload schema matches."
+      ]
+    },
+    {
+      "id": "new-openclaw-rl-multimodal-user-feedback",
+      "title": "OpenClaw RL User Multimodal Feedback Integration",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw behavior plugin to accept explicitly parsed text/voice sentiment signals as reward scalars alongside explicit user ratings.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_behavior_multimodal.py",
+        "tests/test_openclaw_behavior_multimodal.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Behavior plugin calculates reward scalars from multimodal sentiment outputs.",
+        "Weight update functions map voice/text sentiment uniformly.",
+        "Tests mock multi-turn responses and verify appropriate weight drifts."
+      ]
+    },
+    {
+      "id": "new-claude-planner-evaluator-loop",
+      "title": "Claude-style Planner-Evaluator Dependency Loop",
+      "description": "Inspired by Claude Agent SDK (Anthropic): Implement a closed-loop review system where the Planner uses CriticAgent evaluations to automatically prune faulty branches in the execution DAG before scheduling.",
+      "area": "planning",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/planning/evaluator_loop.py",
+        "tests/test_evaluator_loop.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Planner modifies its initial DAG based on Evaluator review signals.",
+        "Failing branch paths are safely bypassed or flagged for retry.",
+        "Tests mock Evaluator failure flags and ensure correct DAG reorganization."
       ]
     }
   ]

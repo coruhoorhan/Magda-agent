@@ -26,3 +26,5 @@ aiofiles==24.1.0
 datasets==2.21.0
 zeroconf
 websockets==12.0
+httpx
+pytest-asyncio
