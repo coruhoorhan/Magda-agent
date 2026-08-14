@@ -10600,7 +10600,7 @@
     },
     {
       "id": "openclaw-canvas-live-memory-telemetry-v5-0ccbcf81",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Canvas Live Memory Telemetry V5",
@@ -24082,6 +24082,58 @@
         "Telemetry module properly formats tool state updates into MCP-compatible payloads.",
         "Mocks a websocket connection and verifies payload transmission.",
         "Tests confirm successful serialization of diverse tool execution states."
+      ]
+    },
+    {
+      "id": "new-a2a-discovery-agent-cards-v3",
+      "title": "A2A Discovery Agent Cards Standard V3",
+      "description": "Inspired by A2A Protocol trend (June 2026): Update Agent Card format during peer discovery to strictly require supported task delegation schemas and MCP capabilities.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_agent_cards_v3.py",
+        "tests/test_a2a_agent_cards_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A Agent Card class properly serializes and deserializes the updated schema requirements.",
+        "Tests mock peer discovery payloads and verify parsing strictness."
+      ]
+    },
+    {
+      "id": "new-openclaw-virtual-context-compression-v1",
+      "title": "OpenClaw Virtual Context Compression Layer",
+      "description": "Inspired by MemGPT/Letta pattern in Memory Architecture (June 2026): Create a compression subagent hook that intercepts long subagent working memory states and applies selective summarization.",
+      "area": "memory",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_compression_v1.py",
+        "tests/test_virtual_context_compression_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Compression hook appropriately reduces token length of the virtual context.",
+        "Tests use MagicMock to simulate LLM summarization and check context size reduction."
+      ]
+    },
+    {
+      "id": "new-mcp-kernel-tool-runtime-wrapper",
+      "title": "MCP Kernel Tool Runtime Safety Wrapper",
+      "description": "Inspired by MCPKernel and Safety trends (June 2026): Implement an interception wrapper around MCP action tools that runs inputs through a strict taint checking pass before yielding to the host.",
+      "area": "security",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_kernel_wrapper_v1.py",
+        "tests/test_mcp_kernel_wrapper_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Wrapper intercepts all executions and runs taint tracking.",
+        "Blocks executions found to have untrusted external source state in sensitive fields.",
+        "Tests mock tool inputs and test both allowed and blocked states."
       ]
     }
   ]
