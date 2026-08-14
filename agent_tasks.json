@@ -10493,7 +10493,7 @@
     },
     {
       "id": "613e37a3-5963-4d76-9acf-0454455f7e33",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Hermes-inspired Cron Background Tasks",
