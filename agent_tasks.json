@@ -10511,7 +10511,7 @@
     },
     {
       "id": "35b9f554-366b-4ea8-be3c-b2d2e32bda20",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "high",
       "title": "OpenClaw Context Engine Metric Plugin",
@@ -23816,6 +23816,60 @@
         "Subagent is initialized with an isolated context window.",
         "Subagent successfully executes a mock task.",
         "Tests verify context does not bleed between the parent and subagent."
+      ]
+    },
+    {
+      "id": "new-agent-guard-runtime-policy-layer",
+      "title": "Agent Guard Runtime Policy Layer",
+      "description": "Inspired by trend: Agent Guard runtime governance layer. Implement a policy evaluator that intercepts outgoing tool calls and verifies them against a set of dynamically loaded policies before execution.",
+      "area": "safety",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/agent_guard.py",
+        "tests/test_agent_guard.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Policy evaluator intercepts tool invocations via a decorator or explicit hook.",
+        "Evaluates tool parameters against loaded policy rules.",
+        "Tests mock policy violations and verify execution is blocked."
+      ]
+    },
+    {
+      "id": "new-a2a-peer-discovery-plugin",
+      "title": "A2A Peer Discovery Plugin",
+      "description": "Inspired by A2A standard trend (June 2026): Create a discovery component using mDNS to detect local peer sub-agents broadcasting Agent Cards, maintaining a dynamic registry of available peers for task delegation.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_discovery.py",
+        "tests/test_a2a_discovery.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery plugin listens for mDNS broadcasts.",
+        "Parses Agent Cards and registers peers in memory.",
+        "Tests mock mDNS events and verify registry updates."
+      ]
+    },
+    {
+      "id": "new-claude-agent-teams-isolation-v2",
+      "title": "Agent Teams Parallel Workspace Isolation V2",
+      "description": "Inspired by Claude Agent SDK Agent Teams trend (June 2026): Implement an isolation manager that sets up temporary Git worktrees and distinct virtual contexts to prevent state leakage during parallel task execution by sub-agents.",
+      "area": "architecture",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/teams_isolation_v2.py",
+        "tests/test_teams_isolation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Manager successfully clones temporary worktrees for sub-agents.",
+        "Sub-agents operate in isolated contexts without modifying global working directory.",
+        "Tests verify worktree creation and cleanup."
       ]
     }
   ]
