@@ -10547,7 +10547,7 @@
     },
     {
       "id": "72e980b7-1b86-45f7-8f4a-a98cf82d1289",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "Prempti Tool-Call Interception Audit",
@@ -23923,6 +23923,60 @@
         "Planner modifies its initial DAG based on Evaluator review signals.",
         "Failing branch paths are safely bypassed or flagged for retry.",
         "Tests mock Evaluator failure flags and ensure correct DAG reorganization."
+      ]
+    },
+    {
+      "id": "new-openclaw-rl-multimodal-user-feedback-v6",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Multimodal User Feedback Pipeline",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Develop a pipeline to automatically parse and incorporate text, voice, and image sentiment interactions into RL habit weights.",
+      "allowed_paths": [
+        "magda_agent/learning/multimodal_feedback_v6.py",
+        "tests/test_multimodal_feedback_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline successfully extracts reward scalars from all modalities.",
+        "Habit weights correctly reflect multimodal inputs.",
+        "Tests mock multi-turn responses."
+      ]
+    },
+    {
+      "id": "new-claude-planner-evaluator-loop-v3",
+      "status": "todo",
+      "area": "planning",
+      "risk": "high",
+      "title": "Claude-style Planner-Evaluator DAG Loop",
+      "description": "Inspired by Claude Agent SDK (Anthropic): Implement a closed-loop DAG evaluation process where the Planner uses CriticAgent critiques to adjust execution plans before running sub-agents.",
+      "allowed_paths": [
+        "magda_agent/planning/evaluator_dag_loop_v3.py",
+        "tests/test_evaluator_dag_loop_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Planner adjusts DAG based on Evaluator review signals.",
+        "Failing branches are bypassed or retried correctly.",
+        "Tests mock Evaluator failure flags and ensure structural changes."
+      ]
+    },
+    {
+      "id": "new-agent-guard-runtime-policy-layer-v2",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "Agent Guard Runtime Policy Interceptor",
+      "description": "Inspired by Agent Guard runtime governance layer trend (June 2026): Implement an interception mechanism that verifies tool arguments against dynamically loaded security policies before execution.",
+      "allowed_paths": [
+        "magda_agent/safety/agent_guard_interceptor_v2.py",
+        "tests/test_agent_guard_interceptor_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Policy interceptor validates tool parameters before execution.",
+        "Blocks executions that violate dynamic policies.",
+        "Tests mock policy violations and verify the block."
       ]
     }
   ]
