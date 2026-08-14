@@ -10565,7 +10565,7 @@
     },
     {
       "id": "bacb2725-19cd-40af-8e0c-83948922331e",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Tool Registry Bridge",
@@ -23977,6 +23977,57 @@
         "Policy interceptor validates tool parameters before execution.",
         "Blocks executions that violate dynamic policies.",
         "Tests mock policy violations and verify the block."
+      ]
+    },
+    {
+      "id": "5665e438-fe31-48b3-9732-510c09422d30",
+      "title": "A2A Discovery Secure Token Authentication V2",
+      "description": "Inspired by June 2026 A2A standards trend: Implement an OAuth2 style token validation step during mDNS peer discovery before trusting any remote Agent Card.",
+      "area": "integration",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mdns_secure_v2.py",
+        "tests/test_a2a_mdns_secure_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery requires token authentication before accepting an Agent Card.",
+        "Tests mock token exchange and drop unauthorized cards."
+      ]
+    },
+    {
+      "id": "2cd3ff2d-b00d-4574-a335-75c2e910355f",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V3",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement an intelligent background process that periodically scans and archives idle virtual contexts from subagents to free up memory constraints.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_lifecycle_v3.py",
+        "tests/test_virtual_context_lifecycle_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle manager detects idle context boundaries and triggers Episodic Memory archiving.",
+        "Tests mock context engine states and verify cleanup."
+      ]
+    },
+    {
+      "id": "2c46d414-a243-4673-a2f4-087c97a9f838",
+      "title": "MCP Server Sandbox Resource Quota Enforcement V1",
+      "description": "Inspired by MCP and Agent Guard trends: Implement CPU and memory resource quota enforcement within the MCP Sandbox execution environment for action tools.",
+      "area": "security",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_sandbox_quota_v1.py",
+        "tests/test_mcp_sandbox_quota_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Quota enforcer bounds container execution by RAM/CPU.",
+        "Tests verify OOM situations are gracefully caught and handled."
       ]
     }
   ]
