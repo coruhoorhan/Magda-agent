@@ -34,6 +34,7 @@ from magda_agent.integration.a2a_security import A2ASecurityContext
 from magda_agent.consciousness.core import Consciousness
 from magda_agent.subconsciousness.reflection import Subconsciousness
 from magda_agent.evaluation.agentbench import daily_agentbench_eval
+from magda_agent.core.cron_scheduler_v2 import CronSchedulerV2
 from magda_agent.scheduler.cron import CronScheduler
 from magda_agent.scheduler.cron_reports import DailyReportScheduler
 from magda_agent.scheduler.cron_backups import perform_sqlite_backups
@@ -211,6 +212,7 @@ subconsciousness = Subconsciousness(
     interval=300
 )
 
+cron_scheduler_v2 = CronSchedulerV2()
 cron_scheduler = CronScheduler()
 daily_report_scheduler = DailyReportScheduler(scheduler=cron_scheduler)
 operations_scheduler = HermesCronSchedulerV3(db_path="operations.sqlite3")
@@ -257,6 +259,7 @@ cross_platform_dispatcher.register_platform("discord", discord_bridge)
 async def lifespan(app: FastAPI):
     # Startup
     await context_engine.bootstrap_all({})
+    cron_scheduler_v2.start()
     asyncio.create_task(cron_scheduler.start())
     asyncio.create_task(daily_report_scheduler.start())
     asyncio.create_task(operations_scheduler.start())
@@ -266,6 +269,7 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(discord_bridge.start())
     yield
     # Shutdown
+    await cron_scheduler_v2.stop()
     await cron_scheduler.stop()
     await daily_report_scheduler.stop()
     await operations_scheduler.stop()
