@@ -10688,7 +10688,7 @@
     },
     {
       "id": "acs-runtime-safety-controls-v5-d4a3888b",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "ACS Runtime Safety Controls v5",
@@ -24296,6 +24296,60 @@
         "Snapshotter safely extracts full state dictionary without blocking the event loop.",
         "Snapshots are accurately persisted and indexed in Chromadb.",
         "Tests mock the Chromadb instance and verify extraction and persistence."
+      ]
+    },
+    {
+      "id": "new-mcp-server-schema-discovery-v14",
+      "title": "MCP Server Schema Capability Discovery V14",
+      "description": "Inspired by MCP standardization trends (June 2026): Implement an automated routine to query a remote MCP server for its full list of action schemas during handshake and dynamically store them in the registry.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_schema_discovery_v14.py",
+        "tests/test_mcp_schema_discovery_v14.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery module correctly fetches schemas via MCP JSON-RPC.",
+        "Schemas are validated and dynamically injected into the tool registry.",
+        "Tests use mocks to verify correct fetching and registration."
+      ]
+    },
+    {
+      "id": "new-a2a-agent-handshake-auth-v2",
+      "title": "A2A Agent Handshake Authentication V2",
+      "description": "Inspired by A2A Protocol trend (June 2026): Implement a secure token exchange handshake between peer agents to ensure enterprise-grade authorization before task delegation.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_auth_handshake_v2.py",
+        "tests/test_a2a_auth_handshake_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Handshake module properly negotiates token exchange with peer agents.",
+        "Unauthorized delegates are blocked during task assignment.",
+        "Tests mock peer payloads to verify auth validation."
+      ]
+    },
+    {
+      "id": "new-openclaw-context-compression-hook-v2",
+      "title": "OpenClaw Context Compression Hook V2",
+      "description": "Inspired by Context Compression trends (June 2026): Create a hook that intercepts long subagent working memory states and applies selective LLM summarization when token thresholds are exceeded.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_compression_v2.py",
+        "tests/test_virtual_context_compression_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Hook triggers when the working memory exceeds a specific token threshold.",
+        "Uses LLM (or mock in tests) to summarize context.",
+        "Tests verify working memory token reduction upon exceeding limits."
       ]
     }
   ]
