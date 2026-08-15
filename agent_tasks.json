@@ -10757,7 +10757,7 @@
     },
     {
       "id": "context-engine-metric-plugin-v2",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "low",
       "title": "Context Engine Metric Plugin V2",
@@ -24494,6 +24494,42 @@
         "Garbage collector safely deletes stale Git worktrees.",
         "Active directories are preserved correctly.",
         "Tests mock the OS module to verify file operations."
+      ]
+    },
+    {
+      "id": "claude-subagent-spawning-v8",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "Subagent Spawning with Context Compression V8",
+      "description": "Inspired by Claude Agent SDK multi-agent trends: Implement an advanced subagent spawner that automatically compresses the parent agent's context using an LLM mock before spinning up a temporary isolated Git worktree for the subagent, ensuring low token usage.",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_spawning_v8.py",
+        "tests/test_subagent_spawning_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent is initialized with compressed context from the parent.",
+        "Subagent operates within an isolated git worktree.",
+        "Tests verify context compression size constraints and worktree isolation."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-ui-mcp-diff-v1",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "Canvas UI MCP Diff Streamer V1",
+      "description": "Inspired by OpenClaw Canvas Live Visualization and MCP tools trends: Create a specialized Canvas UI visualizer that exposes diff-based state updates of MCP tool executions over a WebSocket, rendering real-time JSON patches of tool outputs.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_mcp_diff_v1.py",
+        "tests/test_canvas_mcp_diff_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Visualizer component properly hooks into MCP execution layers to grab outputs.",
+        "Visualizer diffs state changes and streams valid JSON patches.",
+        "Tests mock MCP tool outputs and verify diff accuracy and websocket transmission format."
       ]
     }
   ]
