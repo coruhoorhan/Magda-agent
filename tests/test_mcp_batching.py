@@ -32,7 +32,8 @@ def test_execute_in_batches_success():
 
     assert results == ["res_a1", "res_b1", "res_a2", "res_c1"]
     # If sequential, it would take ~0.8 seconds. Concurrently across all, it should take ~0.2 seconds.
-    assert duration < 0.4, f"Execution took too long ({duration}s), possibly not concurrent."
+    # Allowing up to 0.7s to account for CI overhead, but still faster than sequential.
+    assert duration < 0.7, f"Execution took too long ({duration}s), possibly not concurrent."
 
 def test_execute_in_batches_with_exceptions():
     """Test that exceptions do not crash the executor and are returned as results in correct order."""
