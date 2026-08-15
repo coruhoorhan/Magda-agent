@@ -10828,7 +10828,7 @@
     },
     {
       "id": "a2a-protocol-sync-a359bd7d",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Protocol Synchronization",
@@ -24689,6 +24689,59 @@
         "Failure recovery parses logs and outputs a test patch.",
         "Patch is run via a spawned process or mock executor.",
         "Tests verify successful patch applies to procedural memory."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-memory-paginator-v1-de6312c4",
+      "title": "OpenClaw Canvas Memory Paginator Streamer",
+      "description": "Inspired by OpenClaw Canvas Live Visualization trend (June 2026): Create a WebSocket streamer that visualizes memory pagination events, explicitly showing context chunks being moved from WorkingMemory to EpisodicMemory when token thresholds are exceeded.",
+      "area": "visualization",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_paginator_stream.py",
+        "tests/test_canvas_paginator_stream.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket endpoint streams memory pagination event payloads.",
+        "Tests mock pagination triggers and verify correct streaming payload formatting."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-taint-isolation-layer-v2-e956d30d",
+      "title": "MCPKernel Action Tool Taint Isolation Layer V2",
+      "description": "Inspired by MCPKernel Sandboxing trends (June 2026): Enhance the taint tracking sandbox to implement strict process-level network isolation for subprocesses that execute external tools utilizing tainted user data parameters.",
+      "area": "security",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_taint_isolation_v2.py",
+        "tests/test_mcp_taint_isolation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Isolation layer proxies execution for tainted data inputs via a dedicated secure subprocess.",
+        "Network access is explicitly blocked for these isolated tool invocations.",
+        "Tests verify invocation patterns correctly detect tainted arguments and restrict access."
+      ]
+    },
+    {
+      "id": "a2a-capability-mesh-health-monitor-v3-8ff0f6a9",
+      "title": "A2A Capability Mesh Health Monitor V3",
+      "description": "Inspired by A2A Protocol trends (June 2026): Build an active background health monitor for the capability mesh that periodically queries discovered sub-agents using ping requests and forcefully evicts those failing to respond within TTL bounds.",
+      "area": "multi-agent",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_health_monitor_v3.py",
+        "tests/test_a2a_health_monitor_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Health monitor pings discovered peers via an asynchronous background loop.",
+        "Unresponsive peers are purged from the dynamic mesh cache.",
+        "Tests mock network timeouts and verify peer removal."
       ]
     }
   ]
