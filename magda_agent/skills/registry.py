@@ -108,8 +108,30 @@ class SkillRegistry:
                         t.join()
                         return res[0] if res else (False, "Thread execution failed")
 
+
+                    async def fallback_action(**kwargs: Any) -> str:
+                        """
+                        Provides a safe fallback action when the primary skill execution is blocked by the Realtime Guardrail.
+
+                        Args:
+                            **kwargs (Any): The arguments originally intended for the primary skill.
+
+                        Returns:
+                            str: A safe fallback message.
+                        """
+                        return f"Action '{name}' blocked. Proceeding cautiously."
+
+                    from magda_agent.safety.guardrail_fallback import GuardrailFallbackExecutor
+                    executor = GuardrailFallbackExecutor()
                     success, result = run_async_in_thread(
-                        self.realtime_interceptor.intercept_and_execute(self.skills[name], name, kwargs)
+                        executor.execute_with_fallback(
+                            self.realtime_interceptor,
+                            self.skills[name],
+                            name,
+                            kwargs,
+                            fallback_action,
+                            kwargs
+                        )
                     )
                 elif self.realtime_guardrail is not None:
                     result = self.realtime_guardrail.execute_with_guardrails(self.skills[name], name, **kwargs)
