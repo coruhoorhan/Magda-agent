@@ -1,7 +1,7 @@
 import pytest
 import asyncio
-from unittest.mock import AsyncMock
-from magda_agent.memory.selective_retrieval import SelectiveContextCompressor
+from unittest.mock import AsyncMock, MagicMock
+from magda_agent.memory.selective_retrieval import SelectiveContextCompressor, SelectiveMemoryRetriever
 from magda_agent.memory.working import MemoryEntry
 from magda_agent.emotions.engine import PADState
 
@@ -68,3 +68,71 @@ async def test_selective_compressor_empty_memories():
     result = await compressor.compress_old_memories([], max_tokens=10)
     assert result == []
     mock_llm.chat_completion.assert_not_called()
+
+def test_selective_retriever_extract_keywords():
+    retriever = SelectiveMemoryRetriever(episodic_memory=MagicMock())
+    task = "Find the most relevant episodic memories for the user's query about python programming."
+    keywords = retriever.extract_keywords(task)
+    assert "relevant" in keywords
+    assert "episodic" in keywords
+    assert "memories" in keywords
+    assert "user's" in keywords
+    assert "query" in keywords
+    assert "about" in keywords
+    assert "python" in keywords
+    assert "programming" in keywords
+    assert "find" in keywords
+    assert "most" in keywords
+    # "the", "for" should be removed. Note: "the" is removed, "for" is removed.
+    assert "the" not in keywords
+    assert "for" not in keywords
+
+@pytest.mark.asyncio
+async def test_selective_retriever_get_relevant_episodes_async_with_llm():
+    mock_episodic = MagicMock()
+    mock_episodic.recall_events.return_value = ["event 1", "event 2"]
+    mock_llm = AsyncMock()
+    mock_llm.chat_completion.return_value = "python, programming, memory"
+
+    retriever = SelectiveMemoryRetriever(episodic_memory=mock_episodic, llm=mock_llm)
+
+    episodes = await retriever.get_relevant_episodes_async("Help me find python programming memory", 1, top_k=2)
+
+    assert episodes == ["event 1", "event 2"]
+    mock_llm.chat_completion.assert_called_once()
+    mock_episodic.recall_events.assert_called_once_with("python, programming, memory", top_k=2, user_id=1)
+
+@pytest.mark.asyncio
+async def test_selective_retriever_get_relevant_episodes_async_without_llm():
+    mock_episodic = MagicMock()
+    mock_episodic.recall_events.return_value = ["event 1"]
+
+    retriever = SelectiveMemoryRetriever(episodic_memory=mock_episodic)
+
+    episodes = await retriever.get_relevant_episodes_async("Help python programming memory", 1, top_k=2)
+
+    assert episodes == ["event 1"]
+    mock_episodic.recall_events.assert_called_once()
+    args, kwargs = mock_episodic.recall_events.call_args
+    assert "python" in args[0]
+    assert "programming" in args[0]
+    assert "memory" in args[0]
+    assert kwargs["top_k"] == 2
+    assert kwargs["user_id"] == 1
+
+def test_selective_retriever_get_relevant_episodes_sync():
+    mock_episodic = MagicMock()
+    mock_episodic.recall_events.return_value = ["event 1"]
+
+    retriever = SelectiveMemoryRetriever(episodic_memory=mock_episodic)
+
+    episodes = retriever.get_relevant_episodes("Help python programming memory", 1, top_k=2)
+
+    assert episodes == ["event 1"]
+    mock_episodic.recall_events.assert_called_once()
+    args, kwargs = mock_episodic.recall_events.call_args
+    assert "python" in args[0]
+    assert "programming" in args[0]
+    assert "memory" in args[0]
+    assert kwargs["top_k"] == 2
+    assert kwargs["user_id"] == 1
