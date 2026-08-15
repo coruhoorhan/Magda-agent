@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Optional, Any
 from magda_agent.llm_client import LLMClient
 from magda_agent.memory.working import MemoryEntry
 from magda_agent.emotions.engine import PADState
@@ -117,3 +117,82 @@ class SelectiveContextCompressor:
         )
 
         return [summary_entry] + to_keep
+
+class SelectiveMemoryRetriever:
+    """
+    Selective memory retrieval module inspired by Claude Agent SDK context compression.
+    It integrates with the Context Engine and episodic memory to retrieve only
+    the most relevant memories based on the current task.
+    """
+    def __init__(self, episodic_memory: Any, llm: Optional[LLMClient] = None):
+        """
+        Initialize the SelectiveMemoryRetriever.
+
+        Args:
+            episodic_memory: The episodic memory instance (e.g. EpisodicMemory) that supports recall_events.
+            llm: Optional LLM client to parse task relevance.
+        """
+        self.episodic_memory = episodic_memory
+        self.llm = llm
+
+    def extract_keywords(self, text: str) -> List[str]:
+        """
+        Simple heuristic keyword extraction.
+        Removes common stop words and returns the most significant terms.
+        """
+        stop_words = {"the", "is", "at", "which", "on", "a", "an", "and", "or", "in", "to", "for", "of", "with"}
+        words = [w.strip(".,!?\"'()[]{}") for w in text.lower().split()]
+        keywords = [w for w in words if w and w not in stop_words and len(w) > 3]
+        # Keep unique keywords, preserving order
+        seen = set()
+        unique_keywords = []
+        for k in keywords:
+            if k not in seen:
+                seen.add(k)
+                unique_keywords.append(k)
+        return unique_keywords
+
+    async def get_relevant_episodes_async(self, current_task: str, user_id: int, top_k: int = 5) -> List[str]:
+        """
+        Asynchronously retrieves the most relevant episodes based on task relevance.
+        If an LLM is available, it can use it to refine the search keywords.
+        """
+        query = current_task
+        if self.llm:
+            try:
+                # Use LLM to extract the core search intent
+                prompt = f"Extract the 3 most important search keywords from the following task description. Return them as a comma-separated list:\n{current_task}"
+                messages = [
+                    {"role": "system", "content": "You are a helpful assistant. Extract keywords."},
+                    {"role": "user", "content": prompt}
+                ]
+                refined_query = await self.llm.chat_completion(messages, temperature=0.1)
+                if refined_query:
+                    query = refined_query.strip()
+            except Exception as e:
+                logging.error(f"SelectiveMemoryRetriever LLM keyword extraction failed: {e}")
+
+        # Fallback to basic keywords if query is empty or same as task but we want just keywords
+        if query == current_task:
+            keywords = self.extract_keywords(current_task)
+            if keywords:
+                query = " ".join(keywords[:5]) # take top 5 keywords
+
+        try:
+            episodes = self.episodic_memory.recall_events(query, top_k=top_k, user_id=user_id)
+            return episodes
+        except Exception as e:
+            logging.error(f"Failed to recall episodic events in SelectiveMemoryRetriever: {e}")
+            return []
+
+    def get_relevant_episodes(self, current_task: str, user_id: int, top_k: int = 5) -> List[str]:
+        """
+        Synchronously retrieves the most relevant episodes.
+        """
+        keywords = self.extract_keywords(current_task)
+        query = " ".join(keywords[:5]) if keywords else current_task
+        try:
+            return self.episodic_memory.recall_events(query, top_k=top_k, user_id=user_id)
+        except Exception as e:
+            logging.error(f"Failed to recall episodic events in SelectiveMemoryRetriever: {e}")
+            return []

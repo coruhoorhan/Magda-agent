@@ -10792,7 +10792,7 @@
     },
     {
       "id": "claude-selective-context-retrieval",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "low",
       "title": "Claude Selective Context Retrieval",
@@ -24581,6 +24581,60 @@
       "acceptance": [
         "Failure recovery analyzer processes failed trajectories and extracts structural lessons.",
         "Tests mock failed traces and verify lesson generation."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-ui-visualizer-v3-new",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw RL Canvas Multi-Agent UI Streamer v3",
+      "description": "Inspired by OpenClaw Canvas UI trends (June 2026): Extend Canvas UI to support Multi-Agent streams by multiplexing state diffs and visualizing subagent working directories into a single WebSocket connection.",
+      "allowed_paths": [
+        "magda_agent/visualization/multi_agent_canvas_streamer_v3_new.py",
+        "tests/test_multi_agent_canvas_streamer_v3_new.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer interleaves messages from multiple sub-agent states correctly, including worktree paths.",
+        "Each streamed JSON patch identifies the origin agent UUID and memory location.",
+        "Tests verify correct multiplexing using mock asyncio streams."
+      ]
+    },
+    {
+      "id": "claude-agent-hierarchical-delegation-v2-new",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "title": "Claude Agent Hierarchical Delegation V2",
+      "description": "Inspired by Claude Agent multi-agent orchestration trends: Implement a hierarchical delegation module where a lead Planner agent can spawn Sub-planners with constrained scopes and isolated Git worktrees. (V2 with parallel DAG evaluation)",
+      "allowed_paths": [
+        "magda_agent/agents/hierarchical_planner_v2_new.py",
+        "tests/test_hierarchical_planner_v2_new.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lead planner can dynamically spawn isolated sub-planners based on a parallel execution DAG.",
+        "Sub-planners run with restricted scopes.",
+        "Tests verify successful delegation and scope containment with parallel evaluation."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-reflection-v12-new",
+      "title": "Hermes Cron Daily Reflection Background Job v12",
+      "description": "Inspired by Hermes Agent trend: Create a persistent background cron job that aggregates daily episodic memories, condenses them into semantic rules, and saves them to procedural memory. Add multi-user scaling for large isolated states.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/daily_reflection_cron_v12.py",
+        "tests/test_daily_reflection_cron_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job aggregates daily logs for multiple isolated users correctly.",
+        "Episodic memory is condensed properly without cross-user leakage.",
+        "Tests verify data isolation in concurrent cron job execution."
       ]
     }
   ]
