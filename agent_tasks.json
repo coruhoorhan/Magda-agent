@@ -24107,7 +24107,7 @@
       "description": "Inspired by MemGPT/Letta pattern in Memory Architecture (June 2026): Create a compression subagent hook that intercepts long subagent working memory states and applies selective summarization.",
       "area": "memory",
       "risk": "high",
-      "status": "todo",
+      "status": "done",
       "allowed_paths": [
         "magda_agent/memory/virtual_context_compression_v1.py",
         "tests/test_virtual_context_compression_v1.py",
@@ -24224,6 +24224,42 @@
         "MCP client enforces configured timeouts on remote invocations.",
         "Timeouts trigger graceful failovers and logging.",
         "Tests mock delayed server responses and verify timeout logic."
+      ]
+    },
+    {
+      "id": "new-mcp-server-capability-discovery-v13",
+      "title": "MCP Server Capability Discovery V13",
+      "description": "Inspired by MCP standardization trends (June 2026): Implement an automated routine to query a remote MCP server for its full list of action schemas during handshake and dynamically store them in the registry.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_capability_discovery_v13.py",
+        "tests/test_mcp_capability_discovery_v13.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery module correctly fetches schemas via MCP JSON-RPC.",
+        "Schemas are validated and dynamically injected into the tool registry.",
+        "Tests use mocks to verify correct fetching and registration."
+      ]
+    },
+    {
+      "id": "new-openclaw-rl-trajectory-evaluation-v2",
+      "title": "OpenClaw RL Trajectory Quality Evaluation V2",
+      "description": "Inspired by OpenClaw RL trends (June 2026): Implement an offline trajectory evaluator that analyzes past episodic memory sequences using a reward model to produce batched weight updates.",
+      "area": "learning",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v2.py",
+        "tests/test_trajectory_evaluation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Offline evaluator successfully queries EpisodicMemory for long trajectories.",
+        "Calculates cumulative reward based on end-state signals.",
+        "Produces a batch of RL weight updates that can be ingested by the engine."
       ]
     }
   ]

@@ -338,3 +338,4 @@
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V5 (mcp-dynamic-capability-negotiation-v5)
 * [ ] FEATURE: OpenClaw RL Trajectory Quality Evaluation (openclaw-rl-trajectory-evaluation-v2)
 * [ ] FEATURE: Claude Worktree Pruning and Resource Optimizer (claude-worktree-pruning-optimizer-v1)
+* [x] FEATURE: OpenClaw Virtual Context Compression Layer (new-openclaw-virtual-context-compression-v1)
