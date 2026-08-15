@@ -10810,7 +10810,7 @@
     },
     {
       "id": "longitudinal-quality-metrics-tracker",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "Longitudinal Quality Metrics Tracker",
@@ -24635,6 +24635,60 @@
         "Cron job aggregates daily logs for multiple isolated users correctly.",
         "Episodic memory is condensed properly without cross-user leakage.",
         "Tests verify data isolation in concurrent cron job execution."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v4",
+      "title": "MCP Dynamic Capability Auth V4",
+      "description": "Inspired by ACS security trends (June 2026): Update dynamic runtime authentication constraints to include human-in-the-loop fallback with context summarization before re-authenticating.",
+      "area": "security",
+      "risk": "critical",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_dynamic_auth_v4.py",
+        "tests/test_mcp_dynamic_auth_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context summarizer triggers before requesting auth.",
+        "Fallback explicitly queries human operator.",
+        "Tests mock operator input."
+      ]
+    },
+    {
+      "id": "agent-teams-task-visualization-v1",
+      "title": "Agent Teams Task Visualization V1",
+      "description": "Inspired by Claude Agent SDK multi-agent trends (June 2026): Implement an explicit interactive Canvas widget for multi-agent DAG execution, allowing users to view the dependency graph in real time over WebSocket.",
+      "area": "visualization",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_dag_v1.py",
+        "tests/test_canvas_dag_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Canvas UI properly hooks into Planner DAG to fetch dependencies.",
+        "Visualizer emits state changes as a graph layout patch.",
+        "Tests mock DAG layout streams."
+      ]
+    },
+    {
+      "id": "openclaw-online-rl-trajectory-failure-recovery-v3",
+      "title": "OpenClaw Trajectory Failure Recovery Analysis V3",
+      "description": "Inspired by OpenClaw online RL trends (June 2026): Extend failure recovery analyzer to auto-generate a git commit patch that tests the structural lesson against the codebase, adding it to procedural memory only if it passes.",
+      "area": "learning",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_failure_recovery_v3.py",
+        "tests/test_trajectory_failure_recovery_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Failure recovery parses logs and outputs a test patch.",
+        "Patch is run via a spawned process or mock executor.",
+        "Tests verify successful patch applies to procedural memory."
       ]
     }
   ]
