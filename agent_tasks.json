@@ -10705,7 +10705,7 @@
     },
     {
       "id": "a2a-peer-delegation-discovery-v6-c2e3661c",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Peer Delegation Discovery v6",
@@ -24350,6 +24350,60 @@
         "Hook triggers when the working memory exceeds a specific token threshold.",
         "Uses LLM (or mock in tests) to summarize context.",
         "Tests verify working memory token reduction upon exceeding limits."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-auth-tokens-v2",
+      "title": "A2A Enterprise Auth Tokens V2",
+      "description": "Inspired by A2A Protocol trend: Implement robust OAuth2-style enterprise authentication token verification for peer sub-agents interacting in a discovery network mesh.",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/security/a2a_auth_tokens_v2.py",
+        "tests/test_a2a_auth_tokens_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Token verification logic correctly authorizes legitimate peers.",
+        "Unauthorized connections are blocked safely.",
+        "Tests mock token creation and verification flow."
+      ]
+    },
+    {
+      "id": "agent-teams-worktree-caching-v1",
+      "title": "Agent Teams Git Worktree Caching V1",
+      "description": "Inspired by Claude Agent SDK multi-agent trend: Implement a caching mechanism for Git worktrees spawned by sub-agents to significantly reduce start-up latency when dispatching repetitive tasks.",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_cache_v1.py",
+        "tests/test_worktree_cache_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Worktree caching significantly speeds up mocked agent instantiation.",
+        "Cache properly invalidates stale directories based on TTL.",
+        "Tests verify caching hits and misses."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-telemetry-v1",
+      "title": "MCP Dynamic Capability Telemetry V1",
+      "description": "Inspired by MCP telemetry trends: Implement a specialized telemetry module to monitor dynamic MCP tool invocations, exporting latency and failure rate metrics to an A2A capability mesh.",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/telemetry/mcp_capability_telemetry_v1.py",
+        "tests/test_mcp_capability_telemetry_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module aggregates MCP tool metrics.",
+        "Broadcasts structured reports over mock network interface.",
+        "Tests verify data capture and proper formatting."
       ]
     }
   ]
