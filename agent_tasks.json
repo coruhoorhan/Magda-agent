@@ -10740,7 +10740,7 @@
     },
     {
       "id": "a2a-task-status-ping",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "low",
       "title": "A2A Task Status Ping",
@@ -24440,6 +24440,60 @@
         "Plugin calculates relevance scores before passing them to the main context loop.",
         "Entries falling below a threshold are summarily compressed using an LLM mock.",
         "Tests verify the logic keeps overall token usage down."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-strategy-v5",
+      "title": "A2A Swarm Intelligence Strategy V5",
+      "description": "Inspired by Swarm Intelligence trends (June 2026): Implement an A2A strategy where multiple peer sub-agents collaboratively vote on the best task execution plan before any code changes are made.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_swarm_strategy_v5.py",
+        "tests/test_a2a_swarm_strategy_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Swarm strategy module coordinates proposals from peers.",
+        "Selects the most highly rated plan securely.",
+        "Tests verify mock peers voting logic."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v3",
+      "title": "MCP Dynamic Capability Auth V3",
+      "description": "Inspired by ACS security trends (June 2026): Implement dynamic runtime authentication constraints where specific MCP tools require re-authentication from the human operator mid-execution.",
+      "area": "security",
+      "risk": "critical",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_dynamic_auth_v3.py",
+        "tests/test_mcp_dynamic_auth_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module interrupts execution when tool requires runtime auth.",
+        "Awaits human approval context properly.",
+        "Tests use mock prompts for approval validation."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v3",
+      "title": "Claude Worktree Pruning and Resource Optimizer V3",
+      "description": "Inspired by Claude SDK trends (June 2026): Create a garbage collection routine that prunes idle Git worktrees created by subagents to optimize storage and system resource consumption.",
+      "area": "architecture",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_pruning_v3.py",
+        "tests/test_worktree_pruning_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Garbage collector safely deletes stale Git worktrees.",
+        "Active directories are preserved correctly.",
+        "Tests mock the OS module to verify file operations."
       ]
     }
   ]
