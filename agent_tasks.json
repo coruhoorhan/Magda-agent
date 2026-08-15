@@ -10671,7 +10671,7 @@
     },
     {
       "id": "openclaw-rl-interactive-learning-v6-73736d2f",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw RL Interactive Learning v6",
@@ -24260,6 +24260,42 @@
         "Offline evaluator successfully queries EpisodicMemory for long trajectories.",
         "Calculates cumulative reward based on end-state signals.",
         "Produces a batch of RL weight updates that can be ingested by the engine."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-streaming-export-v9",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Action Tool Streaming Export V9",
+      "description": "Inspired by MCP (June 2026): Implement an action tool exporter that streams responses via an async generator compatible with JSON-RPC streaming, enabling real-time feedback for long-running tools.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_streaming_export_v9.py",
+        "tests/test_mcp_streaming_export_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter correctly formats yields from Python generators into MCP streaming payload chunks.",
+        "Tests verify that the chunking mechanism buffers properly.",
+        "Tests verify JSON-RPC serialization."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-virtual-memory-snapshot-v3",
+      "status": "todo",
+      "area": "memory",
+      "risk": "high",
+      "title": "OpenClaw Context Engine Virtual Memory Snapshot V3",
+      "description": "Inspired by OpenClaw MemGPT-like standard: Create a snapshotting system that periodically backs up the virtual working memory buffer to Chromadb to avoid state loss during subagent restarts.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_memory_snapshot_v3.py",
+        "tests/test_virtual_memory_snapshot_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Snapshotter safely extracts full state dictionary without blocking the event loop.",
+        "Snapshots are accurately persisted and indexed in Chromadb.",
+        "Tests mock the Chromadb instance and verify extraction and persistence."
       ]
     }
   ]
