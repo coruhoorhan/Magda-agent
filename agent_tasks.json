@@ -10635,7 +10635,7 @@
     },
     {
       "id": "3d8247a3-5763-457d-a5d1-64320a49d5af",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "Claude-inspired Generator/Evaluator Subagent Spawning",
@@ -24134,6 +24134,60 @@
         "Wrapper intercepts all executions and runs taint tracking.",
         "Blocks executions found to have untrusted external source state in sensitive fields.",
         "Tests mock tool inputs and test both allowed and blocked states."
+      ]
+    },
+    {
+      "id": "new-hermes-procedural-workflows-v1",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Procedural Workflows Conversion",
+      "description": "Inspired by Hermes Agent trend (June 2026): Implement a module that parses long-horizon tasks from agent memory and automatically converts them into reusable procedural workflow templates.",
+      "allowed_paths": [
+        "magda_agent/skills/hermes_workflows_v1.py",
+        "tests/test_hermes_workflows_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module correctly extracts sequence of steps from memory.",
+        "Generates a valid skill template from the sequence.",
+        "Tests mock memory contexts and assert generated template format."
+      ]
+    },
+    {
+      "id": "new-openclaw-rl-visualizer-v2",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "title": "OpenClaw RL Weight Live Visualizer",
+      "description": "Inspired by OpenClaw Canvas visualization trend (June 2026): Build a websocket streamer that broadcasts live changes in RL habit weights to the external canvas for real-time monitoring.",
+      "allowed_paths": [
+        "magda_agent/learning/rl_canvas_visualizer_v2.py",
+        "tests/test_rl_canvas_visualizer_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Visualizer module subscribes to weight change events.",
+        "Broadcasts correctly formatted JSON payloads over the websocket.",
+        "Tests mock connection and confirm expected data transmission."
+      ]
+    },
+    {
+      "id": "new-mcp-concurrency-limiter-v1",
+      "status": "todo",
+      "area": "security",
+      "risk": "medium",
+      "title": "MCP Tool Concurrency Rate Limiter",
+      "description": "Inspired by MCP runtime concurrency trend (June 2026): Introduce a rate limiter within the MCP Batching Executor to prevent external services from being overwhelmed by parallel subagent tool calls.",
+      "allowed_paths": [
+        "magda_agent/execution/mcp_rate_limiter_v1.py",
+        "tests/test_mcp_rate_limiter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Rate limiter correctly throttles concurrent tool execution based on configured limits.",
+        "Queues requests when limit is reached without dropping them.",
+        "Tests simulate high concurrency and verify throttle boundaries."
       ]
     }
   ]
