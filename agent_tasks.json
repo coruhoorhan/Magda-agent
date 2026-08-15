@@ -10722,7 +10722,7 @@
     },
     {
       "id": "mcp-schema-export-cli",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Schema Export CLI",
@@ -24404,6 +24404,42 @@
         "Telemetry module aggregates MCP tool metrics.",
         "Broadcasts structured reports over mock network interface.",
         "Tests verify data capture and proper formatting."
+      ]
+    },
+    {
+      "id": "a2a-discovery-dynamic-polling",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Discovery Dynamic Polling",
+      "description": "Inspired by the A2A (Agent-to-Agent Protocol) Standard trend: Implement a background polling mechanism for the A2ADiscovery service to periodically refresh available peer agents via mDNS, ensuring the Agent Cards list remains up-to-date and stale agents are evicted.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_discovery.py",
+        "tests/test_a2a_discovery.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Background task periodically refreshes peer agent status.",
+        "Stale agent cards are removed after a configured timeout.",
+        "Unit tests verify polling behavior and eviction logic."
+      ]
+    },
+    {
+      "id": "context-engine-selective-compression",
+      "status": "todo",
+      "area": "memory",
+      "risk": "high",
+      "title": "Context Engine Selective Compression Plugin",
+      "description": "Inspired by Context Engine and Memory Architecture trends: Create a ContextEngine plugin that compresses semantic memory entries based on relevance scores to keep the context window small without losing important historical facts.",
+      "allowed_paths": [
+        "magda_agent/memory/context_compression_plugin.py",
+        "tests/test_context_compression_plugin.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin calculates relevance scores before passing them to the main context loop.",
+        "Entries falling below a threshold are summarily compressed using an LLM mock.",
+        "Tests verify the logic keeps overall token usage down."
       ]
     }
   ]
