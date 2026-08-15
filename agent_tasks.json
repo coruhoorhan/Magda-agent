@@ -10653,7 +10653,7 @@
     },
     {
       "id": "c55a6f25-ac1c-42cc-b68d-e55a6baad66d",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "OpenAI-inspired Realtime Guardrail Fallback",
@@ -19449,7 +19449,7 @@
       ]
     },
     {
-      "id": "a2a-telemetry-exporter-v1",
+      "id": "a2a-telemetry-exporter-v1-new-abc",
       "status": "todo",
       "area": "telemetry",
       "risk": "low",
@@ -24188,6 +24188,42 @@
         "Rate limiter correctly throttles concurrent tool execution based on configured limits.",
         "Queues requests when limit is reached without dropping them.",
         "Tests simulate high concurrency and verify throttle boundaries."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-action-signals-v1-abc",
+      "title": "OpenClaw RL Implicit Action Signals",
+      "description": "Inspired by OpenClaw RL trend: Track implicit positive feedback (e.g., when the user explicitly advances the conversation without corrections) to positively update the preceding tool's behavior weights.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/implicit_action_signals.py",
+        "tests/test_implicit_action_signals.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implicit approval signals are detected from conversation progression.",
+        "RL behavior weights for actions receive minor positive updates.",
+        "Tests verify implicit reward tracking."
+      ]
+    },
+    {
+      "id": "mcp-tool-execution-timeouts-v1-abc",
+      "title": "MCP Tool Execution Timeouts",
+      "description": "Inspired by MCP standardization: Add strict runtime timeouts to the MCP tool client to gracefully handle unresponsive external MCP tools without stalling the agent execution loop.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_tool_timeout.py",
+        "tests/test_mcp_tool_timeout.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP client enforces configured timeouts on remote invocations.",
+        "Timeouts trigger graceful failovers and logging.",
+        "Tests mock delayed server responses and verify timeout logic."
       ]
     }
   ]
