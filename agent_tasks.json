@@ -10984,7 +10984,7 @@
     },
     {
       "id": "mcp-background-registry-poller-7aac0296",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Background Registry Poller",
@@ -25152,6 +25152,60 @@
         "Protocol handles distributed voting from multiple discovered peer agents.",
         "Consensus requirement prevents execution until a quorum is reached.",
         "Tests verify voting resolution and quorum conditions."
+      ]
+    },
+    {
+      "id": "openclaw-rl-next-state-pipeline-v10",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw-RL Online Reward Pipeline",
+      "description": "Inspired by the OpenClaw-RL trend: Implement a dedicated online RL pipeline that intercepts next-state signals (user replies, tool execution outputs) without external annotations and feeds them into the RealtimePolicyGradientUpdater.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_pipeline_v10.py",
+        "tests/test_openclaw_rl_pipeline_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline correctly intercepts user messages and extracts reward signals based on positive/negative framing.",
+        "Pipeline updates action weights in RealtimePolicyGradientUpdater dynamically.",
+        "Tests verify reward extraction from mock user responses."
+      ]
+    },
+    {
+      "id": "mcp-action-enforcer-acs-v8",
+      "status": "todo",
+      "area": "safety",
+      "risk": "critical",
+      "title": "ACS Guardrail for MCP Tool Execution",
+      "description": "Inspired by the ACS (Agent Control Specification) trend: Implement a validation layer that checks all MCP tool calls against a predefined security policy before execution, blocking unsafe or tainted arguments.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_guardrail.py",
+        "tests/test_acs_guardrail.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Guardrail correctly blocks tool executions that violate the mocked policy.",
+        "Guardrail integrates seamlessly with MCPKernel executor.",
+        "Tests verify that blocked actions trigger the GuardrailFallbackExecutor."
+      ]
+    },
+    {
+      "id": "claude-subagent-spawner-worktree",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude-inspired Git Worktree Subagent Isolation",
+      "description": "Inspired by Claude Agent SDK: Extend the A2ASpawner to create isolated git worktrees for subagents, allowing parallel execution on different branches without collision.",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_spawner.py",
+        "tests/test_worktree_spawner.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Spawner correctly initializes a git worktree for a new subagent.",
+        "Context and environment variables reflect the worktree path.",
+        "Tests mock git commands to verify worktree lifecycle (create, teardown)."
       ]
     }
   ]
