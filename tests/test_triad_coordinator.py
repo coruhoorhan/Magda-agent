@@ -1,42 +1,79 @@
 import pytest
+import asyncio
 from unittest.mock import AsyncMock, MagicMock
-from magda_agent.agents.triad_coordinator import TriadCoordinator
-from magda_agent.agents.planner_agent import PlannerAgent
-from magda_agent.agents.generator_agent import GeneratorAgent
-from magda_agent.agents.evaluator_agent import EvaluatorAgent
+from magda_agent.architecture.triad_coordinator import TriadCoordinator
 
 @pytest.mark.asyncio
-async def test_triad_coordinator():
-    planner = AsyncMock(spec=PlannerAgent)
-    generator = AsyncMock(spec=GeneratorAgent)
-    evaluator = AsyncMock(spec=EvaluatorAgent)
+async def test_coordinate_flow():
+    # Setup mocks
+    planner_agent = MagicMock()
+    planner_agent.plan = AsyncMock()
 
-    generator.execute_plan.return_value = "plan string"
-    generator.generate_response.return_value = "final response"
+    generator_agent = MagicMock()
+    generator_agent.execute_plan = AsyncMock(return_value="executed_plan")
+    generator_agent.generate_response = AsyncMock(return_value="response")
 
-    coordinator = TriadCoordinator(planner, generator, evaluator)
+    evaluator_agent = MagicMock()
+    evaluator_agent.evaluate = AsyncMock()
 
-    message_builder = MagicMock(return_value=[{"role": "system", "content": "hello"}])
-    pre_hook = MagicMock()
+    coordinator = TriadCoordinator(planner_agent, generator_agent, evaluator_agent)
 
-    res = await coordinator.coordinate(
-        "hello",
-        user_id="123",
+    # Call the method
+    user_input = "test input"
+    user_id = "test_user"
+    policies = ["policy1"]
+    mental_state = {"state": "happy"}
+    behavior_weights = {"b1": 1.0}
+    skill_weights = {"s1": 0.5}
+
+    response = await coordinator.coordinate(
+        user_input,
+        user_id=user_id,
+        policies=policies,
+        mental_state=mental_state,
+        behavior_weights=behavior_weights,
+        skill_weights=skill_weights
+    )
+
+    assert response == "response"
+
+    # Assert sequence of calls
+    planner_agent.plan.assert_called_once_with(
+        user_input,
+        user_id=user_id,
+        mental_state=mental_state,
+        behavior_weights=behavior_weights,
+        skill_weights=skill_weights
+    )
+    generator_agent.execute_plan.assert_called_once_with(user_input, user_id=user_id)
+    generator_agent.generate_response.assert_called_once_with([])
+    evaluator_agent.evaluate.assert_called_once_with(user_input, "response", user_id=user_id, policies=policies)
+
+
+@pytest.mark.asyncio
+async def test_coordinate_with_hooks():
+    planner_agent = MagicMock()
+    planner_agent.plan = AsyncMock()
+
+    generator_agent = MagicMock()
+    generator_agent.execute_plan = AsyncMock(return_value="executed_plan_string")
+    generator_agent.generate_response = AsyncMock(return_value="response_string")
+
+    evaluator_agent = MagicMock()
+    evaluator_agent.evaluate = AsyncMock()
+
+    coordinator = TriadCoordinator(planner_agent, generator_agent, evaluator_agent)
+
+    message_builder = MagicMock(return_value=[{"role": "user", "content": "hello"}])
+    pre_generation_hook = MagicMock()
+
+    response = await coordinator.coordinate(
+        "input",
         message_builder=message_builder,
-        pre_generation_hook=pre_hook,
-        policies=["policy1"]
+        pre_generation_hook=pre_generation_hook
     )
 
-    assert res == "final response"
-    planner.plan.assert_called_once_with(
-        "hello",
-        user_id="123",
-        mental_state=None,
-        behavior_weights=None,
-        skill_weights=None
-    )
-    generator.execute_plan.assert_called_once_with("hello", user_id="123")
-    message_builder.assert_called_once_with("plan string")
-    pre_hook.assert_called_once()
-    generator.generate_response.assert_called_once_with([{"role": "system", "content": "hello"}])
-    evaluator.evaluate.assert_called_once_with("hello", "final response", user_id="123", policies=["policy1"])
+    assert response == "response_string"
+    message_builder.assert_called_once_with("executed_plan_string")
+    pre_generation_hook.assert_called_once()
+    generator_agent.generate_response.assert_called_once_with([{"role": "user", "content": "hello"}])

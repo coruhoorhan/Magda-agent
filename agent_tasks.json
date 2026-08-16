@@ -11020,7 +11020,7 @@
     },
     {
       "id": "claude-planner-generator-evaluator-5f7d70a8",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Claude-inspired Triad Architecture Orchestrator",
@@ -25240,6 +25240,42 @@
       "acceptance": [
         "WebSocket transport successfully handles JSON-RPC messages.",
         "Tests mock WebSocket connections and message parsing."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-worktree-isolation",
+      "title": "Agent Teams with Git Worktree Isolation",
+      "description": "Inspired by Claude Agent SDK (June 2026): Implement Git Worktree Isolation for sub-agents, allowing parallel execution on isolated branches without collisions.",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_isolation.py",
+        "tests/test_worktree_isolation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Worktree isolation handles branching correctly.",
+        "Isolated execution does not cause conflicts.",
+        "Tests verify worktree setup and teardown."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-lifecycle-v2",
+      "title": "Context Engine Plugin Lifecycle Hooks",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement a lifecycle hook system for the Context Engine plugins to manage initialization, teardown, and state transitions efficiently.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_lifecycle.py",
+        "tests/test_context_engine_lifecycle.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle hooks (on_init, on_teardown, on_update) are called correctly.",
+        "Plugins can transition states without memory leaks.",
+        "Tests verify that hooks are triggered during context changes."
       ]
     }
   ]
