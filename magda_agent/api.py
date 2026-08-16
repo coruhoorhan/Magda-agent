@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconn
 from fastapi.responses import JSONResponse
 from magda_agent.visualization.server import CanvasServer
 from magda_agent.visualization.canvas_streamer import CanvasMemoryStreamer
+from magda_agent.memory.canvas_viz import MemoryCanvasVisualizer
 
 from magda_agent.architecture.gateway import LocalFirstGateway
 from magda_agent.visualization.canvas_api_v2 import get_canvas_v2_router
@@ -244,6 +245,7 @@ autonomous_executor = AutonomousExecutor(
 
 
 canvas_memory_streamer = CanvasMemoryStreamer(working_memory=memory_system.working_memory)
+canvas_viz = MemoryCanvasVisualizer()
 canvas_server = CanvasServer(consciousness=consciousness)
 a2a_server = A2AServer(planner=planner, security_context=a2a_security)
 rpc_manager = SubAgentRPCManager(llm=llm_client)
@@ -435,3 +437,19 @@ async def websocket_canvas_memory(websocket: WebSocket):
             data = await websocket.receive_text()
     except WebSocketDisconnect:
         canvas_memory_streamer.disconnect(websocket)
+
+@app.websocket("/ws/canvas/episodic")
+async def websocket_canvas_episodic(websocket: WebSocket, user_id: Optional[int] = None):
+    token = websocket.query_params.get("token")
+    if not _configured_api_token() or not hmac.compare_digest(token or "", _configured_api_token() or ""):
+        await websocket.close(code=1008)
+        return
+    await websocket.accept()
+    try:
+        events = memory_system.episodic_memory.get_all_events(user_id=user_id)
+        nodes = canvas_viz.convert_to_nodes(events)
+        await websocket.send_json({"type": "episodic_nodes", "nodes": nodes})
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        pass
