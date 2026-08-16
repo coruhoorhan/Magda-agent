@@ -10879,7 +10879,7 @@
     },
     {
       "id": "mcp-action-tool-policy-enforcer-v7",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Action Tool Policy Enforcer v7",
@@ -24796,6 +24796,58 @@
         "Plugin hooks measure execution latency and token length variations.",
         "Metrics are dispatched to the longitudinal quality metrics tracker.",
         "Tests verify correct telemetry capture using mocked context hooks."
+      ]
+    },
+    {
+      "id": "a2a-distributed-telemetry-metrics-v8-23855107",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Distributed Telemetry Metrics V8",
+      "description": "Inspired by A2A Protocol trend (June 2026): Implement an asynchronous telemetry module to aggregate trace metrics across peer agents over an A2A distributed mesh network.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_metrics_v8.py",
+        "tests/test_a2a_metrics_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module tracks distributed events.",
+        "Tests mock A2A broadcasting and verify payload generation."
+      ]
+    },
+    {
+      "id": "openclaw-rl-interactive-feedback-v9-5243635e",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw-RL Interactive Feedback Learning V9",
+      "description": "Inspired by OpenClaw-RL trend (June 2026): Develop an interactive feedback loop that learns from user replies implicitly by checking PAD shifts and updating reward models.",
+      "allowed_paths": [
+        "magda_agent/learning/interactive_feedback_v9.py",
+        "tests/test_interactive_feedback_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Interactive feedback loop receives PAD shifts and adjusts reward scales.",
+        "Tests verify correct model updates from mocked feedback signals."
+      ]
+    },
+    {
+      "id": "mcp-kernel-tool-taint-isolation-v10-482de2b9",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "title": "MCPKernel Tool Taint Isolation V10",
+      "description": "Inspired by MCPKernel Sandboxing trends (June 2026): Enhance the taint tracking sandbox to implement strict process-level network isolation for subprocesses that execute external tools utilizing tainted user data.",
+      "allowed_paths": [
+        "magda_agent/security/mcp_taint_isolation_v10.py",
+        "tests/test_mcp_taint_isolation_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Isolation layer proxies execution for tainted data inputs via a dedicated secure subprocess.",
+        "Network access is explicitly blocked for these isolated tool invocations.",
+        "Tests verify invocation patterns correctly detect tainted arguments and restrict access."
       ]
     }
   ]

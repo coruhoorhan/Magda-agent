@@ -29,7 +29,9 @@ class SkillRegistry:
 
         # Initialize RealtimeGuardrailInterceptor
         from magda_agent.safety.realtime_interceptor import RealtimeGuardrailInterceptor
+        from magda_agent.safety.mcp_enforcer_v7 import MCPActionEnforcer
         self.realtime_interceptor = RealtimeGuardrailInterceptor(policy_layer) if policy_layer else None
+        self.mcp_enforcer = MCPActionEnforcer()
 
         from magda_agent.safety.governance_layer import GovernanceLayer
         self.governance_layer = GovernanceLayer()
@@ -71,6 +73,8 @@ class SkillRegistry:
             return f"Error: Skill '{name}' not found."
 
         try:
+            if hasattr(self, 'mcp_enforcer') and self.mcp_enforcer and self.policy_layer:
+                self.mcp_enforcer.enforce(name, kwargs, self.policy_layer)
             # 1. Prepare workflow data for ACS Checkpoints
             workflow_data = {
                 "action": name,
