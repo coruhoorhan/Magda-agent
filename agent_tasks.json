@@ -10930,7 +10930,7 @@
     },
     {
       "id": "mcp-dynamic-tool-registry-sync",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Dynamic Tool Registry Synchronization",
@@ -24938,6 +24938,60 @@
         "Pagination manager automatically chunks long strings based on token length.",
         "Preserves semantic context by grouping by message or episode.",
         "Tests verify chunking logic avoids splitting in the middle of sentences."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-gossip-v2",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Swarm Intelligence Gossip Protocol v2",
+      "description": "Inspired by A2A standard trend: Implement an async gossip protocol module for the A2A Discovery Service, enabling agents to periodically broadcast and cache neighboring agent capabilities efficiently without central registries.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_v2.py",
+        "tests/test_a2a_gossip_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent capabilities are broadcast asynchronously to known peers.",
+        "Peer cache is updated securely with latest Agent Cards.",
+        "Tests verify gossip propagation and cache integrity using mocked network events."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-pruning-v4",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Trajectory Pruning v4",
+      "description": "Inspired by OpenClaw RL online learning trend: Implement a background module that periodically reviews episodic memory trajectories, identifies sequences with consistent negative PAD shifts (failures), and prunes or compresses them to optimize context and vector storage.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_pruning_v4.py",
+        "tests/test_trajectory_pruning_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruner module iterates over episodic memories.",
+        "Scores memory quality and evicts or compresses data below a configured reward threshold.",
+        "Tests use mocked ChromaDB interactions to verify eviction logic."
+      ]
+    },
+    {
+      "id": "claude-code-git-branch-protection-v2",
+      "status": "todo",
+      "area": "isolation",
+      "risk": "high",
+      "title": "Claude Code Feature Branch Protection Subagent v2",
+      "description": "Inspired by Claude Agent Teams Git Worktree Isolation (June 2026): Create an advanced sub-agent that wraps GitWorktreeManager, strictly enforcing git branching and pull request scoping rules before allowing parallel sub-agents to commit to shared branches.",
+      "allowed_paths": [
+        "magda_agent/isolation/git_branch_protection_v2.py",
+        "tests/test_git_branch_protection_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sub-agent is implemented to wrap Git operations.",
+        "It validates branch scoping rules and blocks unauthorized commits.",
+        "Tests verify behavior using mock git environments."
       ]
     }
   ]
