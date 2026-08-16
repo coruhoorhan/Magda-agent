@@ -10948,7 +10948,7 @@
     },
     {
       "id": "a2a-enterprise-tracing-middleware",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "low",
       "title": "A2A Enterprise Tracing Middleware",
@@ -24992,6 +24992,58 @@
         "Sub-agent is implemented to wrap Git operations.",
         "It validates branch scoping rules and blocks unauthorized commits.",
         "Tests verify behavior using mock git environments."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-failure-recovery-v4",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw Trajectory Failure Recovery V4",
+      "description": "Inspired by OpenClaw Trajectory Quality Evaluation trends (June 2026): Develop an asynchronous evaluator module that periodically audits the episodic memory database for repeated multi-turn failure trajectories, grouping them by sequence embeddings.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_failure_recovery_v4.py",
+        "tests/test_trajectory_failure_recovery_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Failure recovery evaluator groups similar failure sequences.",
+        "Module successfully parses mock episodic memories into actionable lesson vectors.",
+        "Tests verify grouping behavior and proper vectorization of failure cases."
+      ]
+    },
+    {
+      "id": "a2a-distributed-telemetry-metrics-v9",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Distributed Telemetry Metrics V9",
+      "description": "Inspired by A2A Protocol trend (June 2026): Implement an asynchronous telemetry module to aggregate trace metrics across peer agents over an A2A distributed mesh network.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_metrics_v9.py",
+        "tests/test_a2a_metrics_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module tracks distributed events.",
+        "Tests mock A2A broadcasting and verify payload generation."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-caching-invalidation-v4",
+      "title": "MCP Tool Action Result Caching Invalidation V4",
+      "description": "Inspired by MCP kernel trends (June 2026): Implement an explicit caching invalidation strategy for MCP read-only tools, clearing cached results intelligently based on configurable TTLs to ensure agents do not act on stale data.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_caching_invalidation_v4.py",
+        "tests/test_mcp_caching_invalidation_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP cache TTL invalidation is implemented.",
+        "Tests mock time and verify cache correctly evicts expired data."
       ]
     }
   ]
