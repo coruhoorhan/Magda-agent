@@ -10862,7 +10862,7 @@
     },
     {
       "id": "openclaw-canvas-memory-viz-420fb23a",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "low",
       "title": "OpenClaw Canvas Live Memory Visualization",
@@ -24742,6 +24742,60 @@
         "Health monitor pings discovered peers via an asynchronous background loop.",
         "Unresponsive peers are purged from the dynamic mesh cache.",
         "Tests mock network timeouts and verify peer removal."
+      ]
+    },
+    {
+      "id": "mcp-sandbox-auto-recovery-v1-2210368a",
+      "title": "MCP Tool Sandbox Auto-Recovery V1",
+      "description": "Inspired by MCPKernel and online learning trends (June 2026): Implement an auto-recovery mechanism that catches sandbox isolation faults during MCP tool execution and falls back to a restricted read-only mode, logging the recovery event to procedural memory.",
+      "area": "security",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/security/mcp_auto_recovery_v1.py",
+        "tests/test_mcp_auto_recovery_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auto-recovery catches specific sandbox exceptions and continues execution in read-only mode.",
+        "Recovery event is formatted and saved to procedural memory.",
+        "Tests mock sandbox failures and verify graceful degradation."
+      ]
+    },
+    {
+      "id": "a2a-task-timeout-compensation-v1-82e1a4d6",
+      "title": "A2A Task Timeout Compensation V1",
+      "description": "Inspired by A2A Protocol and multi-agent orchestration trends: Build a compensation mechanism that detects when a delegated A2A sub-agent task exceeds its TTL, automatically spawns a local fallback task, and evicts the unresponsive peer.",
+      "area": "multi-agent",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_timeout_compensation_v1.py",
+        "tests/test_a2a_timeout_compensation_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Timeout compensator monitors active A2A tasks and triggers upon TTL expiration.",
+        "Local fallback task is instantiated with the same parameters.",
+        "Tests verify timeout handling and fallback task creation using mocks."
+      ]
+    },
+    {
+      "id": "context-engine-plugin-hook-metrics-v1-4c0957e0",
+      "title": "Context Engine Plugin Hook Metrics V1",
+      "description": "Inspired by Context Engine and Quality Metrics trends (June 2026): Implement a metric tracking plugin for the Context Engine that records execution time and token deltas across all lifecycle hooks, exporting the data to longitudinal quality storage.",
+      "area": "memory",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/context_plugin_metrics_v1.py",
+        "tests/test_context_plugin_metrics_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin hooks measure execution latency and token length variations.",
+        "Metrics are dispatched to the longitudinal quality metrics tracker.",
+        "Tests verify correct telemetry capture using mocked context hooks."
       ]
     }
   ]
