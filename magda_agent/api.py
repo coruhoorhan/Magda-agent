@@ -42,6 +42,7 @@ from magda_agent.scheduler.cron_backups import perform_sqlite_backups
 
 from magda_agent.operations.cron_v3 import HermesCronSchedulerV3
 from magda_agent.scheduler.cron_diagnostics import DiagnosticScheduler
+from magda_agent.autonomy.cron_scheduler import CronScheduler as AutonomyCronScheduler
 from magda_agent.scheduler.autonomous_tasks import run_health_check, report_quality_metrics
 from magda_agent.autonomy.task_store import TaskStore, TaskStatus
 from magda_agent.autonomy.executor import AutonomousExecutor
@@ -216,6 +217,7 @@ subconsciousness = Subconsciousness(
 cron_scheduler_v2 = CronSchedulerV2()
 cron_scheduler = CronScheduler()
 daily_report_scheduler = DailyReportScheduler(scheduler=cron_scheduler)
+autonomy_cron_scheduler = AutonomyCronScheduler()
 operations_scheduler = HermesCronSchedulerV3(db_path="operations.sqlite3")
 diagnostic_scheduler = DiagnosticScheduler(scheduler=operations_scheduler)
 
@@ -262,6 +264,7 @@ async def lifespan(app: FastAPI):
     # Startup
     await context_engine.bootstrap_all({})
     cron_scheduler_v2.start()
+    autonomy_cron_scheduler.start()
     asyncio.create_task(cron_scheduler.start())
     asyncio.create_task(daily_report_scheduler.start())
     asyncio.create_task(operations_scheduler.start())
@@ -272,6 +275,7 @@ async def lifespan(app: FastAPI):
     yield
     # Shutdown
     await cron_scheduler_v2.stop()
+    autonomy_cron_scheduler.stop()
     await cron_scheduler.stop()
     await daily_report_scheduler.stop()
     await operations_scheduler.stop()

@@ -11002,7 +11002,7 @@
     },
     {
       "id": "hermes-cron-scheduler-e20c8193",
-      "status": "todo",
+      "status": "done",
       "area": "autonomy",
       "risk": "medium",
       "title": "Hermes-inspired Cron Scheduler",
@@ -25206,6 +25206,40 @@
         "Spawner correctly initializes a git worktree for a new subagent.",
         "Context and environment variables reflect the worktree path.",
         "Tests mock git commands to verify worktree lifecycle (create, teardown)."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-audio-feedback-v12-bcc6130b",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Audio Feedback Alignment v12",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Extend OpenClaw reinforcement learning to parse user audio tone/inflection shifts from voice inputs as next-state reward signals.",
+      "allowed_paths": [
+        "magda_agent/learning/audio_sentiment_v12.py",
+        "tests/test_audio_sentiment_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Audio sentiment signals successfully update habit weights.",
+        "Tests verify weight adjustments using mock audio signals."
+      ]
+    },
+    {
+      "id": "mcp-websocket-streaming-v12-37b93c4b",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Server WebSocket Transport v12",
+      "description": "Inspired by MCP trend (June 2026): Implement a WebSocket transport for the MCP server to support real-time full-duplex communication with external agents.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_websocket_v12.py",
+        "tests/test_mcp_websocket_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket transport successfully handles JSON-RPC messages.",
+        "Tests mock WebSocket connections and message parsing."
       ]
     }
   ]
