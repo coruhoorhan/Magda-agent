@@ -10896,7 +10896,7 @@
     },
     {
       "id": "claude-subagent-token-optimizer-v4",
-      "status": "todo",
+      "status": "done",
       "area": "agents",
       "risk": "medium",
       "title": "Claude Subagent Token Optimizer v4",
@@ -24848,6 +24848,42 @@
         "Isolation layer proxies execution for tainted data inputs via a dedicated secure subprocess.",
         "Network access is explicitly blocked for these isolated tool invocations.",
         "Tests verify invocation patterns correctly detect tainted arguments and restrict access."
+      ]
+    },
+    {
+      "id": "mcp-agent-team-workflow-v2",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "MCP Agent Team Workflow v2",
+      "description": "Inspired by MCP standardization: Develop a team workflow manager that routes specific external tasks directly to isolated MCP worker instances.",
+      "allowed_paths": [
+        "magda_agent/architecture/mcp_team_workflow_v2.py",
+        "tests/test_mcp_team_workflow_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Workflow manager identifies tasks requiring external MCP calls.",
+        "Tasks are routed to worker instances without stalling the main event loop.",
+        "Tests verify correct routing and isolation."
+      ]
+    },
+    {
+      "id": "a2a-swarm-voting-protocol-v1",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Swarm Voting Protocol v1",
+      "description": "Inspired by A2A standard trend: Implement a voting protocol that allows multiple peer agents to propose and score plans via A2A before execution.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_swarm_voting_v1.py",
+        "tests/test_a2a_swarm_voting_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agents can securely propose execution plans to peers.",
+        "A consensus score determines which plan proceeds.",
+        "Tests verify voting mechanics over mocked A2A interfaces."
       ]
     }
   ]
