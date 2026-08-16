@@ -10913,7 +10913,7 @@
     },
     {
       "id": "openclaw-rl-canvas-dashboard-v8",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw RL Canvas Dashboard v8",
@@ -24884,6 +24884,60 @@
         "Agents can securely propose execution plans to peers.",
         "A consensus score determines which plan proceeds.",
         "Tests verify voting mechanics over mocked A2A interfaces."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-exporter-v2",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Action Tool Exporter V2",
+      "description": "Inspired by the rising MCP (Model Context Protocol) trend: Implement an integration layer extending MCPSkillExporter to accurately register Magda's internal actions directly into an external MCP action tool registry, enabling cross-platform utility mapping.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_action_exporter_v2.py",
+        "tests/test_mcp_action_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter can construct valid MCP tool JSON schemas for registered skills.",
+        "Exporter gracefully handles missing parameter schemas.",
+        "Tests verify the output matches expected MCP JSON-RPC standards."
+      ]
+    },
+    {
+      "id": "agent-teams-git-worktree-v3",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Agent Teams Git Worktree V3",
+      "description": "Inspired by Claude Agent SDK's Agent Teams isolation: Implement a workspace manager that dynamically spins up isolated git worktrees for subagents to test code changes independently before committing.",
+      "allowed_paths": [
+        "magda_agent/architecture/git_worktree_v3.py",
+        "tests/test_git_worktree_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Manager successfully provisions a git worktree for a given subagent ID.",
+        "Manager cleans up the git worktree effectively after task completion or failure.",
+        "Tests verify worktree creation and teardown sequences using mocks."
+      ]
+    },
+    {
+      "id": "memory-context-pagination-letta-v1",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Memory Context Pagination Letta V1",
+      "description": "Inspired by MemGPT/Letta patterns: Create a context pagination manager for episodic memory that chunks lengthy interaction sequences to stay within strict token limits.",
+      "allowed_paths": [
+        "magda_agent/memory/letta_pagination_v1.py",
+        "tests/test_letta_pagination_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pagination manager automatically chunks long strings based on token length.",
+        "Preserves semantic context by grouping by message or episode.",
+        "Tests verify chunking logic avoids splitting in the middle of sentences."
       ]
     }
   ]
