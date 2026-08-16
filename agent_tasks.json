@@ -10966,7 +10966,7 @@
     },
     {
       "id": "openclaw-rl-fallback-recovery",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Fallback Recovery",
@@ -25044,6 +25044,114 @@
       "acceptance": [
         "MCP cache TTL invalidation is implemented.",
         "Tests mock time and verify cache correctly evicts expired data."
+      ]
+    },
+    {
+      "id": "openclaw-context-memory-graph-v1-50f6812a",
+      "title": "OpenClaw Context Memory Knowledge Graph V1",
+      "description": "Inspired by Context Engine and Knowledge Graph trends: Implement a plugin for Context Engine to represent semantic memories as a dynamic Knowledge Graph structure using NetworkX, extracting entities and relations directly from user conversations.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/knowledge_graph_v1.py",
+        "tests/test_knowledge_graph_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin extracts entities and creates nodes/edges in a Knowledge Graph.",
+        "Graph successfully persists between sessions.",
+        "Tests verify entity extraction with LLM mocks and graph updates."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-tracing-exporter-v1-0d8fb2b2",
+      "title": "MCP Action Tool Tracing Exporter V1",
+      "description": "Inspired by MCP telemetry trends (June 2026): Implement an OpenTelemetry-compatible tracing exporter specifically tailored for MCP JSON-RPC action tool executions to record precise latency and parameters.",
+      "area": "telemetry",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/telemetry/mcp_tracing_exporter_v1.py",
+        "tests/test_mcp_tracing_exporter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter collects MCP tool metrics and formats them as OpenTelemetry spans.",
+        "Spans include tool name, execution latency, and success status.",
+        "Tests mock tool executions and verify trace format."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-consensus-v2-de1d55a3",
+      "title": "A2A Swarm Intelligence Consensus Protocol V2",
+      "description": "Inspired by Swarm Intelligence and A2A trends: Create a consensus protocol for the A2A mesh that allows peer sub-agents to vote on critical task parameters before taking an action.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_consensus_v2.py",
+        "tests/test_a2a_consensus_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Protocol handles distributed voting from multiple discovered peer agents.",
+        "Consensus requirement prevents execution until a quorum is reached.",
+        "Tests verify voting resolution and quorum conditions."
+      ]
+    },
+    {
+      "id": "openclaw-context-memory-graph-v1-317414ad",
+      "title": "OpenClaw Context Memory Knowledge Graph V1",
+      "description": "Inspired by Context Engine and Knowledge Graph trends: Implement a plugin for Context Engine to represent semantic memories as a dynamic Knowledge Graph structure using NetworkX, extracting entities and relations directly from user conversations.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/knowledge_graph_v1.py",
+        "tests/test_knowledge_graph_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin extracts entities and creates nodes/edges in a Knowledge Graph.",
+        "Graph successfully persists between sessions.",
+        "Tests verify entity extraction with LLM mocks and graph updates."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-tracing-exporter-v1-5fb642b3",
+      "title": "MCP Action Tool Tracing Exporter V1",
+      "description": "Inspired by MCP telemetry trends (June 2026): Implement an OpenTelemetry-compatible tracing exporter specifically tailored for MCP JSON-RPC action tool executions to record precise latency and parameters.",
+      "area": "telemetry",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/telemetry/mcp_tracing_exporter_v1.py",
+        "tests/test_mcp_tracing_exporter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter collects MCP tool metrics and formats them as OpenTelemetry spans.",
+        "Spans include tool name, execution latency, and success status.",
+        "Tests mock tool executions and verify trace format."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-consensus-v2-7b8affca",
+      "title": "A2A Swarm Intelligence Consensus Protocol V2",
+      "description": "Inspired by Swarm Intelligence and A2A trends: Create a consensus protocol for the A2A mesh that allows peer sub-agents to vote on critical task parameters before taking an action.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_consensus_v2.py",
+        "tests/test_a2a_consensus_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Protocol handles distributed voting from multiple discovered peer agents.",
+        "Consensus requirement prevents execution until a quorum is reached.",
+        "Tests verify voting resolution and quorum conditions."
       ]
     }
   ]
