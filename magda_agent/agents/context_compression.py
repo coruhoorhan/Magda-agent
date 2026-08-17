@@ -112,3 +112,83 @@ class RPCPayloadCompressor:
         except Exception as e:
             logging.error(f"Failed to compress payload dynamically: {e}")
             return payload
+
+
+class ClaudeSubagentContextWrapper:
+    """
+    ClaudeSubagentContextWrapper intercepts subagent context payloads and shrinks them according to token limits
+    before delegating subtasks to minimize token overhead while preserving critical rules and constraints.
+    """
+
+    def __init__(self, llm: Optional[LLMClient] = None, compressor: Optional[Any] = None, max_length: int = 2000) -> None:
+        """
+        Initializes the ClaudeSubagentContextWrapper.
+
+        Args:
+            llm: Optional Language Model client to be used for summarization if compressor is not provided.
+            compressor: Optional compressor instance (e.g. SubagentContextCompressorV3 or RPCPayloadCompressor).
+            max_length: Maximum allowed context length before compression is triggered.
+        """
+        self.llm = llm
+        if compressor is not None:
+            self.compressor = compressor
+        elif llm is not None:
+            self.compressor = RPCPayloadCompressor(llm)
+        else:
+            self.compressor = None
+        self.max_length = max_length
+
+    async def wrap_payload(self, payload: Dict[str, Any], task: Optional[str] = None, max_length: Optional[int] = None) -> Dict[str, Any]:
+        """
+        Intercepts and compresses subagent payload dictionary before delegation.
+
+        Args:
+            payload: Payload dictionary containing subagent parameters (e.g., 'context', 'task', 'messages').
+            task: Optional subagent task description override.
+            max_length: Optional maximum length threshold override.
+
+        Returns:
+            The compressed payload dictionary.
+        """
+        limit = max_length if max_length is not None else self.max_length
+        result_payload = dict(payload)
+        if task and "task" not in result_payload:
+            result_payload["task"] = task
+
+        if self.compressor is None:
+            # Fallback simple truncation if no LLM/compressor is configured
+            context = result_payload.get("context", "")
+            if len(context) > limit:
+                result_payload["context"] = context[:limit]
+            return result_payload
+
+        if hasattr(self.compressor, "compress_payload"):
+            return await self.compressor.compress_payload(result_payload, max_length=limit)
+        elif hasattr(self.compressor, "compress_context"):
+            context = result_payload.get("context", "")
+            subagent_task = result_payload.get("task", task or "")
+            compressed_context = await self.compressor.compress_context(context, subagent_task, max_length=limit)
+            result_payload["context"] = compressed_context
+            return result_payload
+
+        return result_payload
+
+    async def wrap_context(self, context: str, task: str = "", max_length: Optional[int] = None) -> str:
+        """
+        Intercepts raw context string and compresses it if exceeding threshold.
+
+        Args:
+            context: Raw context string.
+            task: Subagent task description.
+            max_length: Optional maximum length threshold override.
+
+        Returns:
+            Compressed context string.
+        """
+        limit = max_length if max_length is not None else self.max_length
+        if len(context) <= limit:
+            return context
+
+        payload = {"context": context, "task": task}
+        wrapped = await self.wrap_payload(payload, task=task, max_length=limit)
+        return wrapped.get("context", context[:limit])
