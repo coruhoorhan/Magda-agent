@@ -11072,7 +11072,7 @@
     },
     {
       "id": "hermes-agent-quality-metric-sync-003",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "low",
       "title": "Hermes Agent Longitudinal Tracking Synchronization",
@@ -25312,6 +25312,40 @@
         "Interactive tuning loop flags low-confidence executions.",
         "Human feedback acts as a strong scalar reward to tune behavior weights.",
         "Tests verify integration with RL engine using mocked feedback."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-plugin-dashboard-v3",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas Visualization Endpoints",
+      "description": "Inspired by OpenClaw Canvas visualization. Implement a FastAPI endpoint that exposes real-time contextual state and recent working memory elements for dynamic dashboard rendering.",
+      "allowed_paths": [
+        "magda_agent/api/canvas_endpoints.py",
+        "tests/test_canvas_endpoints.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "API endpoints return properly formatted JSON for state mapping.",
+        "Pytest suite verifies API responses with FastAPI TestClient."
+      ]
+    },
+    {
+      "id": "mcp-safety-acs-guardrails-v3",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS-compliant MCP Safety Guardrails",
+      "description": "Inspired by Microsoft ACS (Agent Control Specification) trend. Implement a pre-execution validation layer specifically for MCP tool actions to block non-compliant execution patterns based on declarative policies.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_guardrails.py",
+        "tests/test_acs_guardrails.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ACS Guardrail intercepts tool calls and validates against policy.",
+        "Tests confirm blocking behavior on malicious inputs."
       ]
     }
   ]
