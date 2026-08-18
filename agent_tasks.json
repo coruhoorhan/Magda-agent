@@ -11089,7 +11089,7 @@
     },
     {
       "id": "hermes-multi-agent-orchestrator-7c1bc17a",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "Hermes Multi-Agent Orchestrator",
@@ -25346,6 +25346,60 @@
       "acceptance": [
         "ACS Guardrail intercepts tool calls and validates against policy.",
         "Tests confirm blocking behavior on malicious inputs."
+      ]
+    },
+    {
+      "id": "a2a-mdns-secure-token-auth-15c1461f",
+      "title": "A2A mDNS Discovery Secure Token Authentication",
+      "description": "Inspired by A2A standard trend: Implement token-based secure authentication for local network mDNS discovery to prevent unauthorized agent cards from being indexed.",
+      "area": "integration",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mdns_secure.py",
+        "tests/test_a2a_mdns_secure.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "mDNS broadcast includes a cryptographically secure token.",
+        "Listeners validate tokens before adding agents to the discovery mesh.",
+        "Tests verify that invalid tokens are rejected."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-eval-70cd1e48",
+      "title": "OpenClaw RL Trajectory Quality Evaluation",
+      "description": "Inspired by OpenClaw RL trend (June 2026): Implement an offline trajectory evaluator that analyzes long-horizon execution sequences (trajectories) and generates sparse delayed rewards for the online RL loop.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_trajectory_evaluator.py",
+        "tests/test_openclaw_rl_trajectory_evaluator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator parses execution trajectories to compute a delayed reward score.",
+        "Evaluator integrates cleanly with the OpenClaw-RL pipeline.",
+        "Tests use mock trajectory data to verify score generation."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-c63bd318",
+      "title": "Claude Worktree Pruning and Resource Optimizer",
+      "description": "Inspired by Claude Agent SDK (June 2026): Develop a background pruning service that monitors active subagent git worktrees and cleans up stale or inactive environments to optimize disk and memory usage.",
+      "area": "architecture",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_pruner.py",
+        "tests/test_worktree_pruner.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruner correctly identifies worktrees that have not been modified recently.",
+        "Pruner safely deletes stale worktrees without crashing active subagents.",
+        "Tests mock os and subprocess to verify pruning logic."
       ]
     }
   ]
