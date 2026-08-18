@@ -11055,7 +11055,7 @@
     },
     {
       "id": "mcp-agent-tools-action-concurrency-002",
-      "status": "todo",
+      "status": "done",
       "area": "execution",
       "risk": "high",
       "title": "OpenAI Agents SDK Action Tools Concurrency",
@@ -25276,6 +25276,42 @@
         "Lifecycle hooks (on_init, on_teardown, on_update) are called correctly.",
         "Plugins can transition states without memory leaks.",
         "Tests verify that hooks are triggered during context changes."
+      ]
+    },
+    {
+      "id": "new-a2a-swarm-discovery-mesh",
+      "title": "A2A Swarm Discovery Mesh",
+      "description": "Inspired by A2A standard trend: Implement an advanced mesh-based discovery service where peer agents can gossip about available capabilities over mDNS, allowing highly resilient peer-to-peer discovery.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_swarm_mesh.py",
+        "tests/test_a2a_swarm_mesh.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Swarm mesh service can aggregate and broadcast Agent Cards.",
+        "Agents dynamically learn about indirect peers via gossip propagation.",
+        "Tests verify gossip propagation logic with mock network endpoints."
+      ]
+    },
+    {
+      "id": "new-openclaw-interactive-reward-tuning",
+      "title": "OpenClaw Interactive Reward Tuning Loop",
+      "description": "Inspired by OpenClaw online RL trend: Create an interactive reward tuning loop that queries the human operator during low-confidence tool executions, learning new preferences instantly.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/interactive_reward_tuning.py",
+        "tests/test_interactive_reward_tuning.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Interactive tuning loop flags low-confidence executions.",
+        "Human feedback acts as a strong scalar reward to tune behavior weights.",
+        "Tests verify integration with RL engine using mocked feedback."
       ]
     }
   ]
