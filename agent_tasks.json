@@ -11038,7 +11038,7 @@
     },
     {
       "id": "claude-subagent-spawning-compression-001",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "Claude SDK Subagent Context Compression",
