@@ -11107,7 +11107,7 @@
     },
     {
       "id": "claude-sdk-agent-teams-isolation-v3-7cc94aca",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "Claude SDK Agent Teams Worktree v3",
