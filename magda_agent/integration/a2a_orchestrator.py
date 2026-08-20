@@ -1,6 +1,7 @@
 from typing import Dict, Any, List
 import logging
 import asyncio
+import httpx
 from magda_agent.integration.a2a_discovery import A2ADiscovery
 from magda_agent.integration.a2a_delegation import A2ADelegator
 from magda_agent.telemetry.a2a_distributed_v7 import A2ADistributedTelemetryV7
@@ -77,6 +78,7 @@ class A2AOrchestrator:
     async def execute_orchestrated_plan(self, plan: List[Dict[str, Any]], concurrent: bool = False) -> Dict[str, str]:
         """
         Executes a full plan by splitting it into sub-plans and dispatching them either concurrently or sequentially.
+        Directly executes MCP action tools when 'skill' is 'execute_mcp_tool'.
 
         Args:
             plan: The full execution plan.
@@ -88,9 +90,105 @@ class A2AOrchestrator:
         if not plan:
             return {}
 
-        sub_plans = self.delegator.split_plan(plan)
+        results = {}
+        delegation_plan = []
+        mcp_tasks = []
+
+        for step in plan:
+            skill = step.get("skill")
+            if skill == "execute_mcp_tool":
+                if not concurrent and delegation_plan:
+                    res = await self.delegator.execute_plan(delegation_plan)
+                    results.update(res)
+                    delegation_plan = []
+
+                step_id = step.get("id")
+                kwargs = step.get("skill_kwargs", {})
+                target_agent_id = kwargs.get("target_agent_id")
+                tool_name = kwargs.get("tool_name")
+                tool_kwargs = kwargs.get("tool_kwargs", {})
+
+                if concurrent:
+                    async def _run_mcp(s_id, t_id, t_name, t_kw):
+                        r = await self.execute_direct_mcp_action(t_id, t_name, t_kw)
+                        return s_id, r
+                    mcp_tasks.append(_run_mcp(step_id, target_agent_id, tool_name, tool_kwargs))
+                else:
+                    result = await self.execute_direct_mcp_action(target_agent_id, tool_name, tool_kwargs)
+                    if step_id:
+                        results[step_id] = result
+            elif skill == "delegate_to_agent":
+                delegation_plan.append(step)
+            else:
+                pass
 
         if concurrent:
-            return await self.dispatch_concurrently(sub_plans)
+            if delegation_plan:
+                sub_plans = self.delegator.split_plan(delegation_plan)
+                del_results = await self.dispatch_concurrently(sub_plans)
+                results.update(del_results)
+            if mcp_tasks:
+                mcp_completed = await asyncio.gather(*mcp_tasks, return_exceptions=True)
+                for res in mcp_completed:
+                    if isinstance(res, Exception):
+                        logging.error(f"Error during concurrent MCP execution: {res}")
+                    else:
+                        s_id, r = res
+                        if s_id:
+                            results[s_id] = r
         else:
-            return await self.delegator.execute_plan(plan)
+            if delegation_plan:
+                res = await self.delegator.execute_plan(delegation_plan)
+                results.update(res)
+
+        return results
+
+    async def execute_direct_mcp_action(self, target_agent_id: str, tool_name: str, tool_kwargs: Dict[str, Any]) -> str:
+        """
+        Directly executes an MCP action tool exposed by a peer agent.
+        """
+        target_agent = self.discovery.get_agent_by_id(target_agent_id)
+        if not target_agent:
+            return f"Agent {target_agent_id} not found"
+
+        endpoint = target_agent.endpoints.get("mcp")
+        if not endpoint:
+            return f"Agent {target_agent.name} missing MCP endpoint"
+
+        payload = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": tool_name,
+                "arguments": tool_kwargs
+            }
+        }
+
+        headers = {}
+        security_context = getattr(self.delegator, "security_context", None)
+        if security_context:
+            token = security_context.generate_token()
+            headers["Authorization"] = f"Bearer {token}"
+            security_context.trace_action("execute_direct_mcp_action", {
+                "target_agent": target_agent.name,
+                "tool_name": tool_name
+            })
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(endpoint, json=payload, headers=headers, timeout=10.0)
+                response.raise_for_status()
+                data = response.json()
+
+                if "error" in data:
+                    return str(data["error"].get("message", str(data["error"])))
+
+                result = data.get("result", {})
+                content = result.get("content", [])
+                if content and isinstance(content, list) and len(content) > 0:
+                    return content[0].get("text", str(result))
+                return str(result)
+        except Exception as e:
+            logging.error(f"Failed to execute direct MCP action on {target_agent.name} at {endpoint}: {e}")
+            return f"MCP action execution on {target_agent.name} failed: {e}"
