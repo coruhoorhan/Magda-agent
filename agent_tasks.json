@@ -11175,7 +11175,7 @@
     },
     {
       "id": "openclaw-canvas-live-memory-telemetry-v6-0587cf1e",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Canvas Live Memory Telemetry V6",
@@ -25488,6 +25488,60 @@
         "Bridge can serialize Magda payloads to Semantic Kernel format.",
         "Bridge can deserialize incoming Semantic Kernel messages.",
         "Tests verify translation logic using mocked messages."
+      ]
+    },
+    {
+      "id": "mcp-skill-export-dynamic-v2-bf07cd86",
+      "title": "MCP Skill Dynamic Export V2",
+      "description": "Inspired by MCP standards trend (June 2026): Develop a dynamic exporter module that serializes Magda's active procedural skills into an MCP-compliant JSON schema in real time for external server integration.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_dynamic_exporter_v2.py",
+        "tests/test_mcp_dynamic_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter correctly maps Magda skills to MCP JSON schema format.",
+        "Real-time updates trigger schema re-generation.",
+        "Pytest suite verifies schema compliance using mocked skills."
+      ]
+    },
+    {
+      "id": "hermes-autonomous-cron-scheduler-v3-f5403db4",
+      "title": "Hermes Autonomous Cron Scheduler V3",
+      "description": "Inspired by Hermes Agent scheduled operations (June 2026): Implement an asynchronous cron scheduler service that triggers background maintenance tasks (e.g., nightly backups, daily reports) without active human input.",
+      "status": "todo",
+      "area": "core",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/core/hermes_cron_scheduler_v3.py",
+        "tests/test_hermes_cron_scheduler_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scheduler executes tasks on predefined cron schedules asynchronously.",
+        "Scheduler cleanly shuts down without hanging the event loop.",
+        "Tests use freeze_gun or mocked time to verify schedule triggers."
+      ]
+    },
+    {
+      "id": "claude-hierarchical-delegator-v5-719d65a4",
+      "title": "Claude Hierarchical Team Delegator V5",
+      "description": "Inspired by Claude Agent Teams trend (June 2026): Create a delegator subagent spawner that isolates context-heavy tasks into distinct Git worktrees, allowing parallel task execution without context pollution.",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/claude_team_delegator_v5.py",
+        "tests/test_claude_team_delegator_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Delegator spawns child subagents with strictly scoped git worktrees.",
+        "Context is partitioned and passed to subagents to prevent token overload.",
+        "Tests mock git and subprocess to verify isolation boundaries."
       ]
     }
   ]
