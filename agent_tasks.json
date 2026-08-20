@@ -11277,7 +11277,7 @@
     },
     {
       "id": "canvas-telemetry-skills-d25e2200",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "Canvas Telemetry for Skills execution",
@@ -25789,6 +25789,60 @@
       "acceptance": [
         "Lifecycle manager detects idle context boundaries and triggers Episodic Memory archiving.",
         "Tests mock context engine states and verify cleanup."
+      ]
+    },
+    {
+      "id": "a2a-distributed-consensus-voting-v1",
+      "title": "A2A Distributed Consensus Voting V1",
+      "description": "Inspired by A2A Protocol and Swarm Intelligence trends (June 2026): Implement a distributed consensus voting mechanism that allows peer A2A agents to vote on the validity of an execution plan before it is enacted.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_consensus_voting_v1.py",
+        "tests/test_a2a_consensus_voting_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Consensus module correctly aggregates votes from mock peer agents.",
+        "Execution is blocked if the required quorum is not reached.",
+        "Tests verify quorum logic and network event mocking."
+      ]
+    },
+    {
+      "id": "context-engine-semantic-deduplication-v1",
+      "title": "Context Engine Semantic Deduplication Plugin V1",
+      "description": "Inspired by Context Engine virtual memory management trends: Create a plugin that scans working memory for semantically duplicate entries during the compression phase and merges them into single unified representations to save context space.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/semantic_dedup_plugin_v1.py",
+        "tests/test_semantic_dedup_plugin_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin hooks into the Context Engine lifecycle correctly.",
+        "Semantically duplicate memories are merged effectively using mock embeddings.",
+        "Tests verify that context token length is reduced after deduplication."
+      ]
+    },
+    {
+      "id": "agent-teams-fault-tolerant-orchestrator-v1",
+      "title": "Agent Teams Fault-tolerant Orchestrator V1",
+      "description": "Inspired by Claude Agent SDK multi-agent orchestration trends: Implement a fault-tolerant orchestrator that automatically respawns subagents in new isolated Git worktrees if their original execution crashes or times out.",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/fault_tolerant_orchestrator_v1.py",
+        "tests/test_fault_tolerant_orchestrator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Orchestrator detects crashed or timed-out subagents.",
+        "Failing subagents are safely respawned in fresh worktrees up to a maximum retry limit.",
+        "Tests verify retry logic and worktree replacement using mock crashes."
       ]
     }
   ]
