@@ -11294,7 +11294,7 @@
     },
     {
       "id": "context-engine-selective-retrieval-b8bfa454",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Context Engine Selective Retrieval Hook",
@@ -25843,6 +25843,60 @@
         "Orchestrator detects crashed or timed-out subagents.",
         "Failing subagents are safely respawned in fresh worktrees up to a maximum retry limit.",
         "Tests verify retry logic and worktree replacement using mock crashes."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-telemetry-ea325e36",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "MCP Dynamic Tool Telemetry Integration",
+      "description": "Inspired by MCP standard trends: Implement a background module to track telemetry of dynamically registered MCP tools and emit latency and usage metrics over the A2A network.",
+      "allowed_paths": [
+        "magda_agent/telemetry/mcp_dynamic_telemetry.py",
+        "tests/test_mcp_dynamic_telemetry.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module logs MCP tool execution duration.",
+        "Module emits usage metrics to a mock A2A network interface.",
+        "Tests mock execution and verify metric payloads."
+      ]
+    },
+    {
+      "id": "a2a-swarm-discovery-mesh-512f2139",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Swarm Discovery Mesh Service",
+      "description": "Inspired by A2A standard trend: Implement an advanced mesh-based discovery service where peer agents can gossip about available capabilities over mDNS, allowing highly resilient peer-to-peer discovery.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_swarm_mesh.py",
+        "tests/test_a2a_swarm_mesh.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Swarm mesh service can aggregate and broadcast Agent Cards.",
+        "Agents dynamically learn about indirect peers via gossip propagation.",
+        "Tests verify gossip propagation logic with mock network endpoints."
+      ]
+    },
+    {
+      "id": "claude-agent-hierarchical-delegation-2e4db966",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "title": "Claude Agent Hierarchical Delegation",
+      "description": "Inspired by Claude Agent multi-agent orchestration trends: Implement a hierarchical delegation module where a lead Planner agent can spawn Sub-planners with constrained scopes and isolated Git worktrees.",
+      "allowed_paths": [
+        "magda_agent/agents/hierarchical_planner.py",
+        "tests/test_hierarchical_planner.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lead planner can dynamically spawn isolated sub-planners.",
+        "Sub-planners run with restricted scopes.",
+        "Tests verify successful delegation and scope containment."
       ]
     }
   ]
