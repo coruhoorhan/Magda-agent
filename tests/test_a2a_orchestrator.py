@@ -72,6 +72,35 @@ async def test_dispatch_concurrently_with_exception(a2a_orchestrator, caplog):
 
 
 @pytest.mark.asyncio
+async def test_dispatch_concurrently_with_telemetry(a2a_discovery, a2a_delegator):
+    mock_telemetry = MagicMock()
+    orchestrator = A2AOrchestrator(a2a_discovery, a2a_delegator, telemetry=mock_telemetry)
+
+    orchestrator.delegator.delegate_subplan = AsyncMock()
+
+    async def mock_delegate(capability, step):
+        if step['id'] == "step_error":
+            raise Exception("Simulated delegation failure")
+        return f"Delegated {step['id']} for {capability}"
+
+    orchestrator.delegator.delegate_subplan.side_effect = mock_delegate
+
+    sub_plans = [
+        {"capability": "coding", "steps": [{"id": "step_1"}, {"id": "step_error"}]},
+    ]
+
+    results = await orchestrator.dispatch_concurrently(sub_plans)
+
+    assert len(results) == 1
+    assert mock_telemetry.track_event.call_count == 2
+    mock_telemetry.track_event.assert_any_call(
+        "orchestrator", "concurrent_delegation_start", {"num_sub_plans": 1}
+    )
+    mock_telemetry.track_event.assert_any_call(
+        "orchestrator", "concurrent_delegation_end", {"success_count": 1, "failure_count": 1}
+    )
+
+@pytest.mark.asyncio
 async def test_execute_orchestrated_plan_sequential(a2a_orchestrator):
     plan = [
         {"id": "step_1", "skill": "delegate_to_agent", "skill_kwargs": {"capability": "coding"}, "description": "code it"}
