@@ -133,3 +133,74 @@ async def test_execute_orchestrated_plan_concurrent(a2a_orchestrator):
 async def test_execute_orchestrated_plan_empty(a2a_orchestrator):
     results = await a2a_orchestrator.execute_orchestrated_plan([])
     assert results == {}
+
+@pytest.mark.asyncio
+@patch('httpx.AsyncClient.post', new_callable=AsyncMock)
+async def test_execute_direct_mcp_action(mock_post, a2a_orchestrator, a2a_discovery):
+    # Register the test agent
+    agent_card = AgentCard("target_agent", "Target", "Desc", ["capability_1"], {"mcp": "http://mcp-endpoint"})
+    a2a_discovery._discovered_agents["target_agent"] = agent_card
+
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "jsonrpc": "2.0",
+        "result": {
+            "content": [{"type": "text", "text": "Action Success"}]
+        }
+    }
+    mock_response.raise_for_status.return_value = None
+    mock_post.return_value = mock_response
+
+    result = await a2a_orchestrator.execute_direct_mcp_action("target_agent", "some_tool", {"arg": "val"})
+
+    assert result == "Action Success"
+    mock_post.assert_called_once()
+    args, kwargs = mock_post.call_args
+    assert kwargs["json"]["method"] == "tools/call"
+    assert kwargs["json"]["params"]["name"] == "some_tool"
+    assert kwargs["json"]["params"]["arguments"] == {"arg": "val"}
+
+@pytest.mark.asyncio
+async def test_execute_orchestrated_plan_with_mcp_tool_sequential(a2a_orchestrator):
+    plan = [
+        {"id": "step_1", "skill": "execute_mcp_tool", "skill_kwargs": {
+            "target_agent_id": "target_agent",
+            "tool_name": "some_tool",
+            "tool_kwargs": {"arg": "val"}
+        }},
+        {"id": "step_2", "skill": "delegate_to_agent", "skill_kwargs": {"capability": "coding"}, "description": "code it"}
+    ]
+
+    a2a_orchestrator.execute_direct_mcp_action = AsyncMock(return_value="MCP Success")
+    a2a_orchestrator.delegator.execute_plan = AsyncMock(return_value={"step_2": "Sequential Success"})
+
+    results = await a2a_orchestrator.execute_orchestrated_plan(plan, concurrent=False)
+
+    a2a_orchestrator.execute_direct_mcp_action.assert_called_once_with("target_agent", "some_tool", {"arg": "val"})
+    a2a_orchestrator.delegator.execute_plan.assert_called_once()
+
+    assert results["step_1"] == "MCP Success"
+    assert results["step_2"] == "Sequential Success"
+
+@pytest.mark.asyncio
+async def test_execute_orchestrated_plan_with_mcp_tool_concurrent(a2a_orchestrator):
+    plan = [
+        {"id": "step_1", "skill": "execute_mcp_tool", "skill_kwargs": {
+            "target_agent_id": "target_agent",
+            "tool_name": "some_tool",
+            "tool_kwargs": {"arg": "val"}
+        }},
+        {"id": "step_2", "skill": "delegate_to_agent", "skill_kwargs": {"capability": "coding"}, "description": "code it"}
+    ]
+
+    a2a_orchestrator.execute_direct_mcp_action = AsyncMock(return_value="MCP Concurrent Success")
+    a2a_orchestrator.dispatch_concurrently = AsyncMock(return_value={"step_2": "Delegation Concurrent Success"})
+    a2a_orchestrator.delegator.split_plan = MagicMock(return_value=[{"capability": "coding", "steps": [plan[1]]}])
+
+    results = await a2a_orchestrator.execute_orchestrated_plan(plan, concurrent=True)
+
+    a2a_orchestrator.execute_direct_mcp_action.assert_called_once_with("target_agent", "some_tool", {"arg": "val"})
+    a2a_orchestrator.dispatch_concurrently.assert_called_once()
+
+    assert results["step_1"] == "MCP Concurrent Success"
+    assert results["step_2"] == "Delegation Concurrent Success"

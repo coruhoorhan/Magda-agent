@@ -11209,7 +11209,7 @@
     },
     {
       "id": "mcp-action-tool-orchestrator-integration-v1-a3a8b9a7",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Action Tool Orchestrator Integration",
@@ -25578,6 +25578,58 @@
         "Interactive tuner catches low-confidence capabilities.",
         "Module emits an explicit mock request to prompt the user for variable tuning.",
         "Tests verify prompt emission logic and state injection."
+      ]
+    },
+    {
+      "id": "claude-teams-worktree-garbage-collector-v2-abc",
+      "title": "Claude Teams Worktree Garbage Collector V2",
+      "description": "Inspired by Claude Agent Teams multi-agent architectures: Enhance the periodic garbage collector to also compress leftover state into episodic memory before cleanly deleting abandoned Git worktrees.",
+      "status": "todo",
+      "area": "agents",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/isolation/worktree_gc_v2.py",
+        "tests/test_worktree_gc_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Garbage Collector identifies stale worktrees.",
+        "Compresses logs before removal.",
+        "Tests mock file system and verify cleanup."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-memory-plugin-v2-def",
+      "title": "OpenClaw Virtual Memory Pattern Integration V2",
+      "description": "Inspired by OpenClaw trends: Integrate the explicit swapping mechanism for Context Engine to support multiple concurrent users independently inside the FastAPI singleton service.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_memory_v2.py",
+        "tests/test_virtual_memory_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Modular swap mechanism maintains user separation.",
+        "Tests cover independent token limits per user."
+      ]
+    },
+    {
+      "id": "a2a-distributed-telemetry-v8-ghi",
+      "title": "A2A Distributed Telemetry V8",
+      "description": "Inspired by A2A standard trend: Enhance the A2A distributed telemetry module to support OpenTelemetry-compatible tracing payloads and propagate span IDs.",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_distributed_v8.py",
+        "tests/test_a2a_distributed_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry payloads include structured spans.",
+        "Tests verify OpenTelemetry compatibility format."
       ]
     }
   ]
