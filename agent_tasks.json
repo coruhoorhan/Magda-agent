@@ -11158,7 +11158,7 @@
     },
     {
       "id": "a2a-delegation-circuit-breaker-v7-720d9240",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Delegation Circuit Breaker V7",
@@ -25434,6 +25434,60 @@
       "acceptance": [
         "Events are formatted for Canvas UI.",
         "Tests mock websocket broadcast."
+      ]
+    },
+    {
+      "id": "mcp-kernel-taint-tracking-v1-5dbd139d",
+      "title": "MCPKernel Taint Tracking V1",
+      "description": "Inspired by ACS/MCPKernel trends (June 2026): Implement taint tracking in the MCP context to monitor data flow from external tools, preventing unauthorized data exfiltration.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_taint_tracking_v1.py",
+        "tests/test_mcp_taint_tracking_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint metadata is attached to inputs and propagated.",
+        "Tainted data attempting to leave trusted boundaries is blocked.",
+        "Tests verify that taint tracking identifies and blocks high-risk data flows."
+      ]
+    },
+    {
+      "id": "hermes-skill-experience-learner-v1-e04be6dd",
+      "title": "Hermes Skill Experience Learner V1",
+      "description": "Inspired by Hermes Agent learning loops (June 2026): Create a background service that analyzes successful command executions and compiles them into procedural memory templates (skills) for future reuse.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/skill_experience_learner_v1.py",
+        "tests/test_skill_experience_learner_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Learner extracts sequences from successful tool calls.",
+        "Procedural templates are generated and stored in memory.",
+        "Tests verify successful template generation from mock executions."
+      ]
+    },
+    {
+      "id": "a2a-semantic-kernel-bridge-v1-0385fb20",
+      "title": "A2A Semantic Kernel Bridge V1",
+      "description": "Inspired by A2A compatibility trends (June 2026): Develop a bridge adapter to translate Magda's native A2A protocol into the format expected by Semantic Kernel agents.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_semantic_kernel_bridge_v1.py",
+        "tests/test_a2a_semantic_kernel_bridge_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Bridge can serialize Magda payloads to Semantic Kernel format.",
+        "Bridge can deserialize incoming Semantic Kernel messages.",
+        "Tests verify translation logic using mocked messages."
       ]
     }
   ]
