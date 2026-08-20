@@ -11124,7 +11124,7 @@
     },
     {
       "id": "openclaw-rl-interactive-learner-v7-37436a23",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Interactive Learner v7",
