@@ -5,8 +5,8 @@ import threading
 import uuid
 from typing import List, Dict, Any, Optional
 
+from magda_agent.integration.mcp_preflight_v6 import PreflightMCPServerWrapperV6
 from magda_agent.integration.mcp_server import MCPServer
-from magda_agent.integration.mcp_preflight_v5 import PreflightMCPServerWrapperV5
 
 
 class MCPConcurrentHandlerV3:
@@ -52,9 +52,9 @@ class MCPConcurrentHandlerV3:
             prefix: The server prefix/namespace.
             server: The MCPServer instance.
         """
-        # Since PreflightMCPServerWrapperV5 acts as a wrapper proxying handle_request,
+        # Since PreflightMCPServerWrapperV6 acts as a wrapper proxying handle_request,
         # but the concurrency handler accesses exporter and list_tools, we attach them.
-        preflight_server = PreflightMCPServerWrapperV5(server)
+        preflight_server = PreflightMCPServerWrapperV6(server)
         preflight_server.list_tools = server.list_tools
         preflight_server.exporter = server.exporter
         preflight_server.server_id = getattr(server, "server_id", None)
