@@ -11243,7 +11243,7 @@
     },
     {
       "id": "mcp-dynamic-tools-registration-86f72b11",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Dynamic Tools Registration Pipeline",
@@ -25681,6 +25681,61 @@
       "acceptance": [
         "Evaluator scores action trajectories and outputs reward signals.",
         "Tests ensure consistent reward values for various mocked trajectories."
+      ]
+    },
+    {
+      "id": "mcp-kernel-taint-tracking-v1-9bc7dfd3",
+      "title": "MCPKernel Taint Tracking V1",
+      "description": "Inspired by MCPKernel (June 2026 trend): Implement a taint tracking mechanism that monitors data flow from external MCP tools to prevent prompt injection and unauthorized state mutation.",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/security/mcp_taint_tracker.py",
+        "tests/test_mcp_taint_tracker.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint tracker correctly labels data originating from MCP tools.",
+        "Taint propagates through string operations.",
+        "Execution is blocked if tainted data reaches sensitive endpoints.",
+        "Pytest tests verify correct taint propagation and blocking."
+      ]
+    },
+    {
+      "id": "hermes-skill-marketplace-sync-v1-acf4e663",
+      "title": "Hermes Skill Marketplace Sync V1",
+      "description": "Inspired by agentskills.io (June 2026 trend): Implement a background task that syncs local procedural skills with a remote skill marketplace API.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/marketplace_sync_api.py",
+        "tests/test_marketplace_sync_api.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Service fetches available skills from a mock marketplace API.",
+        "Service registers fetched skills via the SkillRegistry.",
+        "Pytest mock tests confirm API interaction and registration."
+      ]
+    },
+    {
+      "id": "acs-runtime-governance-layer-v1-980a3da5",
+      "title": "ACS Runtime Governance Layer V1",
+      "description": "Inspired by Agent Control Specification (ACS) trend (June 2026): Implement a 5-checkpoint runtime governance layer to validate agentic workflows.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/acs_governance_layer.py",
+        "tests/test_acs_governance_layer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implements 5 ACS validation checkpoints.",
+        "Integrates checkpoints into tool execution.",
+        "Pytest mock tests confirm validation blocks unsafe actions."
       ]
     }
   ]
