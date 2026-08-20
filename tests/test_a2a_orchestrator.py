@@ -204,3 +204,24 @@ async def test_execute_orchestrated_plan_with_mcp_tool_concurrent(a2a_orchestrat
 
     assert results["step_1"] == "MCP Concurrent Success"
     assert results["step_2"] == "Delegation Concurrent Success"
+
+@pytest.mark.asyncio
+async def test_execute_orchestrated_plan_concurrent_fallback(a2a_orchestrator: A2AOrchestrator, caplog: pytest.LogCaptureFixture) -> None:
+    """
+    Tests that execute_orchestrated_plan falls back to sequential execution
+    when concurrent delegation raises an unexpected exception.
+    """
+    plan = [
+        {"id": "step_1", "skill": "delegate_to_agent", "skill_kwargs": {"capability": "coding"}, "description": "code it"}
+    ]
+
+    a2a_orchestrator.dispatch_concurrently = AsyncMock(side_effect=Exception("Simulated network error"))
+    a2a_orchestrator.delegator.split_plan = MagicMock(return_value=[{"capability": "coding", "steps": [plan[0]]}])
+    a2a_orchestrator.delegator.execute_plan = AsyncMock(return_value={"step_1": "Fallback Sequential Success"})
+
+    results = await a2a_orchestrator.execute_orchestrated_plan(plan, concurrent=True)
+
+    a2a_orchestrator.dispatch_concurrently.assert_called_once()
+    a2a_orchestrator.delegator.execute_plan.assert_called_once_with([plan[0]])
+    assert results["step_1"] == "Fallback Sequential Success"
+    assert "Concurrent delegation failed, falling back to sequential: Simulated network error" in caplog.text
