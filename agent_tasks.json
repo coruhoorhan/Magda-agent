@@ -11141,7 +11141,7 @@
     },
     {
       "id": "mcp-action-tool-preflight-validation-v6-131f0c68",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Tool Pre-flight Validation V6",
@@ -25400,6 +25400,40 @@
         "Pruner correctly identifies worktrees that have not been modified recently.",
         "Pruner safely deletes stale worktrees without crashing active subagents.",
         "Tests mock os and subprocess to verify pruning logic."
+      ]
+    },
+    {
+      "id": "openclaw-rl-next-state-pipeline-v9-2b4a7812",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Next State Pipeline V9",
+      "description": "Inspired by OpenClaw RL trend: Implement a dedicated pipeline to parse next-state interaction signals directly from user text and map them to reward values for real-time tuning.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_pipeline_v9.py",
+        "tests/test_openclaw_rl_pipeline_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline parses next-state signals.",
+        "Tests verify reward extraction."
+      ]
+    },
+    {
+      "id": "canvas-memory-telemetry-v5-9a8b7c6d",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "Canvas Memory Telemetry V5",
+      "description": "Inspired by OpenClaw Canvas visualization trend: Implement an export module to dynamically broadcast episodic memory consolidation events to a live dashboard via websocket.",
+      "allowed_paths": [
+        "magda_agent/telemetry/canvas_memory_v5.py",
+        "tests/test_canvas_memory_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Events are formatted for Canvas UI.",
+        "Tests mock websocket broadcast."
       ]
     }
   ]
