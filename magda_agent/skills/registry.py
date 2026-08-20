@@ -2,6 +2,7 @@ from typing import Dict, Callable, Any, Optional, Tuple, TYPE_CHECKING
 import logging
 import time
 from magda_agent.skills.telemetry_export import SkillTelemetryTracker
+from magda_agent.telemetry.canvas_skills_telemetry import CanvasSkillsTelemetry
 
 if TYPE_CHECKING:
     from magda_agent.safety.policy import PolicyLayer
@@ -10,11 +11,12 @@ class SkillRegistry:
     """
     Registry to manage and trigger available skills for the AGI agent.
     """
-    def __init__(self, policy_layer: Optional["PolicyLayer"] = None):
+    def __init__(self, policy_layer: Optional["PolicyLayer"] = None, canvas_telemetry: Optional["CanvasSkillsTelemetry"] = None):
         self.skills: Dict[str, Callable] = {}
         self.descriptions: Dict[str, str] = {}
         self.policy_layer = policy_layer
         self.telemetry_tracker = SkillTelemetryTracker()
+        self.canvas_telemetry = canvas_telemetry or CanvasSkillsTelemetry()
 
         # Initialize AgentGuard if policy_layer is provided
         from magda_agent.safety.agent_guard import AgentGuard
@@ -71,6 +73,25 @@ class SkillRegistry:
     def execute_skill(self, name: str, **kwargs) -> Any:
         if name not in self.skills:
             return f"Error: Skill '{name}' not found."
+
+        # Emit skill start event asynchronously via a new event loop if needed, or by dispatching it
+        # Since execute_skill might be called synchronously, we will use a fire-and-forget approach
+        def _dispatch_telemetry(coro):
+            import asyncio
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(coro)
+            except RuntimeError:
+                # Fallback to run a single task without replacing the loop,
+                # though usually if no loop is running we can create one
+                try:
+                    new_loop = asyncio.new_event_loop()
+                    new_loop.run_until_complete(coro)
+                finally:
+                    new_loop.close()
+
+        if self.canvas_telemetry:
+            _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_start(name, kwargs))
 
         try:
             if hasattr(self, 'mcp_enforcer') and self.mcp_enforcer and self.policy_layer:
@@ -176,6 +197,8 @@ class SkillRegistry:
                                     duration=duration_async
                                 )
                                 from magda_agent.safety.acs_guard_v2 import SecurityViolationError
+                                if self.canvas_telemetry:
+                                    _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_fail(name, f"Action blocked by ACS checkpoint 5: {reason}", duration_async * 1000))
                                 raise SecurityViolationError(f"Action blocked by ACS checkpoint 5: {reason}")
                             self.acs_guard.audit_logger.log_call(
                                 tool_name=name,
@@ -184,6 +207,8 @@ class SkillRegistry:
                                 result=actual_result,
                                 duration=duration_async
                             )
+                        if self.canvas_telemetry:
+                            _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_success(name, actual_result, duration_async * 1000))
                         return actual_result
                     except Exception as ea:
                         duration_async = time.time() - start_time
@@ -196,6 +221,8 @@ class SkillRegistry:
                                 duration=duration_async
                             )
                         logging.error(f"Error executing skill {name}: {ea}")
+                        if self.canvas_telemetry:
+                            _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_fail(name, str(ea), duration_async * 1000))
                         raise
                 return async_audit_wrapper(result)
 
@@ -213,6 +240,8 @@ class SkillRegistry:
                         duration=duration
                     )
                     from magda_agent.safety.acs_guard_v2 import SecurityViolationError
+                    if self.canvas_telemetry:
+                        _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_fail(name, f"Action blocked by ACS checkpoint 5: {reason}", duration * 1000))
                     raise SecurityViolationError(f"Action blocked by ACS checkpoint 5: {reason}")
 
                 # Successful execution audit
@@ -225,6 +254,8 @@ class SkillRegistry:
                 )
 
             self.telemetry_tracker.record_usage(name, success=True, execution_time_ms=duration * 1000)
+            if self.canvas_telemetry:
+                _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_success(name, result, duration * 1000))
 
             return result
         except Exception as e:
@@ -235,6 +266,8 @@ class SkillRegistry:
 
             self.telemetry_tracker.record_usage(name, success=False, execution_time_ms=exec_time)
             logging.error(f"Error executing skill {name}: {e}")
+            if self.canvas_telemetry:
+                _dispatch_telemetry(self.canvas_telemetry.broadcast_skill_fail(name, str(e), exec_time))
             return f"Error executing skill {name}: {e}"
 
 
