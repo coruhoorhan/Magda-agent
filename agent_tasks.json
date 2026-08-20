@@ -11312,7 +11312,7 @@
     },
     {
       "id": "a2a-peer-delegation-discovery-94f536ca",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Peer Task Delegation Discovery",
@@ -25951,6 +25951,42 @@
         "Partitioner filters parent memory based on sub-agent scope.",
         "Sub-agents only receive context relevant to their assigned task.",
         "Tests mock parent context and verify correct partitioning rules."
+      ]
+    },
+    {
+      "id": "magda-trend-27331408",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Mesh Health Telemetry Sync",
+      "description": "Inspired by A2A standard trends: Implement a background task that continuously streams heartbeats and routing latency metrics of discovered peer agents to the central Canvas dashboard.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_mesh_health.py",
+        "tests/test_a2a_mesh_health.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Background task polls discovered agents for heartbeat latency.",
+        "Health metrics are broadcast via WebSocket to the OpenClaw Canvas.",
+        "Tests mock HTTP latency calls and verify payload formats."
+      ]
+    },
+    {
+      "id": "magda-trend-96ee96ee",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "A2A Mesh Gossip Protocol v4",
+      "description": "Inspired by decentralized A2A protocols: Extend A2A discovery with a gossip protocol allowing agents to forward unseen Agent Cards to known peers, ensuring robust network connectivity without a central registry.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_v4.py",
+        "tests/test_a2a_gossip_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agents randomly pick peers to exchange new Agent Cards.",
+        "Gossip loop limits TTL (time-to-live) of forwarded cards to prevent infinite loops.",
+        "Tests simulate a fragmented mesh and verify cards reach all nodes."
       ]
     }
   ]
