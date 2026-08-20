@@ -11192,7 +11192,7 @@
     },
     {
       "id": "a2a-orchestration-telemetry-v1-1a9aa424",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "A2A Orchestration Telemetry Integration",
@@ -25542,6 +25542,42 @@
         "Delegator spawns child subagents with strictly scoped git worktrees.",
         "Context is partitioned and passed to subagents to prevent token overload.",
         "Tests mock git and subprocess to verify isolation boundaries."
+      ]
+    },
+    {
+      "id": "new-a2a-orchestration-evaluator-subagent-v1",
+      "title": "A2A Orchestration Evaluator Subagent V1",
+      "description": "Inspired by Claude Agent SDK (June 2026): Create a subagent specifically designed to evaluate execution graphs returned by A2A peer delegations, isolating bad nodes and returning corrections to the orchestrator.",
+      "area": "multi-agent",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_orchestrator_evaluator_v1.py",
+        "tests/test_a2a_orchestrator_evaluator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent is initialized with partial results from A2A delegation.",
+        "Subagent successfully evaluates nodes using mock evaluation endpoints.",
+        "Tests verify failed nodes are extracted and properly mapped."
+      ]
+    },
+    {
+      "id": "new-openclaw-interactive-working-memory-tuner-v1",
+      "title": "OpenClaw Interactive Working Memory Tuner V1",
+      "description": "Inspired by OpenClaw MemGPT-like standard: Implement an interactive context tuner that prompts the user for immediate tuning of working memory variables mid-conversation if it detects low confidence when routing capabilities.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/interactive_working_memory_tuner_v1.py",
+        "tests/test_interactive_working_memory_tuner_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Interactive tuner catches low-confidence capabilities.",
+        "Module emits an explicit mock request to prompt the user for variable tuning.",
+        "Tests verify prompt emission logic and state injection."
       ]
     }
   ]
