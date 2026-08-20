@@ -25687,7 +25687,7 @@
       "id": "mcp-kernel-taint-tracking-v1-9bc7dfd3",
       "title": "MCPKernel Taint Tracking V1",
       "description": "Inspired by MCPKernel (June 2026 trend): Implement a taint tracking mechanism that monitors data flow from external MCP tools to prevent prompt injection and unauthorized state mutation.",
-      "status": "todo",
+      "status": "done",
       "area": "security",
       "risk": "high",
       "allowed_paths": [
@@ -25897,6 +25897,60 @@
         "Lead planner can dynamically spawn isolated sub-planners.",
         "Sub-planners run with restricted scopes.",
         "Tests verify successful delegation and scope containment."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-report-v1-976e2ca8",
+      "title": "Hermes Cron Daily Report Skill V1",
+      "description": "Inspired by Hermes Agent cron scheduler trends (June 2026): Implement a background cron skill that generates a daily summary report of agent activities, errors, and memory consolidation.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/cron_daily_report.py",
+        "tests/test_cron_daily_report.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Skill triggers on a cron schedule.",
+        "Report aggregates activity from mock telemetry/memory sources.",
+        "Tests verify cron scheduling and report generation using mocks."
+      ]
+    },
+    {
+      "id": "openclaw-live-canvas-virtual-memory-v1-823816b7",
+      "title": "OpenClaw Live Canvas Virtual Memory Sync V1",
+      "description": "Inspired by OpenClaw Canvas trends (June 2026): Implement an exporter that streams Virtual Context memory blocks to a live dashboard via WebSockets.",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/telemetry/canvas_virtual_memory.py",
+        "tests/test_canvas_virtual_memory.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter listens for Virtual Context updates.",
+        "Updates are broadcast to the mock Canvas WebSocket endpoint.",
+        "Tests verify WebSocket payload structure and broadcasting logic."
+      ]
+    },
+    {
+      "id": "claude-agent-subagent-memory-isolation-v1-616f6775",
+      "title": "Claude Agent Subagent Memory Isolation V1",
+      "description": "Inspired by Claude Agent multi-agent orchestration trends (June 2026): Implement a context partitioner that ensures spawned Sub-planners cannot access the full parent working memory, receiving only a constrained subset.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/memory/subagent_partitioner.py",
+        "tests/test_subagent_partitioner.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Partitioner filters parent memory based on sub-agent scope.",
+        "Sub-agents only receive context relevant to their assigned task.",
+        "Tests mock parent context and verify correct partitioning rules."
       ]
     }
   ]
