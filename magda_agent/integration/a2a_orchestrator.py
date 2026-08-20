@@ -125,8 +125,13 @@ class A2AOrchestrator:
         if concurrent:
             if delegation_plan:
                 sub_plans = self.delegator.split_plan(delegation_plan)
-                del_results = await self.dispatch_concurrently(sub_plans)
-                results.update(del_results)
+                try:
+                    del_results = await self.dispatch_concurrently(sub_plans)
+                    results.update(del_results)
+                except Exception as e:
+                    logging.warning(f"Concurrent delegation failed, falling back to sequential: {e}")
+                    res = await self.delegator.execute_plan(delegation_plan)
+                    results.update(res)
             if mcp_tasks:
                 mcp_completed = await asyncio.gather(*mcp_tasks, return_exceptions=True)
                 for res in mcp_completed:
