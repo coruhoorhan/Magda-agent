@@ -11260,7 +11260,7 @@
     },
     {
       "id": "agent-teams-isolation-v4-46f1088c",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "high",
       "title": "Agent Teams Isolation enhancements V4",
@@ -25736,6 +25736,59 @@
         "Implements 5 ACS validation checkpoints.",
         "Integrates checkpoints into tool execution.",
         "Pytest mock tests confirm validation blocks unsafe actions."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-streaming-export-v10-new",
+      "title": "MCP Action Tool Streaming Export V10",
+      "description": "Inspired by MCP standard trends (June 2026): Implement an action tool exporter that streams responses via an async generator compatible with JSON-RPC streaming, enabling real-time feedback for long-running tools.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_streaming_export_v10.py",
+        "tests/test_mcp_streaming_export_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter correctly formats yields from Python generators into MCP streaming payload chunks.",
+        "Tests verify that the chunking mechanism buffers properly.",
+        "Tests verify JSON-RPC serialization."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-consensus-v3-new",
+      "title": "A2A Swarm Intelligence Consensus Protocol V3",
+      "description": "Inspired by Swarm Intelligence and A2A trends (June 2026): Create a consensus protocol for the A2A mesh that allows peer sub-agents to vote on critical task parameters before taking an action.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_consensus_v3.py",
+        "tests/test_a2a_consensus_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Protocol handles distributed voting from multiple discovered peer agents.",
+        "Consensus requirement prevents execution until a quorum is reached.",
+        "Tests verify voting resolution and quorum conditions."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-lifecycle-manager-v3-new",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V3",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement an intelligent background process that periodically scans and archives idle virtual contexts from subagents to free up memory constraints.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_lifecycle_v3.py",
+        "tests/test_virtual_context_lifecycle_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle manager detects idle context boundaries and triggers Episodic Memory archiving.",
+        "Tests mock context engine states and verify cleanup."
       ]
     }
   ]
