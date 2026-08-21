@@ -11519,7 +11519,7 @@
     },
     {
       "id": "a2a-distributed-telemetry-786a28d2",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "medium",
       "title": "A2A Distributed Telemetry tracking",
@@ -26590,6 +26590,60 @@
       "acceptance": [
         "Cron job searches memories periodically.",
         "Successful paths are consolidated into new templates."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-creation-a1b2c3d4",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Creation from Experience",
+      "description": "Inspired by Hermes Agent (June 2026), implement a self-improving memory loop that automatically creates new procedural skills from past experiences.",
+      "allowed_paths": [
+        "magda_agent/learning/hermes_skills_creation.py",
+        "tests/test_hermes_skills_creation.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module parses past episodic memories and successfully extracts procedural templates.",
+        "Extracted templates are stored as reusable skills.",
+        "Tests verify the extraction logic via mocks."
+      ]
+    },
+    {
+      "id": "openclaw-rl-online-learning-e5f6g7h8",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw-RL Online Learning Module",
+      "description": "Inspired by OpenClaw-RL (June 2026), implement an online reinforcement learning module that uses user replies and tool outputs as next-state signals to adjust agent behavior dynamically.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_module.py",
+        "tests/test_openclaw_rl_module.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module ingests next-state signals dynamically without full episodic reflection.",
+        "Updates agent weights/preferences based on signals.",
+        "Tests mock signal ingestion and verify updates."
+      ]
+    },
+    {
+      "id": "claude-evaluator-subagent-i9j0k1l2",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude SDK Evaluator Sub-agent",
+      "description": "Inspired by Claude Agent SDK (June 2026), add an Evaluator sub-agent as part of the Triad Coordinator pattern to score Generator outputs before returning them.",
+      "allowed_paths": [
+        "magda_agent/agents/claude_evaluator.py",
+        "tests/test_claude_evaluator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator scores generated responses based on a rubric.",
+        "Integrates into the Triad Coordinator loop.",
+        "Tests mock generation and verify scoring."
       ]
     }
   ]
