@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconn
 from fastapi.responses import JSONResponse
 from magda_agent.visualization.server import CanvasServer
 from magda_agent.visualization.canvas_streamer import CanvasMemoryStreamer
+from magda_agent.telemetry.canvas_stream_v9 import CanvasTelemetryStreamerV9
 from magda_agent.memory.canvas_viz import MemoryCanvasVisualizer
 
 from magda_agent.architecture.gateway import LocalFirstGateway
@@ -457,3 +458,25 @@ async def websocket_canvas_episodic(websocket: WebSocket, user_id: Optional[int]
             await websocket.receive_text()
     except WebSocketDisconnect:
         pass
+
+@app.websocket("/ws/canvas/telemetry_v9")
+async def websocket_canvas_telemetry_v9(websocket: WebSocket):
+    token = websocket.query_params.get("token")
+    if not _configured_api_token() or not hmac.compare_digest(token or "", _configured_api_token() or ""):
+        await websocket.close(code=1008)
+        return
+
+    await websocket.accept()
+    streamer = CanvasTelemetryStreamerV9(websocket=websocket)
+
+    # We store the streamer in app state so the main loop can access it
+    if not hasattr(app.state, 'telemetry_streamers'):
+        app.state.telemetry_streamers = []
+    app.state.telemetry_streamers.append(streamer)
+
+    try:
+        while True:
+            # Keep connection open, wait for client messages if any
+            _ = await websocket.receive_text()
+    except WebSocketDisconnect:
+        app.state.telemetry_streamers.remove(streamer)

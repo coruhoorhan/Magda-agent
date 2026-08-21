@@ -67,9 +67,20 @@ class GeneratorAgent:
                 batch_tasks = []
                 step_metadatas = []
 
+
+
                 for step in executable_steps:
                     if steps_executed >= MAX_STEPS:
                         break
+
+                    try:
+                        from magda_agent.api import app
+                        import asyncio
+                        if hasattr(app, 'state') and hasattr(app.state, 'telemetry_streamers') and app.state.telemetry_streamers:
+                            for streamer in app.state.telemetry_streamers:
+                                asyncio.create_task(streamer.broadcast_planner_step(step))
+                    except ImportError:
+                        pass
 
                     skill_name = step.get('skill')
                     kwargs = step.get('skill_kwargs') or {}

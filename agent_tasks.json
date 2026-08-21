@@ -11366,7 +11366,7 @@
     },
     {
       "id": "openclaw-live-canvas-telemetry-v9-5946331c",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Live Canvas Telemetry v9",
@@ -26041,6 +26041,59 @@
         "Skill operates on a cron schedule (e.g., nightly).",
         "Skill correctly copies mock database files to an archive path.",
         "Tests mock file I/O and verify cron scheduling."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-governance-audit-v12",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "Agent Guard Runtime Governance Audit v12",
+      "description": "Inspired by Agent Guard / ACS trends (June 2026): Develop an advanced audit trail component that captures policy evaluations and execution parameters of MCP action tools for compliance monitoring.",
+      "allowed_paths": [
+        "magda_agent/safety/audit_v12.py",
+        "tests/test_audit_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Audit component records structured logs of policy evaluations.",
+        "Logs contain execution contexts without leaking sensitive secrets.",
+        "Tests verify accurate recording of mock tool executions."
+      ]
+    },
+    {
+      "id": "claude-code-dependency-graph-visualizer-v1",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "Claude Code Dependency Graph Visualizer",
+      "description": "Inspired by Claude Agent SDK (June 2026): Implement an endpoint that exports the planner's DAG into a standard graph representation (e.g., DOT format) that can be visualized in an external dashboard.",
+      "allowed_paths": [
+        "magda_agent/visualization/dag_visualizer.py",
+        "tests/test_dag_visualizer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Visualizer generates correct DOT representation from the Planner DAG.",
+        "Tests mock DAGs and verify the output format."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-user-feedback-v7",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Multimodal User Feedback v7",
+      "description": "Inspired by OpenClaw RL trends: Automatically extract RL rewards from multimodal feedback signals including explicit textual sentiment and implicit interaction length.",
+      "allowed_paths": [
+        "magda_agent/learning/multimodal_feedback_v7.py",
+        "tests/test_multimodal_feedback_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline successfully extracts reward scalars from all modalities.",
+        "Habit weights correctly reflect multimodal inputs.",
+        "Tests mock multi-turn responses."
       ]
     }
   ]
