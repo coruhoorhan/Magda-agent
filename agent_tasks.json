@@ -11400,7 +11400,7 @@
     },
     {
       "id": "memory-virtual-context-compression-hook-af6fd63b",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Memory Virtual Context Compression Hook",
@@ -26148,6 +26148,60 @@
         "Tracker identifies executable layers.",
         "State transitions (pending -> running -> done) are tracked correctly.",
         "Tests verify coordination of mock tasks."
+      ]
+    },
+    {
+      "id": "cross-agent-skill-sharing-v1-432d1e2f",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "Cross-Agent Skill Sharing Protocol",
+      "description": "Inspired by A2A standard trends: Implement a mechanism for agents to request and share serialized skills via A2A protocol, registering them dynamically in their local MCPRegistry.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_skill_sharing.py",
+        "tests/test_a2a_skill_sharing.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent can request a skill from a peer over A2A.",
+        "Agent registers the received skill in its local registry.",
+        "Tests mock network calls and verify skill serialization and registration."
+      ]
+    },
+    {
+      "id": "unified-agent-logging-standard-v3-8e4a9b2c",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "low",
+      "title": "Unified Agent Logging Standard v3",
+      "description": "Inspired by enterprise-ready agent tracing: Standardize logging across all agent nodes to emit structured JSON logs compatible with OpenTelemetry, capturing request IDs and memory tokens.",
+      "allowed_paths": [
+        "magda_agent/telemetry/structured_logging_v3.py",
+        "tests/test_structured_logging_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Logger formats messages as structured JSON.",
+        "Fields include trace IDs and relevant agent state metadata.",
+        "Tests verify log payload structure."
+      ]
+    },
+    {
+      "id": "context-aware-retry-policy-v2-5b9c1d8f",
+      "status": "todo",
+      "area": "execution",
+      "risk": "medium",
+      "title": "Context-Aware Action Retry Policy",
+      "description": "Inspired by runtime guardrail fallbacks: Implement a retry policy for failed tool executions that analyzes the failure reason (e.g., rate limit vs. logic error) and dynamically adjusts the retry delay or aborts.",
+      "allowed_paths": [
+        "magda_agent/execution/context_retry_policy.py",
+        "tests/test_context_retry_policy.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Retry policy analyzes exception types.",
+        "Applies exponential backoff for rate limits, aborts for validation errors.",
+        "Tests mock exceptions and verify retry behavior."
       ]
     }
   ]
