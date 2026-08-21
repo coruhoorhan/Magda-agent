@@ -11434,7 +11434,7 @@
     },
     {
       "id": "a2a-peer-discovery-mesh-agent-cards-v10-572fea3f",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Peer Discovery Mesh Agent Cards v10",
@@ -26238,6 +26238,57 @@
         "Compressor evaluates current working memory against a token threshold.",
         "Delegates summary generation to the LLM mock.",
         "Tests verify the reduced token count prior to spawning subagents."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-optimization-v3-9d8c7b6a",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Trajectory Optimization V3",
+      "description": "Inspired by OpenClaw-RL trends (June 2026): Implement a module to optimize online RL trajectories by extracting quality metrics directly from user interactions.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_optimization_v3.py",
+        "tests/test_trajectory_optimization_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module tracks and optimizes trajectories based on simulated user interactions.",
+        "Tests use mocks to verify RL weight updates based on interaction signals."
+      ]
+    },
+    {
+      "id": "claude-evaluator-git-conflict-resolver-v2-1f2e3d4c",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "title": "Claude Evaluator Git Conflict Auto-Resolver V2",
+      "description": "Inspired by Claude Agent Teams capabilities (June 2026): Create a Git conflict resolver subagent that operates in isolated worktrees to automatically handle simple merge conflicts using semantic understanding.",
+      "allowed_paths": [
+        "magda_agent/agents/git_conflict_resolver_v2.py",
+        "tests/test_git_conflict_resolver_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent uses LLM (mocked in tests) to semantically resolve Git conflicts.",
+        "Tests verify resolution logic over mock git state."
+      ]
+    },
+    {
+      "id": "hermes-skill-marketplace-export-v2-5a6b7c8d",
+      "status": "todo",
+      "area": "skills",
+      "risk": "low",
+      "title": "Hermes Skill Marketplace Exporter V2",
+      "description": "Inspired by Hermes agentskills.io standard (June 2026): Build a utility to export Magda procedures into the standard agentskills.io JSON manifest format.",
+      "allowed_paths": [
+        "magda_agent/skills/marketplace_export_v2.py",
+        "tests/test_marketplace_export_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter correctly formats internal skills to the external agentskills.io schema.",
+        "Tests verify valid JSON generation."
       ]
     }
   ]
