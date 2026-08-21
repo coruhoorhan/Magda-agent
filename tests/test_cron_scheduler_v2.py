@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime, timedelta
 import pytest
 from unittest.mock import patch, MagicMock
-from magda_agent.core.cron_scheduler_v2 import CronSchedulerV2
+from magda_agent.scheduler.cron_scheduler_v2 import CronSchedulerV2
 
 @pytest.fixture
 def scheduler():
@@ -57,11 +57,11 @@ async def test_scheduler_executes_task_on_schedule(scheduler):
     past_time = datetime.now() - timedelta(minutes=1)
     scheduler.tasks["test_task"]["next_run"] = past_time
 
-    with patch('magda_agent.core.cron_scheduler_v2.croniter.get_next') as mock_get_next:
+    with patch('magda_agent.scheduler.cron_scheduler_v2.croniter.get_next') as mock_get_next:
         mock_get_next.return_value = datetime.now() + timedelta(minutes=60)
 
         # Stop loop after one iteration
-        with patch('magda_agent.core.cron_scheduler_v2.asyncio.sleep') as mock_sleep:
+        with patch('magda_agent.scheduler.cron_scheduler_v2.asyncio.sleep') as mock_sleep:
             async def stop_loop(*args, **kwargs):
                 scheduler._running = False
             mock_sleep.side_effect = stop_loop
