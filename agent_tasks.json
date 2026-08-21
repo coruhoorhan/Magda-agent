@@ -11417,7 +11417,7 @@
     },
     {
       "id": "mcp-action-tool-registry-preflight-validation-v10-b488d9c8",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Action Tool Registry Preflight Validation v10",
@@ -26202,6 +26202,42 @@
         "Retry policy analyzes exception types.",
         "Applies exponential backoff for rate limits, aborts for validation errors.",
         "Tests mock exceptions and verify retry behavior."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-online-rewards-v3-a1b2c3d4",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Canvas Online Rewards V3",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement an online RL component that captures explicit next-state signals (user replies and tool outputs) directly from the Canvas UI to compute online rewards and fine-tune behavioral habits.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_canvas_rewards_v3.py",
+        "tests/test_openclaw_rl_canvas_rewards_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Component hooks into Canvas WebSockets to read user replies.",
+        "Generates a reward signal and updates the agent's internal PAD state or habit weights.",
+        "Tests verify mock signals and correct weight modifications."
+      ]
+    },
+    {
+      "id": "claude-code-subagent-token-compressor-v2-e5f6g7h8",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "title": "Claude Code Subagent Token Compressor V2",
+      "description": "Inspired by Claude Agent SDK (June 2026): Create a token compressor that aggressively summarizes working memory before delegating context to newly spawned parallel subagents, mitigating token limits exhaustion.",
+      "allowed_paths": [
+        "magda_agent/agents/token_compressor_v2.py",
+        "tests/test_token_compressor_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Compressor evaluates current working memory against a token threshold.",
+        "Delegates summary generation to the LLM mock.",
+        "Tests verify the reduced token count prior to spawning subagents."
       ]
     }
   ]
