@@ -11485,7 +11485,7 @@
     },
     {
       "id": "magentic-one-orchestration-router-v2-944692d0",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Magentic-One Orchestration Router v2",
@@ -26380,6 +26380,60 @@
         "Evaluator scores action trajectories and outputs reward signals.",
         "Evaluator identifies points of context fragmentation.",
         "Tests ensure consistent reward values for various mocked trajectories."
+      ]
+    },
+    {
+      "id": "a2a-mesh-subagent-telemetry-v4-abcd1234",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Mesh Sub-agent Telemetry Aggregation V4",
+      "description": "Inspired by A2A Protocol and multi-agent orchestration trends: Implement a background module to aggregate and broadcast sub-agent tracing telemetry (e.g. latency, token usage) over an A2A distributed mesh network.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_mesh_telemetry_v4.py",
+        "tests/test_a2a_mesh_telemetry_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module successfully intercepts trace logs.",
+        "Module emits telemetry payloads via mock network interface.",
+        "Tests mock telemetry tracing and verify payload formatting."
+      ]
+    },
+    {
+      "id": "mcp-action-guardrail-circuit-breaker-v1-efgh5678",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Action Guardrail Circuit Breaker V1",
+      "description": "Inspired by ACS security trends (June 2026): Implement a circuit breaker logic in the MCP execution guardrail layer that temporarily stops all external MCP action tool executions if the failure or taint violation threshold is exceeded rapidly.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_circuit_breaker_v1.py",
+        "tests/test_mcp_circuit_breaker_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Circuit breaker tracks consecutive policy failures.",
+        "Blocks all execution if the threshold is surpassed, returning a specific error payload.",
+        "Tests mock policy violations and verify the breaker opens."
+      ]
+    },
+    {
+      "id": "contextual-reflection-loop-v1-ijkl9012",
+      "status": "todo",
+      "area": "reflection",
+      "risk": "medium",
+      "title": "Contextual Reflection Loop V1",
+      "description": "Inspired by Online Learning and Self-improvement loops: Implement an offline contextual reflection service that evaluates recent sub-agent conversational exchanges and condenses them into semantic procedural templates if they meet success heuristic thresholds.",
+      "allowed_paths": [
+        "magda_agent/learning/contextual_reflection_v1.py",
+        "tests/test_contextual_reflection_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Service fetches mock sub-agent conversational logs.",
+        "Service filters logs according to mock success thresholds.",
+        "Tests verify successful processing and memory persistence logic."
       ]
     }
   ]
