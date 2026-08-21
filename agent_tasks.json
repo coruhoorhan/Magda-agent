@@ -11468,7 +11468,7 @@
     },
     {
       "id": "acs-validation-checkpoints-v4-e9b24585",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ACS Validation Checkpoints v4",
@@ -26343,6 +26343,43 @@
         "Scheduler correctly initiates background tasks at specified intervals.",
         "Main application loop is not blocked.",
         "Tests use AsyncMock to verify time-based task triggering."
+      ]
+    },
+    {
+      "id": "hermes-skill-experience-learner-v2-eda7800e",
+      "title": "Hermes Skill Experience Learner V2",
+      "description": "Inspired by Hermes Agent learning loops (June 2026): Create a background service that analyzes successful command executions and compiles them into procedural memory templates (skills) for future reuse, using an AST verifier to ensure validity before registering.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/skill_experience_learner_v2.py",
+        "tests/test_skill_experience_learner_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Learner extracts sequences from successful tool calls.",
+        "AST verifier checks generated Python source before saving.",
+        "Procedural templates are generated and stored in memory.",
+        "Tests verify successful template generation from mock executions."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-evaluation-v3-4ef3b694",
+      "title": "OpenClaw RL Trajectory Quality Evaluation V3",
+      "description": "Inspired by OpenClaw trends (June 2026): Create an evaluation module to assess the quality of long-running action trajectories and generate sparse delayed rewards for the RL loop, explicitly identifying context fragmentation points.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v3.py",
+        "tests/test_trajectory_evaluation_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator scores action trajectories and outputs reward signals.",
+        "Evaluator identifies points of context fragmentation.",
+        "Tests ensure consistent reward values for various mocked trajectories."
       ]
     }
   ]
