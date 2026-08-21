@@ -11330,7 +11330,7 @@
     },
     {
       "id": "mcp-action-tool-preflight-validation-cc9ee9dd",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Action Tool Preflight Validation",
