@@ -11451,7 +11451,7 @@
     },
     {
       "id": "a2a-protocol-discovery-mesh-v11-0f46c26a",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Protocol Discovery Mesh v11",
@@ -26289,6 +26289,60 @@
       "acceptance": [
         "Exporter correctly formats internal skills to the external agentskills.io schema.",
         "Tests verify valid JSON generation."
+      ]
+    },
+    {
+      "id": "mcp-policy-layer-guard-v5-aef893d7",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Policy Layer Guard V5",
+      "description": "Inspired by 2026 trends for runtime safety (e.g. MCPKernel, Agent Guard): Implement a policy enforcement layer that intercepts every MCP tool call before execution to enforce explicit rule-based constraints.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_policy_layer_v5.py",
+        "tests/test_mcp_policy_layer_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Policy layer successfully blocks unapproved tool calls.",
+        "Policy layer successfully permits approved tool calls.",
+        "Tests use mocks to verify interception logic."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-v4-8edcf10a",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Plugin V4",
+      "description": "Inspired by OpenClaw's Context Engine standard: Create a virtual context management plugin that manages memory splitting (Working vs Episodic) dynamically for new conversations.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_plugin_v4.py",
+        "tests/test_context_engine_plugin_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin intercepts context requests and appends episodic memory chunks appropriately.",
+        "Limits context window usage correctly.",
+        "Tests use mocks to verify context assembly."
+      ]
+    },
+    {
+      "id": "hermes-cron-scheduler-tasks-v2-9a749752",
+      "status": "todo",
+      "area": "execution",
+      "risk": "low",
+      "title": "Hermes Cron Scheduler Background Tasks V2",
+      "description": "Inspired by Hermes Agent's background operations: Implement an asynchronous cron-like scheduler to handle scheduled background operations without user prompting, like daily summaries.",
+      "allowed_paths": [
+        "magda_agent/execution/cron_scheduler_v2.py",
+        "tests/test_cron_scheduler_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scheduler correctly initiates background tasks at specified intervals.",
+        "Main application loop is not blocked.",
+        "Tests use AsyncMock to verify time-based task triggering."
       ]
     }
   ]
