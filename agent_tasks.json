@@ -11383,7 +11383,7 @@
     },
     {
       "id": "claude-sdk-dependency-graph-planner-v9-f356f47e",
-      "status": "todo",
+      "status": "done",
       "area": "planning",
       "risk": "medium",
       "title": "Claude SDK Dependency Graph Planner v9",
@@ -26094,6 +26094,60 @@
         "Pipeline successfully extracts reward scalars from all modalities.",
         "Habit weights correctly reflect multimodal inputs.",
         "Tests mock multi-turn responses."
+      ]
+    },
+    {
+      "id": "hermes-agent-chain-of-thought-optimizer-a68596f7",
+      "status": "todo",
+      "area": "planning",
+      "risk": "medium",
+      "title": "Hermes Agent Chain of Thought Optimizer",
+      "description": "Inspired by Hermes Agent chain of thought optimization: Implement a module that dynamically prunes redundant reasoning steps from the planner DAG to optimize token usage before execution.",
+      "allowed_paths": [
+        "magda_agent/planning/cot_optimizer.py",
+        "tests/test_cot_optimizer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Optimizer removes redundant sequential steps from the DAG.",
+        "Tests verify that pruning reduces step count without altering dependencies.",
+        "Topological order remains valid."
+      ]
+    },
+    {
+      "id": "openclaw-agent-canvas-dag-viewer-v2-8862c2b2",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas DAG Viewer V2",
+      "description": "Inspired by OpenClaw Canvas visualization trends: Create a WebSocket exporter that streams the planner DAG state updates to the Canvas dashboard.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_dag_viewer_v2.py",
+        "tests/test_canvas_dag_viewer_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter converts DAG into node/edge format.",
+        "Updates are broadcast via mock WebSockets.",
+        "Tests verify WebSocket payload formats."
+      ]
+    },
+    {
+      "id": "claude-code-parallel-execution-tracker-348ff059",
+      "status": "todo",
+      "area": "execution",
+      "risk": "high",
+      "title": "Claude Code Parallel Execution Tracker",
+      "description": "Inspired by Claude Agent SDK execution graphs: Implement an execution tracker that coordinates the parallel resolution of independent steps in a DAG, reporting status changes.",
+      "allowed_paths": [
+        "magda_agent/execution/dag_tracker.py",
+        "tests/test_dag_tracker.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tracker identifies executable layers.",
+        "State transitions (pending -> running -> done) are tracked correctly.",
+        "Tests verify coordination of mock tasks."
       ]
     }
   ]
