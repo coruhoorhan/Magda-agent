@@ -1,22 +1,28 @@
 import logging
 from typing import Dict, Any, Tuple, Optional
+from enum import Enum
 
-from magda_agent.safety.acs_checkpoints import ACSCheckpoints, CheckpointStage
+from magda_agent.safety.acs_checkpoints_v4 import ACSCheckpointsV4
+
+class CheckpointStage(Enum):
+    INPUT = "input"
+    EXECUTION = "execution"
+    OUTPUT = "output"
 
 class AdaptiveGuardrail:
     """
     Risk-based adaptive guardrails that dynamically enable/disable ACS checkpoints based on real-time risk scoring.
     """
 
-    def __init__(self, acs_checkpoints: Optional[ACSCheckpoints] = None) -> None:
+    def __init__(self, acs_checkpoints: Optional[ACSCheckpointsV4] = None) -> None:
         """
         Initializes the AdaptiveGuardrail.
 
         Args:
-            acs_checkpoints: An instance of ACSCheckpoints to run the underlying validation.
+            acs_checkpoints: An instance of ACSCheckpointsV4 to run the underlying validation.
         """
         self.logger = logging.getLogger(__name__)
-        self.acs_checkpoints = acs_checkpoints or ACSCheckpoints()
+        self.acs_checkpoints = acs_checkpoints or ACSCheckpointsV4()
 
     def evaluate(self, workflow_data: Dict[str, Any], risk_score: str) -> Tuple[bool, str]:
         """
@@ -44,7 +50,17 @@ class AdaptiveGuardrail:
 
         # Execute selected stages sequentially
         for stage in stages_to_run:
-            passed, reason = self.acs_checkpoints._run_stage(stage, workflow_data)
+            if stage == CheckpointStage.INPUT:
+                passed, reason = self.acs_checkpoints.checkpoint_1_input_validation(workflow_data)
+                if passed:
+                    passed, reason = self.acs_checkpoints.checkpoint_2_intent_authorization(workflow_data)
+            elif stage == CheckpointStage.EXECUTION:
+                passed, reason = self.acs_checkpoints.checkpoint_3_tool_policy(workflow_data)
+                if passed:
+                    passed, reason = self.acs_checkpoints.checkpoint_4_state_transition(workflow_data)
+            elif stage == CheckpointStage.OUTPUT:
+                passed, reason = self.acs_checkpoints.checkpoint_5_output_sanitization(workflow_data)
+
             if not passed:
                 self.logger.warning(f"Adaptive validation failed at {stage.name}: {reason}")
                 return False, reason

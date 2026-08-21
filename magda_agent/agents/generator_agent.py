@@ -9,7 +9,7 @@ from magda_agent.learning.skill_versioning import SkillVersioning
 from magda_agent.learning.skill_creator import SkillCreator
 from magda_agent.safety.guardrails import RealtimeGuardrail, FallbackStrategy
 from magda_agent.skills.mcp_client import MCPClient
-from magda_agent.safety.acs_checkpoints import ACSCheckpoints
+from magda_agent.safety.acs_checkpoints_v4 import ACSCheckpointsV4
 from magda_agent.safety.policy import PolicyLayer
 from magda_agent.safety.audit_trail import AuditTrail
 from magda_agent.safety.assert_framework import AssertActionEvaluator
@@ -41,7 +41,7 @@ class GeneratorAgent:
         self.guardrail = guardrail
         self.mcp_client = mcp_client
         self.tracer = tracer
-        self.acs = ACSCheckpoints(policy_layer=policy_layer, audit_trail=audit_trail)
+        self.acs = ACSCheckpointsV4()
         self.assert_action_evaluator = assert_action_evaluator
 
     async def execute_plan(self, user_input: str, user_id: Optional[str] = None) -> str:
