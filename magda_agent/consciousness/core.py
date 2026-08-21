@@ -356,6 +356,20 @@ class Consciousness:
         from magda_agent.agents.triad_coordinator import TriadCoordinator
         coordinator = TriadCoordinator(planner_agent, generator_agent, evaluator_agent)
 
+
+        try:
+            from magda_agent.api import app
+            import asyncio
+            if hasattr(app, 'state') and hasattr(app.state, 'telemetry_streamers') and app.state.telemetry_streamers:
+                memory_state = {
+                    "working_memory": [m.content for m in relevant_memories],
+                    "context": context_str
+                }
+                for streamer in app.state.telemetry_streamers:
+                    asyncio.create_task(streamer.broadcast_memory_state(memory_state))
+        except ImportError:
+            pass
+
         _mem_context_str = context_str
 
         def message_builder(plan_str: str) -> list:
