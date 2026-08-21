@@ -26259,7 +26259,7 @@
     },
     {
       "id": "claude-evaluator-git-conflict-resolver-v2-1f2e3d4c",
-      "status": "todo",
+      "status": "done",
       "area": "agents",
       "risk": "high",
       "title": "Claude Evaluator Git Conflict Auto-Resolver V2",
@@ -26539,6 +26539,57 @@
       "acceptance": [
         "Memory compression thresholds are dynamically adjustable via the newly implemented hooks.",
         "Tests use mock plugins to verify hook execution."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-preflight-validator-v10-915b141e",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "MCP Action Tool Preflight Validator V10",
+      "description": "Inspired by 2026 AI safety trends for runtime tool concurrency: Implement a strict JSON schema validator for MCP tool arguments before RPC execution to catch type mismatches before they mutate external state.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_preflight_validation_v10.py",
+        "tests/test_mcp_preflight_validation_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Validator structurally validates tool schemas.",
+        "Validator blocks incorrect arguments before execution."
+      ]
+    },
+    {
+      "id": "openclaw-selective-retrieval-hook-v5-5309f621",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Selective Retrieval Hook V5",
+      "description": "Inspired by OpenClaw Context Engine trends (June 2026): Implement an 'after_retrieval' lifecycle hook that dynamically filters episodic memory context using semantic embeddings to prevent context window overflow.",
+      "allowed_paths": [
+        "magda_agent/memory/selective_retrieval_hook_v5.py",
+        "tests/test_selective_retrieval_hook_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Hook filters fetched episodic memories dynamically.",
+        "Compression logic guarantees context remains under limits."
+      ]
+    },
+    {
+      "id": "hermes-cron-procedural-consolidation-v3-3c58e1f3",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "title": "Hermes Cron Procedural Consolidation V3",
+      "description": "Inspired by Hermes Agent self-improving learning loop (June 2026): Implement a background chron job module that sweeps recent episodic memory for repeated successful patterns and converts them into procedural skill templates.",
+      "allowed_paths": [
+        "magda_agent/learning/procedural_consolidation_v3.py",
+        "tests/test_procedural_consolidation_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job searches memories periodically.",
+        "Successful paths are consolidated into new templates."
       ]
     }
   ]
