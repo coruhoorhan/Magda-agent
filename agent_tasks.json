@@ -11502,7 +11502,7 @@
     },
     {
       "id": "hermes-cron-scheduler-tasks-9dc313ca",
-      "status": "todo",
+      "status": "done",
       "area": "scheduling",
       "risk": "low",
       "title": "Hermes Cron Scheduler Tasks",
@@ -26488,6 +26488,57 @@
         "Telemetry module traces A2A handshake and execution steps.",
         "Records latency and failure states.",
         "Tests mock successful and failed handshakes and verify tracing output."
+      ]
+    },
+    {
+      "id": "mcp-to-a2a-bridge-protocol-v1-84ef4104",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP to A2A Bridge Protocol V1",
+      "description": "Inspired by 2026 AI Agent Trends: Implement a bridge protocol that dynamically maps A2A capability requests to the Model Context Protocol (MCP) standard, allowing an A2A task delegation to seamlessly trigger remote MCP tools securely across subagents.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_a2a_bridge_v1.py",
+        "tests/test_mcp_a2a_bridge_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Bridge protocol accurately translates A2A task requests into JSON-RPC MCP formats.",
+        "Tests use mocks to verify translation and execution flow."
+      ]
+    },
+    {
+      "id": "hermes-online-skill-pruning-v1-8522efd3",
+      "status": "todo",
+      "area": "memory",
+      "risk": "low",
+      "title": "Hermes Online Skill Pruning V1",
+      "description": "Inspired by Hermes Agent's self-improving memory management: Create an asynchronous cron job that analyzes procedural memory (skills) usage over a configured time window and dynamically prunes (archives) underutilized skills to keep context clean.",
+      "allowed_paths": [
+        "magda_agent/memory/skill_pruning_v1.py",
+        "tests/test_skill_pruning_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron task successfully scans skill usage logs and correctly flags inactive skills.",
+        "Tests use mocks to verify pruning logic."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-hooks-v6-ad41ee68",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Hooks V6",
+      "description": "Inspired by OpenClaw Context Engine plugin interface: Implement lifecycle hooks in the working memory module that allow external plugins to dynamically adjust compression thresholds per dialogue turn based on context richness.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_hooks_v6.py",
+        "tests/test_context_engine_hooks_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Memory compression thresholds are dynamically adjustable via the newly implemented hooks.",
+        "Tests use mock plugins to verify hook execution."
       ]
     }
   ]
