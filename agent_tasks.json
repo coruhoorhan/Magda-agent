@@ -11348,7 +11348,7 @@
     },
     {
       "id": "mcp-action-tool-registry-sync-v9-fe20c694",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Tool Registry Sync v9",
@@ -25987,6 +25987,60 @@
         "Agents randomly pick peers to exchange new Agent Cards.",
         "Gossip loop limits TTL (time-to-live) of forwarded cards to prevent infinite loops.",
         "Tests simulate a fragmented mesh and verify cards reach all nodes."
+      ]
+    },
+    {
+      "id": "openclaw-context-compressor-v5-8f4b2a9e",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Compressor V5",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement a background process that continuously monitors working memory limits and applies semantic compression to older contexts before archiving them as Episodic Memories.",
+      "allowed_paths": [
+        "magda_agent/memory/context_compressor_v5.py",
+        "tests/test_context_compressor_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Background compressor monitors token count thresholds.",
+        "Compression mock summarizes token lists effectively.",
+        "Tests verify token thresholding and mock summary outputs."
+      ]
+    },
+    {
+      "id": "a2a-swarm-agent-discovery-v5-e7a9b3d1",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Swarm Agent Discovery v5",
+      "description": "Inspired by A2A Protocol and Swarm Intelligence trends (June 2026): Implement an mDNS-based local discovery module for peer agents to advertise and discover capabilities via standard Agent Cards.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mdns_discovery_v5.py",
+        "tests/test_a2a_mdns_discovery_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Service can broadcast its own Agent Card over mock mDNS.",
+        "Service can discover other agents publishing Agent Cards.",
+        "Tests verify discovery lifecycle and mock parsing of mDNS payloads."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backup-v2-4c6e9f1a",
+      "status": "todo",
+      "area": "skills",
+      "risk": "low",
+      "title": "Hermes Cron Nightly Backup Skill V2",
+      "description": "Inspired by Hermes Agent cron scheduler trends (June 2026): Implement a scheduled skill that exports the current state of SQLite databases to an archive format nightly.",
+      "allowed_paths": [
+        "magda_agent/skills/cron_nightly_backup.py",
+        "tests/test_cron_nightly_backup.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Skill operates on a cron schedule (e.g., nightly).",
+        "Skill correctly copies mock database files to an archive path.",
+        "Tests mock file I/O and verify cron scheduling."
       ]
     }
   ]
