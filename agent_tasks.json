@@ -26224,7 +26224,7 @@
     },
     {
       "id": "claude-code-subagent-token-compressor-v2-e5f6g7h8",
-      "status": "todo",
+      "status": "done",
       "area": "agents",
       "risk": "high",
       "title": "Claude Code Subagent Token Compressor V2",
@@ -26434,6 +26434,60 @@
         "Service fetches mock sub-agent conversational logs.",
         "Service filters logs according to mock success thresholds.",
         "Tests verify successful processing and memory persistence logic."
+      ]
+    },
+    {
+      "id": "acs-policy-driven-evaluation-framework-v1-2664281a",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Policy-Driven Evaluation Framework V1",
+      "description": "Inspired by Microsoft ACS (June 2026): Implement an evaluation framework that checks agent outputs against policy rules before delivering to the user.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_evaluator_v1.py",
+        "tests/test_acs_evaluator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator framework intercepts outputs.",
+        "Outputs violating policy return a fallback message.",
+        "Tests mock policy rule violations and verify the fallback."
+      ]
+    },
+    {
+      "id": "hermes-multi-platform-channel-router-v2-8a2d9784",
+      "status": "todo",
+      "area": "channels",
+      "risk": "low",
+      "title": "Hermes Multi-Platform Channel Router V2",
+      "description": "Inspired by Hermes multi-platform support (June 2026): Build a routing abstraction for multiple messenger channels (Telegram, CLI, Slack) to unify incoming requests before processing.",
+      "allowed_paths": [
+        "magda_agent/channels/router_v2.py",
+        "tests/test_router_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Router abstraction normalizes inputs from different channels.",
+        "Normalizes responses back to channel-specific formats.",
+        "Tests mock different channel inputs and verify normalization."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-telemetry-v5-bd62c596",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Task Delegation Telemetry V5",
+      "description": "Inspired by A2A Protocol standard (June 2026): Add tracing support for task delegations to capture latency, network status, and failure rates during A2A handshakes.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_delegation_telemetry_v5.py",
+        "tests/test_a2a_delegation_telemetry_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module traces A2A handshake and execution steps.",
+        "Records latency and failure states.",
+        "Tests mock successful and failed handshakes and verify tracing output."
       ]
     }
   ]
