@@ -350,3 +350,4 @@
 
 * [x] FEATURE: Multi-agent workflows support (multi-agent-workflows-51100812)
 * [x] FEATURE: Claude Agent SDK Trend: Agent Teams with Git Worktree Isolation (agent-teams-git-worktree-isolation-ecc2d6cf)
+* [x] FEATURE: OpenClaw Context Engine Plugin V8 (openclaw-context-engine-plugin-v8-a1b2c3d4)

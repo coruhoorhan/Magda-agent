@@ -11725,7 +11725,7 @@
     },
     {
       "id": "openclaw-context-engine-plugin-v8-a1b2c3d4",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "OpenClaw Context Engine Plugin v8",
@@ -27158,6 +27158,40 @@
         "Tool calls are intercepted by the governance layer.",
         "Unsafe state mutations are blocked by the policy engine.",
         "Tests mock mutating tools and verify they are correctly dropped."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backup-v1-uuid1",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Hermes Scheduled Operations Nightly Backup v1",
+      "description": "Inspired by Hermes Agent trend (June 2026): Implement cron scheduler integration for scheduled background nightly backup task.",
+      "allowed_paths": [
+        "magda_agent/scheduler/hermes_nightly_backup.py",
+        "tests/test_hermes_nightly_backup.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Nightly backup scheduled task can run in background loop.",
+        "Tests mock execution properly."
+      ]
+    },
+    {
+      "id": "openclaw-subagent-spawning-parallel-v1-uuid2",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "OpenClaw Subagent Spawning for Parallel Tasks v1",
+      "description": "Inspired by Claude Agent SDK Agent Teams and Hermes (June 2026): Implement subagent spawning for concurrent RPC-based tasks with individual context.",
+      "allowed_paths": [
+        "magda_agent/architecture/openclaw_subagent_spawner.py",
+        "tests/test_openclaw_subagent_spawner.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Manager spawns subagents concurrently.",
+        "Tests verify that multiple agents run simultaneously using mocks."
       ]
     }
   ]
