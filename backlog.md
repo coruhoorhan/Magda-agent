@@ -142,6 +142,7 @@
 * [x] FEATURE: A2A Task Delegation (v3)
 * [x] FEATURE: Longitudinal Quality Metrics CLI
 * [x] FEATURE: Agent Skills MCP Export Enhancements (agent-skills-mcp-export)
+* [x] FEATURE: MCP Export of Internal Skills v2 (mcp-skill-export-v2)
 * [x] FEATURE: Multi-Channel Skills Sync (2026-06-XX)
 * [x] FEATURE: A2A Agent Cards Discovery (2026-06-05)
 * [x] MODULE: **A2A Agent Discovery Service** - `magda_agent/integration/discovery.py`. Discovers peers via Agent Cards.

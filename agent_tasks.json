@@ -11639,7 +11639,7 @@
     },
     {
       "id": "mcp-skill-export-v2-7760ecd1",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Export of Internal Skills v2",
@@ -26929,6 +26929,60 @@
         "OpenClawHabitLearner class parses user feedback and tool success.",
         "Weights are adjusted and persisted.",
         "Tests verify weight adjustments through mocks."
+      ]
+    },
+    {
+      "id": "hermes-skill-marketplace-export-v2-ab86bea5",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "Hermes Skill Marketplace Exporter V2",
+      "description": "Inspired by Hermes Agent (June 2026): Implement a module that allows publishing local Magda skills to an external open standard registry like agentskills.io. Should include automated documentation generation.",
+      "allowed_paths": [
+        "magda_agent/skills/marketplace_exporter_v2.py",
+        "tests/test_marketplace_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter authenticates with registry using API key.",
+        "Can upload skill schema matching agentskills.io spec.",
+        "Tests mock external API requests."
+      ]
+    },
+    {
+      "id": "openclaw-online-rl-user-feedback-v10-d2817ecf",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw Online RL from Negative Feedback V10",
+      "description": "Inspired by OpenClaw-RL (June 2026): Implement an online learning loop that detects user corrections and negatively reinforces the weights of the tools/habits used immediately prior to the correction.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_negative_rl_v10.py",
+        "tests/test_openclaw_negative_rl_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negative RL learner intercepts user correction.",
+        "Adjusts weights downwards in memory.",
+        "Tests verify memory update via mocks."
+      ]
+    },
+    {
+      "id": "acs-runtime-safety-controls-v8-310908a9",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "ACS Agent Control Specification - Pre-Action Checkpoint V8",
+      "description": "Inspired by Microsoft ACS (June 2026): Implement a pre-action checkpoint that evaluates intent against a persistent safety control specification before allowing any tool that mutates external state.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_pre_action_checkpoint_v8.py",
+        "tests/test_acs_pre_action_checkpoint_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Checkpoint blocks execution if intent is non-compliant.",
+        "Allows execution for compliant intent.",
+        "Tests use mock evaluators."
       ]
     }
   ]
