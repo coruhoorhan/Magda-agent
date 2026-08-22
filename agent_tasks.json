@@ -11878,7 +11878,7 @@
     },
     {
       "id": "openclaw-rl-canvas-metrics-v6",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw-RL Live Telemetry Streaming V6",
@@ -27502,6 +27502,41 @@
       "acceptance": [
         "Semantic routing hook intercepts queries and assigns them to sub-agents if applicable.",
         "Tests use mocked LLM calls and verify correct routing behavior."
+      ]
+    },
+    {
+      "id": "hermes-skill-market-exporter-v1-5497465c",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "Hermes agentskills.io Market Exporter V1",
+      "description": "Inspired by Hermes Agent (June 2026): Implement an exporter that takes local Magda skills from SkillRegistry and formats them according to the open agentskills.io standard for potential external discovery.",
+      "allowed_paths": [
+        "magda_agent/integration/agentskills_exporter_v1.py",
+        "tests/test_agentskills_exporter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "AgentskillsExporter can serialize a Magda tool into agentskills.io compliant JSON.",
+        "Tests verify that parameters, descriptions, and metadata map correctly."
+      ]
+    },
+    {
+      "id": "claude-team-evaluator-v1-fe845ed5",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "Claude Agent Teams Evaluator Subagent V1",
+      "description": "Inspired by Claude Agent Teams (June 2026): Implement a dedicated Evaluator Subagent that receives the Plan output from a Generator subagent and returns a pass/fail assessment against the original goal before continuing execution.",
+      "allowed_paths": [
+        "magda_agent/multi_agent/evaluator_subagent_v1.py",
+        "tests/test_evaluator_subagent_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "EvaluatorSubagent correctly parses plan steps and invokes LLMClient for semantic validation.",
+        "If plan is poor, subagent returns a clear failure reason.",
+        "Tests mock LLM calls and verify evaluator logic."
       ]
     }
   ]

@@ -61,3 +61,42 @@ async def test_broadcast_pad_shift_to_canvas(telemetry):
         assert payload["type"] == "canvas_pad_shift"
         assert payload["subagent_id"] == "sub_1"
         assert payload["pad_shift"] == pad_shift
+
+@pytest.mark.asyncio
+async def test_broadcast_rl_reward_to_canvas(telemetry):
+    reward_signal = 0.85
+    details = {"action": "clarify_intent", "reason": "user_positive"}
+
+    with patch.object(telemetry, '_mock_websocket_emit', new_callable=AsyncMock) as mock_emit:
+        await telemetry.broadcast_rl_reward_to_canvas("sub_1", reward_signal, details)
+
+        mock_emit.assert_called_once()
+        args, _ = mock_emit.call_args
+        json_payload = args[0]
+
+        import json
+        payload = json.loads(json_payload)
+
+        assert payload["type"] == "canvas_rl_reward"
+        assert payload["subagent_id"] == "sub_1"
+        assert payload["reward_signal"] == reward_signal
+        assert payload["details"] == details
+
+@pytest.mark.asyncio
+async def test_broadcast_rl_reward_to_canvas_no_details(telemetry):
+    reward_signal = 0.85
+
+    with patch.object(telemetry, '_mock_websocket_emit', new_callable=AsyncMock) as mock_emit:
+        await telemetry.broadcast_rl_reward_to_canvas("sub_1", reward_signal)
+
+        mock_emit.assert_called_once()
+        args, _ = mock_emit.call_args
+        json_payload = args[0]
+
+        import json
+        payload = json.loads(json_payload)
+
+        assert payload["type"] == "canvas_rl_reward"
+        assert payload["subagent_id"] == "sub_1"
+        assert payload["reward_signal"] == reward_signal
+        assert payload["details"] == {}
