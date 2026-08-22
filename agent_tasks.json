@@ -11776,7 +11776,7 @@
     },
     {
       "id": "claude-subagent-token-context-optimizer-v2-ec3a412d",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Subagent Token Context Optimizer V2",
@@ -27277,6 +27277,58 @@
       "acceptance": [
         "Lifecycle manager can offload memory blocks transparently.",
         "Tests verify that context overflow is handled properly."
+      ]
+    },
+    {
+      "id": "a2a-distributed-metrics-exporter-v1-0adfb6d9",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Distributed Metrics Exporter V1",
+      "description": "Inspired by A2A protocols and enterprise standards (June 2026): Implement an OpenTelemetry-compatible exporter for multi-agent mesh networks that tracks distributed delegation overhead and sub-agent communication metrics.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_exporter_v1.py",
+        "tests/test_a2a_exporter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter collects overhead and communication metrics for delegated subagents.",
+        "Tests mock OpenTelemetry sinks and verify that metrics are correctly formatted."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-preflight-validator-v10-b2a040ee",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Action Tool Preflight Validator V10",
+      "description": "Inspired by MCP standards growth and ACS (June 2026): Implement a preflight JSON schema validation hook for all MCP action tools. Validates argument type-checking dynamically before the policy evaluation layer to prevent prompt injection disguised as invalid types.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_preflight_validation_v10.py",
+        "tests/test_mcp_preflight_validation_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Preflight validator intercepts MCP action invocations and validates JSON schemas strictly.",
+        "Any type mismatches block execution before policy layers are involved.",
+        "Tests mock MCP tool invocations with both valid and invalid schema payloads."
+      ]
+    },
+    {
+      "id": "openclaw-habit-tracking-learner-v7-3dc72444",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw Habit Tracking Learner V7",
+      "description": "Inspired by OpenClaw-RL (June 2026): Implement a HabitTracker plugin that observes user replies and implicitly reinforces frequently successful tool usage without explicit labeling.",
+      "allowed_paths": [
+        "magda_agent/learning/habit_tracker_v7.py",
+        "tests/test_habit_tracker_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "HabitTracker updates tool usage weights implicitly based on positive user next-state replies.",
+        "Tests verify that weights shift appropriately after simulated interactions."
       ]
     }
   ]

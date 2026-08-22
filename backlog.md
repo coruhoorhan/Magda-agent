@@ -353,3 +353,4 @@
 * [x] FEATURE: OpenClaw Context Engine Plugin V8 (openclaw-context-engine-plugin-v8-a1b2c3d4)
 * [x] FEATURE: MCP Action Tool Registry v5 (mcp-action-tool-registry-v5-e5f6g7h8)
 * [x] FEATURE: OpenClaw-RL Live Telemetry Streaming V3 (openclaw-rl-live-telemetry-v3-3a5f2175)
+* [x] FEATURE: Claude Subagent Token Context Optimizer V2 (claude-subagent-token-context-optimizer-v2-ec3a412d)
