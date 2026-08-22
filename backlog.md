@@ -349,3 +349,4 @@
 * [x] FEATURE: A2A Peer Discovery Mesh Agent Cards v10 (a2a-peer-discovery-mesh-agent-cards-v10)
 
 * [x] FEATURE: Multi-agent workflows support (multi-agent-workflows-51100812)
+* [x] FEATURE: Claude Agent SDK Trend: Agent Teams with Git Worktree Isolation (agent-teams-git-worktree-isolation-ecc2d6cf)

@@ -11690,7 +11690,7 @@
     },
     {
       "id": "agent-teams-git-worktree-isolation-ecc2d6cf",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Claude Agent SDK Trend: Agent Teams with Git Worktree Isolation",
@@ -27070,6 +27070,42 @@
       "acceptance": [
         "MCP tool registry applies server prefixes to dynamically loaded tools.",
         "Tests verify correct prefixing and routing."
+      ]
+    },
+    {
+      "id": "mcp-taint-tracking-v7-ff03418b",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "title": "MCPKernel Taint Tracking V7",
+      "description": "Inspired by MCPKernel trend (June 2026): Implement an enhanced taint tracker that intercepts string operations across MCP tools to prevent prompt injection and state mutation securely. Includes isolated sandboxed execution environments.",
+      "allowed_paths": [
+        "magda_agent/security/mcp_taint_tracker_v7.py",
+        "tests/test_mcp_taint_tracker_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint tracker effectively marks outputs from external MCP tools.",
+        "Any unsafe usage of tainted strings blocks execution and triggers an error.",
+        "Tests verify propagation of taint and blocking behavior."
+      ]
+    },
+    {
+      "id": "acs-assertion-middleware-v3-27b67d40",
+      "status": "todo",
+      "area": "safety",
+      "risk": "critical",
+      "title": "Microsoft ACS Assertion Middleware V3",
+      "description": "Inspired by Microsoft ACS (Agent Control Specification) trend (June 2026): Implement a policy-driven evaluation middleware that rigorously enforces 5 validation checkpoints for agentic workflows.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_assertion_middleware_v3.py",
+        "tests/test_acs_assertion_middleware_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Middleware intercepts workflow steps at 5 distinct checkpoints.",
+        "Validates state against defined ACS policy controls.",
+        "Tests use mock policies to ensure robust checkpoint validation."
       ]
     }
   ]
