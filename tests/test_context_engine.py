@@ -12,6 +12,8 @@ class MockPlugin(ContextPlugin):
         self.ingest_called = False
         self.assemble_called = False
         self.compact_called = False
+        self.pre_process_called = False
+        self.post_process_called = False
 
     async def bootstrap(self, config):
         self.bootstrap_called = True
@@ -27,6 +29,14 @@ class MockPlugin(ContextPlugin):
     async def compact(self, context_items, metadata):
         self.compact_called = True
         return context_items[:-1]
+
+    async def pre_process(self, content: str, metadata: dict) -> str:
+        self.pre_process_called = True
+        return f"preprocessed_{content}"
+
+    async def post_process(self, response: str, metadata: dict) -> str:
+        self.post_process_called = True
+        return f"postprocessed_{response}"
 
     def before_retrieval(self, query: str, user_id: int) -> str:
         return query
@@ -70,10 +80,20 @@ async def test_context_engine_lifecycle():
     assert "hook_registry" in bootstrap_config
     assert bootstrap_config["hook_registry"] == engine.hook_registry
 
+    # Test Pre Process
+    preprocessed = await engine.pre_process("raw_content", {"user_id": 1})
+    assert mock_plugin.pre_process_called
+    assert preprocessed == "preprocessed_raw_content"
+
     # Test Ingest
     ingested = await engine.ingest("raw", {"user_id": 1})
     assert mock_plugin.ingest_called
     assert ingested == "ingested_raw"
+
+    # Test Post Process
+    postprocessed = await engine.post_process("raw_response", {"user_id": 1})
+    assert mock_plugin.post_process_called
+    assert postprocessed == "postprocessed_raw_response"
 
     # Test Assemble
     assembled = await engine.assemble([], {"user_id": 1})
