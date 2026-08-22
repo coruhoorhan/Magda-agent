@@ -11946,7 +11946,7 @@
     },
     {
       "id": "openclaw-rl-signals-v3",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw RL Signals Processor",
@@ -27869,6 +27869,60 @@
       "acceptance": [
         "Pruner successfully identifies and evicts stale agents based on ping timeouts.",
         "Tests mock mesh discovery components and verify cleanup logic."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-memory-compaction-v1-5821cec1",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Hermes Cron Nightly Memory Compaction",
+      "description": "Inspired by Hermes Agent trends: Implement a cron scheduler task for nightly background memory compaction, compressing episodic chunks into semantic profiles.",
+      "allowed_paths": [
+        "magda_agent/memory/hermes_nightly_compaction_v1.py",
+        "tests/test_hermes_nightly_compaction_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Nightly compaction job schedules successfully.",
+        "Compaction merges and purges old records correctly.",
+        "Tests verify scheduling and compaction behaviors."
+      ]
+    },
+    {
+      "id": "claude-evaluator-subagent-v1-182ebf5b",
+      "status": "todo",
+      "area": "orchestration",
+      "risk": "medium",
+      "title": "Claude Evaluator Subagent V1",
+      "description": "Inspired by Claude Agent SDK trends (Planner, Generator, Evaluator): Implement the Evaluator Subagent that takes an execution trajectory and verifies it against the generated plan constraints.",
+      "allowed_paths": [
+        "magda_agent/architecture/claude_evaluator_subagent_v1.py",
+        "tests/test_claude_evaluator_subagent_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator subagent exposes a validation interface.",
+        "Trajectories violating constraints are rejected.",
+        "Tests mock trajectory inputs and check validation states."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-permissions-v3-5fab16f6",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Dynamic Tool Permissions V3",
+      "description": "Inspired by MCP & ACS trends: Implement a permission manager for exported MCP tools that requires explicit user confirmation for destructive actions using dynamically granted capability tokens.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_permissions_v3.py",
+        "tests/test_mcp_permissions_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Destructive tool executions are halted pending confirmation.",
+        "Token validation correctly tracks capability constraints.",
+        "Tests simulate user approvals and rejections."
       ]
     }
   ]

@@ -31,6 +31,43 @@ def test_process_signal() -> None:
     assert signal2["reward"] == -0.9
     assert signal2["is_positive"] is False
 
+def test_implicit_reward_calculation() -> None:
+    """Test that implicit rewards are calculated correctly when sentiment is 0.0."""
+    processor = OpenClawRLSignals()
+
+    # Implicit positive
+    signal_pos = processor.process_signal(
+        source="user_reply",
+        content="That's great!",
+    )
+    assert signal_pos["reward"] == 0.5
+    assert signal_pos["is_positive"] is True
+
+    # Implicit negative
+    signal_neg = processor.process_signal(
+        source="tool_output",
+        content="Error: file not found",
+    )
+    assert signal_neg["reward"] == -0.5
+    assert signal_neg["is_positive"] is False
+
+    # Neutral
+    signal_neu = processor.process_signal(
+        source="user_reply",
+        content="Okay.",
+    )
+    assert signal_neu["reward"] == 0.0
+    assert signal_neu["is_positive"] is False
+
+def test_clear_history() -> None:
+    """Test that the signal history can be cleared."""
+    processor = OpenClawRLSignals()
+    processor.process_signal(source="user", content="hello", sentiment_score=0.1)
+
+    assert len(processor.signal_history) == 1
+    processor.clear_history()
+    assert len(processor.signal_history) == 0
+
 def test_get_recent_signals() -> None:
     """Test retrieving recent signals respects the limit."""
     processor = OpenClawRLSignals()
