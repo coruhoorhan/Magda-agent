@@ -42,19 +42,16 @@ class ParallelSubagentManager:
         Returns:
             A list containing the results of each subagent's execution.
         """
-        coroutines = []
-        for task in tasks:
+        async def create_and_spawn(task: str) -> Any:
             executor = agent_executor_factory()
-
             # Use a copy of base_context to prevent race conditions during concurrent mutations
             context_copy = list(base_context)
-
-            coro = self.spawner.spawn_subagent(
+            return await self.spawner.spawn_subagent(
                 task_description=task,
                 full_context=context_copy,
                 agent_executor=executor
             )
-            coroutines.append(coro)
 
+        coroutines = [create_and_spawn(task) for task in tasks]
         results = await asyncio.gather(*coroutines, return_exceptions=True)
         return list(results)
