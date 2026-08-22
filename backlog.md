@@ -268,6 +268,10 @@
 
 
 ## 📡 A2A mDNS & Self-Improvement Loops (June 2026 Trends)
+* [ ] FEATURE: MCP Kernel Sandboxing V2 (mcp-kernel-sandboxing-v2-94a2f1b0)
+* [ ] FEATURE: OpenClaw Virtual Context Lifecycle Manager V3 (openclaw-virtual-context-v3-7d8e9cfa)
+* [ ] FEATURE: Claude SDK Task Dependency Graph V2 (claude-sdk-dependency-graph-v2-b5c6d7e8)
+
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V5 (mcp-dynamic-capability-negotiation-v5) — multi-turn capability negotiation for MCP tools.
 * [x] FEATURE: A2A local network mDNS discovery (a2a-mdns-discovery)
 * [ ] FEATURE: A2A mDNS Discovery Secure Token Authentication (a2a-mdns-security-token-v1)
