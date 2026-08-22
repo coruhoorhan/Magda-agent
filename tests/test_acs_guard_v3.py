@@ -164,3 +164,12 @@ def test_intercept_action(acs_guard, mock_audit_trail):
         result="blocked",
         duration=0.0
     )
+
+def test_acs_guard_constants():
+    assert hasattr(ACSGuardV3, "ALLOWED_INTENTS")
+    assert isinstance(ACSGuardV3.ALLOWED_INTENTS, set)
+    assert "read" in ACSGuardV3.ALLOWED_INTENTS
+
+    assert hasattr(ACSGuardV3, "ALLOWED_TRANSITIONS")
+    assert isinstance(ACSGuardV3.ALLOWED_TRANSITIONS, dict)
+    assert "idle" in ACSGuardV3.ALLOWED_TRANSITIONS
