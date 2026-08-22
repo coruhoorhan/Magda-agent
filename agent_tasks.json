@@ -11673,7 +11673,7 @@
     },
     {
       "id": "multi-agent-workflows-51100812",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Multi-agent workflows support",
@@ -27019,6 +27019,57 @@
         "Memory manager can page out least relevant episodic memories.",
         "Memory manager pages in required context based on query.",
         "Tests pass correctly without external database queries."
+      ]
+    },
+    {
+      "id": "openai-agents-runtime-concurrency-a1b2c3d4",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "OpenAI Agents SDK Runtime Tool Concurrency",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement runtime function tool concurrency for parallelizing multiple independent tool calls simultaneously.",
+      "allowed_paths": [
+        "magda_agent/architecture/tool_concurrency.py",
+        "tests/test_tool_concurrency.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "System supports running multiple independent function tools concurrently.",
+        "Tests verify tool concurrency with mock tools."
+      ]
+    },
+    {
+      "id": "openai-agents-realtime-guardrail-b2c3d4e5",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "OpenAI Agents SDK Realtime Guardrail Fallback",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement a realtime guardrail fallback mechanism. If an action violates a guardrail, safely fall back to a predefined state instead of failing abruptly.",
+      "allowed_paths": [
+        "magda_agent/safety/realtime_guardrail.py",
+        "tests/test_realtime_guardrail.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Realtime guardrail intercepts and handles violations by returning fallback responses.",
+        "Tests verify fallback behavior for violating mock actions."
+      ]
+    },
+    {
+      "id": "mcp-server-prefixed-tools-c3d4e5f6",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Server-Prefixed Tool Names Integration",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement a wrapper that prefixes MCP tools with the server name to avoid tool name collisions in multi-server multi-agent contexts.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_tool_prefix.py",
+        "tests/test_mcp_tool_prefix.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP tool registry applies server prefixes to dynamically loaded tools.",
+        "Tests verify correct prefixing and routing."
       ]
     }
   ]

@@ -56,5 +56,5 @@ class ParallelSubagentManager:
             )
             coroutines.append(coro)
 
-        results = await asyncio.gather(*coroutines)
+        results = await asyncio.gather(*coroutines, return_exceptions=True)
         return list(results)
