@@ -43,3 +43,21 @@ async def test_broadcast_events(telemetry):
 
         # Verify events list is cleared
         assert len(telemetry.events) == 0
+
+@pytest.mark.asyncio
+async def test_broadcast_pad_shift_to_canvas(telemetry):
+    pad_shift = {"P": 0.5, "A": -0.2, "D": 0.1}
+
+    with patch.object(telemetry, '_mock_websocket_emit', new_callable=AsyncMock) as mock_emit:
+        await telemetry.broadcast_pad_shift_to_canvas("sub_1", pad_shift)
+
+        mock_emit.assert_called_once()
+        args, _ = mock_emit.call_args
+        json_payload = args[0]
+
+        import json
+        payload = json.loads(json_payload)
+
+        assert payload["type"] == "canvas_pad_shift"
+        assert payload["subagent_id"] == "sub_1"
+        assert payload["pad_shift"] == pad_shift
