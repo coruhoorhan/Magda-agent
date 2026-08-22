@@ -84,6 +84,26 @@ class A2ADistributedTelemetryV7:
         json_payload = json.dumps(payload)
         await self._mock_websocket_emit(json_payload)
 
+    async def broadcast_rl_reward_to_canvas(
+        self, subagent_id: str, reward_signal: float, details: Dict[str, Any] = None
+    ) -> None:
+        """
+        Broadcast an RL reward signal to the Canvas UI via WebSocket mock.
+
+        Args:
+            subagent_id (str): The unique identifier for the sub-agent.
+            reward_signal (float): The reinforcement learning reward signal.
+            details (Dict[str, Any], optional): Additional details regarding the reward. Defaults to None.
+        """
+        payload = {
+            "type": "canvas_rl_reward",
+            "subagent_id": subagent_id,
+            "reward_signal": reward_signal,
+            "details": details or {}
+        }
+        json_payload = json.dumps(payload)
+        await self._mock_websocket_emit(json_payload)
+
     async def _mock_websocket_emit(self, json_payload: str) -> None:
         """
         Mock WebSocket emission for Canvas UI updates.
