@@ -40,6 +40,14 @@ class ContextPlugin(Protocol):
         """Called when the overall context is updated."""
         ...
 
+    async def pre_process(self, content: str, metadata: Dict[str, Any]) -> str:
+        """Called to pre-process content before ingestion."""
+        ...
+
+    async def post_process(self, response: str, metadata: Dict[str, Any]) -> str:
+        """Called to post-process a response before returning to user."""
+        ...
+
 
 class ContextEngine:
     """
@@ -80,6 +88,10 @@ class ContextEngine:
             self.hook_registry.register_hook('assemble', plugin.assemble)
         if hasattr(plugin, 'compact'):
             self.hook_registry.register_hook('compact', plugin.compact)
+        if hasattr(plugin, 'pre_process'):
+            self.hook_registry.register_hook('pre_process', plugin.pre_process)
+        if hasattr(plugin, 'post_process'):
+            self.hook_registry.register_hook('post_process', plugin.post_process)
 
         logging.debug(f"Registered plugin: {plugin.__class__.__name__}")
 
@@ -92,6 +104,10 @@ class ContextEngine:
         config_with_hooks: Dict[str, Any] = dict(config)
         config_with_hooks["hook_registry"] = self.hook_registry
         await self.hook_registry.trigger_broadcast_async('bootstrap', config_with_hooks)
+
+    async def pre_process(self, content: str, metadata: Dict[str, Any]) -> str:
+        """Run content through pre_process hook of all plugins."""
+        return await self.hook_registry.trigger_hook_async('pre_process', content, metadata)
 
     async def ingest(self, content: str, metadata: Dict[str, Any]) -> str:
         """Run content through ingest hook of all plugins using the hook registry."""
@@ -169,6 +185,10 @@ class ContextEngine:
         """Triggers the on_context_update hook for all registered plugins."""
         self.hook_registry.trigger_hook('on_context_update', new_context, user_id)
 
+
+    async def post_process(self, response: str, metadata: Dict[str, Any]) -> str:
+        """Run response through post_process hook of all plugins."""
+        return await self.hook_registry.trigger_hook_async('post_process', response, metadata)
 
     def write_context(self, context: Any, user_id: int) -> None:
         """Writes context by executing lifecycle hooks before and after."""

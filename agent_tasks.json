@@ -11571,7 +11571,7 @@
     },
     {
       "id": "context-engine-plugin-lifecycle-v7-0ed894ee",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Context Engine Plugin Architecture v7",
@@ -26734,6 +26734,57 @@
         "Dependency graph correctly identifies independent nodes for parallel execution.",
         "Throws errors for cyclic dependencies.",
         "Tests assert graph generation and concurrent extraction on complex mock plans."
+      ]
+    },
+    {
+      "id": "hermes-structured-output-enforcer-v2-1234abcd",
+      "status": "todo",
+      "area": "generation",
+      "risk": "medium",
+      "title": "Hermes Structured Output Enforcer V2",
+      "description": "Inspired by Hermes Agent structured generation (June 2026): Implement an output enforcement wrapper that guarantees LLM responses conform to a strict Pydantic model by retrying formatting failures before returning to the core loop.",
+      "allowed_paths": [
+        "magda_agent/generation/structured_enforcer_v2.py",
+        "tests/test_structured_enforcer_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Enforcer wraps standard LLM client generation.",
+        "Retries parsing failures using validation feedback."
+      ]
+    },
+    {
+      "id": "openai-swarm-dynamic-handoff-v1-5678efgh",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "OpenAI Swarm Dynamic Handoff Protocol V1",
+      "description": "Inspired by OpenAI Agents SDK/Swarm (June 2026): Implement a Hand-Off primitive where a sub-agent can programmatically yield its context and return control to the Orchestrator with a target next-agent specified, instead of simply returning 'done'.",
+      "allowed_paths": [
+        "magda_agent/architecture/swarm_handoff_v1.py",
+        "tests/test_swarm_handoff_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agents can return a Handoff object instead of text.",
+        "Orchestrator respects handoff and shifts context."
+      ]
+    },
+    {
+      "id": "claude-code-tool-discovery-manifest-v3-9012ijkl",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Claude Code Dynamic Tool Discovery Manifest V3",
+      "description": "Inspired by Claude Code (June 2026): Implement a manifest generator that scans the `magda_agent/skills` directory and auto-generates an MCP-compatible JSON manifest for all registered skills on startup, eliminating manual registry sync.",
+      "allowed_paths": [
+        "magda_agent/skills/manifest_generator_v3.py",
+        "tests/test_manifest_generator_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Manifest generator reads skill metadata decorators.",
+        "Produces valid JSON matching MCP specification."
       ]
     }
   ]
