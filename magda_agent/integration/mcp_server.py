@@ -1,6 +1,6 @@
 import json
 from typing import Dict, Any, List
-from magda_agent.integration.mcp_exporter import MCPExporter
+from magda_agent.integration.mcp_exporter_v10 import MCPExporterV10 as MCPExporter
 
 class MCPServer:
     """
