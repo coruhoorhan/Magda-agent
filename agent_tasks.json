@@ -11759,7 +11759,7 @@
     },
     {
       "id": "openclaw-rl-live-telemetry-v3-3a5f2175",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw-RL Live Telemetry Streaming V3",
@@ -27243,6 +27243,40 @@
       "acceptance": [
         "mDNS discovery requires a valid secure token for agent registration.",
         "Tests simulate authorized and unauthorized discovery."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v8-1485f109",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Negotiation V8",
+      "description": "Inspired by June 2026 AI agent trends (MCP tools): Implement multi-turn capability negotiation for MCP tools between agents.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v8.py",
+        "tests/test_mcp_negotiation_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability negotiation module created.",
+        "Tests mock tool negotiation correctly."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-v4-8658210e",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V4",
+      "description": "Inspired by MemGPT/Letta pattern and OpenClaw 2026 trends: Implement a lifecycle manager for working memory to page least relevant memory blocks in and out of a secondary store based on token overflow.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_v4.py",
+        "tests/test_virtual_context_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle manager can offload memory blocks transparently.",
+        "Tests verify that context overflow is handled properly."
       ]
     }
   ]
