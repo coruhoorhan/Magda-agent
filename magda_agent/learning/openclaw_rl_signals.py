@@ -16,18 +16,22 @@ class OpenClawRLSignals:
         """Initialize the OpenClawRLSignals processor."""
         self.signal_history: List[Dict[str, Any]] = []
 
-    def process_signal(self, source: str, content: str, sentiment_score: float) -> Dict[str, Any]:
+    def process_signal(self, source: str, content: str, sentiment_score: float = 0.0) -> Dict[str, Any]:
         """
         Process a next-state signal and return a parsed reinforcement learning signal.
+        If sentiment_score is exactly 0.0, an implicit reward is calculated based on simple keyword heuristics.
 
         Args:
             source: The origin of the signal (e.g., 'user_reply', 'tool_output').
             content: The text content of the signal.
-            sentiment_score: A pre-calculated sentiment or reward score (-1.0 to 1.0).
+            sentiment_score: A pre-calculated sentiment or reward score (-1.0 to 1.0). Defaults to 0.0.
 
         Returns:
             A dictionary representing the processed RL signal.
         """
+        if sentiment_score == 0.0:
+            sentiment_score = self._calculate_implicit_reward(content)
+
         signal = {
             "source": source,
             "content": content,
@@ -40,6 +44,23 @@ class OpenClawRLSignals:
         self._integrate_signal(signal)
 
         return signal
+
+    def _calculate_implicit_reward(self, content: str) -> float:
+        """
+        Calculates an implicit reward score if an explicit one is not provided.
+
+        Args:
+            content: The text content of the signal.
+
+        Returns:
+            A float representing the implicit reward score (-1.0 to 1.0).
+        """
+        lower_content = content.lower()
+        if any(word in lower_content for word in ["thanks", "perfect", "great", "good", "yes"]):
+            return 0.5
+        if any(word in lower_content for word in ["error", "wrong", "bad", "no", "failed"]):
+            return -0.5
+        return 0.0
 
     def get_recent_signals(self, limit: int = 10) -> List[Dict[str, Any]]:
         """
@@ -66,3 +87,9 @@ class OpenClawRLSignals:
         # by ensuring the class prepares the signal perfectly for consumption by modules
         # like OpenClawInteractiveLearner.
         pass
+
+    def clear_history(self) -> None:
+        """
+        Clears the stored signal history.
+        """
+        self.signal_history.clear()
