@@ -27472,7 +27472,7 @@
     },
     {
       "id": "hermes-online-skill-pruning-v2-9affbe28",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "Hermes Online Skill Pruning V2",
@@ -27677,6 +27677,40 @@
       "acceptance": [
         "Sync manager successfully aggregates records based on user id across platforms.",
         "Tests mock memory stores and verify the consolidated output."
+      ]
+    },
+    {
+      "id": "mcp-tool-exporter-v2-c8687eba",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Tool Exporter V2",
+      "description": "Inspired by June 2026 AI Agent Trends (MCP-совместимость): Implement a skill exporter that formats Magda skills as MCP tools according to the latest specification.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_exporter_v2.py",
+        "tests/test_mcp_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter properly formats skills as MCP tools.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-v2-0441d397",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Task Delegation V2",
+      "description": "Inspired by June 2026 AI Agent Trends (A2A поддержка): Implement an A2A task delegation module that discovers agents via Agent Cards and delegates subtasks to them.",
+      "allowed_paths": [
+        "magda_agent/multi_agent/a2a_delegation_v2.py",
+        "tests/test_a2a_delegation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully delegates tasks using A2A.",
+        "Tests mock A2A responses and pass."
       ]
     }
   ]
