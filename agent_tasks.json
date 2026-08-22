@@ -11861,7 +11861,7 @@
     },
     {
       "id": "a2a-discovery-agent-cards-v4",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Discovery Agent Cards v4",
