@@ -11588,7 +11588,7 @@
     },
     {
       "id": "openclaw-online-rl-feedback-v9-2ae04072",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Online Feedback Learning v9",
@@ -26785,6 +26785,60 @@
       "acceptance": [
         "Manifest generator reads skill metadata decorators.",
         "Produces valid JSON matching MCP specification."
+      ]
+    },
+    {
+      "id": "hermes-cron-procedural-consolidation-v4-9f8d7e6c",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "title": "Hermes Cron Procedural Consolidation V4",
+      "description": "Inspired by Hermes Agent self-improving learning loop (June 2026): Update the procedural consolidation cron job module to incorporate user feedback weighting when creating procedural skill templates.",
+      "allowed_paths": [
+        "magda_agent/learning/procedural_consolidation_v4.py",
+        "tests/test_procedural_consolidation_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job searches memories periodically and considers user feedback weight.",
+        "Successful paths with positive feedback are consolidated into new templates.",
+        "Tests verify the feedback weighting logic via mocks."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-v4-1a2b3c4d",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V4",
+      "description": "Inspired by OpenClaw Context Engine trends (June 2026): Create a Context Lifecycle Manager that unifies episodic and working memory stores to seamlessly handle short-term token overflow by paging context back and forth using hybrid search.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_v4.py",
+        "tests/test_virtual_context_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle manager handles memory store transitions transparently with hybrid search.",
+        "Pages out context blocks when limits are reached based on token thresholds.",
+        "Tests mock threshold limits and verify page swapping."
+      ]
+    },
+    {
+      "id": "claude-sdk-dependency-graph-v3-5e6f7g8h",
+      "status": "todo",
+      "area": "planning",
+      "risk": "medium",
+      "title": "Claude SDK Task Dependency Graph V3",
+      "description": "Inspired by Claude Agent Teams dependency graphs (June 2026): Implement a module that parses execution plans into a DAG of dependent steps, with support for conditional branching based on step outcomes.",
+      "allowed_paths": [
+        "magda_agent/planning/dependency_graph_v3.py",
+        "tests/test_dependency_graph_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Dependency graph correctly identifies conditional branching paths.",
+        "Supports dynamic re-evaluation of the graph upon step completion.",
+        "Tests assert graph generation and branch evaluation on complex mock plans."
       ]
     }
   ]

@@ -29,6 +29,28 @@ class OpenClawInteractiveLearnerV9:
         self.mirror_neurons = mirror_neurons
         self.user_model = user_model
 
+    def _calculate_reward(self, p_shift: float, tool_output: Optional[str]) -> float:
+        """
+        Calculates the reward score based on empathy shift and tool output.
+
+        Args:
+            p_shift: The positive shift in empathy.
+            tool_output: The output from the executed tool.
+
+        Returns:
+            A calculated reward float between 0.0 and 10.0.
+        """
+        # Dynamic Q-Value calculation inspired by RL
+        # p_shift ranges between -1.0 to 1.0 (approximate).
+        # We transform this into a score between 0.0 and 10.0
+        base_reward = (p_shift + 1.0) * 5.0
+
+        # Give bonus if there's a valid tool output and positive empathy shift
+        if tool_output and p_shift > 0.0:
+            base_reward += 2.0
+
+        return max(0.0, min(10.0, base_reward))
+
     async def process_next_state_signal(
         self,
         user_reply: str,
@@ -58,16 +80,7 @@ class OpenClawInteractiveLearnerV9:
 
         skills = skills_used or ["rl_skill_v9"]
 
-        # Dynamic Q-Value calculation inspired by RL
-        # p_shift ranges between -1.0 to 1.0 (approximate).
-        # We transform this into a score between 0.0 and 10.0
-        base_reward = (p_shift + 1.0) * 5.0
-
-        # Give bonus if there's a valid tool output and positive empathy shift
-        if tool_output and p_shift > 0.0:
-            base_reward += 2.0
-
-        reward = max(0.0, min(10.0, base_reward))
+        reward = self._calculate_reward(p_shift, tool_output)
 
         # Retrieve user model
         model_data = self.user_model.get_model(user_id)
