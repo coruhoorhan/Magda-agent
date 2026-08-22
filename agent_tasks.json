@@ -11708,7 +11708,7 @@
     },
     {
       "id": "openclaw-rl-next-state-signals-v1-c9a5b60a",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL: Online Reinforcement Learning from Next-State Signals",
@@ -27106,6 +27106,58 @@
         "Middleware intercepts workflow steps at 5 distinct checkpoints.",
         "Validates state against defined ACS policy controls.",
         "Tests use mock policies to ensure robust checkpoint validation."
+      ]
+    },
+    {
+      "id": "mcp-skill-registry-exporter-v1-187c3745",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Skill Registry Exporter",
+      "description": "Inspired by MCP standards (June 2026): Implement an exporter that converts Magda skills into MCP-compatible JSON-RPC action tools so they can be discovered and used by external agents.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_exporter_v1.py",
+        "tests/test_mcp_exporter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Skill representations are converted to strict JSON-RPC structures.",
+        "Tests mock skill registry and assert correctly formatted MCP export."
+      ]
+    },
+    {
+      "id": "virtual-context-paging-v1-b6d3a240",
+      "status": "todo",
+      "area": "memory",
+      "risk": "high",
+      "title": "Virtual Context Paging for Working Memory",
+      "description": "Inspired by MemGPT/Letta patterns (June 2026): Implement dynamic context paging to swap least-relevant working memory into a secondary store when token limits are exceeded.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_pager.py",
+        "tests/test_virtual_context_pager.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context pager detects token overflow and safely offloads oldest blocks.",
+        "Tests mock token counts and verify that memory state shrinks transparently."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-policy-layer-v1-05bb0192",
+      "status": "todo",
+      "area": "safety",
+      "risk": "critical",
+      "title": "Agent Guard Runtime Policy Layer",
+      "description": "Inspired by Agent Guard and Falco Prempti patterns (June 2026): Implement a runtime governance layer that intercepts all tool calls mutating external state to check against a strict policy matrix.",
+      "allowed_paths": [
+        "magda_agent/safety/agent_guard_policy_layer.py",
+        "tests/test_agent_guard_policy_layer.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tool calls are intercepted by the governance layer.",
+        "Unsafe state mutations are blocked by the policy engine.",
+        "Tests mock mutating tools and verify they are correctly dropped."
       ]
     }
   ]
