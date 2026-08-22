@@ -82,3 +82,14 @@ def test_mcp_registry_v6_sync_from_adapters():
     assert "dynamic_tool_2" in registry.mcp_tools
     assert "invalid_dynamic" not in registry.mcp_tools
     mock_adapter.get_tools.assert_called_once()
+
+def test_mcp_registry_v6_clear():
+    registry = MCPRegistryV6()
+    registry.load_tool({"name": "tool1", "description": "First tool"})
+    mock_adapter = MagicMock(spec=MCPAdapter)
+    registry.register_adapter(mock_adapter)
+
+    registry.clear()
+
+    assert len(registry.mcp_tools) == 0
+    assert len(registry.adapters) == 0
