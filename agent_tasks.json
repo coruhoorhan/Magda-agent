@@ -11536,7 +11536,7 @@
     },
     {
       "id": "mcp-exporter-schema-validation-05ed7592",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Exporter advanced schema validation",
@@ -26644,6 +26644,42 @@
         "Evaluator scores generated responses based on a rubric.",
         "Integrates into the Triad Coordinator loop.",
         "Tests mock generation and verify scoring."
+      ]
+    },
+    {
+      "id": "new-trend-task-3a9bcb79",
+      "title": "Implement MCP Authentication Middleware",
+      "description": "Inspired by MCP standardization trends: Add an authentication middleware layer to the MCP exporter to require API keys for tool execution.",
+      "area": "security",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_middleware.py",
+        "tests/test_mcp_auth_middleware.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Middleware successfully intercepts requests without a valid API key.",
+        "Returns proper JSON-RPC error for unauthorized access.",
+        "Tests mock the middleware and verify both allowed and blocked requests."
+      ]
+    },
+    {
+      "id": "new-trend-task-74e1a8c6",
+      "title": "A2A Workflow Orchestration UI Support",
+      "description": "Inspired by A2A Protocol and Canvas trends: Add a UI event stream to visualize the status of A2A delegated tasks in the Canvas frontend.",
+      "area": "visualization",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/a2a_canvas_stream.py",
+        "tests/test_a2a_canvas_stream.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Stream emits events when A2A tasks are delegated, completed, or failed.",
+        "Payloads match the required Canvas UI schema.",
+        "Tests mock task delegation events and assert stream contents."
       ]
     }
   ]
