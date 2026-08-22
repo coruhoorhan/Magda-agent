@@ -360,3 +360,4 @@
 * [x] FEATURE: A2A Agent Discovery Mesh Expansion V2 (a2a-discovery-mesh-expansion-v2-1e10f95)
 * [x] FEATURE: Hermes Cron Nightly Benchmark V2 (hermes-cron-nightly-benchmark-v2-8af5da74)
 * [x] FEATURE: Implement ACS Guardrails for Agent Safety (acs-guardrails-integration-v1-6335a739)
+* [x] FEATURE: Add Agent Teams Git Worktree Isolation (claude-agent-teams-isolation-v2-c3dca071)
