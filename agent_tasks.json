@@ -11553,7 +11553,7 @@
     },
     {
       "id": "agent-teams-v2-18b36ebc",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Agent Teams Subagent Spawning with Worktree Isolation v2",
@@ -26680,6 +26680,60 @@
         "Stream emits events when A2A tasks are delegated, completed, or failed.",
         "Payloads match the required Canvas UI schema.",
         "Tests mock task delegation events and assert stream contents."
+      ]
+    },
+    {
+      "id": "mcp-kernel-sandboxing-v2-94a2f1b0",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "MCP Kernel Sandboxing V2",
+      "description": "Inspired by MCPKernel Taint Tracking Sandbox trends (June 2026): Implement an execution wrapper that intercepts MCP tool execution, checking inputs against a strict policy matrix before proceeding, effectively sandboxing dynamic actions.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_kernel_sandbox_v2.py",
+        "tests/test_mcp_kernel_sandbox_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sandbox intercepts MCP tool executions.",
+        "Validates arguments against policies before execution.",
+        "Tests mock valid and invalid tool calls to verify interception."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-v3-7d8e9cfa",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V3",
+      "description": "Inspired by OpenClaw Context Engine trends (June 2026): Create a Context Lifecycle Manager that unifies episodic and working memory stores to seamlessly handle short-term token overflow by paging context back and forth between active memory and vector storage.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_v3.py",
+        "tests/test_virtual_context_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle manager handles memory store transitions transparently.",
+        "Pages out context blocks when limits are reached.",
+        "Tests mock threshold limits and verify page swapping."
+      ]
+    },
+    {
+      "id": "claude-sdk-dependency-graph-v2-b5c6d7e8",
+      "status": "todo",
+      "area": "planning",
+      "risk": "medium",
+      "title": "Claude SDK Task Dependency Graph V2",
+      "description": "Inspired by Claude Agent Teams dependency graphs (June 2026): Implement a module that parses execution plans into a DAG (Directed Acyclic Graph) of dependent steps, and yields independent steps that can be run concurrently by Agent Teams.",
+      "allowed_paths": [
+        "magda_agent/planning/dependency_graph_v2.py",
+        "tests/test_dependency_graph_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Dependency graph correctly identifies independent nodes for parallel execution.",
+        "Throws errors for cyclic dependencies.",
+        "Tests assert graph generation and concurrent extraction on complex mock plans."
       ]
     }
   ]
