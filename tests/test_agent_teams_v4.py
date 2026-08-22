@@ -5,7 +5,11 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from magda_agent.architecture.agent_teams_v4 import AgentWorktreeIsolationV4, AgentTeamManagerV4
+from magda_agent.architecture.agent_teams_v4 import (
+    AgentWorktreeIsolationV4,
+    AgentTeamManagerV4,
+    GitWorktreeError,
+)
 
 @pytest.fixture
 def isolation_manager() -> AgentWorktreeIsolationV4:
@@ -46,7 +50,7 @@ async def test_create_worktree_failure(isolation_manager: AgentWorktreeIsolation
     mock_process.returncode = 128
 
     with patch("asyncio.create_subprocess_exec", return_value=mock_process):
-        with pytest.raises(RuntimeError, match="Git worktree creation failed"):
+        with pytest.raises(GitWorktreeError, match="Git worktree creation failed"):
             await isolation_manager.create_worktree(agent_id)
 
 

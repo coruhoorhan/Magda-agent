@@ -6,6 +6,12 @@ import uuid
 import time
 from typing import Optional, List, Dict, Tuple
 
+
+class GitWorktreeError(Exception):
+    """Exception raised for errors during git worktree operations."""
+    pass
+
+
 class AgentWorktreeIsolationV4:
     """
     Manages isolated git worktrees for individual sub-agents with aggressive cleanup.
@@ -52,7 +58,7 @@ class AgentWorktreeIsolationV4:
             if process.returncode != 0:
                 error_msg = stderr.decode().strip()
                 logging.error(f"Failed to create git worktree: {error_msg}")
-                raise RuntimeError(f"Git worktree creation failed: {error_msg}")
+                raise GitWorktreeError(f"Git worktree creation failed: {error_msg}")
 
             logging.info(f"Agent {agent_id} worktree created at {env_path}")
             self.active_worktrees[agent_id] = env_path
