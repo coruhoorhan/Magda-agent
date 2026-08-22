@@ -27,9 +27,25 @@ def learner(mock_habit_tracker: MagicMock, mock_mirror_neurons: MagicMock, mock_
         user_model=mock_user_model
     )
 
+def test_calculate_reward(learner: OpenClawInteractiveLearnerV9) -> None:
+    """Tests the reward calculation logic directly."""
+    # Base reward = (0.5 + 1.0) * 5.0 = 7.5
+    # Bonus = +2.0 (since tool_output is present and p_shift > 0)
+    # Total reward = 9.5
+    assert learner._calculate_reward(0.5, "output") == 9.5
+
+    # Negative shift, no bonus
+    # Base reward = (-0.8 + 1.0) * 5.0 = 1.0
+    assert abs(learner._calculate_reward(-0.8, None) - 1.0) < 1e-5
+
+    # Capped at 10.0
+    assert learner._calculate_reward(1.0, "output") == 10.0
+
+    # Capped at 0.0
+    assert learner._calculate_reward(-1.5, None) == 0.0
+
 @pytest.mark.asyncio
 async def test_process_positive_signal(
-
     learner: OpenClawInteractiveLearnerV9,
     mock_habit_tracker: MagicMock,
     mock_mirror_neurons: MagicMock,
@@ -54,9 +70,6 @@ async def test_process_positive_signal(
     )
 
     # Assert
-    # Base reward = (0.5 + 1.0) * 5.0 = 7.5
-    # Bonus = +2.0 (since tool_output is present and p_shift > 0)
-    # Total reward = 9.5
     mock_habit_tracker.record_usage.assert_called_once_with(
         input_text=action_context,
         skill_used="rl_skill_v9",
@@ -70,7 +83,6 @@ async def test_process_positive_signal(
 
 @pytest.mark.asyncio
 async def test_process_negative_signal(
-
     learner: OpenClawInteractiveLearnerV9,
     mock_habit_tracker: MagicMock,
     mock_mirror_neurons: MagicMock,
@@ -94,9 +106,6 @@ async def test_process_negative_signal(
     )
 
     # Assert
-    # Base reward = (-0.8 + 1.0) * 5.0 = 1.0
-    # No bonus since tool output is None
-    # Total reward = 1.0
     mock_habit_tracker.record_usage.assert_not_called()
 
     saved_model = mock_user_model.save_model.call_args[0][1]
@@ -105,7 +114,6 @@ async def test_process_negative_signal(
 
 @pytest.mark.asyncio
 async def test_empty_signals(
-
     learner: OpenClawInteractiveLearnerV9,
     mock_habit_tracker: MagicMock,
     mock_mirror_neurons: MagicMock,
