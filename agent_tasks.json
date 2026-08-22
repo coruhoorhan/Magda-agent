@@ -27389,7 +27389,7 @@
       "description": "Inspired by A2A Protocol and Agent Cards trends: Build an advanced mesh-based discovery service where peer agents can gossip about available capabilities over local channels, allowing highly resilient peer-to-peer discovery without a central registry.",
       "area": "integration",
       "risk": "medium",
-      "status": "todo",
+      "status": "done",
       "allowed_paths": [
         "magda_agent/integration/a2a_discovery_mesh.py",
         "tests/test_a2a_discovery_mesh.py",
@@ -27590,6 +27590,42 @@
         "Cron scheduler registers the task successfully.",
         "Task correctly exports a subset of ChromaDB to a mock JSON file.",
         "Tests use a mocked ChromaDB instance."
+      ]
+    },
+    {
+      "id": "mcp-tool-execution-audit-trail-v1-1ad39c71",
+      "title": "MCP Tool Execution Audit Trail V1",
+      "description": "Inspired by Agent Guard / Prempti Pattern trends (June 2026): Implement an interception layer that logs and creates an audit trail of all MCP tool executions, recording tool names, inputs, outputs, and the executing agent for security monitoring.",
+      "area": "safety",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_audit_trail_v1.py",
+        "tests/test_mcp_audit_trail_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Interceptor successfully logs tool execution details.",
+        "Audit trail is saved to an episodic memory equivalent or mock log.",
+        "Tests verify that tool parameters and outputs are recorded correctly without blocking execution."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-selection-v1-54e7d2dc",
+      "title": "OpenClaw Virtual Context Selection V1",
+      "description": "Inspired by Context Engine / MemGPT Virtual Context trends (June 2026): Implement a virtual context selection plugin that dynamically queries episodic memory for relevant previous interactions and automatically loads them into the working memory context prior to generation.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_selection_v1.py",
+        "tests/test_virtual_context_selection_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin hooks into Context Engine to intercept context generation.",
+        "Semantic similarity search is mocked to select relevant prior context.",
+        "Tests verify working memory contains retrieved context based on a given query."
       ]
     }
   ]
