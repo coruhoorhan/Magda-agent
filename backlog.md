@@ -306,7 +306,7 @@
 
 * [x] FEATURE: OpenClaw Online RL Loop v6 (openclaw-online-rl-dialogue-v6-e9301cfc)
 * [x] FEATURE: Claude Agent Teams Git Worktree Isolation
-* [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
+* [x] FEATURE: OpenClaw Context Engine Hooks V5 (openclaw-context-hooks-v5-75ccc0a9)
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7)
 * [x] FEATURE: OpenClaw Online RL Loop v7 (openclaw-online-rl-dialogue-v7-af571aae)
 * [ ] FEATURE: Hermes Nightly Background Skills Creator V1 (hermes-nightly-background-skills-creator-v1)
@@ -315,7 +315,7 @@
 
 * [x] FEATURE: OpenClaw Online RL Loop v6 (openclaw-online-rl-dialogue-v6-e9301cfc)
 * [x] FEATURE: Claude Agent Teams Git Worktree Isolation
-* [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
+* [x] FEATURE: OpenClaw Context Engine Hooks V5 (openclaw-context-hooks-v5-75ccc0a9)
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7)
 * [ ] FEATURE: Claude Evaluator Subagent Isolation V3 (claude-evaluator-subagent-isolation-v3)
 * [ ] FEATURE: MCP Dynamic Tool Permissions v2 (mcp-dynamic-tool-permissions-v2-unique)
@@ -330,7 +330,7 @@
 
 * [x] FEATURE: OpenClaw Online RL Loop v6 (openclaw-online-rl-dialogue-v6-e9301cfc)
 * [x] FEATURE: Claude Agent Teams Git Worktree Isolation
-* [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
+* [x] FEATURE: OpenClaw Context Engine Hooks V5 (openclaw-context-hooks-v5-75ccc0a9)
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V7 (mcp-dynamic-capability-negotiation-v7)
 * [ ] FEATURE: MCP Dynamic Capability Auth V2 (mcp-dynamic-capability-auth-v2-unique)
 * [ ] FEATURE: OpenClaw RL Implicit Reward Tracking v2 (openclaw-rl-implicit-reward-v2-unique)

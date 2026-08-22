@@ -27,5 +27,23 @@ class LifecyclePlugin(ContextPlugin):
         context.append(f"metadata: post_retrieval hook executed for {user_id}")
         return context
 
+    def before_write(self, context: Any, user_id: int) -> Any:
+        """Called before context is written. Can modify the context."""
+        if isinstance(context, list):
+            return context + [f"metadata: before_write hook executed for {user_id}"]
+        return str(context) + f" (before_write for {user_id})"
+
+    def after_write(self, context: Any, user_id: int) -> None:
+        """Called after context is written."""
+        pass
+
     def on_context_update(self, new_context: Any, user_id: int) -> None:
         pass
+
+    async def pre_process(self, content: str, metadata: Dict[str, Any]) -> str:
+        """Called to pre-process content before ingestion."""
+        return content + " (pre_processed)"
+
+    async def post_process(self, response: str, metadata: Dict[str, Any]) -> str:
+        """Called to post-process a response before returning to user."""
+        return response + " (post_processed)"

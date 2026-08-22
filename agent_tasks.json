@@ -11895,7 +11895,7 @@
     },
     {
       "id": "openclaw-context-hooks-v5-75ccc0a9",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Implement OpenClaw Context Engine lifecycle hooks",
@@ -27537,6 +27537,59 @@
         "EvaluatorSubagent correctly parses plan steps and invokes LLMClient for semantic validation.",
         "If plan is poor, subagent returns a clear failure reason.",
         "Tests mock LLM calls and verify evaluator logic."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-integration-v1-9b735f98",
+      "title": "OpenClaw Canvas Web Component Integration V1",
+      "description": "Inspired by OpenClaw Canvas (June 2026): Implement an initial WebSocket bridge that exports agent's current working memory and subagent task states to an external OpenClaw Canvas frontend for real-time visualization.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/openclaw_canvas_v1.py",
+        "tests/test_openclaw_canvas_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket bridge correctly serializes and sends current ContextEngine state.",
+        "Tests mock the WebSocket connection and verify payload formats."
+      ]
+    },
+    {
+      "id": "claude-worktree-garbage-collection-v1-c0a75b2d",
+      "title": "Claude Agent Teams Worktree Garbage Collection V1",
+      "description": "Inspired by Claude Agent Teams (June 2026): Implement a background garbage collection task that scans isolated git worktrees created by subagents and automatically cleans up aborted or orphaned directories that have no active processes.",
+      "area": "multi-agent",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_gc_v1.py",
+        "tests/test_worktree_gc_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Garbage collector safely deletes old worktrees.",
+        "Collector ignores actively used worktrees based on lockfiles.",
+        "Tests mock os and shutil to ensure correct deletion behavior."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-memory-backup-v1-8d962ba7",
+      "title": "Hermes Cron Nightly Semantic Memory Backup V1",
+      "description": "Inspired by Hermes Agent (June 2026): Create a periodic cron job using CronSchedulerV2 that iterates through Semantic Memory embeddings in ChromaDB and creates a serialized JSON backup archive every 24 hours.",
+      "area": "memory",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/semantic_backup_cron_v1.py",
+        "tests/test_semantic_backup_cron_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron scheduler registers the task successfully.",
+        "Task correctly exports a subset of ChromaDB to a mock JSON file.",
+        "Tests use a mocked ChromaDB instance."
       ]
     }
   ]
