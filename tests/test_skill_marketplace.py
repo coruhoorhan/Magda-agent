@@ -1,6 +1,7 @@
 import pytest
+import asyncio
 from unittest.mock import patch, MagicMock, AsyncMock
-from magda_agent.integration.skill_marketplace import fetch_and_register_skills, AgentSkillsExporter
+from magda_agent.integration.skill_marketplace import fetch_and_register_skills, AgentSkillsExporter, MarketplaceBackgroundSync
 from magda_agent.skills.registry import SkillRegistry
 from magda_agent.skills.marketplace import search_marketplace_skills
 
@@ -106,3 +107,49 @@ def test_agent_skills_exporter():
     assert skills[0]["name"] == "dummy_skill"
     assert skills[0]["description"] == "A dummy skill"
     assert "parameters" in skills[0]
+
+@pytest.mark.asyncio
+async def test_marketplace_background_sync_once():
+    registry = MagicMock(spec=SkillRegistry)
+    url = "https://mock-marketplace.io/skills.json"
+    sync_process = MarketplaceBackgroundSync(registry, url, sync_interval=1)
+
+    with patch('magda_agent.integration.skill_marketplace.fetch_and_register_skills', new_callable=AsyncMock) as mock_fetch:
+        mock_fetch.return_value = ["skill1", "skill2"]
+        await sync_process.sync_once()
+
+        mock_fetch.assert_called_once_with(url, registry)
+
+@pytest.mark.asyncio
+async def test_marketplace_background_sync_once_error():
+    registry = MagicMock(spec=SkillRegistry)
+    url = "https://mock-marketplace.io/skills.json"
+    sync_process = MarketplaceBackgroundSync(registry, url, sync_interval=1)
+
+    with patch('magda_agent.integration.skill_marketplace.fetch_and_register_skills', new_callable=AsyncMock) as mock_fetch:
+        mock_fetch.side_effect = Exception("Mock network error")
+
+        # Should not raise exception
+        await sync_process.sync_once()
+        mock_fetch.assert_called_once_with(url, registry)
+
+
+@pytest.mark.asyncio
+async def test_marketplace_background_sync_start_stop():
+    registry = MagicMock(spec=SkillRegistry)
+    url = "https://mock-marketplace.io/skills.json"
+    sync_process = MarketplaceBackgroundSync(registry, url, sync_interval=0.01)
+
+    with patch('magda_agent.integration.skill_marketplace.fetch_and_register_skills', new_callable=AsyncMock) as mock_fetch:
+        sync_process.start()
+        assert sync_process._running is True
+        assert sync_process._task is not None
+
+        # Let the event loop run a bit to trigger the task
+        await asyncio.sleep(0.05)
+
+        assert mock_fetch.called
+
+        await sync_process.stop()
+        assert sync_process._running is False
+        assert sync_process._task is None

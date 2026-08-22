@@ -11844,7 +11844,7 @@
     },
     {
       "id": "mcp-skill-marketplace-sync-v2",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Dynamic Skill Marketplace Sync v2",
@@ -27468,6 +27468,40 @@
       "acceptance": [
         "LRU cache efficiently stores and retrieves valid JSON schemas.",
         "Tests demonstrate validation speedup or correct hit/miss behavior."
+      ]
+    },
+    {
+      "id": "hermes-online-skill-pruning-v2-9affbe28",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "Hermes Online Skill Pruning V2",
+      "description": "Inspired by Hermes Agent (June 2026): Implement an online pruner that evaluates skill usage metrics from telemetry and unregisters skills that have high failure rates or zero usage over a significant time period to keep the context window optimized.",
+      "allowed_paths": [
+        "magda_agent/learning/skill_pruner_v2.py",
+        "tests/test_skill_pruner_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "SkillPruner can track and unregister underperforming skills.",
+        "Tests verify pruning logic based on mocked telemetry data."
+      ]
+    },
+    {
+      "id": "context-engine-semantic-routing-v3-0464870d",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Context Engine Semantic Routing V3",
+      "description": "Inspired by OpenClaw Context Engine trends (June 2026): Create a pre_process ContextPlugin hook that semantically analyzes incoming user queries via LLMClient and directly routes specific domains to dedicated sub-agents instead of using the main loop.",
+      "allowed_paths": [
+        "magda_agent/memory/semantic_routing_plugin_v3.py",
+        "tests/test_semantic_routing_plugin_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Semantic routing hook intercepts queries and assigns them to sub-agents if applicable.",
+        "Tests use mocked LLM calls and verify correct routing behavior."
       ]
     }
   ]

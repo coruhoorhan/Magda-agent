@@ -127,3 +127,81 @@ async def fetch_and_register_skills(url: str, registry: SkillRegistry) -> List[s
         logger.error(f"Failed to fetch and register skills from {url}: {e}")
 
     return registered_skills
+
+import asyncio
+from typing import Optional
+
+class MarketplaceBackgroundSync:
+    """
+    Background loop that periodically polls a configured agentskills.io marketplace URL
+    and dynamically registers tools into the local SkillRegistry.
+    """
+
+    def __init__(self, registry: SkillRegistry, marketplace_url: str, sync_interval: int = 3600) -> None:
+        """
+        Initialize the MarketplaceBackgroundSync process.
+
+        Args:
+            registry (SkillRegistry): The local skill registry to update.
+            marketplace_url (str): The URL of the agentskills.io JSON endpoint.
+            sync_interval (int): Time in seconds between polling attempts. Defaults to 3600 (1 hour).
+        """
+        self.registry = registry
+        self.marketplace_url = marketplace_url
+        self.sync_interval = sync_interval
+        self._running = False
+        self._task: Optional[asyncio.Task[None]] = None
+        self.logger = logging.getLogger(__name__)
+
+    async def _sync_loop(self) -> None:
+        """
+        The main background asyncio loop that periodically triggers synchronization.
+        """
+        while self._running:
+            await self.sync_once()
+            if self._running:
+                try:
+                    await asyncio.sleep(self.sync_interval)
+                except asyncio.CancelledError:
+                    break
+
+    async def sync_once(self) -> None:
+        """
+        Performs a single synchronization cycle by fetching from the marketplace.
+        """
+        self.logger.debug(f"Starting marketplace sync cycle with: {self.marketplace_url}")
+        try:
+            registered_skills = await fetch_and_register_skills(self.marketplace_url, self.registry)
+            self.logger.info(f"Marketplace sync completed successfully. Registered {len(registered_skills)} new/updated skills.")
+        except Exception as e:
+            self.logger.error(f"Error during marketplace sync cycle with {self.marketplace_url}: {e}")
+
+    def start(self) -> None:
+        """
+        Starts the background synchronization loop.
+        """
+        if self._running:
+            self.logger.warning("MarketplaceBackgroundSync loop is already running.")
+            return
+
+        self._running = True
+        loop = asyncio.get_running_loop()
+        self._task = loop.create_task(self._sync_loop())
+        self.logger.info(f"Started MarketplaceBackgroundSync loop with interval {self.sync_interval}s.")
+
+    async def stop(self) -> None:
+        """
+        Stops the background synchronization loop gracefully.
+        """
+        if not self._running:
+            return
+
+        self._running = False
+        if self._task:
+            self._task.cancel()
+            try:
+                await self._task
+            except asyncio.CancelledError:
+                pass
+            self._task = None
+        self.logger.info("Stopped MarketplaceBackgroundSync loop.")
