@@ -1,3 +1,4 @@
+import json
 import logging
 from typing import Dict, Any, List
 
@@ -65,4 +66,29 @@ class A2ADistributedTelemetryV7:
             payload (Dict[str, Any]): The payload to broadcast.
         """
         # Mock network call delay could be simulated here, but we pass for now.
+        pass
+
+    async def broadcast_pad_shift_to_canvas(self, subagent_id: str, pad_shift: Dict[str, float]) -> None:
+        """
+        Broadcast a PAD shift event to the Canvas UI via WebSocket mock.
+
+        Args:
+            subagent_id (str): The unique identifier for the sub-agent.
+            pad_shift (Dict[str, float]): The PAD shift data to broadcast.
+        """
+        payload = {
+            "type": "canvas_pad_shift",
+            "subagent_id": subagent_id,
+            "pad_shift": pad_shift
+        }
+        json_payload = json.dumps(payload)
+        await self._mock_websocket_emit(json_payload)
+
+    async def _mock_websocket_emit(self, json_payload: str) -> None:
+        """
+        Mock WebSocket emission for Canvas UI updates.
+
+        Args:
+            json_payload (str): The JSON string payload to emit.
+        """
         pass

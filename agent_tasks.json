@@ -11810,7 +11810,7 @@
     },
     {
       "id": "openclaw-rl-canvas-metrics-v5-unique-4b6157db",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw-RL Live Telemetry Streaming V5",
@@ -27363,6 +27363,60 @@
       "acceptance": [
         "Manager offloads memory blocks based on token overflow.",
         "Tests mock tokens and context limits."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-exporter-d543b064",
+      "title": "MCP Action Tool Exporter V2",
+      "description": "Inspired by the rising MCP (Model Context Protocol) trend (where action tools grew to 65%): Implement an integration layer extending MCPSkillExporter to accurately register Magda's internal actions directly into an external MCP action tool registry.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_action_exporter.py",
+        "tests/test_mcp_action_exporter.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter can construct valid MCP tool JSON schemas for registered skills.",
+        "Exporter gracefully handles missing parameter schemas.",
+        "Tests verify the output matches expected MCP JSON-RPC standards."
+      ]
+    },
+    {
+      "id": "a2a-agent-discovery-mesh-e1e10f95",
+      "title": "A2A Agent Discovery Mesh Expansion V2",
+      "description": "Inspired by A2A Protocol and Agent Cards trends: Build an advanced mesh-based discovery service where peer agents can gossip about available capabilities over local channels, allowing highly resilient peer-to-peer discovery without a central registry.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_discovery_mesh.py",
+        "tests/test_a2a_discovery_mesh.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery mesh service can aggregate and broadcast Agent Cards.",
+        "Agents dynamically learn about indirect peers via gossip propagation.",
+        "Tests verify gossip propagation logic with mock network endpoints."
+      ]
+    },
+    {
+      "id": "context-engine-compression-plugin-159236a1",
+      "title": "Context Engine Semantic Compression Plugin V2",
+      "description": "Inspired by Context Engine virtual memory management trends: Create a plugin that scans working memory for semantically duplicate or older entries during the compression phase, merging them into single unified representations or archiving them to save context space.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/semantic_compression_plugin.py",
+        "tests/test_semantic_compression_plugin.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin hooks into the Context Engine lifecycle correctly.",
+        "Semantically duplicate memories are merged effectively using mock embeddings.",
+        "Tests verify that context token length is reduced after compression."
       ]
     }
   ]
