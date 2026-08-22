@@ -1,15 +1,23 @@
 import logging
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
+from magda_agent.llm_client import LLMClient
 
 class ACSCheckpointsV3:
     """
     Implements 5 ACS validation checkpoints for agentic workflows (v3).
     Ensures all actions pass through 5 checks before execution.
     """
-    def __init__(self) -> None:
-        self.logger = logging.getLogger(__name__)
+    def __init__(self, llm_client: Optional[LLMClient] = None) -> None:
+        """
+        Initialize the ACS Checkpoints V3 validator.
 
-    def checkpoint_1_input_validation(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
+        Args:
+            llm_client (Optional[LLMClient]): LLM Client for semantic validation.
+        """
+        self.logger = logging.getLogger(__name__)
+        self.llm_client = llm_client
+
+    async def checkpoint_1_input_validation(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
         """
         Validates raw input data for actions.
 
@@ -25,7 +33,7 @@ class ACSCheckpointsV3:
             return False, "Checkpoint 1 Failed: missing 'action_name'."
         return True, "Checkpoint 1 Passed."
 
-    def checkpoint_2_intent_authorization(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
+    async def checkpoint_2_intent_authorization(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
         """
         Verifies if the intent is authorized.
 
@@ -37,9 +45,16 @@ class ACSCheckpointsV3:
         """
         if action_data.get("action_name") == "unauthorized_action":
             return False, "Checkpoint 2 Failed: unauthorized action intent."
+
+        if self.llm_client:
+            intent = str(action_data.get("intent", ""))
+            if intent:
+                response = await self.llm_client.generate(f"Is this intent safe? {intent}")
+                if "unsafe" in response.lower():
+                    return False, "Checkpoint 2 Failed: LLM determined intent is unsafe."
         return True, "Checkpoint 2 Passed."
 
-    def checkpoint_3_tool_policy(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
+    async def checkpoint_3_tool_policy(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
         """
         Checks compliance with tool policies.
 
@@ -53,7 +68,7 @@ class ACSCheckpointsV3:
             return False, "Checkpoint 3 Failed: tool is forbidden."
         return True, "Checkpoint 3 Passed."
 
-    def checkpoint_4_state_transition(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
+    async def checkpoint_4_state_transition(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
         """
         Ensures the state transition is valid.
 
@@ -67,7 +82,7 @@ class ACSCheckpointsV3:
             return False, "Checkpoint 4 Failed: invalid state transition from error."
         return True, "Checkpoint 4 Passed."
 
-    def checkpoint_5_output_sanitization(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
+    async def checkpoint_5_output_sanitization(self, action_data: Dict[str, Any]) -> Tuple[bool, str]:
         """
         Sanitizes output data.
 
@@ -81,7 +96,7 @@ class ACSCheckpointsV3:
             return False, "Checkpoint 5 Failed: sensitive data found in output."
         return True, "Checkpoint 5 Passed."
 
-    def validate_action(self, action_data: Dict[str, Any]) -> bool:
+    async def validate_action(self, action_data: Dict[str, Any]) -> bool:
         """
         Runs all 5 checkpoints and returns True if all pass.
 
@@ -100,7 +115,7 @@ class ACSCheckpointsV3:
         ]
 
         for checkpoint in checkpoints:
-            passed, reason = checkpoint(action_data)
+            passed, reason = await checkpoint(action_data)
             if not passed:
                 self.logger.warning(reason)
                 return False
