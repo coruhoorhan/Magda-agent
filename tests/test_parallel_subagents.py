@@ -69,6 +69,49 @@ async def test_callable_executor():
     assert results[0] == "callable done"
 
 @pytest.mark.asyncio
+async def test_parallel_execution_with_exceptions() -> None:
+    """
+    Test that exceptions in parallel tasks are caught and returned in the result list.
+    """
+    manager = ParallelSubagentManager()
+    tasks = ["Task 1", "Task 2"]
+    base_context = []
+
+    # Mock an executor that raises an exception for Task 1
+    def factory() -> object:
+        """
+        Create a faulty executor that raises an exception for Task 1.
+
+        Returns:
+            An instance of FaultyExecutor.
+        """
+        class FaultyExecutor:
+            """Faulty mock executor."""
+            async def execute(self, context: list, **kwargs) -> str:
+                """
+                Simulate execution that fails for Task 1.
+
+                Args:
+                    context: The context.
+                    **kwargs: Extra arguments.
+
+                Returns:
+                    Success string if not Task 1.
+                """
+                task_desc = context[-1]["content"] if context else ""
+                if "Task 1" in task_desc:
+                    raise ValueError("Task 1 failed")
+                return f"Done: {task_desc}"
+        return FaultyExecutor()
+
+    results = await manager.run_parallel_tasks(tasks, base_context, factory)
+
+    assert len(results) == 2
+    assert isinstance(results[0], ValueError)
+    assert str(results[0]) == "Task 1 failed"
+    assert "Done: Task: Task 2" in results[1]
+
+@pytest.mark.asyncio
 async def test_base_context_race_condition():
     """
     Test that modifying the context inside SubagentSpawner does not affect the original base_context.
