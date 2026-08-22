@@ -11912,7 +11912,7 @@
     },
     {
       "id": "acs-guardrails-integration-v1-6335a739",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "Implement ACS Guardrails for Agent Safety",
@@ -27764,6 +27764,60 @@
       "acceptance": [
         "Lifecycle manager detects idle context boundaries and triggers Episodic Memory archiving.",
         "Tests mock context engine states and verify cleanup."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-live-viz-ec761ed7",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "Implement OpenClaw-style Canvas Live Visualization",
+      "description": "Implement a real-time canvas visualization component using WebSockets to monitor the agent's internal state and OpenClaw-RL PAD state shifts, mirroring OpenClaw's Live Canvas architecture.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_live_v1.py",
+        "tests/test_canvas_live_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Canvas live visualization server handles WebSocket connections.",
+        "Broadcasts agent state and PAD shifts.",
+        "Tests mock WebSocket server and state broadcasting."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-reports-24f6ff77",
+      "status": "todo",
+      "area": "scheduling",
+      "risk": "medium",
+      "title": "Implement Hermes-style Cron Daily Reports",
+      "description": "Implement a cron-based scheduler to generate and broadcast daily summary reports of agent activities and interactions, inspired by Hermes Agent scheduled tasks.",
+      "allowed_paths": [
+        "magda_agent/scheduler/hermes_daily_reports_v1.py",
+        "tests/test_hermes_daily_reports_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Daily report generation logic implemented.",
+        "Scheduled using a cron-like runner.",
+        "Tests mock report generation and scheduling."
+      ]
+    },
+    {
+      "id": "claude-planner-generator-evaluator-54bfa2b6",
+      "status": "todo",
+      "area": "orchestration",
+      "risk": "high",
+      "title": "Implement Claude Tri-Agent Orchestration (Planner, Generator, Evaluator)",
+      "description": "Implement a tri-agent architecture (Planner, Generator, Evaluator) for task execution with dependency graphs, inspired by Claude Agent SDK.",
+      "allowed_paths": [
+        "magda_agent/architecture/tri_agent_orchestrator_v1.py",
+        "tests/test_tri_agent_orchestrator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Planner, Generator, and Evaluator components implemented.",
+        "Orchestrator manages the flow between components based on dependency graphs.",
+        "Tests mock component interactions."
       ]
     }
   ]

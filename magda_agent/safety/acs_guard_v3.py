@@ -24,6 +24,20 @@ class ACSGuardV3:
     Standardizes runtime guardrails with 5 validation checkpoints for agentic workflows.
     """
 
+    ALLOWED_INTENTS = {
+        "read", "write", "execute", "plan", "reflect", "delegate", "analyze", "chat"
+    }
+
+    ALLOWED_TRANSITIONS = {
+        "idle": ["planning", "reflecting", "analyzing", "executing"],
+        "planning": ["executing", "idle"],
+        "executing": ["evaluating", "idle"],
+        "evaluating": ["idle", "planning"],
+        "reflecting": ["idle"],
+        "analyzing": ["idle", "planning"],
+        "error": ["idle"]
+    }
+
     def __init__(self, policy_layer: Optional[PolicyLayer] = None, audit_trail: Optional[AuditTrail] = None) -> None:
         """
         Initializes the ACS Guard V3.
@@ -62,14 +76,11 @@ class ACSGuardV3:
         """
         action = workflow_data.get("action")
         # Standard allowed intents in ACS-like architectures
-        allowed_intents = {
-            "read", "write", "execute", "plan", "reflect", "delegate", "analyze", "chat"
-        }
 
         if action == "unauthorized_action":
             return False, f"Intent authorization failed: action '{action}' is explicitly blacklisted."
 
-        if action not in allowed_intents:
+        if action not in self.ALLOWED_INTENTS:
             return False, f"Intent authorization failed: action '{action}' is not in allowed intents list."
 
         return True, "Intent authorization Passed."
@@ -102,20 +113,10 @@ class ACSGuardV3:
             # If next_state is not explicitly provided, we might assume it's valid if it doesn't break rules
             return True, "State transition skipped: next_state not provided."
 
-        allowed_transitions = {
-            "idle": ["planning", "reflecting", "analyzing", "executing"],
-            "planning": ["executing", "idle"],
-            "executing": ["evaluating", "idle"],
-            "evaluating": ["idle", "planning"],
-            "reflecting": ["idle"],
-            "analyzing": ["idle", "planning"],
-            "error": ["idle"]
-        }
-
-        if current_state not in allowed_transitions:
+        if current_state not in self.ALLOWED_TRANSITIONS:
             return False, f"State transition failed: unknown current_state '{current_state}'."
 
-        if next_state not in allowed_transitions[current_state] and next_state != "error":
+        if next_state not in self.ALLOWED_TRANSITIONS[current_state] and next_state != "error":
             return False, f"State transition failed: cannot transition from '{current_state}' to '{next_state}'."
 
         return True, "State transition Passed."
