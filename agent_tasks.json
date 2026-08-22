@@ -11605,7 +11605,7 @@
     },
     {
       "id": "assert-policy-evaluation-framework-99612579",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ASSERT Policy Evaluation Framework",
@@ -26839,6 +26839,42 @@
         "Dependency graph correctly identifies conditional branching paths.",
         "Supports dynamic re-evaluation of the graph upon step completion.",
         "Tests assert graph generation and branch evaluation on complex mock plans."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-governance-38491a34",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "Agent Guard Runtime Governance Layer",
+      "description": "Implement an Agent Guard runtime governance layer that sits between the agent and external actions, using the newly created AssertEvaluator to validate actions against explicit safety policies before execution, similar to Microsoft's ACS.",
+      "allowed_paths": [
+        "magda_agent/safety/agent_guard.py",
+        "tests/test_agent_guard.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "AgentGuard intercepts actions and calls AssertEvaluator.",
+        "If AssertEvaluator returns non-compliant, the action is blocked and a fallback is executed.",
+        "Tests verify block and allow paths using mock evaluators."
+      ]
+    },
+    {
+      "id": "openclaw-online-rl-skills-b8392f11",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw Online RL from Feedback",
+      "description": "Implement OpenClaw-inspired online reinforcement learning from user feedback and next-state signals. Track tool output successes and user corrections to adjust habit weights in the dialogue online learner.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_v6.py",
+        "tests/test_openclaw_rl_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "OpenClawRL class parses user feedback (positive/negative) and updates action weights.",
+        "Weights are persisted in memory.",
+        "Tests mock memory updates and verify weight adjustments."
       ]
     }
   ]
