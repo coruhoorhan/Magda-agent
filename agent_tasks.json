@@ -11977,7 +11977,7 @@
     },
     {
       "id": "openclaw-rl-signals-processor-v8-5e6f7g8h",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw RL Signals Processor v8",
@@ -27974,6 +27974,59 @@
       "acceptance": [
         "Sandbox tracks data taint and halts exfiltration.",
         "Tests verify taint violations are caught."
+      ]
+    },
+    {
+      "id": "openclaw-context-memory-archiver-v9-a0d782a5",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Memory Archiver v9",
+      "description": "Inspired by OpenClaw trends: Implement a background task that actively archives idle context plugins to episodic memory to aggressively optimize the agent token footprint.",
+      "allowed_paths": [
+        "magda_agent/memory/context_archiver_v9.py",
+        "tests/test_context_archiver_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Archiver correctly identifies and archives idle memory contexts.",
+        "Tests verify the removal from working memory and persistence in episodic memory via mocks."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-preflight-validator-v11-a3ea3185",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Action Tool Preflight Validator V11",
+      "description": "Inspired by MCP standards growth and ACS (June 2026): Implement an advanced preflight JSON schema validation hook specifically for complex nested arguments in MCP action tools.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_preflight_validation_v11.py",
+        "tests/test_mcp_preflight_validation_v11.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Validator structurally validates complex nested MCP tool schemas.",
+        "Blocks incorrect nested arguments before execution.",
+        "Tests mock valid and invalid nested schema payloads."
+      ]
+    },
+    {
+      "id": "hermes-cron-procedural-consolidation-v5-21d7007f",
+      "status": "todo",
+      "area": "learning",
+      "risk": "low",
+      "title": "Hermes Cron Procedural Consolidation V5",
+      "description": "Inspired by Hermes Agent learning loops: Update the procedural consolidation cron job module to incorporate A2A mesh capabilities, consolidating skills sourced from peer delegations.",
+      "allowed_paths": [
+        "magda_agent/learning/procedural_consolidation_v5.py",
+        "tests/test_procedural_consolidation_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job merges memory traces from A2A subagent interactions.",
+        "Successful peer delegations are consolidated into templates.",
+        "Tests verify the consolidation weighting logic via mocks."
       ]
     }
   ]
