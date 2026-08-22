@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, patch, MagicMock
 
 import pytest
 
-from magda_agent.architecture.agent_teams_v3 import AgentWorktreeIsolationV3, AgentTeamManagerV3
+from magda_agent.architecture.agent_teams_v3 import AgentWorktreeIsolationV3, AgentTeamManagerV3, GitWorktreeError
 
 
 @pytest.fixture
@@ -55,7 +55,7 @@ async def test_agent_worktree_isolation_create_failure(base_dir):
     mock_process.returncode = 128
 
     with patch("asyncio.create_subprocess_exec", return_value=mock_process):
-        with pytest.raises(RuntimeError, match="Git worktree creation failed"):
+        with pytest.raises(GitWorktreeError, match="Git worktree creation failed"):
             await isolation.create_worktree("agent123")
 
 
@@ -121,3 +121,28 @@ async def test_agent_team_manager_spawn_and_disband(base_dir):
         await manager.disband_all()
         assert len(manager.agents) == 0
         assert "worker_2" not in manager.agents
+
+
+@pytest.mark.asyncio
+async def test_agent_team_manager_getters(base_dir):
+    """
+    Tests AgentTeamManagerV3 getters get_active_agents and get_worktree_path.
+    """
+    manager = AgentTeamManagerV3(isolation_manager=AgentWorktreeIsolationV3(base_dir=base_dir))
+
+    mock_process = AsyncMock()
+    mock_process.communicate.return_value = (b"", b"")
+    mock_process.returncode = 0
+
+    with patch("asyncio.create_subprocess_exec", return_value=mock_process):
+        path1 = await manager.spawn_agent("agentA")
+        path2 = await manager.spawn_agent("agentB")
+
+        active = manager.get_active_agents()
+        assert "agentA" in active
+        assert "agentB" in active
+        assert len(active) == 2
+
+        assert manager.get_worktree_path("agentA") == path1
+        assert manager.get_worktree_path("agentB") == path2
+        assert manager.get_worktree_path("nonexistent") is None

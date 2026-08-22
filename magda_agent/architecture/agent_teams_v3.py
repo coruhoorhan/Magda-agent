@@ -5,6 +5,10 @@ import shutil
 import uuid
 from typing import Optional, List, Dict
 
+class GitWorktreeError(Exception):
+    """Exception raised for errors during git worktree operations."""
+    pass
+
 class AgentWorktreeIsolationV3:
     """
     Manages isolated git worktrees for individual sub-agents.
@@ -51,7 +55,7 @@ class AgentWorktreeIsolationV3:
             if process.returncode != 0:
                 error_msg = stderr.decode().strip()
                 logging.error(f"Failed to create git worktree: {error_msg}")
-                raise RuntimeError(f"Git worktree creation failed: {error_msg}")
+                raise GitWorktreeError(f"Git worktree creation failed: {error_msg}")
 
             logging.info(f"Agent {agent_id} worktree created at {env_path}")
             self.active_worktrees[agent_id] = env_path
@@ -149,3 +153,26 @@ class AgentTeamManagerV3:
         agents_to_disband = list(self.agents)
         for agent_id in agents_to_disband:
             await self.disband_agent(agent_id)
+
+    def get_active_agents(self) -> List[str]:
+        """
+        Returns a list of currently active agent identifiers.
+
+        Returns:
+            List[str]: The active agents.
+        """
+        return list(self.agents)
+
+    def get_worktree_path(self, agent_id: str) -> Optional[str]:
+        """
+        Retrieves the worktree path for a specific agent if it exists.
+
+        Args:
+            agent_id (str): The unique string identifying the agent.
+
+        Returns:
+            Optional[str]: The worktree path or None.
+        """
+        if agent_id not in self.agents:
+            return None
+        return self.isolation_manager.active_worktrees.get(agent_id)
