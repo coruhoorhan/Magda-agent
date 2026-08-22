@@ -11793,7 +11793,7 @@
     },
     {
       "id": "mcp-dynamic-skill-marketplace-poller-1d28f431",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Dynamic Skill Marketplace Poller",
@@ -27329,6 +27329,40 @@
       "acceptance": [
         "HabitTracker updates tool usage weights implicitly based on positive user next-state replies.",
         "Tests verify that weights shift appropriately after simulated interactions."
+      ]
+    },
+    {
+      "id": "a2a-peer-capability-discovery-v5-2cbaf360",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Peer Capability Discovery V5",
+      "description": "Inspired by June 2026 AI Agent trends: Implement A2A capabilities discovery for multi-agent network. Nodes should broadcast available tools and schema.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_capability_discovery_v5.py",
+        "tests/test_a2a_capability_discovery_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Node can broadcast capability via A2A mesh network.",
+        "Tests mock network and verify format."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-paging-v6-ccb5348a",
+      "status": "todo",
+      "area": "memory",
+      "risk": "high",
+      "title": "OpenClaw Virtual Context Paging V6",
+      "description": "Inspired by June 2026 AI Agent trends (OpenClaw memory paging): Swap least-relevant working memory into a secondary store when limits are exceeded.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_paging_v6.py",
+        "tests/test_virtual_context_paging_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Manager offloads memory blocks based on token overflow.",
+        "Tests mock tokens and context limits."
       ]
     }
   ]
