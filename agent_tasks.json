@@ -11622,7 +11622,7 @@
     },
     {
       "id": "memory-episodic-semantic-separation-c4ade337",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Episodic and Semantic Memory Separation",
@@ -26875,6 +26875,60 @@
         "OpenClawRL class parses user feedback (positive/negative) and updates action weights.",
         "Weights are persisted in memory.",
         "Tests mock memory updates and verify weight adjustments."
+      ]
+    },
+    {
+      "id": "mcp-tool-policy-guard-v5-9a8b7c6d",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Tool Policy Guard V5",
+      "description": "Inspired by MCPKernel Taint Tracking Sandbox trends (June 2026): Implement an execution wrapper that intercepts MCP tool execution, checking inputs against a strict policy matrix before proceeding, effectively sandboxing dynamic actions.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_policy_guard_v5.py",
+        "tests/test_mcp_policy_guard_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sandbox intercepts MCP tool executions.",
+        "Validates arguments against policies before execution.",
+        "Tests mock valid and invalid tool calls to verify interception."
+      ]
+    },
+    {
+      "id": "a2a-subagent-team-delegator-1b2c3d4e",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Subagent Team Delegator",
+      "description": "Inspired by Claude Agent Teams multi-agent pattern (June 2026): Delegate task steps to specialized subagents using A2A protocol. Allows spawning isolated agents for concurrent steps.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_team_delegator.py",
+        "tests/test_a2a_team_delegator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Delegator can dispatch a plan step to a peer agent.",
+        "Supports async/await for parallel execution.",
+        "Tests mock A2A network responses."
+      ]
+    },
+    {
+      "id": "openclaw-habit-learning-v5-5f6g7h8i",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw Habit Learning V5",
+      "description": "Inspired by OpenClaw-RL (June 2026): Implement online reinforcement learning from tool usage success and user replies. Track tool outputs and adjust habit weights in real-time.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_habit_v5.py",
+        "tests/test_openclaw_habit_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "OpenClawHabitLearner class parses user feedback and tool success.",
+        "Weights are adjusted and persisted.",
+        "Tests verify weight adjustments through mocks."
       ]
     }
   ]
