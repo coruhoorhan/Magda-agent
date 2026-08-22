@@ -11742,7 +11742,7 @@
     },
     {
       "id": "mcp-action-tool-registry-v5-e5f6g7h8",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Action Tool Registry v5",
@@ -27192,6 +27192,57 @@
       "acceptance": [
         "Manager spawns subagents concurrently.",
         "Tests verify that multiple agents run simultaneously using mocks."
+      ]
+    },
+    {
+      "id": "openclaw-context-hooks-v6-12345678",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Hooks V6",
+      "description": "Inspired by OpenClaw trends: Implement a Context Engine plugin interface with lifecycle hooks for managing working memory during agent execution.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_v6.py",
+        "tests/test_context_engine_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context Engine supports plugin interface and lifecycle hooks.",
+        "Tests verify correct execution of hooks using mocks."
+      ]
+    },
+    {
+      "id": "hermes-online-skill-pruning-v1-87654321",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Online Skill Pruning V1",
+      "description": "Inspired by Hermes trends: Implement online skill pruning to remove rarely used or poorly performing skills based on usage metrics.",
+      "allowed_paths": [
+        "magda_agent/skills/skill_pruning_v1.py",
+        "tests/test_skill_pruning_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruning algorithm identifies and removes low-usage skills.",
+        "Tests pass with mock usage metrics."
+      ]
+    },
+    {
+      "id": "a2a-mdns-security-token-v1-abcdef12",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "title": "A2A mDNS Discovery Secure Token Authentication",
+      "description": "Inspired by A2A trends: Implement secure token authentication for mDNS peer discovery in local agent networks to prevent unauthorized agent pairing.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mdns_secure.py",
+        "tests/test_a2a_mdns_secure.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "mDNS discovery requires a valid secure token for agent registration.",
+        "Tests simulate authorized and unauthorized discovery."
       ]
     }
   ]

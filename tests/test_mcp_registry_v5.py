@@ -8,7 +8,7 @@ def test_mcp_registry_v5_init():
 
 def test_mcp_registry_v5_load_tool_success():
     registry = MCPRegistryV5()
-    tool_schema = {"name": "test_tool", "description": "A test tool."}
+    tool_schema = {"name": "test_tool", "description": "A test tool.", "parameters": {}}
 
     # We do not use LLMs directly in this registry, but if we did, we'd mock it here
     mock_llm = MagicMock()
@@ -20,20 +20,49 @@ def test_mcp_registry_v5_load_tool_invalid_schema():
     registry = MCPRegistryV5()
 
     # Missing description
-    invalid_schema = {"name": "test_tool"}
+    invalid_schema = {"name": "test_tool", "parameters": {}}
     assert registry.load_tool(invalid_schema) is False
     assert "test_tool" not in registry.mcp_tools
 
     # Missing name
-    invalid_schema2 = {"description": "test"}
+    invalid_schema2 = {"description": "test", "parameters": {}}
     assert registry.load_tool(invalid_schema2) is False
+
+    # Missing parameters
+    invalid_schema3 = {"name": "test", "description": "test"}
+    assert registry.load_tool(invalid_schema3) is False
+
+    # Invalid parameters type
+    invalid_schema4 = {"name": "test", "description": "test", "parameters": []}
+    assert registry.load_tool(invalid_schema4) is False
 
     # Not a dict
     assert registry.load_tool("not a dict") is False # type: ignore
 
+def test_mcp_registry_v5_get_tool():
+    registry = MCPRegistryV5()
+    tool_schema = {"name": "test_tool", "description": "A test tool.", "parameters": {}}
+    registry.load_tool(tool_schema)
+
+    assert registry.get_tool("test_tool") == tool_schema
+    assert registry.get_tool("nonexistent") is None
+
+def test_mcp_registry_v5_list_tools():
+    registry = MCPRegistryV5()
+    tool_schema1 = {"name": "test_tool1", "description": "A test tool.", "parameters": {}}
+    tool_schema2 = {"name": "test_tool2", "description": "A test tool.", "parameters": {}}
+
+    registry.load_tool(tool_schema1)
+    registry.load_tool(tool_schema2)
+
+    tools = registry.list_tools()
+    assert len(tools) == 2
+    assert tool_schema1 in tools
+    assert tool_schema2 in tools
+
 def test_mcp_registry_v5_unload_tool_success():
     registry = MCPRegistryV5()
-    tool_schema = {"name": "test_tool", "description": "A test tool."}
+    tool_schema = {"name": "test_tool", "description": "A test tool.", "parameters": {}}
     registry.load_tool(tool_schema)
 
     assert registry.unload_tool("test_tool") is True

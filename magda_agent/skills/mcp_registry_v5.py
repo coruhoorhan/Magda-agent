@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 class MCPRegistryV5:
     """
@@ -42,12 +42,38 @@ class MCPRegistryV5:
         if not isinstance(schema, dict):
             return False
 
-        required_fields = ["name", "description"]
+        required_fields = ["name", "description", "parameters"]
         for field in required_fields:
-            if field not in schema or not isinstance(schema[field], str) or not schema[field]:
+            if field not in schema:
+                return False
+            if field in ["name", "description"] and (not isinstance(schema[field], str) or not schema[field]):
+                return False
+            if field == "parameters" and not isinstance(schema[field], dict):
                 return False
 
         return True
+
+    def get_tool(self, name: str) -> Optional[Dict[str, Any]]:
+        """
+        Retrieves a tool schema by name.
+
+        Args:
+            name (str): The name of the MCP tool to retrieve.
+
+        Returns:
+            Optional[Dict[str, Any]]: The tool schema if found, None otherwise.
+        """
+        return self.mcp_tools.get(name)
+
+    def list_tools(self) -> List[Dict[str, Any]]:
+        """
+        Lists all registered MCP tool schemas.
+
+        Returns:
+            List[Dict[str, Any]]: A list of all registered tool schemas.
+        """
+        return list(self.mcp_tools.values())
+
 
     def unload_tool(self, name: str) -> bool:
         """
