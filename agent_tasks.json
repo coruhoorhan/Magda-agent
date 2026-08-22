@@ -11656,7 +11656,7 @@
     },
     {
       "id": "a2a-task-delegation-v2-c87192e5",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Task Delegation Protocol v2",
@@ -26983,6 +26983,42 @@
         "Checkpoint blocks execution if intent is non-compliant.",
         "Allows execution for compliant intent.",
         "Tests use mock evaluators."
+      ]
+    },
+    {
+      "id": "online-learning-user-replies-d871b53d",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Online Learning from User Replies",
+      "description": "Inspired by OpenClaw-RL trend: Implement online reinforcement learning from next-state signals (user replies) to adjust agent weights without manual evaluation.",
+      "allowed_paths": [
+        "magda_agent/learning/interactive_rl_v9.py",
+        "tests/test_interactive_rl_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent processes user reply as a reward signal.",
+        "Weights are updated based on the signal in memory.",
+        "Pytest tests pass using mocked LLM calls."
+      ]
+    },
+    {
+      "id": "virtual-context-management-5829649c",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Virtual Context Management",
+      "description": "Inspired by MemGPT/Letta pattern trend: Implement virtual context management to dynamically page working memory in and out of active context based on relevance and limits.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context.py",
+        "tests/test_virtual_context.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Memory manager can page out least relevant episodic memories.",
+        "Memory manager pages in required context based on query.",
+        "Tests pass correctly without external database queries."
       ]
     }
   ]
