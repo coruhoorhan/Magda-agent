@@ -362,3 +362,4 @@
 * [x] FEATURE: Implement ACS Guardrails for Agent Safety (acs-guardrails-integration-v1-6335a739)
 * [x] FEATURE: Add Agent Teams Git Worktree Isolation (claude-agent-teams-isolation-v2-c3dca071)
 * [x] FEATURE: OpenClaw RL Signals Processor (openclaw-rl-signals-v3)
+* [x] FEATURE: MCP Action Tool Registry v6 (mcp-action-tool-registry-v6-1a2b3c4d)

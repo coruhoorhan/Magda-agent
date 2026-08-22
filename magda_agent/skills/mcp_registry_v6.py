@@ -137,3 +137,11 @@ class MCPRegistryV6:
 
         logging.info(f"Synchronized {loaded_count} tools from adapters.")
         return loaded_count
+
+    def clear(self) -> None:
+        """
+        Clears all loaded tools and registered adapters from the registry.
+        """
+        self.mcp_tools.clear()
+        self.adapters.clear()
+        logging.info("Cleared all MCP tools and adapters from the registry.")

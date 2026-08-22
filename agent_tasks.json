@@ -11960,7 +11960,7 @@
     },
     {
       "id": "mcp-action-tool-registry-v6-1a2b3c4d",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Action Tool Registry v6",
@@ -27923,6 +27923,57 @@
         "Destructive tool executions are halted pending confirmation.",
         "Token validation correctly tracks capability constraints.",
         "Tests simulate user approvals and rejections."
+      ]
+    },
+    {
+      "id": "hermes-skill-synthesis-loop-v2-97f8b038",
+      "title": "Hermes Background Skill Synthesis Loop V2",
+      "description": "Inspired by Hermes Agent trends: Implement a background task that synthesizes new skills from interaction histories, extracting tool usage patterns.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/hermes_skill_synthesis_v2.py",
+        "tests/test_hermes_skill_synthesis_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Skill synthesizer module is implemented.",
+        "Tests verify that tool usage patterns are extracted into skill templates."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-pruning-v6-df2ab201",
+      "title": "OpenClaw Virtual Context Selective Pruning V6",
+      "description": "Inspired by OpenClaw trends: Implement a virtual context pruning layer that selectively discards non-relevant token chunks when memory limits are reached.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/openclaw_context_pruning_v6.py",
+        "tests/test_openclaw_context_pruning_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruning logic preserves relevant tokens.",
+        "Tests verify selective token removal."
+      ]
+    },
+    {
+      "id": "mcp-taint-tracking-sandbox-v8-7456acb7",
+      "title": "MCP Tool Taint Tracking Sandbox V8",
+      "description": "Inspired by MCP & ACS trends: Implement an execution sandbox that tracks tainted data flows through MCP action tools to prevent sensitive data exfiltration.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_taint_sandbox_v8.py",
+        "tests/test_mcp_taint_sandbox_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sandbox tracks data taint and halts exfiltration.",
+        "Tests verify taint violations are caught."
       ]
     }
   ]
