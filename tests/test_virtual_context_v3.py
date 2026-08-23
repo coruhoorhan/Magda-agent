@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from magda_agent.memory.virtual_context_v3 import VirtualContextManagerV3
 from magda_agent.memory.working import WorkingMemory, MemoryEntry
@@ -38,6 +38,37 @@ async def test_virtual_context_v3_page_out_explicit() -> None:
     assert len(episodic_events) > 0
     # The paged out metadata should indicate explicit page out
     assert episodic_events[0]["metadata"]["paged_out_explicitly"] == True
+
+@pytest.mark.asyncio
+async def test_virtual_context_v3_chromadb_mocking() -> None:
+    wm = WorkingMemory(limit=5)
+    mock_collection = MagicMock()
+    mock_collection.query.return_value = {
+        "documents": [["Semantic memory paged out from ChromaDB"]],
+        "distances": [[0.1]],
+        "metadatas": [[{"pad_p": 0.0, "pad_a": 0.0, "pad_d": 0.0}]]
+    }
+
+    with patch("magda_agent.memory.episodic.chromadb.EphemeralClient") as mock_client_cls:
+        mock_client = mock_client_cls.return_value
+        mock_client.get_or_create_collection.return_value = mock_collection
+        em = EpisodicMemory(persist_directory=":memory:")
+
+        vcm = VirtualContextManagerV3()
+
+        state = PADState(0, 0, 0)
+        e1 = MemoryEntry("Entry to page out to ChromaDB", 0.5, state, user_id=10)
+        await wm.add(e1)
+
+        await vcm.page_out_explicit(wm, em, user_id=10, count=1)
+        mock_collection.add.assert_called_once()
+        assert len(wm.get_entries(user_id=10)) == 0
+
+        await vcm.page_in_explicit(wm, em, user_id=10, query="ChromaDB test query", top_k=1)
+        mock_collection.query.assert_called_once()
+        recalled_entries = wm.get_entries(user_id=10)
+        assert len(recalled_entries) == 1
+        assert "Semantic memory paged out from ChromaDB" in recalled_entries[0].content
 
 @pytest.mark.asyncio
 async def test_virtual_context_v3_paginate_explicit_memory_blocks() -> None:

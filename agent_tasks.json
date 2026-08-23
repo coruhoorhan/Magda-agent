@@ -11994,7 +11994,7 @@
     },
     {
       "id": "openclaw-memory-virtual-context-v3-e89f7a00",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "OpenClaw Virtual Context Memory V3",
