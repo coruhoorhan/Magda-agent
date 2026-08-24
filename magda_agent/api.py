@@ -74,7 +74,7 @@ from magda_agent.safety.guardrails import RealtimeGuardrail
 from magda_agent.memory.context_engine import ContextEngine
 from magda_agent.memory.default_context_plugin import DefaultContextPlugin
 from magda_agent.memory.eviction_manager import LettaVirtualContextEvictionManager
-from magda_agent.skills.compression_v2 import OpenClawContextCompressorV2
+from magda_agent.memory.compression_v2 import ContextCompressorV2
 from magda_agent.visualization.canvas_logger import CanvasLoggerPlugin
 from magda_agent.tracing.tracer import ThoughtChainTracer
 from magda_agent.architecture.sub_agents import SubAgentRPCManager
@@ -90,7 +90,7 @@ emotional_engine = EmotionalEngine()
 context_engine = ContextEngine(plugins=[
     LettaVirtualContextEvictionManager(llm=llm_client),
     DefaultContextPlugin(llm=llm_client),
-    OpenClawContextCompressorV2(llm=llm_client),
+    ContextCompressorV2(llm=llm_client),
     CanvasLoggerPlugin()
 ])
 
