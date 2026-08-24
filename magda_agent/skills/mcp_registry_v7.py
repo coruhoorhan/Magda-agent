@@ -1,39 +1,126 @@
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Protocol, runtime_checkable
+
+@runtime_checkable
+class MCPActionAdapter(Protocol):
+    """
+    Protocol for dynamically providing external MCP action tools to the registry.
+    """
+    async def fetch_action_tools(self) -> List[Dict[str, Any]]:
+        """
+        Retrieves a list of MCP action tool schemas from an external source asynchronously.
+
+        Returns:
+            List[Dict[str, Any]]: A list of action tool schemas.
+        """
+        ...
 
 class MCPRegistryV7:
     """
-    Registry specialized in handling tools exported via the Model Context Protocol (MCP) version 7.
-    Allows for dynamic registration and unregistration of tools at runtime.
+    Registry specialized in handling action tools exported via the Model Context Protocol (MCP) version 7.
+    Allows for dynamic synchronization of action tools from registered adapters.
+    """
+
+    """
+    Registry specialized in handling action tools exported via the Model Context Protocol (MCP) version 7.
+    Allows for dynamic synchronization of action tools from registered adapters.
     """
 
     def __init__(self) -> None:
-        """Initialize the MCP Registry V7."""
+        """Initialize the MCP Registry V7 for action tools."""
         self.mcp_tools: Dict[str, Dict[str, Any]] = {}
+        self.adapters: List[MCPActionAdapter] = []
 
-    def register_tool(self, tool_schema: Dict[str, Any]) -> bool:
+    def register_tool(self, schema: Dict[str, Any]) -> bool:
         """
-        Dynamically registers and verifies an external MCP tool schema.
+        Alias for load_action_tool for backward compatibility.
+
+        Args:
+            schema (Dict[str, Any]): The MCP tool schema dictionary.
+
+        Returns:
+            bool: True if loaded successfully, False otherwise.
+        """
+        return self.load_action_tool(schema)
+
+    def list_tools(self) -> List[str]:
+        """
+        Alias for list_action_tools for backward compatibility.
+
+        Returns:
+            List[str]: A list of tool names.
+        """
+        return self.list_action_tools()
+
+    def unload_tool(self, name: str) -> bool:
+        """
+        Alias for unload_action_tool for backward compatibility.
+
+        Args:
+            name (str): The name of the MCP tool to unload.
+
+        Returns:
+            bool: True if the tool was successfully unloaded, False if not found.
+        """
+        return self.unload_action_tool(name)
+
+    def get_tools(self) -> List[Dict[str, Any]]:
+        """
+        Returns a list of all tools for backward compatibility.
+
+        Returns:
+            List[Dict[str, Any]]: A list of all registered tool schemas.
+        """
+        return [self.mcp_tools[k] for k in self.mcp_tools]
+
+    def get_tool(self, name: str) -> Dict[str, Any]:
+        """
+        Alias for get_action_tool for backward compatibility.
+
+        Args:
+            name (str): The name of the MCP action tool.
+
+        Returns:
+            Dict[str, Any]: The tool schema, or an empty dictionary if not found.
+        """
+        return self.get_action_tool(name)
+
+    def unregister_tool(self, name: str) -> bool:
+        """
+        Alias for unload_action_tool for backward compatibility.
+
+        Args:
+            name (str): The name of the MCP action tool.
+
+        Returns:
+            bool: True if the tool was successfully unloaded, False if not found.
+        """
+        return self.unload_action_tool(name)
+
+
+    def load_action_tool(self, tool_schema: Dict[str, Any]) -> bool:
+        """
+        Dynamically loads and verifies an external MCP action tool schema.
 
         Args:
             tool_schema (Dict[str, Any]): The MCP tool schema dictionary.
 
         Returns:
-            bool: True if registered successfully, False otherwise.
+            bool: True if loaded successfully, False otherwise.
         """
-        if not self._is_valid_schema(tool_schema):
-            logging.error(f"Failed to register MCP tool: Invalid schema {tool_schema}")
+        if not self._is_valid_action_schema(tool_schema):
+            logging.error(f"Failed to load MCP action tool: Invalid schema {tool_schema}")
             return False
 
         name: str = tool_schema["name"]
         self.mcp_tools[name] = tool_schema
-        logging.info(f"Successfully registered MCP tool: {name}")
+        logging.info(f"Successfully loaded MCP action tool: {name}")
         return True
 
-    def _is_valid_schema(self, schema: Dict[str, Any]) -> bool:
+    def _is_valid_action_schema(self, schema: Dict[str, Any]) -> bool:
         """
-        Verifies if the schema complies with MCP tool standards.
-        Also validates that 'inputSchema' is a dictionary if provided.
+        Verifies if the schema complies with MCP tool standards for action tools.
+        Expects basic MCP fields and possibly action-specific metadata.
 
         Args:
             schema (Dict[str, Any]): The MCP tool schema.
@@ -55,40 +142,78 @@ class MCPRegistryV7:
 
         return True
 
-    def get_tool(self, name: str) -> Dict[str, Any]:
+    def get_action_tool(self, name: str) -> Dict[str, Any]:
         """
-        Retrieve a registered MCP tool by name.
+        Retrieve a loaded MCP action tool by name.
 
         Args:
-            name (str): The name of the MCP tool.
+            name (str): The name of the MCP action tool.
 
         Returns:
             Dict[str, Any]: The tool schema, or an empty dictionary if not found.
         """
         return self.mcp_tools.get(name, {})
 
-    def list_tools(self) -> List[str]:
+    def list_action_tools(self) -> List[str]:
         """
-        List all available registered MCP tools.
+        List all available MCP action tools.
 
         Returns:
             List[str]: A list of tool names.
         """
         return list(self.mcp_tools.keys())
 
-    def unregister_tool(self, name: str) -> bool:
+    def unload_action_tool(self, name: str) -> bool:
         """
-        Dynamically unregisters and removes an MCP tool from the registry.
+        Dynamically unregisters and removes an MCP action tool from the registry.
 
         Args:
-            name (str): The name of the MCP tool to unregister.
+            name (str): The name of the MCP action tool to unload.
 
         Returns:
-            bool: True if the tool was successfully unregistered, False if not found.
+            bool: True if the tool was successfully unloaded, False if not found.
         """
         if name in self.mcp_tools:
             del self.mcp_tools[name]
-            logging.info(f"Successfully unregistered MCP tool: {name}")
+            logging.info(f"Successfully unloaded MCP action tool: {name}")
             return True
-        logging.warning(f"Failed to unregister MCP tool: {name} not found in registry.")
+        logging.warning(f"Failed to unload MCP action tool: {name} not found in registry.")
         return False
+
+    def register_adapter(self, adapter: MCPActionAdapter) -> None:
+        """
+        Registers an adapter to dynamically fetch external action tools.
+
+        Args:
+            adapter (MCPActionAdapter): The adapter instance providing action tools.
+        """
+        self.adapters.append(adapter)
+        logging.info(f"Registered MCP action adapter: {adapter}")
+
+    async def sync_from_adapters(self) -> int:
+        """
+        Synchronizes action tools from all registered adapters asynchronously.
+
+        Returns:
+            int: The total number of action tools successfully synced and loaded.
+        """
+        loaded_count = 0
+        for adapter in self.adapters:
+            try:
+                tools = await adapter.fetch_action_tools()
+                for tool in tools:
+                    if self.load_action_tool(tool):
+                        loaded_count += 1
+            except Exception as e:
+                logging.error(f"Error syncing from action adapter {adapter}: {e}")
+
+        logging.info(f"Synchronized {loaded_count} action tools from adapters.")
+        return loaded_count
+
+    def clear(self) -> None:
+        """
+        Clears all loaded action tools and registered adapters from the registry.
+        """
+        self.mcp_tools.clear()
+        self.adapters.clear()
+        logging.info("Cleared all MCP action tools and adapters from the registry.")

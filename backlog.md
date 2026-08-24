@@ -364,3 +364,4 @@
 * [x] FEATURE: OpenClaw RL Signals Processor (openclaw-rl-signals-v3)
 * [x] FEATURE: MCP Action Tool Registry v6 (mcp-action-tool-registry-v6-1a2b3c4d)
 * [x] FEATURE: Hermes Skill Experience Generator V2 (hermes-skill-experience-generator-v2)
+* [x] FEATURE: MCP Dynamic Action Registry V7 (mcp-dynamic-action-registry-v7-1edad2b2)
