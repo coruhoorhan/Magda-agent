@@ -76,7 +76,7 @@
     },
     {
       "id": "mcp-dynamic-capability-auth-sandbox-f761a51c",
-      "status": "todo",
+      "status": "done",
       "area": "security",
       "risk": "high",
       "title": "MCP Dynamic Capability Auth Sandbox",
@@ -28421,6 +28421,108 @@
       "acceptance": [
         "Router properly matches intents to specific MCP schemas using embeddings or an LLM call.",
         "Tests mock the matching logic."
+      ]
+    },
+    {
+      "id": "hermes-skill-experience-creation-v1-d4d23d5e",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Skill Creation from Experience Loop V1",
+      "description": "Inspired by Hermes Agent trend: Implement a background process that analyzes past successful tool execution traces and dynamically generates new reusable python skills, persisting them to the agentskills.io standard format.",
+      "allowed_paths": [
+        "magda_agent/skills/experience_skill_generator_v1.py",
+        "tests/test_experience_skill_generator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Generator parses mock execution traces to output a python skill file.",
+        "Tests verify generated skill conforms to agentskills.io format mock."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multi-platform-feedback-v1-c8a29d6b",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw-RL Multi-Platform Feedback Aggregator V1",
+      "description": "Inspired by OpenClaw-RL trend: Create an online reinforcement learning aggregator that standardizes next-state signals (user replies) from diverse channels (Telegram, Discord, Slack) into unified reward metrics for the RL engine.",
+      "allowed_paths": [
+        "magda_agent/learning/multi_platform_rl_aggregator_v1.py",
+        "tests/test_multi_platform_rl_aggregator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Aggregator unifies distinct platform feedback into common reward objects.",
+        "Tests verify standard format output given varying mock inputs."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-subagent-spawner-v1-57e09252",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude Agent Teams Subagent Spawner V1",
+      "description": "Inspired by Claude Agent SDK Agent Teams trend: Develop a multi-agent utility that securely spawns Planner and Evaluator subagents in separate git worktrees, communicating via an asynchronous RPC mock interface.",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_spawner_v1.py",
+        "tests/test_subagent_spawner_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Spawner provisions new mocked worktrees for specific agent roles.",
+        "Tests ensure role metadata is properly passed to the subagents."
+      ]
+    },
+    {
+      "id": "hermes-skill-experience-creation-v1-0ce9265b",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Skill Creation from Experience Loop V1",
+      "description": "Inspired by Hermes Agent trend: Implement a background process that analyzes past successful tool execution traces and dynamically generates new reusable python skills, persisting them to the agentskills.io standard format.",
+      "allowed_paths": [
+        "magda_agent/skills/experience_skill_generator_v1.py",
+        "tests/test_experience_skill_generator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Generator parses mock execution traces to output a python skill file.",
+        "Tests verify generated skill conforms to agentskills.io format mock."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multi-platform-feedback-v1-9e785524",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw-RL Multi-Platform Feedback Aggregator V1",
+      "description": "Inspired by OpenClaw-RL trend: Create an online reinforcement learning aggregator that standardizes next-state signals (user replies) from diverse channels (Telegram, Discord, Slack) into unified reward metrics for the RL engine.",
+      "allowed_paths": [
+        "magda_agent/learning/multi_platform_rl_aggregator_v1.py",
+        "tests/test_multi_platform_rl_aggregator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Aggregator unifies distinct platform feedback into common reward objects.",
+        "Tests verify standard format output given varying mock inputs."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-subagent-spawner-v1-7a6dbc97",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude Agent Teams Subagent Spawner V1",
+      "description": "Inspired by Claude Agent SDK Agent Teams trend: Develop a multi-agent utility that securely spawns Planner and Evaluator subagents in separate git worktrees, communicating via an asynchronous RPC mock interface.",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_spawner_v1.py",
+        "tests/test_subagent_spawner_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Spawner provisions new mocked worktrees for specific agent roles.",
+        "Tests ensure role metadata is properly passed to the subagents."
       ]
     }
   ]

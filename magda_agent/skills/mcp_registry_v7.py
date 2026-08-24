@@ -210,6 +210,23 @@ class MCPRegistryV7:
         logging.info(f"Synchronized {loaded_count} action tools from adapters.")
         return loaded_count
 
+
+    def execute_tool(self, name: str, args: Dict[str, Any], auth_token: str | None = None) -> Any:
+        """
+        Executes a registered MCP action tool through the Auth Sandbox if available.
+        """
+        if name not in self.mcp_tools:
+            raise Exception(f"Tool {name} not found")
+        if getattr(self, "auth_sandbox", None):
+            return self.auth_sandbox.execute_tool(name, args, auth_token)
+
+        # Fallback raw execution mock for non-sandboxed flows
+        tool = self.mcp_tools[name]
+        func = tool.get("func")
+        if func:
+            return func(**args)
+        return {"status": "executed", "name": name, "args": args}
+
     def clear(self) -> None:
         """
         Clears all loaded action tools and registered adapters from the registry.
