@@ -59,7 +59,7 @@
     },
     {
       "id": "openclaw-virtual-context-plugin-hooks-v9-6414b41f",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "OpenClaw Virtual Context Plugin Hooks V9",
@@ -28369,6 +28369,58 @@
       "acceptance": [
         "Gossip loop parses and tracks peer safety scores.",
         "Tests verify that a low safety score correctly blocks tool execution."
+      ]
+    },
+    {
+      "id": "fe0aee0c790a44458e4f175309739c55",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "title": "OpenClaw Canvas Working Memory Context Stream",
+      "description": "Inspired by OpenClaw Canvas Live Visualization trend: Create a module that streams the current Working Memory context size and items dynamically to a local Canvas frontend.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_working_memory_stream.py",
+        "tests/test_canvas_working_memory_stream.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Stream accurately broadcasts working memory elements.",
+        "Tests mock WebSocket streaming output."
+      ]
+    },
+    {
+      "id": "07d9e5bef255481387a2f598ba736a62",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "Claude Team Evaluator Subagent Feedback Loop V2",
+      "description": "Inspired by Claude Agent Teams Evaluator pattern: Create an evaluator subagent variant that feeds semantic criticisms directly back into the Generator context before marking a task as failed.",
+      "allowed_paths": [
+        "magda_agent/multi_agent/evaluator_feedback_loop_v2.py",
+        "tests/test_evaluator_feedback_loop_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator creates feedback prompts for the Generator.",
+        "Generator receives these prompts for a second attempt.",
+        "Tests verify loop and interaction logic."
+      ]
+    },
+    {
+      "id": "b64ae93832534ed2aa702f343b63cda6",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Dynamic Action Tool Router V5",
+      "description": "Inspired by MCP standardization trends (June 2026): Develop a dynamic router that parses incoming natural language intents and routes them directly to the most appropriate registered MCP action tool.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_dynamic_router_v5.py",
+        "tests/test_mcp_dynamic_router_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Router properly matches intents to specific MCP schemas using embeddings or an LLM call.",
+        "Tests mock the matching logic."
       ]
     }
   ]
