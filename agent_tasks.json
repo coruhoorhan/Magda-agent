@@ -12216,7 +12216,7 @@
     },
     {
       "id": "openclaw-rl-canvas-live-viz-ec761ed7-new1",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "Implement OpenClaw-style Canvas Live Visualization",
@@ -28613,6 +28613,61 @@
         "Capability router can interpret Agent Cards.",
         "Sub-tasks are dynamically delegated via A2A when matches are found.",
         "Tests mock Agent Cards and assert sub-task mapping logic."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-permissions-v4-abcd",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Dynamic Tool Permissions V4",
+      "description": "Inspired by MCP & ACS trends: Implement a permission manager for exported MCP tools that requires explicit user confirmation for destructive actions using dynamically granted capability tokens.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_permissions_v4.py",
+        "tests/test_mcp_permissions_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Destructive tool executions are halted pending confirmation.",
+        "Token validation correctly tracks capability constraints.",
+        "Tests simulate user approvals and rejections."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swapping-v10-abcd",
+      "title": "OpenClaw Virtual Context Token Swapping V10",
+      "description": "Inspired by MemGPT/Letta patterns: Implement an aggressive background memory swapping task that pages episodic memory chunks in and out of the working context dynamically to avoid context limit overflow.",
+      "area": "memory",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_swapping_v10.py",
+        "tests/test_virtual_context_swapping_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context Swapping class implements token limit tracking.",
+        "Oldest context entries are safely moved to episodic memory.",
+        "Tests verify swapping logic limits working token counts correctly."
+      ]
+    },
+    {
+      "id": "agent-teams-parallel-subagents-v3-abcd",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "Agent Teams: Parallel Subagent Execution V3",
+      "description": "Inspired by Claude Agent SDK Agent Teams, implement a system where the Planner can spawn multiple subagents to work on parallelized tasks. Each subagent runs in its own isolated context.",
+      "allowed_paths": [
+        "magda_agent/agents/team_orchestrator_v3.py",
+        "tests/test_team_orchestrator_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Team Orchestrator can spawn multiple subagents simultaneously",
+        "Subagents can execute their assigned tasks in isolated contexts",
+        "Orchestrator aggregates results from subagents successfully",
+        "Tests mock subagent executions and verify parallelization"
       ]
     }
   ]
