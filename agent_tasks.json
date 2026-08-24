@@ -12062,7 +12062,7 @@
     },
     {
       "id": "a2a-peer-task-delegation-v3-d601c251",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Peer Task Delegation V3",
@@ -28131,6 +28131,57 @@
         "Spawner tracks active subagent statuses.",
         "Crashed worktrees are cleaned and respawned seamlessly.",
         "Tests mock subprocess crashes and verify the respawn logic."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-metrics-v3-7b870cf0",
+      "title": "OpenClaw Canvas Metrics Exporter V3",
+      "description": "Inspired by OpenClaw trends: Implement an exporter to stream RL interaction metrics (PAD shifts, implicit rewards) to the visual canvas UI in real-time.",
+      "area": "telemetry",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/telemetry/canvas_metrics_exporter_v3.py",
+        "tests/test_canvas_metrics_exporter_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter properly aggregates and formats metrics for the canvas.",
+        "Tests use mocks to verify payload structures."
+      ]
+    },
+    {
+      "id": "hermes-skill-sandbox-isolation-v2-193dbb3e",
+      "title": "Hermes Skill Sandbox Isolation Layer V2",
+      "description": "Inspired by Hermes Agent trends: Implement a local sandbox isolation wrapper for dynamically created skills to limit execution time and memory footprint during testing.",
+      "area": "safety",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/skill_sandbox_isolation_v2.py",
+        "tests/test_skill_sandbox_isolation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sandbox wrapper restricts execution time and memory (mocked).",
+        "Tests verify exception handling when limits are exceeded."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-auth-negotiation-v4-ce5e0dc2",
+      "title": "MCP Action Tool Auth Negotiation V4",
+      "description": "Inspired by MCP capability negotiation trends: Build a protocol extension to allow client and server to negotiate multi-turn authentication steps before an action tool executes.",
+      "area": "integration",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_negotiation_v4.py",
+        "tests/test_mcp_auth_negotiation_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Auth negotiation loop is successfully simulated.",
+        "Tests mock challenge-response iterations before execution."
       ]
     }
   ]
