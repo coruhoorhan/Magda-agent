@@ -12028,7 +12028,7 @@
     },
     {
       "id": "hermes-skill-experience-generator-v2-8b627a98",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "Hermes Skill Experience Generator V2",
@@ -28027,6 +28027,57 @@
         "Cron job merges memory traces from A2A subagent interactions.",
         "Successful peer delegations are consolidated into templates.",
         "Tests verify the consolidation weighting logic via mocks."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-reward-v8-3a403ab6",
+      "title": "OpenClaw RL Implicit Reward Optimization V8",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement an optimizer that aggregates and tracks long-term implicit rewards from user interaction sessions to refine agent habit weights asynchronously.",
+      "area": "learning",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/implicit_reward_v8.py",
+        "tests/test_implicit_reward_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Optimizer correctly tracks interaction sessions and calculates rewards.",
+        "Tests mock RL environments and user responses."
+      ]
+    },
+    {
+      "id": "a2a-discovery-capabilities-health-v4-dea9c7e7",
+      "title": "A2A Capabilities Health Tracking V4",
+      "description": "Inspired by A2A Protocol trends: Implement a background monitor that dynamically verifies external agent capability uptime for gossip discovery.",
+      "area": "multi-agent",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_health_tracking_v4.py",
+        "tests/test_a2a_health_tracking_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Monitor evicts agents with unreachable capabilities.",
+        "Tests mock peer nodes and timeout scenarios."
+      ]
+    },
+    {
+      "id": "claude-virtual-context-compression-v2-ac5f02f2",
+      "title": "Claude Virtual Context Recursive Compression V2",
+      "description": "Inspired by Claude Agent SDK context limits: Implement a recursive semantic compressor for episodic chunks, dynamically resizing them before spawning subagents.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/recursive_compressor_v2.py",
+        "tests/test_recursive_compressor_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Compressor recursively shrinks long chunks using LLM summaries.",
+        "Tests mock LLM summary outputs."
       ]
     }
   ]
