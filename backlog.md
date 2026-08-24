@@ -367,3 +367,7 @@
 * [x] FEATURE: MCP Dynamic Action Registry V7 (mcp-dynamic-action-registry-v7-1edad2b2)
 * [x] FEATURE: OpenClaw Canvas Tool Execution Tracing (openclaw-rl-canvas-tool-tracing-0ce2e402)
 * [x] FEATURE: Claude SDK Inspired Selective Context Compression (claude-context-compression-3b4e61af)
+* [x] FEATURE: ASSERT Policy-Driven Evaluator V3 (assert-policy-evaluator-v3)
+* [ ] FEATURE: Implement OpenClaw-style Canvas Live Visualization (openclaw-rl-canvas-live-viz-ec761ed7-new1)
+* [ ] FEATURE: Implement Hermes-style Cron Daily Reports (hermes-cron-daily-reports-24f6ff77-new2)
+* [ ] FEATURE: Implement Claude Tri-Agent Orchestration (claude-planner-generator-evaluator-54bfa2b6-new3)
