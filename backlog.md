@@ -366,3 +366,4 @@
 * [x] FEATURE: Hermes Skill Experience Generator V2 (hermes-skill-experience-generator-v2)
 * [x] FEATURE: MCP Dynamic Action Registry V7 (mcp-dynamic-action-registry-v7-1edad2b2)
 * [x] FEATURE: OpenClaw Canvas Tool Execution Tracing (openclaw-rl-canvas-tool-tracing-0ce2e402)
+* [x] FEATURE: Claude SDK Inspired Selective Context Compression (claude-context-compression-3b4e61af)

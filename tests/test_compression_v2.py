@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 from unittest.mock import AsyncMock, MagicMock
-from magda_agent.skills.compression_v2 import OpenClawContextCompressorV2
+from magda_agent.skills.compression_v2 import ClaudeSelectiveContextCompressor
 from magda_agent.memory.context_engine import ContextEngine
 from magda_agent.memory.working import MemoryEntry
 from magda_agent.emotions.engine import PADState
@@ -14,7 +14,7 @@ def mock_llm():
 
 @pytest.fixture
 def compressor(mock_llm):
-    return OpenClawContextCompressorV2(llm=mock_llm, threshold=2)
+    return ClaudeSelectiveContextCompressor(llm=mock_llm, threshold=2)
 
 @pytest.fixture
 def context_engine(compressor):
@@ -63,3 +63,19 @@ async def test_compact_under_limit(compressor, mock_llm):
     assert len(result) == 1
     assert result == entries
     mock_llm.chat_completion.assert_not_called()
+
+@pytest.mark.asyncio
+async def test_compact_llm_failure(compressor, mock_llm):
+    mock_llm.chat_completion.side_effect = Exception("API error")
+    entries = [
+        MemoryEntry(content="Entry 1", importance=0.5, emotional_state=PADState(0,0,0)),
+        MemoryEntry(content="Entry 2", importance=0.5, emotional_state=PADState(0,0,0)),
+        MemoryEntry(content="Entry 3", importance=0.5, emotional_state=PADState(0,0,0)),
+    ]
+
+    result = await compressor.compact(entries, {"limit": 2})
+
+    # When exception happens, it drops the oldest entry
+    assert len(result) == 2
+    assert result[0].content == "Entry 2"
+    assert result[1].content == "Entry 3"
