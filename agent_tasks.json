@@ -12181,7 +12181,7 @@
     },
     {
       "id": "mcp-kernel-taint-isolation-v4",
-      "status": "todo",
+      "status": "done",
       "area": "security",
       "risk": "high",
       "title": "MCP Kernel Taint Tracking Isolation V4",
@@ -28523,6 +28523,42 @@
       "acceptance": [
         "Spawner provisions new mocked worktrees for specific agent roles.",
         "Tests ensure role metadata is properly passed to the subagents."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swapping-v9",
+      "title": "OpenClaw Virtual Context Token Swapping V9",
+      "description": "Inspired by MemGPT/Letta patterns (June 2026): Implement an aggressive background memory swapping task that pages episodic memory chunks in and out of the working context dynamically to avoid context limit overflow.",
+      "area": "memory",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_swapping_v9.py",
+        "tests/test_virtual_context_swapping_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context Swapping class implements token limit tracking.",
+        "Oldest context entries are safely moved to episodic memory.",
+        "Tests verify swapping logic limits working token counts correctly."
+      ]
+    },
+    {
+      "id": "a2a-agent-discovery-capabilities-v6",
+      "title": "A2A Agent Capabilities Discovery and Routing V6",
+      "description": "Inspired by A2A standard trend (June 2026): Create a capability discovery system that matches sub-tasks directly to newly discovered Agent Cards dynamically within the mesh.",
+      "area": "multi-agent",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_capability_routing_v6.py",
+        "tests/test_a2a_capability_routing_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability router can interpret Agent Cards.",
+        "Sub-tasks are dynamically delegated via A2A when matches are found.",
+        "Tests mock Agent Cards and assert sub-task mapping logic."
       ]
     }
   ]
