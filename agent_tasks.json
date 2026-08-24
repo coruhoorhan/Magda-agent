@@ -12096,7 +12096,7 @@
     },
     {
       "id": "claude-context-compression-3b4e61af",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude SDK Inspired Selective Context Compression",
@@ -28216,6 +28216,57 @@
       "acceptance": [
         "GC correctly identifies and removes stale git worktrees.",
         "Tests mock os and shutil methods to verify safe cleanup."
+      ]
+    },
+    {
+      "id": "openai-agents-loop-recovery-v1-7bb8b917",
+      "title": "OpenAI Agents SDK Tool Loop Recovery",
+      "description": "Inspired by June 2026 AI Agent Trends: Implement a loop recovery mechanism to prevent agents from getting stuck in infinite tool execution loops.",
+      "status": "todo",
+      "area": "execution",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/execution/loop_recovery_v1.py",
+        "tests/test_loop_recovery_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Loop recovery correctly halts recurring infinite tool chains.",
+        "Tests mock execution loops and confirm early termination."
+      ]
+    },
+    {
+      "id": "claude-code-git-conflict-resolver-v1-044aca81",
+      "title": "Claude Code Git Conflict Auto-Resolver",
+      "description": "Inspired by June 2026 AI Agent Trends: Build a git conflict auto-resolver subagent that evaluates merge conflicts, generates semantic diffs, and attempts automatic resolutions.",
+      "status": "todo",
+      "area": "git",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/git/conflict_resolver_v1.py",
+        "tests/test_conflict_resolver_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Conflict resolver parses Git merge markers correctly.",
+        "Tests mock conflicted files and verify LLM-based resolution payloads."
+      ]
+    },
+    {
+      "id": "hermes-portal-resource-sandbox-v1-bd66761d",
+      "title": "Hermes Portal Resource-Bounded Skill Sandbox",
+      "description": "Inspired by June 2026 AI Agent Trends (Hermes): Create an advanced resource-bounded execution sandbox for unknown skills, enforcing CPU and RAM usage limits during testing.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/resource_sandbox_v2.py",
+        "tests/test_resource_sandbox_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sandbox tracks CPU/RAM mock constraints and terminates violators.",
+        "Tests verify isolation metrics using mock psutil."
       ]
     }
   ]

@@ -4,15 +4,22 @@ from magda_agent.memory.context_engine import ContextPlugin
 from magda_agent.llm_client import LLMClient
 from magda_agent.memory.working import MemoryEntry
 
-class OpenClawContextCompressorV2(ContextPlugin):
+class ClaudeSelectiveContextCompressor(ContextPlugin):
     """
-    OpenClaw-inspired context compressor that automatically compresses
-    short-term memory during the retrieval phase or when explicitly requested.
+    Claude SDK-inspired context compressor that selectively prunes older
+    episodic memories based on Letta/MemGPT virtual context patterns.
     """
-    def __init__(self, llm: LLMClient, threshold: int = 10):
+    def __init__(self, llm: LLMClient, threshold: int = 10) -> None:
+        """
+        Initialize the ClaudeSelectiveContextCompressor.
+
+        Args:
+            llm: The LLM client used for summarizing context.
+            threshold: The maximum number of context items to keep uncompressed.
+        """
         self.llm = llm
         self.threshold = threshold
-        logging.info(f"OpenClawContextCompressorV2 initialized with threshold {threshold}")
+        logging.info(f"ClaudeSelectiveContextCompressor initialized with threshold {threshold}")
 
     async def bootstrap(self, config: Dict[str, Any]) -> None:
         pass
@@ -31,7 +38,7 @@ class OpenClawContextCompressorV2(ContextPlugin):
         if len(context_items) <= limit:
             return context_items
 
-        logging.info(f"OpenClawContextCompressorV2: Compacting {len(context_items)} items to limit {limit}")
+        logging.info(f"ClaudeSelectiveContextCompressor: Compacting {len(context_items)} items to limit {limit}")
         return await self._compress_entries(context_items, limit)
 
     def before_retrieval(self, query: str, user_id: int) -> str:
@@ -80,7 +87,7 @@ class OpenClawContextCompressorV2(ContextPlugin):
             )
             return [summary_entry] + remaining
         except Exception as e:
-            logging.error(f"OpenClawContextCompressorV2: Compression failed: {e}")
+            logging.error(f"ClaudeSelectiveContextCompressor: Compression failed: {e}")
             return entries[1:] # Fallback to dropping the oldest
 
     def on_context_update(self, new_context: Any, user_id: int) -> None:
