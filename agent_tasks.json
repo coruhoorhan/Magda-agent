@@ -12045,7 +12045,7 @@
     },
     {
       "id": "mcp-dynamic-action-registry-v7-1edad2b2",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Dynamic Action Registry V7",
@@ -28078,6 +28078,59 @@
       "acceptance": [
         "Compressor recursively shrinks long chunks using LLM summaries.",
         "Tests mock LLM summary outputs."
+      ]
+    },
+    {
+      "id": "a2a-distributed-tracer-mesh-v9-7d8d998c",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Distributed Tracer Mesh V9",
+      "description": "Inspired by A2A Protocol and enterprise tracing trends: Implement a distributed telemetry tracer for mesh networks that propagates span IDs between independent peer agents to trace multi-agent execution paths.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_mesh_tracer_v9.py",
+        "tests/test_a2a_mesh_tracer_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tracer propagates span IDs across mock A2A network boundaries.",
+        "Tests verify traces correctly link parent and child execution contexts."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-semantic-dedup-v8-5d11d79d",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Semantic Deduplication V8",
+      "description": "Inspired by MemGPT/Letta patterns and Context Engine plugins: Create a working memory compression hook that dynamically merges semantically duplicate facts before paging them out to Episodic Memory.",
+      "allowed_paths": [
+        "magda_agent/memory/semantic_dedup_v8.py",
+        "tests/test_semantic_dedup_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Deduplication hook intercepts context compression lifecycle.",
+        "Semantically duplicate memories are merged using mock embeddings.",
+        "Tests verify the reduced token usage after deduplication."
+      ]
+    },
+    {
+      "id": "claude-worktree-isolation-fault-tolerance-v3-59e743a0",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "Claude Worktree Isolation Fault Tolerance V3",
+      "description": "Inspired by Claude Agent Teams multi-agent architectures: Build a fault-tolerant spawner that detects crashed subagent git worktrees and automatically respawns the task in a clean isolated state without parent process disruption.",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_fault_tolerance_v3.py",
+        "tests/test_worktree_fault_tolerance_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Spawner tracks active subagent statuses.",
+        "Crashed worktrees are cleaned and respawned seamlessly.",
+        "Tests mock subprocess crashes and verify the respawn logic."
       ]
     }
   ]

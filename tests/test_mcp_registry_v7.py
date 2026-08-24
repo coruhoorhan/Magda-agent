@@ -1,64 +1,105 @@
 import pytest
-from magda_agent.skills.mcp_registry_v7 import MCPRegistryV7
+from unittest.mock import AsyncMock
+from magda_agent.skills.mcp_registry_v7 import MCPRegistryV7, MCPActionAdapter
 
 @pytest.fixture
 def registry():
     return MCPRegistryV7()
 
-def test_register_tool_valid(registry):
+def test_load_action_tool_valid(registry):
     tool_schema = {
-        "name": "test_tool",
-        "description": "A test tool",
+        "name": "create_file",
+        "description": "Creates a file",
         "inputSchema": {
             "type": "object",
-            "properties": {}
+            "properties": {
+                "filename": {"type": "string"}
+            }
         }
     }
-    assert registry.register_tool(tool_schema) is True
-    assert "test_tool" in registry.list_tools()
-    assert registry.get_tool("test_tool") == tool_schema
+    assert registry.load_action_tool(tool_schema) is True
+    assert "create_file" in registry.list_action_tools()
+    assert registry.get_action_tool("create_file") == tool_schema
 
-def test_register_tool_invalid_missing_name(registry):
+def test_load_action_tool_invalid(registry):
     tool_schema = {
-        "description": "A test tool"
+        "name": "create_file",
+        # Missing description
     }
-    assert registry.register_tool(tool_schema) is False
-    assert len(registry.list_tools()) == 0
+    assert registry.load_action_tool(tool_schema) is False
+    assert "create_file" not in registry.list_action_tools()
 
-def test_register_tool_invalid_missing_description(registry):
+    tool_schema_invalid_input = {
+        "name": "create_file",
+        "description": "Creates a file",
+        "inputSchema": "invalid_string"
+    }
+    assert registry.load_action_tool(tool_schema_invalid_input) is False
+
+def test_unload_action_tool(registry):
     tool_schema = {
-        "name": "test_tool"
+        "name": "create_file",
+        "description": "Creates a file"
     }
-    assert registry.register_tool(tool_schema) is False
+    registry.load_action_tool(tool_schema)
+    assert registry.unload_action_tool("create_file") is True
+    assert "create_file" not in registry.list_action_tools()
+    assert registry.unload_action_tool("nonexistent") is False
 
-def test_register_tool_invalid_wrong_input_schema(registry):
+def test_clear_registry(registry):
     tool_schema = {
-        "name": "test_tool",
-        "description": "A test tool",
-        "inputSchema": "not a dictionary"
+        "name": "create_file",
+        "description": "Creates a file"
     }
-    assert registry.register_tool(tool_schema) is False
+    registry.load_action_tool(tool_schema)
+    mock_adapter = AsyncMock(spec=MCPActionAdapter)
+    registry.register_adapter(mock_adapter)
 
-def test_unregister_tool(registry):
-    tool_schema = {
-        "name": "test_tool",
-        "description": "A test tool"
-    }
-    registry.register_tool(tool_schema)
-    assert registry.unregister_tool("test_tool") is True
-    assert "test_tool" not in registry.list_tools()
+    assert len(registry.list_action_tools()) == 1
+    assert len(registry.adapters) == 1
 
-def test_unregister_tool_not_found(registry):
-    assert registry.unregister_tool("nonexistent") is False
+    registry.clear()
 
-def test_list_tools(registry):
-    assert registry.list_tools() == []
-    registry.register_tool({"name": "tool1", "description": "desc1"})
-    registry.register_tool({"name": "tool2", "description": "desc2"})
-    tools = registry.list_tools()
-    assert "tool1" in tools
-    assert "tool2" in tools
-    assert len(tools) == 2
+    assert len(registry.list_action_tools()) == 0
+    assert len(registry.adapters) == 0
 
-def test_get_tool_not_found(registry):
-    assert registry.get_tool("nonexistent") == {}
+@pytest.mark.asyncio
+async def test_sync_from_adapters(registry):
+    mock_adapter = AsyncMock(spec=MCPActionAdapter)
+    mock_adapter.fetch_action_tools.return_value = [
+        {"name": "tool1", "description": "Action Tool 1"},
+        {"name": "tool2", "description": "Action Tool 2"}
+    ]
+
+    registry.register_adapter(mock_adapter)
+
+    count = await registry.sync_from_adapters()
+    assert count == 2
+    assert "tool1" in registry.list_action_tools()
+    assert "tool2" in registry.list_action_tools()
+
+@pytest.mark.asyncio
+async def test_sync_from_adapters_with_invalid_tool(registry):
+    mock_adapter = AsyncMock(spec=MCPActionAdapter)
+    mock_adapter.fetch_action_tools.return_value = [
+        {"name": "valid_tool", "description": "Valid Tool"},
+        {"name": "invalid_tool"} # Missing description
+    ]
+
+    registry.register_adapter(mock_adapter)
+
+    count = await registry.sync_from_adapters()
+    assert count == 1
+    assert "valid_tool" in registry.list_action_tools()
+    assert "invalid_tool" not in registry.list_action_tools()
+
+@pytest.mark.asyncio
+async def test_sync_from_adapters_exception(registry):
+    mock_adapter = AsyncMock(spec=MCPActionAdapter)
+    mock_adapter.fetch_action_tools.side_effect = Exception("Network error")
+
+    registry.register_adapter(mock_adapter)
+
+    count = await registry.sync_from_adapters()
+    assert count == 0
+    assert len(registry.list_action_tools()) == 0
