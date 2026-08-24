@@ -12079,7 +12079,7 @@
     },
     {
       "id": "openclaw-rl-canvas-tool-tracing-0ce2e402",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "medium",
       "title": "OpenClaw Canvas Tool Execution Tracing",
@@ -28182,6 +28182,40 @@
       "acceptance": [
         "Auth negotiation loop is successfully simulated.",
         "Tests mock challenge-response iterations before execution."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-audit-middleware-cf7bdf6318e042728bc44ae95a8ba7f2",
+      "title": "MCP Action Tool Audit Middleware",
+      "description": "Inspired by Prempti (Falco) safety trends: Implement an audit trail middleware layer that logs every executed action tool call and its context to SQLite for forensic tracking before allowing it to proceed.",
+      "area": "safety",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_audit_middleware_v2.py",
+        "tests/test_mcp_audit_middleware_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Middleware successfully intercepts tool calls and logs them.",
+        "Tests verify that tool payloads are recorded accurately using SQLite mocks."
+      ]
+    },
+    {
+      "id": "a2a-subagent-worktree-garbage-collector-7a66b46439054aa7936c31a199eade92",
+      "title": "A2A Subagent Git Worktree Garbage Collector",
+      "description": "Inspired by Claude Agent Teams architectures: Implement a cron-like garbage collection task that scans and purges stalled or orphaned subagent git worktrees to prevent system bloat.",
+      "area": "architecture",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_gc_v1.py",
+        "tests/test_worktree_gc_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "GC correctly identifies and removes stale git worktrees.",
+        "Tests mock os and shutil methods to verify safe cleanup."
       ]
     }
   ]

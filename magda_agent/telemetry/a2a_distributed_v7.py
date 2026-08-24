@@ -104,6 +104,30 @@ class A2ADistributedTelemetryV7:
         json_payload = json.dumps(payload)
         await self._mock_websocket_emit(json_payload)
 
+    async def broadcast_tool_execution_trace(
+        self, subagent_id: str, tool_name: str, arguments: Dict[str, Any], result: Any, success: bool
+    ) -> None:
+        """
+        Broadcast a tool execution trace to the Canvas UI via WebSocket mock.
+
+        Args:
+            subagent_id (str): The unique identifier for the sub-agent.
+            tool_name (str): The name of the tool executed.
+            arguments (Dict[str, Any]): The arguments passed to the tool.
+            result (Any): The result returned by the tool.
+            success (bool): Whether the tool execution was successful.
+        """
+        payload = {
+            "type": "canvas_tool_trace",
+            "subagent_id": subagent_id,
+            "tool_name": tool_name,
+            "arguments": arguments,
+            "result": result,
+            "success": success
+        }
+        json_payload = json.dumps(payload)
+        await self._mock_websocket_emit(json_payload)
+
     async def _mock_websocket_emit(self, json_payload: str) -> None:
         """
         Mock WebSocket emission for Canvas UI updates.
