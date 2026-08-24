@@ -252,3 +252,65 @@ async def test_a2a_discovery_v4_auth():
     # Valid token succeeds
     res = await discovery.fetch_cards(network_envelopes=[], auth_token="valid-token")
     assert res == []
+
+
+from unittest.mock import AsyncMock, patch, MagicMock
+
+@pytest.mark.asyncio
+async def test_a2a_discovery_mesh_v4_gossip():
+    from magda_agent.integration.a2a_cards import A2ADiscoveryMeshV4
+    local_card = AgentCardV4(
+        agent_id="local-mesh",
+        name="Local Mesh",
+        description="Local Mesh Agent",
+        capabilities=["gossip"],
+        endpoints={}
+    )
+    discovery = A2ADiscoveryV4(local_card=local_card)
+    mesh = A2ADiscoveryMeshV4(discovery=discovery)
+
+    # Test aggregate_envelopes
+    envelopes = mesh.aggregate_envelopes()
+    assert len(envelopes) == 1
+    assert envelopes[0]["type"] == "a2a_discovery_broadcast"
+    assert envelopes[0]["version"] == "4.0"
+    assert envelopes[0]["payload"]["agent_id"] == "local-mesh"
+
+    # Add a peer
+    peer_card = AgentCardV4(
+        agent_id="peer-mesh",
+        name="Peer Mesh",
+        description="Peer Mesh Agent",
+        capabilities=["peer_gossip"],
+        endpoints={}
+    )
+    discovery._register_agent(peer_card)
+
+    envelopes_after = mesh.aggregate_envelopes()
+    assert len(envelopes_after) == 2
+
+    # Test broadcast_gossip
+    with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_post:
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_post.return_value = mock_response
+
+        await mesh.broadcast_gossip(["http://localhost:8000/gossip"])
+
+        mock_post.assert_called_once_with("http://localhost:8000/gossip", json=envelopes_after)
+
+    # Test receive_gossip
+    new_peer_env = {
+        "type": "a2a_discovery_broadcast",
+        "version": "4.0",
+        "payload": {
+            "agent_id": "new-peer",
+            "name": "New Peer",
+            "description": "New",
+            "capabilities": ["new_cap"],
+            "endpoints": {}
+        }
+    }
+
+    await mesh.receive_gossip([json.dumps(new_peer_env)])
+    assert discovery.get_agent_by_id("new-peer") is not None

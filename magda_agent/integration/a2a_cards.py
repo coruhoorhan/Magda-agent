@@ -1,4 +1,5 @@
 from typing import Dict, List, Optional, Any
+import httpx
 import json
 import logging
 from dataclasses import dataclass, asdict
@@ -280,3 +281,71 @@ class A2ADiscoveryV4:
         Returns all discovered AgentCardV4 instances.
         """
         return list(self._discovered_agents.values())
+
+
+class A2ADiscoveryMeshV4:
+    """
+    Manages an A2A discovery mesh based on the A2A Protocol trend for V4.
+    It facilitates finding peers with required capabilities using AgentCardV4,
+    and propagates gossip about known peers to other nodes.
+    """
+
+    def __init__(self, discovery: A2ADiscoveryV4) -> None:
+        """
+        Initializes the A2ADiscoveryMeshV4.
+
+        Args:
+            discovery: The core A2ADiscoveryV4 instance containing local_card and _discovered_agents.
+        """
+        self.discovery = discovery
+
+    def aggregate_envelopes(self) -> List[Dict[str, Any]]:
+        """
+        Aggregates the local agent's card and all discovered peer cards into v4 envelopes.
+
+        Returns:
+            A list of envelope dictionaries.
+        """
+        cards = [self.discovery.local_card]
+        cards.extend(list(self.discovery._discovered_agents.values()))
+
+        envelopes = []
+        for card in cards:
+            envelope = {
+                "type": "a2a_discovery_broadcast",
+                "version": "4.0",
+                "payload": asdict(card)
+            }
+            envelopes.append(envelope)
+
+        return envelopes
+
+    async def broadcast_gossip(self, endpoint_urls: List[str]) -> None:
+        """
+        Broadcasts all known agent cards (gossip) to the specified endpoints.
+
+        Args:
+            endpoint_urls: A list of HTTP endpoints to send the envelopes to.
+        """
+        envelopes = self.aggregate_envelopes()
+
+        async with httpx.AsyncClient() as client:
+            for url in endpoint_urls:
+                try:
+                    response = await client.post(url, json=envelopes)
+                    response.raise_for_status()
+                    logging.info(f"Successfully gossiped {len(envelopes)} envelopes to {url}")
+                except Exception as e:
+                    logging.error(f"Failed to gossip envelopes to {url}: {e}")
+
+    async def receive_gossip(self, network_envelopes: List[str]) -> None:
+        """
+        Receives gossip data (a list of json envelope strings) and registers
+        new or updated agents into the discovery service.
+
+        Args:
+            network_envelopes: A list of JSON strings, each representing an AgentCardV4 envelope.
+        """
+        # Note: fetch_cards already handles parsing and skipping invalid/self cards implicitly if logic allows,
+        # but fetch_cards in V4 just registers what is valid.
+        await self.discovery.fetch_cards(network_envelopes=network_envelopes)

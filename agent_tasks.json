@@ -41,6 +41,57 @@
   },
   "tasks": [
     {
+      "id": "a2a-capability-gossip-protocol-v5-54aa29aa",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Capability Gossip Protocol V5",
+      "description": "Inspired by trend: A2A mDNS and gossip discovery. Implement continuous gossiping background thread that dynamically syncs AgentCards within a localized peer mesh.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_gossip_v5.py",
+        "tests/test_a2a_gossip_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Background thread periodically sends and receives gossip packets.",
+        "Tests verify periodic background execution and state sync using mocked asyncio."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-plugin-hooks-v9-6414b41f",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Plugin Hooks V9",
+      "description": "Inspired by trend: OpenClaw Context Engine. Add post-retrieval hooks to filter outdated semantic memories before they enter the active context window.",
+      "allowed_paths": [
+        "magda_agent/memory/context_hooks_v9.py",
+        "tests/test_context_hooks_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Hooks filter out outdated semantic nodes based on timestamps.",
+        "Tests mock hook registry and verify filtered output."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-sandbox-f761a51c",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "title": "MCP Dynamic Capability Auth Sandbox",
+      "description": "Inspired by trend: MCPKernel and assertion frameworks. Implement an in-memory capability sandbox that strictly verifies OAuth/Token bindings for dynamic action tools before execution.",
+      "allowed_paths": [
+        "magda_agent/security/mcp_auth_sandbox_v1.py",
+        "tests/test_mcp_auth_sandbox_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sandbox denies tool execution if valid token bindings are missing.",
+        "Tests verify permission evaluation in mock execution environment."
+      ]
+    },
+    {
       "id": "openclaw-rl-behavior-plugin",
       "status": "done",
       "area": "memory",
@@ -12113,7 +12164,7 @@
     },
     {
       "id": "a2a-agent-discovery-mesh-44587abb",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "high",
       "title": "A2A Protocol Discovery Mesh",
