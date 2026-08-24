@@ -12234,7 +12234,7 @@
     },
     {
       "id": "hermes-cron-daily-reports-24f6ff77-new2",
-      "status": "todo",
+      "status": "done",
       "area": "scheduling",
       "risk": "medium",
       "title": "Implement Hermes-style Cron Daily Reports",
@@ -28668,6 +28668,60 @@
         "Subagents can execute their assigned tasks in isolated contexts",
         "Orchestrator aggregates results from subagents successfully",
         "Tests mock subagent executions and verify parallelization"
+      ]
+    },
+    {
+      "id": "acs-guard-external-actions-v1-abcd",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Guard Integration for External Actions V1",
+      "description": "Inspired by ACS (Agent Control Specification) trend (June 2026): Implement an ACS Guard module that intercepts and validates external tool calls according to a strict policy schema.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_guard_external_v1.py",
+        "tests/test_acs_guard_external_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ACS Guard checks external tool payloads against mock policies.",
+        "Rejects or sanitizes actions violating the policy.",
+        "Tests verify guard functionality with valid/invalid mock inputs."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-swapping-v1-efgh",
+      "title": "OpenClaw Context Engine Swapping V1",
+      "description": "Inspired by MemGPT/OpenClaw Context Engine trends (June 2026): Implement an aggressive background memory swapping task that pages episodic memory chunks in and out of the working context dynamically to avoid context limit overflow.",
+      "area": "memory",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_v1.py",
+        "tests/test_context_engine_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context Engine handles paging memory context based on tokens.",
+        "Oldest entries move to mock persistent storage when limit is hit.",
+        "Tests verify context limit boundaries."
+      ]
+    },
+    {
+      "id": "mcp-web-navigation-tool-export-v1-ijkl",
+      "title": "MCP Web Navigation Tool Export V1",
+      "description": "Inspired by MCP standard trend (June 2026): Create a standard Web Navigation skill exported as an MCP tool to allow external agents (or sub-agents) to securely request sanitized web page content.",
+      "area": "skills",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_web_nav_v1.py",
+        "tests/test_mcp_web_nav_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Web Nav tool parses URL and returns markdown (mocked payload).",
+        "Exposed successfully via MCP structure definition.",
+        "Tests mock URL requests and assert MCP schema."
       ]
     }
   ]
