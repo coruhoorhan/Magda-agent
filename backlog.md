@@ -139,7 +139,7 @@
 * [x] FEATURE: Agent Teams via Git Worktree Isolation (agent-teams-claude-sdk)
 - [x] openclaw-rl-interactive-learning-v3: OpenClaw-RL Interactive Learning
 * [x] FEATURE: MCP Action Tools Expansion (mcp-action-tools-v3)
-* [x] FEATURE: A2A Task Delegation (v3)
+* [x] FEATURE: A2A Task Delegation (v3) (a2a-peer-task-delegation-v3-d601c251)
 * [x] FEATURE: Longitudinal Quality Metrics CLI
 * [x] FEATURE: Agent Skills MCP Export Enhancements (agent-skills-mcp-export)
 * [x] FEATURE: MCP Export of Internal Skills v2 (mcp-skill-export-v2)
