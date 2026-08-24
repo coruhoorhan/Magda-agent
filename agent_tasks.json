@@ -42,7 +42,7 @@
   "tasks": [
     {
       "id": "a2a-capability-gossip-protocol-v5-54aa29aa",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Capability Gossip Protocol V5",
@@ -28318,6 +28318,57 @@
       "acceptance": [
         "Sandbox tracks CPU/RAM mock constraints and terminates violators.",
         "Tests verify isolation metrics using mock psutil."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-agent-gossip-viz-4a8e6143",
+      "status": "todo",
+      "area": "UI",
+      "risk": "low",
+      "title": "OpenClaw Canvas Agent Gossip Visualizer",
+      "description": "Inspired by OpenClaw Canvas trend: Implement a websocket exporter that visualizes the real-time A2A Capability Gossip Mesh graph dynamically in a Canvas UI.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_gossip_mesh.py",
+        "tests/test_canvas_gossip_mesh.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter correctly parses A2A Discovery mesh state into graph nodes.",
+        "Tests mock the websocket payload properly."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-gossip-propagator-4777f1b1",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Action Tool Gossip Propagator",
+      "description": "Inspired by MCP action tools trend: Extend the A2A gossip mesh background thread to natively propagate exposed MCP action tool schemas so remote agents can discover them implicitly.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_gossip_propagator.py",
+        "tests/test_mcp_gossip_propagator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Thread serializes MCP action tools into Agent Cards.",
+        "Tests verify correct parsing and gossip execution."
+      ]
+    },
+    {
+      "id": "acs-guardrails-gossip-sync-e04841e8",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "ACS Guardrails Gossip Syncer",
+      "description": "Inspired by ACS security trends (June 2026): Implement an extension to the A2A discovery gossip protocol to share runtime safety policies across peers, blocking capability execution if a peer is flagged unsafe.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_gossip_sync.py",
+        "tests/test_acs_gossip_sync.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Gossip loop parses and tracks peer safety scores.",
+        "Tests verify that a low safety score correctly blocks tool execution."
       ]
     }
   ]
