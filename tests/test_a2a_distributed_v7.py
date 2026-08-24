@@ -100,3 +100,27 @@ async def test_broadcast_rl_reward_to_canvas_no_details(telemetry):
         assert payload["subagent_id"] == "sub_1"
         assert payload["reward_signal"] == reward_signal
         assert payload["details"] == {}
+
+@pytest.mark.asyncio
+async def test_broadcast_tool_execution_trace(telemetry):
+    tool_name = "search_web"
+    arguments = {"query": "OpenClaw AI trends"}
+    result = "Found 10 results"
+    success = True
+
+    with patch.object(telemetry, '_mock_websocket_emit', new_callable=AsyncMock) as mock_emit:
+        await telemetry.broadcast_tool_execution_trace("sub_1", tool_name, arguments, result, success)
+
+        mock_emit.assert_called_once()
+        args, _ = mock_emit.call_args
+        json_payload = args[0]
+
+        import json
+        payload = json.loads(json_payload)
+
+        assert payload["type"] == "canvas_tool_trace"
+        assert payload["subagent_id"] == "sub_1"
+        assert payload["tool_name"] == tool_name
+        assert payload["arguments"] == arguments
+        assert payload["result"] == result
+        assert payload["success"] == success
