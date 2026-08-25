@@ -1,50 +1,33 @@
-from typing import Dict, List, Optional
-import json
+from typing import Dict, Any
 import logging
-from magda_agent.integration.a2a_discovery import AgentCard
 
-class A2ADiscoveryV3:
-    """
-    Implements A2A Agent Discovery v3 logic using the new standard.
-    This class handles the parsing and management of AgentCards.
-    """
-    def __init__(self):
-        """
-        Initializes the A2ADiscoveryV3 registry.
-        """
-        self._discovered_agents: Dict[str, AgentCard] = {}
+class AgentCardV3:
+    def __init__(self, agent_id: str, capabilities: list, endpoints: Dict[str, str]):
+        self.agent_id = agent_id
+        self.capabilities = capabilities
+        self.endpoints = endpoints
 
-    def parse_and_register_cards(self, raw_cards: List[str]) -> List[AgentCard]:
-        """
-        Parses a list of JSON string representations of Agent Cards
-        and registers them in the internal store.
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "agent_id": self.agent_id,
+            "capabilities": self.capabilities,
+            "endpoints": self.endpoints
+        }
 
-        Args:
-            raw_cards: A list of JSON strings representing AgentCards.
+class A2ADiscoveryServiceV3Unique:
+    def __init__(self, network_interface: Any):
+        self.network_interface = network_interface
+        self.discovered_agents = {}
 
-        Returns:
-            A list of successfully parsed AgentCard objects.
-        """
-        successfully_parsed = []
-        for card_json in raw_cards:
-            try:
-                card = AgentCard.from_json(card_json)
-                self._discovered_agents[card.agent_id] = card
-                successfully_parsed.append(card)
-                logging.info(f"Successfully parsed and registered AgentCard for agent_id: {card.agent_id}")
-            except (json.JSONDecodeError, TypeError, ValueError, KeyError) as e:
-                logging.error(f"Failed to parse Agent Card. Error: {str(e)}, Raw Data: {card_json}")
+    async def broadcast_agent_card(self, card: AgentCardV3) -> None:
+        """Broadcasts the agent's capabilities using an Agent Card over the A2A mesh network."""
+        payload = card.to_dict()
+        logging.info(f"Broadcasting Agent Card for {card.agent_id}")
+        await self.network_interface.broadcast(payload)
 
-        return successfully_parsed
-
-    def get_agent_card(self, agent_id: str) -> Optional[AgentCard]:
-        """
-        Retrieves a registered AgentCard by its agent_id.
-        """
-        return self._discovered_agents.get(agent_id)
-
-    def get_all_agents(self) -> List[AgentCard]:
-        """
-        Returns a list of all discovered agents.
-        """
-        return list(self._discovered_agents.values())
+    def receive_card(self, payload: Dict[str, Any]) -> None:
+        """Receives an agent card from the network."""
+        agent_id = payload.get("agent_id")
+        if agent_id:
+            self.discovered_agents[agent_id] = payload
+            logging.debug(f"Received Agent Card for {agent_id}")
