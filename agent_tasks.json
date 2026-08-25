@@ -12270,7 +12270,7 @@
     },
     {
       "id": "openclaw-gateway-canvas-live-v3",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "medium",
       "title": "OpenClaw Gateway Canvas Live V3",
@@ -28722,6 +28722,58 @@
         "Web Nav tool parses URL and returns markdown (mocked payload).",
         "Exposed successfully via MCP structure definition.",
         "Tests mock URL requests and assert MCP schema."
+      ]
+    },
+    {
+      "id": "claude-evaluator-git-conflict-resolver-v3-new",
+      "title": "Claude Evaluator Git Conflict Auto-Resolver V3",
+      "description": "Inspired by Claude Agent Teams capabilities (June 2026): Create a Git conflict resolver subagent that operates in isolated worktrees to automatically handle complex multi-file merge conflicts using semantic understanding.",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/agents/git_conflict_resolver_v3.py",
+        "tests/test_git_conflict_resolver_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent uses LLM (mocked in tests) to semantically resolve complex multi-file Git conflicts.",
+        "Tests verify resolution logic over mock git state."
+      ]
+    },
+    {
+      "id": "hermes-skill-marketplace-export-v3-new",
+      "title": "Hermes Skill Marketplace Exporter V3",
+      "description": "Inspired by Hermes agentskills.io standard (June 2026): Build a utility to export Magda procedures into the standard agentskills.io JSON manifest format with automated documentation generation.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/marketplace_export_v3.py",
+        "tests/test_marketplace_export_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter correctly formats internal skills to the external agentskills.io schema with auto-generated documentation.",
+        "Tests verify valid JSON generation."
+      ]
+    },
+    {
+      "id": "mcp-policy-layer-guard-v6-new",
+      "title": "MCP Policy Layer Guard V6",
+      "description": "Inspired by 2026 trends for runtime safety: Implement a policy enforcement layer that intercepts every MCP tool call before execution to enforce explicit rule-based constraints dynamically.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_policy_layer_v6.py",
+        "tests/test_mcp_policy_layer_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Policy layer successfully blocks unapproved tool calls based on dynamic rules.",
+        "Policy layer successfully permits approved tool calls.",
+        "Tests use mocks to verify interception logic."
       ]
     }
   ]
