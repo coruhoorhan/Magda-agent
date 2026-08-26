@@ -12321,7 +12321,7 @@
     },
     {
       "id": "openclaw-canvas-live-v4-5e8a3dfa",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "medium",
       "title": "OpenClaw Canvas Live WebSockets V4",
@@ -28827,6 +28827,60 @@
         "Optimizer removes redundant sequential steps and creates macro-steps based on mocked historical success in the DAG.",
         "Tests verify that pruning reduces step count without altering end-goal dependencies.",
         "Topological order remains valid."
+      ]
+    },
+    {
+      "id": "hermes-skill-marketplace-importer-v2-7745ebdf",
+      "title": "Hermes Skill Marketplace Importer V2",
+      "description": "Inspired by Hermes trends (June 2026): Create a utility to dynamically import and sandbox skills from the standard agentskills.io format directly into Magda's procedural memory.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/marketplace_importer_v2.py",
+        "tests/test_marketplace_importer_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Importer parses agentskills.io JSON manifests accurately.",
+        "Imported skills are sandboxed and added to procedural memory.",
+        "Tests mock the downloading of skills and verify safe import."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-pruning-v1-7916d44c",
+      "title": "OpenClaw RL Trajectory Quality Evaluation V2",
+      "description": "Inspired by OpenClaw-RL trends (June 2026): Add a trajectory evaluator that assesses past dialogue steps for low reward and prunes them from episodic memory to optimize context retrieval.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v2.py",
+        "tests/test_trajectory_evaluation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator calculates cumulative reward across dialogue trajectories.",
+        "Prunes trajectories falling below a dynamic quality threshold.",
+        "Tests verify memory pruning accurately reflects reward tracking."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruner-v1-cb86fa9d",
+      "title": "Claude Worktree Pruning and Resource Optimizer V1",
+      "description": "Inspired by Claude Agent Teams capabilities (June 2026): Build a subagent utility that actively scans isolated git worktrees created for tasks and automatically prunes stale/failed branches and worktrees.",
+      "status": "todo",
+      "area": "agents",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/agents/worktree_pruning_v1.py",
+        "tests/test_worktree_pruning_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent successfully identifies stale worktrees based on a TTL policy.",
+        "Safely removes git worktree state and associated branches.",
+        "Tests mock git operations and verify TTL-based cleanup."
       ]
     }
   ]

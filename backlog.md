@@ -371,3 +371,7 @@
 * [ ] FEATURE: Implement OpenClaw-style Canvas Live Visualization (openclaw-rl-canvas-live-viz-ec761ed7-new1)
 * [ ] FEATURE: Implement Hermes-style Cron Daily Reports (hermes-cron-daily-reports-24f6ff77-new2)
 * [ ] FEATURE: Implement Claude Tri-Agent Orchestration (claude-planner-generator-evaluator-54bfa2b6-new3)
+
+* [ ] SKILLS: Hermes Skill Marketplace Importer V2 (hermes-skill-marketplace-importer-v2-7745ebdf)
+* [ ] LEARNING: OpenClaw RL Trajectory Quality Evaluation V2 (openclaw-rl-trajectory-pruning-v1-7916d44c)
+* [ ] AGENTS: Claude Worktree Pruning and Resource Optimizer V1 (claude-worktree-pruner-v1-cb86fa9d)
