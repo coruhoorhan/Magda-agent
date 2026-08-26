@@ -29,3 +29,8 @@ websockets==12.0
 httpx
 pytest-asyncio
 apscheduler
+httpx
+pytest-asyncio
+discord.py
+pyyaml
+aiofiles
