@@ -12355,7 +12355,7 @@
     },
     {
       "id": "a2a-enterprise-auth-traversal-v4-f164629c",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "high",
       "title": "A2A Enterprise Auth Traversal V4",
@@ -28934,6 +28934,57 @@
         "Scheduler correctly triggers the reflection pipeline based on a cron expression.",
         "Pipeline generates mock skills based on memory inputs.",
         "Tests mock the time and verify execution triggers."
+      ]
+    },
+    {
+      "id": "memgpt-virtual-context-paging-v4-cc183ce9",
+      "title": "MemGPT Virtual Context Paging V4",
+      "description": "Inspired by MemGPT/Letta patterns (June 2026): Implement a mechanism to explicitly page out older episodic memories from WorkingMemory to cold storage (EpisodicMemory) when the context window is full.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_v4.py",
+        "tests/test_virtual_context_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Mechanism correctly pages out old memory.",
+        "Tests mock the paging logic."
+      ]
+    },
+    {
+      "id": "acs-control-validator-v1-034c6d26",
+      "title": "ACS Control Specification Validator V1",
+      "description": "Inspired by ACS standard for runtime safety controls (June 2026): Implement an ACS layer that enforces validation checkpoints before any tool execution.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/acs_validator_v1.py",
+        "tests/test_acs_validator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Validator intercepts tool calls and enforces checkpoints.",
+        "Tests mock tool execution interception."
+      ]
+    },
+    {
+      "id": "claude-git-worktree-subagent-v2-a9237392",
+      "title": "Claude Git Worktree Subagent Spawner V2",
+      "description": "Inspired by Claude Agent Teams capabilities (June 2026): Implement a utility to spawn isolated subagents in separate git worktrees to handle multi-file tasks concurrently.",
+      "status": "todo",
+      "area": "agents",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/agents/worktree_spawner_v2.py",
+        "tests/test_worktree_spawner_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Utility successfully creates isolated git worktrees.",
+        "Tests mock git operations."
       ]
     }
   ]
