@@ -319,7 +319,10 @@ class Consciousness:
         # Cross-session continuity: Check if this is a new session (no active working memory)
         working_memory_entries = self.memory.working_memory.get_entries(user_id=user_id)
         if len(working_memory_entries) == 0:
-            past_episodes = self.memory.episodic_memory.recall_events(user_input, top_k=3, user_id=user_id)
+            if getattr(self.memory, 'selective_retrieval_v2', None):
+                past_episodes = self.memory.selective_retrieval_v2.retrieve_relevant_context(user_input, user_id=user_id)
+            else:
+                past_episodes = self.memory.episodic_memory.recall_events(user_input, top_k=3, user_id=user_id)
             if past_episodes:
                 context_str += "\n\nPast Relevant Episodes:\n" + "\n".join([f"- {ep}" for ep in past_episodes])
 
