@@ -12304,7 +12304,7 @@
     },
     {
       "id": "claude-context-selective-compression-v3",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Context Selective Compression V3",
