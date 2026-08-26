@@ -12372,7 +12372,7 @@
     },
     {
       "id": "claude-context-selective-retrieval-v2",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Selective Context Retrieval V2",
@@ -28985,6 +28985,78 @@
       "acceptance": [
         "Utility successfully creates isolated git worktrees.",
         "Tests mock git operations."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-pruning-v3-new",
+      "title": "OpenClaw RL Trajectory Pruning V3",
+      "description": "Inspired by OpenClaw trends (June 2026): Create an online learning pipeline that dynamically prunes repetitive dialogue trajectories based on continuous multimodal feedback.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_pruning_v3.py",
+        "tests/test_trajectory_pruning_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline dynamically identifies repetitive dialogue loops.",
+        "Prunes loops automatically based on multimodal RL signals.",
+        "Tests mock memory components and verify pruning."
+      ]
+    },
+    {
+      "id": "hermes-agent-scheduled-reflection-v4-new",
+      "title": "Hermes Agent Scheduled Reflection V4",
+      "description": "Inspired by Hermes Agent cron scheduler (June 2026): Implement an intelligent background reflection task that clusters semantic concepts derived from daily episodic memories.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/scheduler/concept_clustering_v4.py",
+        "tests/test_concept_clustering_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scheduler runs reflection using croniter expressions.",
+        "Pipeline correctly clusters concepts and emits summarized facts.",
+        "Tests mock time and memory inputs to verify clustering."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-pruning-v3-new-v2",
+      "title": "OpenClaw RL Trajectory Pruning V3",
+      "description": "Inspired by OpenClaw trends (June 2026): Create an online learning pipeline that dynamically prunes repetitive dialogue trajectories based on continuous multimodal feedback.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_pruning_v3.py",
+        "tests/test_trajectory_pruning_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline dynamically identifies repetitive dialogue loops.",
+        "Prunes loops automatically based on multimodal RL signals.",
+        "Tests mock memory components and verify pruning."
+      ]
+    },
+    {
+      "id": "hermes-agent-scheduled-reflection-v4-new-v2",
+      "title": "Hermes Agent Scheduled Reflection V4",
+      "description": "Inspired by Hermes Agent cron scheduler (June 2026): Implement an intelligent background reflection task that clusters semantic concepts derived from daily episodic memories.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/scheduler/concept_clustering_v4.py",
+        "tests/test_concept_clustering_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scheduler runs reflection using croniter expressions.",
+        "Pipeline correctly clusters concepts and emits summarized facts.",
+        "Tests mock time and memory inputs to verify clustering."
       ]
     }
   ]

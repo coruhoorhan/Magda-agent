@@ -376,3 +376,4 @@
 * [ ] SKILLS: Hermes Skill Marketplace Importer V2 (hermes-skill-marketplace-importer-v2-7745ebdf)
 * [ ] LEARNING: OpenClaw RL Trajectory Quality Evaluation V2 (openclaw-rl-trajectory-pruning-v1-7916d44c)
 * [ ] AGENTS: Claude Worktree Pruning and Resource Optimizer V1 (claude-worktree-pruner-v1-cb86fa9d)
+* [x] FEATURE: Claude Selective Context Retrieval V2 (claude-context-selective-retrieval-v2)

@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional
 from magda_agent.emotions.engine import PADState
 from magda_agent.memory.working import WorkingMemory, MemoryEntry
+from magda_agent.memory.selective_retrieval_v2 import SelectiveRetrievalV2
 from magda_agent.memory.episodic import EpisodicMemory
 from magda_agent.memory.virtual_context import VirtualContextManager
 from magda_agent.llm_client import LLMClient
@@ -27,6 +28,8 @@ class MemorySystem:
         self.working_memory.virtual_context_manager = self.virtual_context_manager
         self.working_memory.episodic_memory = self.episodic_memory
         self.large_context = LargeContextWindow()
+        self.selective_retrieval_v2 = SelectiveRetrievalV2(self.episodic_memory)
+
         self.llm = llm
         self.context_engine = context_engine
         self.user_model = UserModel(persist_dir="./user_models", llm=self.llm)
