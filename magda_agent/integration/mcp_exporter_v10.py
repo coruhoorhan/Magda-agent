@@ -1,7 +1,10 @@
 from typing import Dict, Any, List, Optional
 import uuid
+import logging
 from magda_agent.skills.registry import SkillRegistry
 from magda_agent.integration.mcp_export import MCPExporter as MCPAdapter
+
+logger = logging.getLogger(__name__)
 
 class MCPExporterV10:
     """
@@ -12,6 +15,7 @@ class MCPExporterV10:
         """Initialize the MCPExporterV10 with a SkillRegistry."""
         self.registry = registry
         self.adapter = MCPAdapter(registry)
+        logger.info("MCPExporterV10 initialized.")
 
     def export_tools(self) -> List[Dict[str, Any]]:
         """
@@ -80,7 +84,10 @@ class MCPExporterV10:
 
         arguments: Dict[str, Any] = params.get("arguments", params)
 
+        logger.debug(f"Received JSON-RPC request: method='{method}', id='{req_id}'")
+
         if request.get("jsonrpc") != "2.0":
+            logger.warning(f"Invalid Request: missing or invalid jsonrpc version for id='{req_id}'")
             return {
                 "jsonrpc": "2.0",
                 "id": req_id,
@@ -88,6 +95,7 @@ class MCPExporterV10:
             }
 
         if not method:
+            logger.warning(f"Method not found: missing method in request id='{req_id}'")
             return {
                 "jsonrpc": "2.0",
                 "id": req_id,
@@ -95,6 +103,7 @@ class MCPExporterV10:
             }
 
         if not self.registry.has_skill(method):
+            logger.warning(f"Method '{method}' not found in registry for id='{req_id}'")
             return {
                 "jsonrpc": "2.0",
                 "id": req_id,
@@ -112,13 +121,22 @@ class MCPExporterV10:
         if tool_schema:
             validation_error = self._validate_schema(tool_schema, arguments)
             if validation_error:
+                logger.warning(f"Validation failed for method '{method}': {validation_error}")
                 return {
                     "jsonrpc": "2.0",
                     "id": req_id,
                     "error": {"code": -32602, "message": f"Invalid params: {validation_error}"}
                 }
 
-        adapter_result = await self.adapter.call_tool_async(method, arguments)
+        try:
+            adapter_result = await self.adapter.call_tool_async(method, arguments)
+        except Exception as e:
+            logger.error(f"Unexpected error executing method '{method}': {e}", exc_info=True)
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "error": {"code": -32000, "message": f"Internal server error: {str(e)}"}
+            }
 
         # Check if the adapter explicitly reported an error, or if it returned a string
         # that starts with 'Error' (which happens when registry.execute_skill returns an error string).
@@ -131,12 +149,14 @@ class MCPExporterV10:
              error_msg = content[0].get("text", "")
 
         if is_error or str(error_msg).startswith("Error"):
+            logger.error(f"Tool execution error for method '{method}': {error_msg}")
             return {
                 "jsonrpc": "2.0",
                 "id": req_id,
                 "error": {"code": -32000, "message": error_msg or "Unknown error"}
             }
 
+        logger.info(f"Successfully executed method '{method}' for id='{req_id}'")
         return {
             "jsonrpc": "2.0",
             "id": req_id,

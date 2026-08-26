@@ -12338,7 +12338,7 @@
     },
     {
       "id": "mcp-action-tool-exporter-v10-753a6b60",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Action Tool Export Engine V10",
@@ -28881,6 +28881,59 @@
         "Subagent successfully identifies stale worktrees based on a TTL policy.",
         "Safely removes git worktree state and associated branches.",
         "Tests mock git operations and verify TTL-based cleanup."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-metrics-visualization-v2-new",
+      "title": "OpenClaw Canvas Live Visualization Plugin V2",
+      "description": "Inspired by OpenClaw trends (June 2026): Implement an OpenClaw Canvas component that streams continuous reinforcement learning metrics (reward heuristics, PAD shift values) via WebSocket directly to a live visualization dashboard.",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_metrics_v2.py",
+        "tests/test_canvas_metrics_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin exposes an async WebSocket handler that receives metrics and forwards them.",
+        "Tests use mocked asyncio WebSockets to verify metric streaming."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-auth-negotiation-v8-new",
+      "title": "MCP Dynamic Authorization Negotiation V8",
+      "description": "Inspired by MCP standard (June 2026): Build an MCP preflight layer that dynamically negotiates capability tokens before a tool execution request is accepted by the server, rejecting unauthorized clients.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_negotiation_v8.py",
+        "tests/test_mcp_auth_negotiation_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Preflight module negotiates tokens based on requested capabilities.",
+        "Blocks requests lacking required capabilities.",
+        "Tests simulate capability negotiation handshakes."
+      ]
+    },
+    {
+      "id": "hermes-agent-scheduled-reflection-v3-new",
+      "title": "Hermes Agent Scheduled Reflection V3",
+      "description": "Inspired by Hermes Agent cron scheduler: Implement a background task that uses croniter to schedule and execute nightly reflections on the day's episodic memory, generating actionable macro-skills.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/scheduler/nightly_reflection_v3.py",
+        "tests/test_nightly_reflection_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scheduler correctly triggers the reflection pipeline based on a cron expression.",
+        "Pipeline generates mock skills based on memory inputs.",
+        "Tests mock the time and verify execution triggers."
       ]
     }
   ]
