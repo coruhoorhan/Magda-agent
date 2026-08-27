@@ -12406,7 +12406,7 @@
     },
     {
       "id": "hermes-multi-platform-channels-v4",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "Hermes Multi-platform Channels V4",
@@ -29057,6 +29057,59 @@
         "Scheduler runs reflection using croniter expressions.",
         "Pipeline correctly clusters concepts and emits summarized facts.",
         "Tests mock time and memory inputs to verify clustering."
+      ]
+    },
+    {
+      "id": "mcp-kernel-taint-tracking-v8-e4b5c6d7",
+      "title": "MCPKernel Taint Tracking Sandbox V8",
+      "description": "Inspired by MCPKernel and sandboxed execution trends (June 2026): Implement an execution wrapper that intercepts string operations across MCP tools to prevent prompt injection and state mutation securely.",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/security/mcp_taint_tracker_v8.py",
+        "tests/test_mcp_taint_tracker_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint tracker effectively marks outputs from external MCP tools.",
+        "Any unsafe usage of tainted strings blocks execution.",
+        "Tests verify propagation of taint and blocking behavior."
+      ]
+    },
+    {
+      "id": "a2a-distributed-metrics-exporter-v2-f1a2b3c4",
+      "title": "A2A Distributed Metrics Exporter V2",
+      "description": "Inspired by A2A protocols and enterprise tracing trends: Implement an OpenTelemetry-compatible exporter for multi-agent mesh networks that tracks distributed delegation overhead and sub-agent communication metrics.",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_exporter_v2.py",
+        "tests/test_a2a_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter collects overhead and communication metrics for delegated subagents.",
+        "Tests mock OpenTelemetry sinks and verify that metrics are correctly formatted."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-evaluation-v4-89c0d1e2",
+      "title": "OpenClaw RL Trajectory Quality Evaluation V4",
+      "description": "Inspired by OpenClaw-RL trends (June 2026): Create an evaluation module to assess the quality of long-running action trajectories and generate sparse delayed rewards for the RL loop, explicitly identifying context fragmentation points.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v4.py",
+        "tests/test_trajectory_evaluation_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator scores action trajectories and outputs reward signals.",
+        "Evaluator identifies points of context fragmentation.",
+        "Tests ensure consistent reward values for various mocked trajectories."
       ]
     }
   ]
