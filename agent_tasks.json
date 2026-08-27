@@ -12474,7 +12474,7 @@
     },
     {
       "id": "agent-teams-parallel-subagents-v7",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Agent Teams Parallel Subagents V7",
@@ -29267,6 +29267,42 @@
       "acceptance": [
         "Capability negotiation module created.",
         "Tests mock tool negotiation correctly."
+      ]
+    },
+    {
+      "id": "context-engine-selective-retrieval-v3-8a24480d",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Context Engine Selective Retrieval V3",
+      "description": "Inspired by MemGPT/Letta patterns. Implement SelectiveRetrievalV3 that dynamically prunes episodic memory using the Context Engine hooks.",
+      "allowed_paths": [
+        "magda_agent/memory/selective_retrieval_v3.py",
+        "tests/test_selective_retrieval_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "SelectiveRetrievalV3 class is implemented.",
+        "It selectively retrieves and prunes memory correctly.",
+        "Pytest tests mock LLM calls and verify pruning logic."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-policy-layer-53336ba3",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "title": "Agent Guard Runtime Policy Layer",
+      "description": "Inspired by Agent Guard trend. Add a policy layer between the agent and external actions to audit and intercept tool calls before execution.",
+      "allowed_paths": [
+        "magda_agent/security/agent_guard.py",
+        "tests/test_agent_guard.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "AgentGuard policy layer intercepts and validates tool calls.",
+        "Actions are either approved or rejected based on a defined policy.",
+        "Tests verify the interception and policy enforcement mechanisms."
       ]
     }
   ]
