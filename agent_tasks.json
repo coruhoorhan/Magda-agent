@@ -12643,7 +12643,7 @@
     },
     {
       "id": "a2a-enterprise-tracing-v5",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Enterprise Tracing V5",
@@ -29749,6 +29749,57 @@
       "acceptance": [
         "Pruning logic preserves relevant tokens.",
         "Tests verify selective token removal and paging."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-hooks-v10-unique",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Plugin Hooks V10",
+      "description": "Inspired by OpenClaw trends: Implement Context Engine plugin interface with lifecycle hooks for better virtual context management.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_hooks_v10.py",
+        "tests/test_context_engine_hooks_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context Engine supports plugin lifecycle hooks.",
+        "Tests mock plugin executions and verify hook invocations."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-governance-v9-unique",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Action Tool Governance Policy V9",
+      "description": "Inspired by MCP standards: Enhance the ActionToolGovernance layer to include dynamic policy rules for MCP tool executions.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_governance_v9.py",
+        "tests/test_mcp_governance_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Governance layer correctly enforces dynamic MCP policy rules.",
+        "Tests verify policy enforcement and tool interception."
+      ]
+    },
+    {
+      "id": "a2a-mdns-discovery-cache-v3-unique",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A mDNS Discovery Cache V3",
+      "description": "Inspired by A2A Protocol trends: Add localized caching for A2A mDNS discovery to reduce network broadcast overhead.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mdns_cache_v3.py",
+        "tests/test_a2a_mdns_cache_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "mDNS discovery utilizes localized caching.",
+        "Tests mock network broadcasts and verify cache hits/misses."
       ]
     }
   ]
