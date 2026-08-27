@@ -12544,7 +12544,7 @@
       "id": "openai-realtime-guardrail-fallback-v2-new-1",
       "title": "OpenAI Realtime Guardrail Fallback V2",
       "description": "Inspired by OpenAI Agents SDK trend. Implement a realtime guardrail fallback mechanism.",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "allowed_paths": [
@@ -29456,6 +29456,40 @@
       "acceptance": [
         "Agent cards support configurable TTL and cache invalidation logic.",
         "Tests mock A2A mesh network broadcasts."
+      ]
+    },
+    {
+      "id": "mcp-server-prefixed-routing-v3-unique-cbd81989",
+      "title": "MCP Server Prefixed Routing V3 Unique",
+      "description": "Inspired by OpenAI Agents SDK trend. Implement dynamic routing of tool calls based on MCP server prefixes.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_router_v3.py",
+        "tests/test_mcp_router_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Router correctly prefixes and delegates tool executions to corresponding MCP servers.",
+        "Tests verify correct routing for prefixed tool names."
+      ]
+    },
+    {
+      "id": "agent-teams-subagent-spawning-v4-unique-a2136e71",
+      "title": "Agent Teams Subagent Spawning V4 Unique",
+      "description": "Inspired by Claude Agent SDK Agent Teams trend. Implement robust Git worktree spawning and lifecycle management for temporary subagents.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_spawner_v4.py",
+        "tests/test_subagent_spawner_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module provisions and tears down Git worktrees properly for parallel agent execution.",
+        "Tests verify lifecycle methods using mocks without executing real Git commands."
       ]
     }
   ]
