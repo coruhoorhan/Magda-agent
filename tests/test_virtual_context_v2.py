@@ -132,13 +132,68 @@ async def test_virtual_context_v2_maintain_limits_pages_out() -> None:
     assert len(wm.get_entries(user_id=1)) == 3
     assert vcm.get_token_length(wm.get_entries(user_id=1)) == int(12 * 1.3)
 
-    # Maintain with max_tokens = 10. Current is ~15.
+    # Maintain with max_tokens = 10. Aggressive threshold = 7.5. Current is ~15.
+    # It pages out 1 at a time (since half of 3 is 1).
+    # Entries:
+    # e1 (imp=0.5)
+    # e2 (imp=0.6)
+    # e3 (imp=0.7)
+    # It pages out e1 (lowest importance). Remaining: e2, e3 (8 words -> ~10 tokens).
+    # 10 is > 7.5, so it loops again.
+    # It pages out e2 (lowest importance). Remaining: e3 (4 words -> ~5 tokens).
+    # 5 is <= 7.5, loop ends.
     await vcm.maintain_working_memory_limits(wm, em, user_id=1, max_tokens=10)
 
     entries = wm.get_entries(user_id=1)
-    assert len(entries) == 2
-    assert entries[0].content == "word5 word6 word7 word8"
-    assert entries[1].content == "word9 word10 word11 word12"
+    assert len(entries) == 1
+    assert entries[0].content == "word9 word10 word11 word12"
+
+@pytest.mark.asyncio
+async def test_virtual_context_v2_aggressive_page_out_by_importance() -> None:
+    wm = WorkingMemory(limit=10)
+    em = EpisodicMemory(persist_directory=":memory:")
+    em.collection_name = "test_episodic_memory_v2_aggressive_out"
+    em.collection = em.client.get_or_create_collection(name=em.collection_name)
+    vcm = VirtualContextManagerV2()
+
+    # Explicitly mock get_token_length to verify page outs logic more clearly
+    import unittest.mock
+    vcm.get_token_length = unittest.mock.Mock(side_effect=lambda entries: sum(10 for _ in entries))
+
+    # Explicitly mock compress_context to avoid unexpected API calls or logic during test
+    vcm.compress_context = unittest.mock.AsyncMock(side_effect=lambda entries: entries[0])
+
+    state = PADState(0, 0, 0)
+
+    # All entries get 10 tokens according to mock.
+    # Total tokens = 40.
+    e1_important = MemoryEntry("Critical detail", 0.9, state, user_id=2)
+    e2_medium = MemoryEntry("Some detail", 0.5, state, user_id=2)
+    e3_low = MemoryEntry("Minor detail", 0.2, state, user_id=2)
+    e4_medium = MemoryEntry("Another detail", 0.6, state, user_id=2)
+
+    await wm.add(e1_important)
+    await wm.add(e2_medium)
+    await wm.add(e3_low)
+    await wm.add(e4_medium)
+
+    # 4 items = 40 tokens.
+    assert len(wm.get_entries(user_id=2)) == 4
+    assert vcm.get_token_length(wm.get_entries(user_id=2)) == 40
+
+    # Target max = 20. Aggressive = 15.
+    # Loops will occur while total tokens > 15 and len > 1.
+    # Initial: 40 tokens, len 4. Removes 2 items. Lowest importance: e3_low (0.2), e2_medium (0.5).
+    # Remaining: e1_important (0.9), e4_medium (0.6). Tokens: 20.
+    # 20 > 15, len = 2. Removes 1 item. Lowest importance: e4_medium (0.6).
+    # Remaining: e1_important (0.9). Tokens: 10.
+    # 10 <= 15. Loop stops.
+    await vcm.maintain_working_memory_limits(wm, em, user_id=2, max_tokens=20)
+
+    entries = wm.get_entries(user_id=2)
+    assert len(entries) == 1
+    assert entries[0].content == "Critical detail"
+    assert entries[0].importance == 0.9
 
 @pytest.mark.asyncio
 async def test_virtual_context_v2_maintain_limits_no_page_out() -> None:
