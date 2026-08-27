@@ -12561,7 +12561,7 @@
       "id": "claude-context-compression-v5",
       "title": "Claude Context Compression V5",
       "description": "Inspired by Claude Agent SDK context compression. Enhance context compression algorithms.",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "allowed_paths": [
@@ -29490,6 +29490,58 @@
       "acceptance": [
         "Module provisions and tears down Git worktrees properly for parallel agent execution.",
         "Tests verify lifecycle methods using mocks without executing real Git commands."
+      ]
+    },
+    {
+      "id": "hermes-agent-memory-skill-sync-v1",
+      "title": "Hermes Agent Memory Skill Sync V1",
+      "description": "Inspired by Hermes Agent learning loops (June 2026): Create a synchronization module that exports locally consolidated memory skills to the external agentskills.io format for marketplace compatibility.",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/skills/hermes_skill_sync_v1.py",
+        "tests/test_hermes_skill_sync_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully translates internal procedural memory to agentskills.io format.",
+        "Tests mock the export process and assert JSON schema validity."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-tool-state-v5",
+      "title": "OpenClaw Canvas Tool State V5",
+      "description": "Inspired by OpenClaw Canvas Live Visualization trends (June 2026): Extend the real-time WebSocket exporter to include active Tool Execution States, allowing the UI to show exactly which subagent is executing which tool.",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_tool_state_v5.py",
+        "tests/test_canvas_tool_state_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket payload includes active tool executions and subagent IDs.",
+        "Tests mock active executions and verify payload structure."
+      ]
+    },
+    {
+      "id": "claude-context-sdk-orchestration-v5",
+      "title": "Claude Context SDK Orchestration V5",
+      "description": "Inspired by Claude Agent SDK context limits (June 2026): Implement an orchestrator wrapper that checks the current global context size and dynamically triggers compression (using V5 algorithms) before spawning any new subagent.",
+      "status": "todo",
+      "area": "orchestration",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/context_orchestrator_v5.py",
+        "tests/test_context_orchestrator_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Orchestrator halts subagent spawning until context size is within bounds.",
+        "Compression is correctly invoked.",
+        "Tests mock token size thresholds."
       ]
     }
   ]
