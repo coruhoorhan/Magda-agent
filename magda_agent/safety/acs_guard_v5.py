@@ -53,6 +53,24 @@ class ACSGuardV5:
             if not isinstance(workflow_data[field], str):
                 return False, f"Input validation failed: '{field}' must be a string."
 
+        if "kwargs" in workflow_data:
+            if not isinstance(workflow_data["kwargs"], dict):
+                return False, "Input validation failed: 'kwargs' must be a dictionary."
+
+            # Verify no deeply nested objects are invalid types (e.g. non-serializable objects)
+            def _validate_arg(arg: Any) -> bool:
+                """Recursively validates that the argument only contains serializable types."""
+                if isinstance(arg, (str, int, float, bool, type(None))):
+                    return True
+                if isinstance(arg, dict):
+                    return all(isinstance(k, str) and _validate_arg(v) for k, v in arg.items())
+                if isinstance(arg, list):
+                    return all(_validate_arg(item) for item in arg)
+                return False
+
+            if not _validate_arg(workflow_data["kwargs"]):
+                return False, "Input validation failed: complex tool arguments contain invalid types."
+
         return True, "Input validation Passed."
 
     def checkpoint_2_intent_authorization(self, workflow_data: Dict[str, Any]) -> Tuple[bool, str]:
