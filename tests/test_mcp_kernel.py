@@ -76,3 +76,30 @@ def test_mcp_kernel_blocks_tainted_locals_dict() -> None:
     locals_dict = {"bad": mark_tainted("stuff")}
     with pytest.raises(SecurityError, match="locals_dict is tainted and unsafe to use in execution."):
         kernel.execute(code, locals_dict=locals_dict)
+
+def test_mcp_kernel_max_ast_nodes() -> None:
+    """Test that setting a small max_ast_nodes limits blocks execution."""
+    kernel = MCPKernel(max_ast_nodes=5)
+    code = "x = 1\ny = 2\nz = 3\na = 4\nb = 5\nc = 6"
+    with pytest.raises(SecurityError, match="Code contains unsafe operations and was blocked by MCPKernel taint tracking."):
+        kernel.execute(code)
+    assert len(kernel.execution_log) == 1
+    assert kernel.execution_log[-1]["status"] == "blocked"
+
+def test_mcp_kernel_logging() -> None:
+    """Test that executions are correctly tracked in the execution_log."""
+    kernel = MCPKernel()
+
+    # Success case
+    kernel.execute("x = 5")
+    assert kernel.execution_log[-1]["status"] == "success"
+
+    # Blocked case
+    with pytest.raises(SecurityError):
+        kernel.execute("file = open('/etc/passwd', 'r')")
+    assert kernel.execution_log[-1]["status"] == "blocked"
+
+    # Error case (Syntax error should result in SecurityError now since it's caught in is_safe)
+    with pytest.raises(SecurityError):
+        kernel.execute("this is not python code")
+    assert kernel.execution_log[-1]["status"] == "blocked"
