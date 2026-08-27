@@ -12593,7 +12593,7 @@
     },
     {
       "id": "claude-evaluator-subagent-teams",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Claude Evaluator Subagent Teams",
@@ -29593,6 +29593,57 @@
       "acceptance": [
         "Guardrail intercepts policy violations.",
         "Tests verify that failed policies raise exceptions properly."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-reward-v8-unique-new",
+      "title": "OpenClaw RL Implicit Reward Tracking V8",
+      "description": "Inspired by June 2026 AI Agent trends (OpenClaw-RL). Implement tracking for implicit reward signals (e.g. conversational turn length, user engagement) to tune RL habits.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/implicit_reward_v8.py",
+        "tests/test_implicit_reward_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implicit reward tracking module collects passive telemetry without explicit feedback.",
+        "Tests verify reward signal processing with mock telemetry data."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v8-unique-new",
+      "title": "MCP Dynamic Capability Auth V8",
+      "description": "Inspired by MCP capabilities and enterprise standards (June 2026). Add granular permission scopes and capability authentication limits when negotiating MCP tools.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_capability_auth_v8.py",
+        "tests/test_mcp_capability_auth_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability auth module blocks unauthorized scopes.",
+        "Tests verify correct blocking and passing of scoped tool negotiations."
+      ]
+    },
+    {
+      "id": "a2a-discovery-mesh-agent-cards-v18-unique-new",
+      "title": "A2A Discovery Mesh Agent Cards V18",
+      "description": "Inspired by A2A Protocol standard updates. Extend A2A Agent Cards to support dynamic TTLs and localized caching within peer subnets.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_agent_cards_v18.py",
+        "tests/test_a2a_agent_cards_v18.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent cards support configurable TTL and cache invalidation logic.",
+        "Tests mock A2A mesh network broadcasts."
       ]
     }
   ]

@@ -146,3 +146,24 @@ async def test_agent_team_manager_getters(base_dir):
         assert manager.get_worktree_path("agentA") == path1
         assert manager.get_worktree_path("agentB") == path2
         assert manager.get_worktree_path("nonexistent") is None
+
+@pytest.mark.asyncio
+async def test_agent_evaluator_team():
+    """
+    Test the AgentEvaluatorTeam class.
+    """
+    from magda_agent.architecture.agent_teams_v3 import AgentEvaluatorTeam
+    team = AgentEvaluatorTeam(evaluators=["eval1", "eval2"])
+
+    with patch("magda_agent.llm_client.LLMClient.generate", new_callable=AsyncMock) as mock_generate:
+        mock_generate.side_effect = [
+            "PASSED: Code is solid",
+            "PASSED: Looks excellent"
+        ]
+
+        result = await team.evaluate_code("def foo(): pass", {"context": "test"})
+
+        assert result["passed"] is True
+        assert result["overall_score"] == 100
+        assert len(result["results"]) == 2
+        assert mock_generate.call_count == 2

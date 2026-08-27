@@ -3,7 +3,7 @@ import logging
 import os
 import shutil
 import uuid
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 
 class GitWorktreeError(Exception):
     """Exception raised for errors during git worktree operations."""
@@ -176,3 +176,49 @@ class AgentTeamManagerV3:
         if agent_id not in self.agents:
             return None
         return self.isolation_manager.active_worktrees.get(agent_id)
+
+class AgentEvaluatorTeam:
+    """
+    Subagent evaluator pool that can test generator team code iteratively.
+    Inspired by Claude Agent SDK trend.
+    """
+    def __init__(self, evaluators: List[str]):
+        """
+        Initialize the evaluator team.
+        """
+        self.evaluators = evaluators
+
+    async def evaluate_code(self, code: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Evaluate generator code iteratively.
+        """
+        results = []
+        for evaluator in self.evaluators:
+            result = await self._call_llm_evaluator(evaluator, code, context)
+            results.append(result)
+
+        passed = all(r.get("passed", False) for r in results)
+
+        return {
+            "passed": passed,
+            "results": results,
+            "overall_score": sum(r.get("score", 0) for r in results) / len(results) if results else 0
+        }
+
+    async def _call_llm_evaluator(self, evaluator_id: str, code: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Call the LLM for evaluation.
+        """
+        from magda_agent.llm_client import LLMClient
+        client = LLMClient()
+        prompt = f"Evaluate this code:\n{code}\nContext: {context}\nEvaluator ID: {evaluator_id}"
+
+        response = await client.generate(prompt=prompt, system_prompt="You are a code evaluator.")
+
+        # Simplified response parsing
+        return {
+            "evaluator_id": evaluator_id,
+            "passed": "PASSED" in response,
+            "score": 100 if "PASSED" in response else 50,
+            "feedback": response
+        }
