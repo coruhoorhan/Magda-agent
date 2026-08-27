@@ -1,5 +1,6 @@
 import logging
 import uuid
+import time
 import chromadb
 from typing import Optional, Dict
 from collections import Counter
@@ -44,7 +45,10 @@ class HabitTracker:
         if evaluation_score >= 8.0:
             try:
                 habit_id = str(uuid.uuid4())
-                metadata = {"skill_used": skill_used}
+                metadata = {
+                    "skill_used": skill_used,
+                    "timestamp": time.time()
+                }
                 if user_id is not None:
                     metadata["user_id"] = user_id
                 self.collection.add(
@@ -111,3 +115,40 @@ class HabitTracker:
         except Exception as e:
             logging.error(f"Failed to suggest strategy: {e}")
             return None
+
+    def decay_habits(self, days: float = 30.0) -> int:
+        """
+        Removes habit records older than the specified number of days to simulate
+        decay over time.
+
+        Args:
+            days (float): Threshold in days. Records older than this will be deleted.
+
+        Returns:
+            int: The number of decayed records removed.
+        """
+        try:
+            current_time = time.time()
+            threshold_seconds = current_time - (days * 24 * 3600)
+
+            # Get all records with timestamp metadata to filter and delete
+            results = self.collection.get(include=["metadatas"])
+            if not results or not results.get("ids"):
+                return 0
+
+            ids_to_delete = []
+            for i, meta in enumerate(results["metadatas"]):
+                if meta and "timestamp" in meta:
+                    record_time = meta["timestamp"]
+                    if record_time < threshold_seconds:
+                        ids_to_delete.append(results["ids"][i])
+
+            if ids_to_delete:
+                self.collection.delete(ids=ids_to_delete)
+                logging.info(f"Decayed {len(ids_to_delete)} old habit records.")
+
+            return len(ids_to_delete)
+
+        except Exception as e:
+            logging.error(f"Failed to decay habits: {e}")
+            return 0
