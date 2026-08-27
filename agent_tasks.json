@@ -12389,7 +12389,7 @@
     },
     {
       "id": "acs-validation-checkpoints-v4",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "ACS Validation Checkpoints V4",
