@@ -12610,7 +12610,7 @@
     },
     {
       "id": "mcp-server-prefixed-routing-v2",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Server Prefixed Routing V2",
@@ -29644,6 +29644,59 @@
       "acceptance": [
         "Agent cards support configurable TTL and cache invalidation logic.",
         "Tests mock A2A mesh network broadcasts."
+      ]
+    },
+    {
+      "id": "mcp-compatible-skills-export-v2-8a9ef8aa",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP-compatible Skills Export Engine V2",
+      "description": "Inspired by MCP standards trend: Develop an exporter that can bundle Magda's internal skills into a standard MCP tool server.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_exporter_v2.py",
+        "tests/test_mcp_exporter_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP exporter creates a correct JSON-RPC schema for skills.",
+        "Test coverage is sufficient and mocked."
+      ]
+    },
+    {
+      "id": "openclaw-online-rl-v2-01e0f0d6",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw-RL Online Learning Integration V2",
+      "description": "Inspired by OpenClaw trends: Implement an online RL module that uses next-state signals (user replies) to adjust agent parameters in real-time.",
+      "allowed_paths": [
+        "magda_agent/learning/online_rl_v2.py",
+        "tests/test_online_rl_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module calculates reward from user signals.",
+        "Module adjusts user model parameters without storing real state.",
+        "Mocked tests pass."
+      ]
+    },
+    {
+      "id": "canvas-live-websockets-v4-937a95a3",
+      "status": "todo",
+      "area": "gateway",
+      "risk": "medium",
+      "title": "Canvas Live WebSockets Telemetry V4",
+      "description": "Inspired by OpenClaw Canvas visualization trend: Implement a websocket server telemetry module that broadcasts agent tool execution state to connected clients.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_live_v4.py",
+        "tests/test_canvas_live_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket server accepts connections.",
+        "State broadcasts are formatted correctly.",
+        "Tests mock websockets properly."
       ]
     }
   ]

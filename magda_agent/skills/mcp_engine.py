@@ -38,7 +38,7 @@ class MCPEngine:
 
         if server_name:
             # 1a. Register the remote server routing with the MCPClient
-            tool_name = f"{server_name}__{tool_name}"
+            tool_name = f"{server_name}.{tool_name}"
             self.mcp_client.register_mcp_server(server_name, connection_info)
         else:
             # 1b. Register the remote tool routing directly with the MCPClient
@@ -89,7 +89,7 @@ class MCPEngine:
         if not tool_name:
             raise ValueError("MCP tool definition must include a 'name'.")
 
-        effective_name = f"{server_name}__{tool_name}" if server_name else tool_name
+        effective_name = f"{server_name}.{tool_name}" if server_name else tool_name
 
         if self.registry.has_skill(effective_name):
             logging.info(f"Reloading existing MCP tool '{effective_name}'.")

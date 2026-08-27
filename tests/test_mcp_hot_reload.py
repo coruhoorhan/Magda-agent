@@ -95,7 +95,7 @@ def test_mcp_engine_reload_tool_with_server():
 
     # Import initially
     mcp_engine.import_mcp_tool(initial_def, connection_info, server_name="test_server")
-    effective_name = "test_server__server_tool"
+    effective_name = "test_server.server_tool"
     assert skill_registry.has_skill(effective_name)
     assert skill_registry.descriptions[effective_name] == "Server initial"
     assert mcp_client.registered_servers["test_server"] == {"url": "http://server:8000"}

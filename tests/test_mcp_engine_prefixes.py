@@ -37,9 +37,9 @@ def test_import_mcp_tool_with_server_prefix():
     # Verify registry registered the prefixed tool
     mock_registry.register_skill.assert_called_once()
     registered_kwargs = mock_registry.register_skill.call_args.kwargs
-    assert registered_kwargs["name"] == "docs_server__search_docs"
+    assert registered_kwargs["name"] == "docs_server.search_docs"
     assert registered_kwargs["description"] == "Searches documentation."
-    assert registered_kwargs["func"].__name__ == "docs_server__search_docs"
+    assert registered_kwargs["func"].__name__ == "docs_server.search_docs"
     assert getattr(registered_kwargs["func"], "__mcp_schema__") == {}
 
 
@@ -113,4 +113,4 @@ async def test_imported_prefixed_tool_execution():
     result = await registered_func(location="London")
 
     assert result == "success result"
-    mock_mcp_client.execute_tool.assert_called_once_with("weather_station__get_weather", location="London")
+    mock_mcp_client.execute_tool.assert_called_once_with("weather_station.get_weather", location="London")
