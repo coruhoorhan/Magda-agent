@@ -12491,7 +12491,7 @@
     },
     {
       "id": "mcp-kernel-execution-sandbox-enhancements",
-      "status": "todo",
+      "status": "done",
       "area": "security",
       "risk": "high",
       "title": "MCP Kernel execution sandbox enhancements",
@@ -29303,6 +29303,57 @@
         "AgentGuard policy layer intercepts and validates tool calls.",
         "Actions are either approved or rejected based on a defined policy.",
         "Tests verify the interception and policy enforcement mechanisms."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v5-48b0c201",
+      "title": "MCP Dynamic Capability Negotiation V5",
+      "description": "Inspired by MCP capability negotiation trends (June 2026): Implement multi-turn capability negotiation for MCP tools, allowing agents to negotiate tool permissions dynamically.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v5.py",
+        "tests/test_mcp_negotiation_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negotiation module handles multi-turn dynamic capability negotiation.",
+        "Tests mock negotiation logic successfully."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-evaluation-v2-d8194cf3",
+      "title": "OpenClaw RL Trajectory Quality Evaluation V2",
+      "description": "Inspired by OpenClaw RL Trends (June 2026): Implement an evaluation module to assess the quality of long-running action trajectories for the RL loop.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v2.py",
+        "tests/test_trajectory_evaluation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module assesses action trajectory quality.",
+        "Tests verify trajectory scoring."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v1-f0cae250",
+      "title": "Claude Worktree Pruning and Resource Optimizer V1",
+      "description": "Inspired by Claude SDK Agent Teams (June 2026): Implement a background pruner that automatically cleans up stale or isolated Git worktrees left by Subagents to optimize resources.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/architecture/worktree_pruner_v1.py",
+        "tests/test_worktree_pruner_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruner cleans up stale git worktrees automatically.",
+        "Tests mock git worktree environment."
       ]
     }
   ]
