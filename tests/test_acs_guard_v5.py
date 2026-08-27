@@ -43,6 +43,27 @@ def test_checkpoint_1_input_validation(acs_guard: ACSGuardV5) -> None:
     assert not passed
     assert "missing 'action' field" in reason
 
+    # Pass - valid kwargs
+    valid_data_kwargs = {"action": "read", "tool": "ls", "kwargs": {"path": "/", "recursive": True}}
+    passed, reason = acs_guard.checkpoint_1_input_validation(valid_data_kwargs)
+    assert passed
+    assert "Passed" in reason
+
+    # Fail - kwargs not a dict
+    invalid_data_kwargs = {"action": "read", "tool": "ls", "kwargs": "not a dict"}
+    passed, reason = acs_guard.checkpoint_1_input_validation(invalid_data_kwargs)
+    assert not passed
+    assert "'kwargs' must be a dictionary" in reason
+
+    # Fail - complex args with invalid types (e.g. object instance)
+    class DummyObj:
+        pass
+
+    invalid_data_complex = {"action": "read", "tool": "ls", "kwargs": {"nested": {"obj": DummyObj()}}}
+    passed, reason = acs_guard.checkpoint_1_input_validation(invalid_data_complex)
+    assert not passed
+    assert "complex tool arguments contain invalid types" in reason
+
 
 def test_checkpoint_2_intent_authorization(acs_guard: ACSGuardV5) -> None:
     """Tests the intent authorization checkpoint."""
