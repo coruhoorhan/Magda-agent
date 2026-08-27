@@ -12578,7 +12578,7 @@
       "id": "hermes-cron-nightly-backups-v4",
       "title": "Hermes Cron Nightly Backups V4",
       "description": "Inspired by Hermes agent trend. Add a dedicated module for managing cron nightly backups.",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "low",
       "allowed_paths": [
@@ -29542,6 +29542,57 @@
         "Orchestrator halts subagent spawning until context size is within bounds.",
         "Compression is correctly invoked.",
         "Tests mock token size thresholds."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swapping-v11-unique-id",
+      "title": "OpenClaw Context Engine Virtual Context Swapping V11",
+      "description": "Inspired by OpenClaw trends (June 2026). Implement context engine logic to seamlessly swap low-priority virtual context out to episodic memory limits.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_swapping_v11.py",
+        "tests/test_virtual_context_swapping_v11.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context is accurately swapped out to episodic memory.",
+        "Tests mock page swapping limits."
+      ]
+    },
+    {
+      "id": "claude-worktree-garbage-collection-v2-unique-id",
+      "title": "Claude Worktree Subagent Garbage Collection V2",
+      "description": "Inspired by Claude Agent SDK Agent Teams pattern (June 2026). Implement automatic Git worktree garbage collection to prune obsolete subagent environments.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/multi_agent/worktree_garbage_collection_v2.py",
+        "tests/test_worktree_garbage_collection_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Garbage collection removes obsolete worktrees correctly.",
+        "Tests verify git command executions with mocks."
+      ]
+    },
+    {
+      "id": "mcp-policy-layer-guard-v7-unique-id",
+      "title": "MCP Action Tool Policy Guardrail Enforcement V7",
+      "description": "Inspired by MCP runtime safety controls (June 2026). Build a guardrail layer to enforce security policies and track taint propagation during tool actions.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/policy_layer_guard_v7.py",
+        "tests/test_policy_layer_guard_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Guardrail intercepts policy violations.",
+        "Tests verify that failed policies raise exceptions properly."
       ]
     }
   ]
