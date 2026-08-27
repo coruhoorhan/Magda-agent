@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Any
 
 from magda_agent.memory.working import MemoryEntry
 
