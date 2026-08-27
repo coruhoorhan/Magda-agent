@@ -12440,7 +12440,7 @@
     },
     {
       "id": "mcp-action-tool-governance-v5",
-      "status": "todo",
+      "status": "done",
       "area": "security",
       "risk": "high",
       "title": "MCP Action Tool Governance V5",
@@ -29161,6 +29161,59 @@
       "acceptance": [
         "Memory paging frees up context.",
         "Tests mock memory thresholds."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-governance-policy-v1",
+      "status": "todo",
+      "area": "security",
+      "risk": "high",
+      "title": "Agent Guard: Runtime Governance Policy Engine V1",
+      "description": "Inspired by trend: Agent Guard / ACS. Implement a policy engine layer for ActionToolGovernance that can load and enforce declarative YAML safety policies before action execution.",
+      "allowed_paths": [
+        "magda_agent/security/agent_guard_policy_v1.py",
+        "tests/test_agent_guard_policy_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Policy engine loads declarative YAML policies.",
+        "Policy engine integrates with ActionToolGovernance to block unallowed actions.",
+        "Tests mock policy loading and enforcement."
+      ]
+    },
+    {
+      "id": "openclaw-rl-live-feedback-aggregator-v2",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Live Feedback Aggregator V2",
+      "description": "Inspired by trend: OpenClaw-RL. Implement an aggregator module that collects live next-state signals (user replies, tool success/failure) from the unified event bus to compute intermediate rewards.",
+      "allowed_paths": [
+        "magda_agent/learning/rl_feedback_aggregator_v2.py",
+        "tests/test_rl_feedback_aggregator_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Aggregator correctly collects feedback events and outputs reward scores.",
+        "Tests verify aggregation logic with mocked event streams."
+      ]
+    },
+    {
+      "id": "a2a-mesh-network-latency-monitor-v1",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "title": "A2A Mesh Network Latency Monitor V1",
+      "description": "Inspired by trend: A2A Protocol and Enterprise Tracing. Implement a background task that actively pings known Agent Cards in the mesh network to track and record latency metrics for peer delegation routing.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_latency_monitor_v1.py",
+        "tests/test_a2a_latency_monitor_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Latency monitor pings known agents asynchronously.",
+        "Latency metrics are successfully recorded.",
+        "Tests mock a2a ping responses."
       ]
     }
   ]
