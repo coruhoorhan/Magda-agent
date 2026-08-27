@@ -269,10 +269,62 @@ class VirtualContextManagerV2:
 
             logging.info(f"Working memory context length ({current_tokens} tokens) exceeds limit ({max_tokens} tokens). Paging out...")
 
-            # Iteratively page out oldest entries until the total token count is within max_tokens
-            while self.get_token_length(entries) > max_tokens and len(entries) > 0:
+            # Iteratively page out least important entries until the total token count is within aggressive threshold (75% of max_tokens)
+            aggressive_threshold = max_tokens * 0.75
+            while self.get_token_length(entries) > aggressive_threshold and len(entries) > 1:
+                # Sort entries by importance ascending to page out least important first
+                entries_sorted_by_importance = sorted(entries, key=lambda e: e.importance)
+
+                # To page out explicit items that are not necessarily the oldest,
+                # we can use our page_out_explicit logic or manually page them out.
+                # page_out_explicit removes entries[:count]. We need to adjust working_memory directly
+                # or temporarily re-order them? Working memory doesn't allow re-ordering easily.
+                # We will manually page out the least important entries here.
+
                 count_to_remove = max(1, len(entries) // 2)
-                await self.page_out_explicit(working_memory, episodic_memory, user_id, count=count_to_remove)
+                to_remove = entries_sorted_by_importance[:count_to_remove]
+
+                if len(to_remove) > 1:
+                    try:
+                        compressed_entry = await self.compress_context(to_remove)
+                        to_remove = [compressed_entry]
+                    except Exception as e:
+                        logging.warning(f"Compression failed during aggressive paging: {e}")
+
+                for entry in to_remove:
+                    metadata = {
+                        "paged_out_explicitly": True,
+                        "importance": entry.importance,
+                        "pad_p": entry.emotional_state.pleasure,
+                        "pad_a": entry.emotional_state.arousal,
+                        "pad_d": entry.emotional_state.dominance
+                    }
+                    if entry.tags:
+                        metadata["tags"] = ",".join(entry.tags)
+
+                    episodic_memory.store_event(
+                        text=entry.content,
+                        metadata=metadata,
+                        user_id=user_id
+                    )
+                    logging.debug(f"Aggressively paged out memory entry {entry.id} (importance: {entry.importance}) for user {user_id}")
+
+                    if hasattr(self, 'large_context_window'):
+                        tokens = self.get_token_length([entry])
+                        self.large_context_window.add_chunk(
+                            content=entry.content,
+                            tokens=tokens,
+                            metadata={
+                                "user_id": user_id,
+                                "importance": entry.importance,
+                            }
+                        )
+
+                # Remove from working memory based on ID
+                original_entries_to_remove = entries_sorted_by_importance[:count_to_remove]
+                for orig_entry in original_entries_to_remove:
+                    working_memory.remove(orig_entry.id, user_id=user_id)
+
                 entries = working_memory.get_entries(user_id=user_id)
         finally:
             self._in_maintenance = False

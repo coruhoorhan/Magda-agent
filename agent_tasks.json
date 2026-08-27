@@ -12508,7 +12508,7 @@
     },
     {
       "id": "letta-virtual-context-pagination-v3",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Letta virtual context pagination v3",
@@ -29354,6 +29354,57 @@
       "acceptance": [
         "Pruner cleans up stale git worktrees automatically.",
         "Tests mock git worktree environment."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v8-new",
+      "status": "todo",
+      "area": "integration",
+      "risk": "low",
+      "title": "MCP dynamic capability negotiation v8",
+      "description": "Inspired by MCP trend. Add capability negotiation version 8 logic to dynamically discover tools via JSON-RPC metadata.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v8.py",
+        "tests/test_mcp_negotiation_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Negotiator parses capability JSON-RPC efficiently.",
+        "Tests mock JSON-RPC capabilities payload."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-multi-agent-ui-v2-new",
+      "status": "todo",
+      "area": "gateway",
+      "risk": "low",
+      "title": "OpenClaw canvas multi-agent UI stream v2",
+      "description": "Inspired by OpenClaw canvas trends. Extend the canvas WebSocket visualizer to map and broadcast states for multiple concurrently running subagents.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_live_v2.py",
+        "tests/test_canvas_live_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket properly formats and isolates subagent states.",
+        "Tests mock the WebSocket event streaming."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backup-v2-new",
+      "status": "todo",
+      "area": "skills",
+      "risk": "low",
+      "title": "Hermes cron nightly backup v2",
+      "description": "Inspired by Hermes self-improvement and cron tasks. Implement a scheduled task that securely creates a zipped nightly backup of episodic databases and skill configurations.",
+      "allowed_paths": [
+        "magda_agent/scheduler/hermes_nightly_backup_v2.py",
+        "tests/test_hermes_nightly_backup_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Backup runner uses CronSchedulerV2 to fire off archiving tasks.",
+        "Tests mock file archiving."
       ]
     }
   ]
