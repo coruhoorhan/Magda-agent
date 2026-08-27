@@ -12423,7 +12423,7 @@
     },
     {
       "id": "openclaw-online-learning-interactions-v10",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw Online Learning Interactions V10",
@@ -29110,6 +29110,57 @@
         "Evaluator scores action trajectories and outputs reward signals.",
         "Evaluator identifies points of context fragmentation.",
         "Tests ensure consistent reward values for various mocked trajectories."
+      ]
+    },
+    {
+      "id": "acs-runtime-validation-checkpoints-v2",
+      "title": "ACS Runtime Validation Checkpoints V2",
+      "description": "Inspired by ACS standard: Implement a runtime validation checkpoint layer for external tool executions.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/acs_checkpoints_v2.py",
+        "tests/test_acs_checkpoints_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Validation layer intercepts and validates tool executions.",
+        "Tests mock tool execution."
+      ]
+    },
+    {
+      "id": "a2a-peer-mesh-task-delegation-v7",
+      "title": "A2A Peer Mesh Task Delegation V7",
+      "description": "Inspired by A2A standard: Implement task delegation using Agent Cards within a peer mesh.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mesh_delegation_v7.py",
+        "tests/test_a2a_mesh_delegation_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Delegation works across peer mesh.",
+        "Tests mock mesh communication."
+      ]
+    },
+    {
+      "id": "memgpt-episodic-memory-paging-v5",
+      "title": "MemGPT Episodic Memory Paging V5",
+      "description": "Inspired by MemGPT virtual context: Implement an aggressive memory paging algorithm that moves short-term interactions into episodic storage.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/episodic_paging_v5.py",
+        "tests/test_episodic_paging_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Memory paging frees up context.",
+        "Tests mock memory thresholds."
       ]
     }
   ]
