@@ -75,3 +75,60 @@ def test_register_tool_at_runtime_enhanced_validation_failure():
 
     result = registrar.register_tool_at_runtime(invalid_schema_input)
     assert result is False
+
+import asyncio
+from unittest.mock import AsyncMock, MagicMock
+from magda_agent.skills.mcp_dynamic_registry import MCPPrefixedToolRegistry
+from magda_agent.skills.mcp_client import MCPClient
+
+@pytest.fixture
+def mcp_client_mock():
+    client = MagicMock(spec=MCPClient)
+    client.execute_tool = AsyncMock()
+    return client
+
+@pytest.fixture
+def prefixed_registry(mcp_client_mock):
+    return MCPPrefixedToolRegistry(mcp_client_mock)
+
+@pytest.mark.asyncio
+async def test_execute_tool_with_prefix(prefixed_registry, mcp_client_mock):
+    mcp_client_mock.execute_tool.return_value = "prefixed result"
+
+    result = await prefixed_registry.execute_tool("serverA.calculator", expr="2+2")
+
+    mcp_client_mock.execute_tool.assert_called_once_with("serverA.calculator", expr="2+2")
+    assert result == "prefixed result"
+
+@pytest.mark.asyncio
+async def test_execute_tool_without_prefix(prefixed_registry, mcp_client_mock):
+    mcp_client_mock.execute_tool.return_value = "global result"
+
+    result = await prefixed_registry.execute_tool("global_tool", p1="val1")
+
+    mcp_client_mock.execute_tool.assert_called_once_with("global_tool", p1="val1")
+    assert result == "global result"
+
+@pytest.mark.asyncio
+async def test_runtime_concurrency(prefixed_registry, mcp_client_mock):
+    # Setup mock to return different things based on input
+    async def mock_execute_tool(tool_name, **kwargs):
+        if tool_name == "tool1":
+            return "result 1"
+        elif tool_name == "tool2":
+            return "result 2"
+        return "unknown"
+
+    mcp_client_mock.execute_tool.side_effect = mock_execute_tool
+
+    tasks = [
+        {"tool": "tool1", "params": {"p1": "v1"}},
+        {"tool": "tool2", "params": {"p2": "v2"}},
+        {"tool": "tool3"} # missing params
+    ]
+
+    results = await prefixed_registry.execute_concurrently(tasks)
+
+    assert len(results) == 3
+    assert results == ["result 1", "result 2", "unknown"]
+    assert mcp_client_mock.execute_tool.call_count == 3

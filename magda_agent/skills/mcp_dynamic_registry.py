@@ -1,7 +1,67 @@
 import logging
-from typing import Dict, Any
+import asyncio
+from typing import Dict, Any, List
 
 from magda_agent.skills.mcp_registry import MCPRegistry
+from magda_agent.skills.mcp_client import MCPClient
+
+
+class MCPPrefixedToolRegistry:
+    """
+    Registry for dynamic loading and routing of MCP tools with server prefixes.
+    Supports runtime function concurrency via asyncio.
+    """
+
+    def __init__(self, mcp_client: MCPClient) -> None:
+        """
+        Initialize the prefixed tool registry.
+
+        Args:
+            mcp_client (MCPClient): The MCP client used for tool execution.
+        """
+        self.mcp_client = mcp_client
+
+    async def execute_tool(self, tool_name: str, **kwargs: Any) -> Any:
+        """
+        Executes a remote MCP tool. Handles optional server prefixes.
+        If a prefix exists (e.g., 'server.tool_name'), MCPClient handles it natively.
+
+        Args:
+            tool_name (str): The name of the tool (can be prefixed).
+            kwargs: Arguments for the tool.
+
+        Returns:
+            Any: The execution result.
+        """
+        logging.info(f"Routing execution for tool: {tool_name}")
+        return await self.mcp_client.execute_tool(tool_name, **kwargs)
+
+    async def execute_concurrently(self, tasks: List[Dict[str, Any]]) -> List[Any]:
+        """
+        Executes multiple MCP tools concurrently using asyncio.
+
+        Args:
+            tasks (List[Dict[str, Any]]): A list of task dictionaries. Each dictionary
+                should have 'tool' (str) and 'params' (Dict) keys.
+
+        Returns:
+            List[Any]: A list of results corresponding to the tasks.
+        """
+        logging.info(f"Executing {len(tasks)} MCP tools concurrently.")
+
+        coroutines = []
+        for task in tasks:
+            tool_name = task.get("tool")
+            params = task.get("params", {})
+            if not tool_name:
+                continue
+
+            # Create a coroutine for each tool execution
+            coroutines.append(self.execute_tool(tool_name, **params))
+
+        # Run all coroutines concurrently
+        results = await asyncio.gather(*coroutines, return_exceptions=True)
+        return list(results)
 
 
 class MCPDynamicRegistrarV4:

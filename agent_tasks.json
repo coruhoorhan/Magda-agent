@@ -30551,7 +30551,7 @@
     {
       "id": "mcp-dynamic-tool-registry-1",
       "title": "MCP Dynamic Tool Registry Support",
-      "status": "todo",
+      "status": "done",
       "description": "Implement an MCP server-prefixed tool registry in the Cognitive Architecture, inspired by OpenAI Agents SDK, allowing runtime function tool concurrency.",
       "area": "skills",
       "risk": "medium",
@@ -30791,6 +30791,61 @@
       "acceptance": [
         "Scorer calculates and assigns weights to active context chunks.",
         "Tests mock interaction frequencies to verify weight adjustments."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-quality-evaluation-v2-jules-final",
+      "title": "OpenClaw RL Trajectory Quality Evaluation",
+      "status": "todo",
+      "description": "Inspired by OpenClaw-RL (June 2026): Implement trajectory quality evaluation based on long-term user satisfaction signals, helping to refine context engine pruning.",
+      "area": "learning",
+      "risk": "medium",
+      "assigned_to": "codex-worker",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v2.py",
+        "tests/test_trajectory_evaluation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Trajectory evaluation module properly implemented.",
+        "Module processes user feedback signals and assigns quality scores.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v12-jules-final",
+      "title": "MCP Dynamic Capability Negotiation V12",
+      "status": "todo",
+      "description": "Inspired by MCP standards (June 2026): Implement multi-turn dynamic capability negotiation for MCP tools to ensure both sides support required standard extensions before executing tools.",
+      "area": "skills",
+      "risk": "medium",
+      "assigned_to": "codex-worker",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_dynamic_capability_negotiation_v12.py",
+        "tests/test_mcp_dynamic_capability_negotiation_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability negotiation explicitly verified before tool execution.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v4-jules-final",
+      "title": "Claude Worktree Pruning and Resource Optimizer V4",
+      "status": "todo",
+      "description": "Inspired by Claude Agent Teams: Optimize git worktree subagent isolation by actively pruning stale resources and aggressively reusing unchanged environments.",
+      "area": "architecture",
+      "risk": "high",
+      "assigned_to": "codex-worker",
+      "allowed_paths": [
+        "magda_agent/architecture/claude_worktree_pruning_v4.py",
+        "tests/test_claude_worktree_pruning_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Optimizer prunes stale git worktrees correctly.",
+        "Tests pass."
       ]
     }
   ]
