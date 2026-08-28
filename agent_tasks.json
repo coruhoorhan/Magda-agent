@@ -13169,7 +13169,7 @@
     },
     {
       "id": "mcp-kernel-taint-tracking-v3-9077ff09-2e36-4ca9-ba53-99c574098cf7",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCPKernel Taint Tracking V3",
@@ -31208,6 +31208,57 @@
       "acceptance": [
         "Hierarchical delegation successfully isolates subagents.",
         "Tests mock subagent spawning to ensure proper isolation."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-auth-v3-fb3f61fe",
+      "status": "todo",
+      "area": "security",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Auth V3",
+      "description": "Inspired by MCP standards trend: Implement dynamic capability negotiation authentication to securely authenticate tool usage requests via standard MCP endpoints.",
+      "allowed_paths": [
+        "magda_agent/security/mcp_dynamic_auth_v3.py",
+        "tests/test_mcp_dynamic_auth_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully handles dynamic capability authentication for MCP tools.",
+        "Tests verify correct acceptance of valid requests and blocking of invalid ones."
+      ]
+    },
+    {
+      "id": "a2a-delegation-mesh-retry-v1-8ad4ae84",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Mesh Retry Strategy V1",
+      "description": "Inspired by A2A Protocol trends: Implement an exponential backoff and retry strategy for peer-to-peer agent delegation failures in the mesh.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mesh_retry_v1.py",
+        "tests/test_a2a_mesh_retry_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Retry logic successfully retries failing A2A delegations using exponential backoff.",
+        "Tests verify retry strategy limits and backoff increments."
+      ]
+    },
+    {
+      "id": "openclaw-multi-agent-canvas-v1-077b74ba",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "title": "OpenClaw Multi-Agent Canvas Streamer V1",
+      "description": "Inspired by OpenClaw trends: Create a WebSocket streamer that aggregates and live-streams multi-agent subagent interactions and context swaps.",
+      "allowed_paths": [
+        "magda_agent/visualization/openclaw_multi_agent_canvas_v1.py",
+        "tests/test_openclaw_multi_agent_canvas_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket server successfully created and broadcasts aggregated interaction data.",
+        "Tests pass verifying the payload structure and streaming logic."
       ]
     }
   ]
