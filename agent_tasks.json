@@ -12932,7 +12932,7 @@
     },
     {
       "id": "acs-state-transition-checkpoint-v5-1",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ACS State Transition Checkpoint V5",
@@ -30494,6 +30494,58 @@
         "Evaluator sub-agent successfully invokes the smoke test suite in an isolated environment.",
         "Pass/fail signals correctly influence the Evaluator's final determination.",
         "Tests mock sub-agent creation and test execution outcomes."
+      ]
+    },
+    {
+      "id": "openclaw-rl-swarm-multi-agent-v1",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "OpenClaw RL Swarm Multi-Agent V1",
+      "description": "Inspired by OpenClaw-RL (June 2026): Implement multi-agent swarm architecture utilizing RL for task delegation and dynamic role assignment across swarm agents.",
+      "allowed_paths": [
+        "magda_agent/architecture/openclaw_rl_swarm_v1.py",
+        "tests/test_openclaw_rl_swarm_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Swarm architecture module added using RL for delegation.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "claude-git-worktree-isolation-v2",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "Claude Git Worktree Isolation V2",
+      "description": "Inspired by Claude Agent SDK Agent Teams (June 2026): Implement strict Git worktree isolation for sub-agent workspaces to prevent cross-contamination.",
+      "allowed_paths": [
+        "magda_agent/safety/claude_git_worktree_v2.py",
+        "tests/test_claude_git_worktree_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Git worktree isolation logic implemented for subagents.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "mcp-persistent-logging-audit-v1",
+      "status": "todo",
+      "area": "safety",
+      "risk": "low",
+      "title": "MCP Persistent Logging Audit V1",
+      "description": "Inspired by MCP standards (June 2026): Add persistent logging and auditing of all MCP tool executions with cryptographic signing of logs.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_persistent_logging_v1.py",
+        "tests/test_mcp_persistent_logging_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Persistent logging for MCP actions implemented.",
+        "Logs are signed correctly.",
+        "Tests pass."
       ]
     }
   ]
