@@ -13187,7 +13187,7 @@
     },
     {
       "id": "claude-context-compression-v8-ac7afdc4-561b-4671-b419-226fc195b128",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Context Compression V8",
@@ -31259,6 +31259,60 @@
       "acceptance": [
         "WebSocket server successfully created and broadcasts aggregated interaction data.",
         "Tests pass verifying the payload structure and streaming logic."
+      ]
+    },
+    {
+      "id": "hermes-agent-proactive-skill-discovery-v2",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Proactive Skill Discovery V2",
+      "description": "Inspired by Hermes Agent trends: Implement a background routine that proactively explores the local environment to discover unmapped python scripts and suggests them as new skills to the user.",
+      "allowed_paths": [
+        "magda_agent/skills/proactive_discovery_v2.py",
+        "tests/test_proactive_discovery_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Routine scans local directories for potential python skills.",
+        "Generates a summary of suggested skills and mock-prompts the user.",
+        "Tests mock file system access and verify suggestions."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-frustration-detector-v1",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw RL Implicit Frustration Detector V1",
+      "description": "Inspired by OpenClaw-RL trends: Implement a multimodal RL extension that detects implicit frustration signals (e.g., repeating the same prompt, using all caps) and negatively adjusts the current active skill's reward weights.",
+      "allowed_paths": [
+        "magda_agent/learning/frustration_detector_v1.py",
+        "tests/test_frustration_detector_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Detector parses prompt history for implicit frustration signals.",
+        "Corresponding tool selection weights are negatively adjusted.",
+        "Tests verify that repeated identical prompts trigger the penalty."
+      ]
+    },
+    {
+      "id": "claude-worktree-multi-agent-conflict-resolution-v1",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "Claude Worktree Multi-Agent Conflict Resolution V1",
+      "description": "Inspired by Claude Agent Teams: Build a specialized Git merge subagent that operates in isolated worktrees to automatically resolve complex merge conflicts between parallel agent branches using semantic analysis.",
+      "allowed_paths": [
+        "magda_agent/architecture/merge_subagent_v1.py",
+        "tests/test_merge_subagent_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Merge subagent can parse git conflicts and use an LLM to generate resolutions.",
+        "Subagent resolves conflicts in an isolated worktree.",
+        "Tests mock git operations and verify conflict resolution logic."
       ]
     }
   ]
