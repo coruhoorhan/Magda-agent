@@ -6,10 +6,14 @@ across memory boundaries (episodic memory).
 """
 import logging
 import math
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Callable, Dict, List, Optional, Set
 
 from magda_agent.memory.episodic import EpisodicMemory
-from magda_agent.safety.taint_tracking_v2 import TaintTrackerV2
+from magda_agent.safety.taint_tracking_v2 import (
+    MCPKernelV2,
+    SandboxExecutionEnvironmentV2,
+    TaintTrackerV2,
+)
 
 
 class TaintTrackerV3(TaintTrackerV2):
@@ -18,6 +22,28 @@ class TaintTrackerV3(TaintTrackerV2):
     def __init__(self) -> None:
         """Initialize the TaintTrackerV3."""
         super().__init__()
+
+
+class SandboxExecutionEnvironmentV3(SandboxExecutionEnvironmentV2):
+    """An enhanced sandbox execution environment using TaintTrackerV3."""
+
+    def __init__(self, tracker: TaintTrackerV3) -> None:
+        """Initialize the SandboxExecutionEnvironmentV3.
+
+        Args:
+            tracker: The TaintTrackerV3 instance.
+        """
+        super().__init__(tracker=tracker)
+
+
+class MCPKernelV3(MCPKernelV2):
+    """Enhanced Kernel for executing tools safely with V3 taint origin tracking."""
+
+    def __init__(self) -> None:
+        """Initialize the MCPKernelV3."""
+        super().__init__()
+        self.tracker = TaintTrackerV3()
+        self.sandbox = SandboxExecutionEnvironmentV3(self.tracker)
 
 
 class TaintedEpisodicMemory(EpisodicMemory):
