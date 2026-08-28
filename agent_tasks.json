@@ -13204,7 +13204,7 @@
     },
     {
       "id": "openclaw-rl-canvas-live-v6-299a89d3-1186-43dc-810e-b9ab9d51c9de",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw RL Canvas Live V6",
@@ -31313,6 +31313,58 @@
         "Merge subagent can parse git conflicts and use an LLM to generate resolutions.",
         "Subagent resolves conflicts in an isolated worktree.",
         "Tests mock git operations and verify conflict resolution logic."
+      ]
+    },
+    {
+      "id": "hermes-experience-skill-extractor-v7-299a",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "Hermes Experience Skill Extractor V7",
+      "description": "Inspired by trend: Skill creation from experience (Hermes). Implement a module to extract skills from past experiences.",
+      "allowed_paths": [
+        "magda_agent/learning/experience_extractor_v7.py",
+        "tests/test_experience_extractor_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully extracts skills from experience.",
+        "Tests verify extraction logic using mocks."
+      ]
+    },
+    {
+      "id": "claude-subagent-orchestrator-v2-299a",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude Agent Teams Subagent Orchestrator V2",
+      "description": "Inspired by trend: Subagent spawning, context compression (Claude Agent SDK). Create an orchestrator to spawn subagents and compress context.",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_orchestrator_v2.py",
+        "tests/test_subagent_orchestrator_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Orchestrator can spawn subagents.",
+        "Context compression is correctly applied.",
+        "Tests mock subagent spawning."
+      ]
+    },
+    {
+      "id": "openclaw-rl-realtime-feedback-stream-v2-299a",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Real-time Feedback Stream V2",
+      "description": "Inspired by trend: Online RL from user feedback. Implement a real-time feedback stream for RL from user feedback.",
+      "allowed_paths": [
+        "magda_agent/learning/realtime_feedback_stream_v2.py",
+        "tests/test_realtime_feedback_stream_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Feedback stream receives and processes real-time user feedback.",
+        "Tests mock feedback stream input and assert expected behavior."
       ]
     }
   ]
