@@ -12948,7 +12948,7 @@
     },
     {
       "id": "openclaw-semantic-memory-canvas-v2-1",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw Semantic Memory Canvas V2",
@@ -30546,6 +30546,63 @@
         "Persistent logging for MCP actions implemented.",
         "Logs are signed correctly.",
         "Tests pass."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-registry-1",
+      "title": "MCP Dynamic Tool Registry Support",
+      "status": "todo",
+      "description": "Implement an MCP server-prefixed tool registry in the Cognitive Architecture, inspired by OpenAI Agents SDK, allowing runtime function tool concurrency.",
+      "area": "skills",
+      "risk": "medium",
+      "assigned_to": "codex-worker",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_dynamic_registry.py",
+        "tests/test_mcp_dynamic_registry.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A registry that dynamically loads MCP tools and routes them with a server prefix.",
+        "Supports runtime concurrency using asyncio.",
+        "Passes pytest validations with mocked MCP tool responses."
+      ]
+    },
+    {
+      "id": "claude-context-compression-v7-1",
+      "title": "Claude Context Compressor V7",
+      "status": "todo",
+      "description": "Create a new ClaudeContextCompressorV7 that builds on V6 but introduces 'Selective Retrieval V3' for better clustering of semantic context before summarization.",
+      "area": "memory",
+      "risk": "medium",
+      "assigned_to": "codex-worker",
+      "allowed_paths": [
+        "magda_agent/memory/compression_v7.py",
+        "tests/test_compression_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Implements ClaudeContextCompressorV7 with enhanced clustering logic.",
+        "Truncates/summarizes older context while keeping recent intact.",
+        "pytest suite using mocked LLMClient verifies compression thresholds."
+      ]
+    },
+    {
+      "id": "acs-guardrail-checkpoint-2",
+      "title": "ACS Guardrail Checkpoint 2 (State Validation)",
+      "status": "todo",
+      "description": "Implement Agent Control Specification (ACS) checkpoint 2 for runtime state validation during task execution, adhering to 2026 AI Agent trends.",
+      "area": "safety",
+      "risk": "high",
+      "assigned_to": "codex-worker",
+      "allowed_paths": [
+        "magda_agent/safety/acs_guard_v6.py",
+        "tests/test_acs_guard_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "ACSGuardV6 implements checkpoint 2 (state validation).",
+        "Validates current and proposed states against allowed workflow transitions.",
+        "Unit tests confirm transitions are blocked when invalid."
       ]
     }
   ]
