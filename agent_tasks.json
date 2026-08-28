@@ -12677,7 +12677,7 @@
     },
     {
       "id": "context-engine-lifecycle-plugins-v6",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Context Engine Lifecycle Plugins V6",
@@ -29834,6 +29834,57 @@
       "acceptance": [
         "RBAC module rejects MCP tool calls without sufficient role claims.",
         "Tests verify blocking of unauthorized tool executions using mocks."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-v8-unique-new",
+      "title": "OpenClaw Context Engine Plugin V8",
+      "description": "Inspired by AI Agent Trends (OpenClaw Context Engine). Implement Context Engine Plugin V8 to allow isolated multi-agent hooks.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_v8_plugin.py",
+        "tests/test_context_engine_v8_plugin.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context engine supports multi-agent scoped plugins.",
+        "Tests verify plugin isolation during concurrent lifecycle hooks."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v5-unique-new",
+      "title": "MCP Dynamic Capability Negotiation V5",
+      "description": "Inspired by MCP capabilities standard (June 2026). Implement multi-turn capability negotiation for MCP tools to gracefully downgrade unavailable features.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v5.py",
+        "tests/test_mcp_negotiation_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP tools negotiate supported capabilities over multiple turns.",
+        "Tests simulate fallback when capabilities are rejected."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v1-unique-new",
+      "title": "Claude Worktree Pruning and Resource Optimizer V1",
+      "description": "Inspired by Claude SDK agent teams and Git worktree isolation. Develop a resource optimizer that actively prunes stale worktrees to reduce storage footprint during parallel agent operations.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/multi_agent/worktree_pruning_v1.py",
+        "tests/test_worktree_pruning_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Stale subagent worktrees are detected and safely pruned.",
+        "Tests mock OS file operations and verify cleanup intervals."
       ]
     }
   ]
