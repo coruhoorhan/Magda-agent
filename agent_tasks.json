@@ -12694,7 +12694,7 @@
     },
     {
       "id": "mcp-action-tool-preflight-validation-v6-1e2612a5",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Tool Pre-flight Validation V6 v2",
@@ -29885,6 +29885,41 @@
       "acceptance": [
         "Stale subagent worktrees are detected and safely pruned.",
         "Tests mock OS file operations and verify cleanup intervals."
+      ]
+    },
+    {
+      "id": "openclaw-agent-swarm-orchestrator-v1-uuid3",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "OpenClaw Agent Swarm Orchestrator v1",
+      "description": "Inspired by OpenClaw trends: Implement a swarm orchestrator that manages multiple homogeneous subagents collaborating on distributed tasks without strict hierarchical boundaries.",
+      "allowed_paths": [
+        "magda_agent/architecture/swarm_orchestrator.py",
+        "tests/test_swarm_orchestrator.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Orchestrator can initialize a swarm of agents.",
+        "Tasks can be dynamically allocated to free agents in the swarm.",
+        "Tests verify swarm allocation and mock agent executions."
+      ]
+    },
+    {
+      "id": "claude-code-review-subagent-v1-uuid4",
+      "status": "todo",
+      "area": "agents",
+      "risk": "medium",
+      "title": "Claude Code Review Subagent v1",
+      "description": "Inspired by Claude Code and CriticAgent: Implement a specialized code review subagent that evaluates git diffs for security and logic flaws before merge.",
+      "allowed_paths": [
+        "magda_agent/agents/code_review_subagent.py",
+        "tests/test_code_review_subagent.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Review subagent processes git diffs and returns structured feedback.",
+        "Tests verify mock diff processing and LLM prompt generation."
       ]
     }
   ]
