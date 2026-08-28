@@ -6,6 +6,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from magda_agent.visualization.server import CanvasServer
+from magda_agent.visualization.openclaw_canvas_v5 import OpenClawRLCanvasV5
+
 from magda_agent.visualization.canvas_streamer import CanvasMemoryStreamer
 from magda_agent.telemetry.canvas_stream_v9 import CanvasTelemetryStreamerV9
 from magda_agent.memory.canvas_viz import MemoryCanvasVisualizer
@@ -257,6 +259,8 @@ local_first_gateway = LocalFirstGateway()
 local_first_gateway.set_message_handler(consciousness.process_input)
 
 discord_bridge = DiscordBridge(token=os.getenv("DISCORD_BOT_TOKEN", "dummy"), agent_callback=consciousness.process_input)
+openclaw_rl_canvas = OpenClawRLCanvasV5()
+
 cross_platform_dispatcher.register_platform("discord", discord_bridge)
 
 
@@ -273,6 +277,8 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(canvas_memory_streamer.start_streaming())
     asyncio.create_task(canvas_server.start_streaming())
     asyncio.create_task(discord_bridge.start())
+    asyncio.create_task(openclaw_rl_canvas.start())
+
     yield
     # Shutdown
     await cron_scheduler_v2.stop()
@@ -284,6 +290,8 @@ async def lifespan(app: FastAPI):
     await canvas_memory_streamer.stop_streaming()
     await canvas_server.stop_streaming()
     await discord_bridge.stop()
+    await openclaw_rl_canvas.stop()
+
     memory_system.close()
 
 app = FastAPI(title="Magda Consciousness API", lifespan=lifespan)
