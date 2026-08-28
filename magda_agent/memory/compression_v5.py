@@ -41,12 +41,8 @@ class ClaudeContextCompressorV5:
         if len(combined_text) > char_limit and self.llm:
             try:
                 logging.info(f"Compressing {len(entries)} old working memory entries.")
-                prompt = f"Summarize the following text, maintaining key facts within {token_limit} tokens:\n\n{combined_text}"
-                messages = [
-                    {"role": "system", "content": "You compress memory context. Return only the summary text."},
-                    {"role": "user", "content": prompt}
-                ]
-                compressed_text = await self.llm.chat_completion(messages, temperature=0.2)
+                prompt = f"You compress memory context. Return only the summary text.\n\nSummarize the following text, maintaining key facts within {token_limit} tokens:\n\n{combined_text}"
+                compressed_text = await self.llm.generate(prompt, temperature=0.2)
                 compressed_text = compressed_text.strip()
             except Exception as e:
                 logging.error(f"Compression failed: {e}")
@@ -89,12 +85,8 @@ class ClaudeContextCompressorV5:
         if self.llm:
             try:
                 logging.info(f"V5 Compressing workflow context exceeding {token_limit} tokens.")
-                prompt = f"Summarize the following workflow context to fit within {token_limit} tokens, retaining critical state and paths:\n\n{workflow_context}"
-                messages = [
-                    {"role": "system", "content": "You compress workflow context. Return only the summary text."},
-                    {"role": "user", "content": prompt}
-                ]
-                compressed_text = await self.llm.chat_completion(messages, temperature=0.2)
+                prompt = f"You compress workflow context. Return only the summary text.\n\nSummarize the following workflow context to fit within {token_limit} tokens, retaining critical state and paths:\n\n{workflow_context}"
+                compressed_text = await self.llm.generate(prompt, temperature=0.2)
                 return compressed_text.strip()
             except Exception as e:
                 logging.error(f"V5 Workflow compression failed: {e}")
