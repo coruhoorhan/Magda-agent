@@ -91,7 +91,7 @@ async def test_sync_once_success_update_tool(registry: MCPRegistry) -> None:
 
 
 @pytest.mark.asyncio
-async def test_sync_once_http_error(registry: MCPRegistry) -> None:
+async def test_sync_once_request_error(registry: MCPRegistry) -> None:
     registry.load_tool({
         "name": "test_tool",
         "description": "Should remain"
@@ -100,13 +100,51 @@ async def test_sync_once_http_error(registry: MCPRegistry) -> None:
     sync = MCPRegistrySync(registry, "http://mock-mcp-server", sync_interval=60)
 
     mock_client = AsyncMock()
-    mock_client.__aenter__.return_value.get.side_effect = httpx.HTTPError("Network error")
+    mock_client.__aenter__.return_value.get.side_effect = httpx.RequestError("Network error", request=MagicMock())
 
     with patch("httpx.AsyncClient", return_value=mock_client):
         await sync.sync_once()
 
     # Tool should still be there because sync failed
     assert "test_tool" in registry.list_tools()
+
+@pytest.mark.asyncio
+async def test_sync_once_http_status_error(registry: MCPRegistry) -> None:
+    registry.load_tool({
+        "name": "test_tool",
+        "description": "Should remain"
+    })
+
+    sync = MCPRegistrySync(registry, "http://mock-mcp-server", sync_interval=60)
+
+    mock_response = MagicMock()
+    mock_response.raise_for_status.side_effect = httpx.HTTPStatusError("404 Not Found", request=MagicMock(), response=mock_response)
+    mock_response.status_code = 404
+
+    mock_client = AsyncMock()
+    mock_client.__aenter__.return_value.get.return_value = mock_response
+
+    with patch("httpx.AsyncClient", return_value=mock_client):
+        await sync.sync_once()
+
+    # Tool should still be there because sync failed
+    assert "test_tool" in registry.list_tools()
+
+@pytest.mark.asyncio
+async def test_sync_once_invalid_json(registry: MCPRegistry) -> None:
+    sync = MCPRegistrySync(registry, "http://mock-mcp-server", sync_interval=60)
+
+    mock_response = MagicMock()
+    mock_response.json.return_value = ["not", "a", "dict"]
+    mock_response.raise_for_status.return_value = None
+
+    mock_client = AsyncMock()
+    mock_client.__aenter__.return_value.get.return_value = mock_response
+
+    with patch("httpx.AsyncClient", return_value=mock_client):
+        await sync.sync_once()
+
+    assert len(registry.list_tools()) == 0
 
 @pytest.mark.asyncio
 async def test_start_stop() -> None:

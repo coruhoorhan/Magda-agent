@@ -51,6 +51,12 @@ class MCPRegistrySync:
                 response = await client.get(f"{self.mcp_server_url}/tools")
                 response.raise_for_status()
                 data = response.json()
+        except httpx.RequestError as e:
+            self.logger.error(f"Failed to fetch tools from MCP server {self.mcp_server_url}: Network error: {e}")
+            return
+        except httpx.HTTPStatusError as e:
+            self.logger.error(f"Failed to fetch tools from MCP server {self.mcp_server_url}: HTTP error {e.response.status_code}")
+            return
         except Exception as e:
             self.logger.error(f"Failed to fetch tools from MCP server {self.mcp_server_url}: {e}")
             return

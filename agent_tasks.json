@@ -13083,7 +13083,7 @@
     },
     {
       "id": "mcp-dynamic-tool-registry-sync-v10-ab8196e0-d9a4-401f-b9d4-23487568426a",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Dynamic Tool Registry Synchronization V10",
