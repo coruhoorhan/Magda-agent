@@ -13255,7 +13255,7 @@
     },
     {
       "id": "mcp-dynamic-tool-registry-sync-v11",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "MCP Dynamic Tool Registry Synchronization V11",
@@ -31435,6 +31435,59 @@
         "Lifecycle hooks are defined and can be registered.",
         "Hooks are invoked correctly during the context lifecycle.",
         "Tests mock hooks and assert they are called at the right time."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-discovery-v8",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Discovery V8",
+      "description": "Inspired by Hermes Agent trends: Implement an advanced skill discovery mechanism that can dynamically locate and register executable agent skills.",
+      "allowed_paths": [
+        "magda_agent/skills/discovery_v8.py",
+        "tests/test_discovery_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully discovers new skills.",
+        "Tests pass verifying discovery logic."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-frustration-v2",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw RL Multimodal Frustration V2",
+      "description": "Inspired by OpenClaw-RL trends: Extend frustration detection with multimodal signals processing from user interactions to dynamically adjust RL weights.",
+      "allowed_paths": [
+        "magda_agent/learning/frustration_v2.py",
+        "tests/test_frustration_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Detector processes multimodal interaction sequences for implicit frustration signals.",
+        "Weights are negatively adjusted accordingly.",
+        "Tests pass verifying the multimodal adjustment logic."
+      ]
+    },
+    {
+      "id": "claude-worktree-multi-agent-conflict-resolution-v2",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "Claude Worktree Multi-Agent Conflict Resolution V2",
+      "description": "Inspired by Claude Agent Teams trends: Enhance the Git merge subagent with an evaluator pool to review semantic conflict resolutions.",
+      "allowed_paths": [
+        "magda_agent/architecture/merge_subagent_v2.py",
+        "tests/test_merge_subagent_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator pool reviews and validates merge resolutions before commit.",
+        "Isolated worktree logic handles parallel evaluator tasks.",
+        "Tests mock operations and verify logic."
       ]
     }
   ]
