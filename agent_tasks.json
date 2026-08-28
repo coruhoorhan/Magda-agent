@@ -12964,7 +12964,7 @@
     },
     {
       "id": "hermes-agent-skills-creation-v5",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "Hermes Agent Skills Creation v5",
@@ -30603,6 +30603,40 @@
         "ACSGuardV6 implements checkpoint 2 (state validation).",
         "Validates current and proposed states against allowed workflow transitions.",
         "Unit tests confirm transitions are blocked when invalid."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v10",
+      "title": "MCP Dynamic Capability Negotiation V10",
+      "description": "Inspired by MCP standards (June 2026): Implement dynamic capability negotiation caching for MCP servers to reduce redundant capability negotiations.",
+      "area": "skills",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_capability_negotiation_v10.py",
+        "tests/test_mcp_capability_negotiation_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP Capability negotiation with caching implemented.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "a2a-discovery-service-v6",
+      "title": "A2A Discovery Service V6",
+      "description": "Inspired by A2A standard trend (June 2026): Handle agent discovery, network registry, and filter out offline agents based on their health_status.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_discovery_v6.py",
+        "tests/test_a2a_discovery_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A discovery service implemented.",
+        "Tests pass."
       ]
     }
   ]
