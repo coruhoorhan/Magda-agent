@@ -12779,7 +12779,7 @@
     },
     {
       "id": "claude-context-compression-v6",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Context Compression V6",
@@ -30076,6 +30076,57 @@
         "Exporter can serialize agent state to JSON.",
         "Exporter can broadcast state via mock WebSocket.",
         "Tests pass."
+      ]
+    },
+    {
+      "id": "openclaw-realtime-rl-feedback-v10",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw Realtime RL Feedback V10",
+      "description": "Inspired by OpenClaw trends: Implement real-time reinforcement learning from next-state signals (user replies, tool outputs) to adjust agent behavior dynamically.",
+      "allowed_paths": [
+        "magda_agent/learning/realtime_rl_v10.py",
+        "tests/test_realtime_rl_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "RL feedback loop captures signals and updates state.",
+        "Tests verify learning adjustments from mock signals."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-integration-v5",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Enterprise Integration V5",
+      "description": "Inspired by A2A standard trends: Implement peer-to-peer task delegation with async enterprise-ready tracing and monitoring.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_enterprise_v5.py",
+        "tests/test_a2a_enterprise_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Task delegation works over mocked A2A interface.",
+        "Tests verify async tracing logs are generated."
+      ]
+    },
+    {
+      "id": "mcpkernel-taint-tracking-v2",
+      "status": "todo",
+      "area": "safety",
+      "risk": "critical",
+      "title": "MCPKernel Taint Tracking V2",
+      "description": "Inspired by MCPKernel and sandboxed execution trends: Implement taint tracking for variables influenced by external tools to prevent critical execution without policy review.",
+      "allowed_paths": [
+        "magda_agent/safety/taint_tracking_v2.py",
+        "tests/test_taint_tracking_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint tracker marks variables correctly.",
+        "Tests verify policy blocks execution of tainted variables."
       ]
     }
   ]
