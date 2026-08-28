@@ -13272,7 +13272,7 @@
     },
     {
       "id": "mcp-agent-teams-isolation-v5",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "MCP Agent Teams Isolation V5",
@@ -31488,6 +31488,57 @@
         "Evaluator pool reviews and validates merge resolutions before commit.",
         "Isolated worktree logic handles parallel evaluator tasks.",
         "Tests mock operations and verify logic."
+      ]
+    },
+    {
+      "id": "openclaw-rl-trajectory-quality-evaluation-v2-unique",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "OpenClaw RL Trajectory Quality Evaluation V2",
+      "description": "Inspired by OpenClaw RL: Implement an offline trajectory evaluation pipeline to review agent execution histories and penalize or reward behaviors before storing them in procedural memory.",
+      "allowed_paths": [
+        "magda_agent/learning/trajectory_evaluation_v2.py",
+        "tests/test_trajectory_evaluation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline successfully analyzes trajectories and computes reward scores.",
+        "Tests verify score calculation logic using mocks."
+      ]
+    },
+    {
+      "id": "claude-worktree-pruning-optimizer-v1-unique",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude Worktree Pruning and Resource Optimizer V1",
+      "description": "Inspired by Claude Agent SDK: Develop a background garbage collection job to clean up orphaned or stale isolated git worktrees left behind by failed multi-agent workflows.",
+      "allowed_paths": [
+        "magda_agent/teams/worktree_pruner_v1.py",
+        "tests/test_worktree_pruner_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pruner correctly identifies and deletes stale git worktrees.",
+        "Tests mock git calls and verify cleanup logic without affecting active worktrees."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v5-unique",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "MCP Dynamic Capability Negotiation V5",
+      "description": "Inspired by MCP capabilities standard: Implement dynamic capability negotiation during the MCP server handshake to agree on supported standard features (e.g., streaming, resources).",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_negotiation_v5.py",
+        "tests/test_mcp_negotiation_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Handshake dynamically negotiates capabilities with the server.",
+        "Tests mock MCP communication and verify capability flags."
       ]
     }
   ]
