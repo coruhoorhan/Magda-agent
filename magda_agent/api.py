@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconn
 from fastapi.responses import JSONResponse
 from magda_agent.visualization.server import CanvasServer
 from magda_agent.visualization.openclaw_canvas_v5 import OpenClawRLCanvasV5
+from magda_agent.memory.openclaw_canvas_v3 import OpenClawCanvasMemoryVizV3
 
 from magda_agent.visualization.canvas_streamer import CanvasMemoryStreamer
 from magda_agent.telemetry.canvas_stream_v9 import CanvasTelemetryStreamerV9
@@ -260,6 +261,7 @@ local_first_gateway.set_message_handler(consciousness.process_input)
 
 discord_bridge = DiscordBridge(token=os.getenv("DISCORD_BOT_TOKEN", "dummy"), agent_callback=consciousness.process_input)
 openclaw_rl_canvas = OpenClawRLCanvasV5()
+openclaw_canvas_memory_v3 = OpenClawCanvasMemoryVizV3()
 
 cross_platform_dispatcher.register_platform("discord", discord_bridge)
 
@@ -278,6 +280,7 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(canvas_server.start_streaming())
     asyncio.create_task(discord_bridge.start())
     asyncio.create_task(openclaw_rl_canvas.start())
+    asyncio.create_task(openclaw_canvas_memory_v3.start())
 
     yield
     # Shutdown
@@ -291,6 +294,7 @@ async def lifespan(app: FastAPI):
     await canvas_server.stop_streaming()
     await discord_bridge.stop()
     await openclaw_rl_canvas.stop()
+    await openclaw_canvas_memory_v3.stop()
 
     memory_system.close()
 

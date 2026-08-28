@@ -13015,7 +13015,7 @@
     },
     {
       "id": "openclaw-canvas-memory-viz-v3",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "low",
       "title": "OpenClaw Canvas Memory Viz V3",
@@ -15295,15 +15295,15 @@
       ]
     },
     {
-      "id": "hermes-skill-marketplace-exporter-v1",
-      "title": "Hermes Skill Marketplace Exporter V1",
+      "id": "hermes-skill-marketplace-exporter-v3",
+      "title": "Hermes Skill Marketplace Exporter V3",
       "description": "Inspired by Hermes trends: Implement an exporter to translate Magda skills into the open agentskills.io standard format for sharing in external marketplaces.",
       "area": "skills",
       "risk": "low",
       "status": "todo",
       "allowed_paths": [
-        "magda_agent/skills/agentskills_exporter.py",
-        "tests/test_agentskills_exporter.py",
+        "magda_agent/integration/agentskills_exporter_v3.py",
+        "tests/test_agentskills_exporter_v3.py",
         "agent_tasks.json"
       ],
       "acceptance": [
@@ -30846,6 +30846,40 @@
       "acceptance": [
         "Optimizer prunes stale git worktrees correctly.",
         "Tests pass."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-policy-v1",
+      "title": "Agent Guard Runtime Policy V1",
+      "description": "Inspired by ACS/Agent Guard trends (June 2026): Create a runtime policy layer that intercepts tool calls and applies taint tracking to ensure malicious payload isn't executed.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/runtime_policy_v1.py",
+        "tests/test_runtime_policy_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Runtime policy correctly intercepts and blocks malicious payloads.",
+        "Tests verify block and allow behavior."
+      ]
+    },
+    {
+      "id": "a2a-mdns-agent-discovery-v2",
+      "title": "A2A mDNS Agent Discovery V2",
+      "description": "Inspired by A2A Protocol (June 2026): Enhance agent discovery by broadcasting AgentCards over a localized mDNS mesh network to identify offline/online peers dynamically.",
+      "area": "integration",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mdns_discovery_v2.py",
+        "tests/test_mdns_discovery_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "mDNS broadcast properly identifies peers.",
+        "Tests mock mDNS calls and verify network sync logic."
       ]
     }
   ]
