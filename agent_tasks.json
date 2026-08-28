@@ -12877,7 +12877,7 @@
         "Evaluator team runs in sandbox.",
         "LLM is mocked in tests."
       ],
-      "status": "todo"
+      "status": "done"
     },
     {
       "id": "mcp-dynamic-tool-telemetry-v8",
@@ -30284,6 +30284,58 @@
       "acceptance": [
         "Context sync mechanism successfully updates sub-agent virtual memory states across boundaries.",
         "Tests simulate cross-process state sync using mocks."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-live-v6",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas Live Visualization v6",
+      "description": "Inspired by OpenClaw trend: Implement a Live Canvas visualizer for agent context streams.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_live_v6.py",
+        "tests/test_canvas_live_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Live canvas module added.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "mcp-kernel-taint-tracking-v1",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Kernel Taint Tracking for Secure Execution",
+      "description": "Inspired by MCPKernel trend: Implement taint tracking for variables used during MCP action tool execution to prevent sandbox escapes.",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_kernel_taint_v1.py",
+        "tests/test_mcp_kernel_taint_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint tracking logic implemented.",
+        "Variables can be marked tainted and verified.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-auth-delegation-v9",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Enterprise Auth Delegation v9",
+      "description": "Inspired by A2A Protocol trend: Enhance A2A auth token delegation to support scope-based enterprise authorization.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_auth_v9.py",
+        "tests/test_a2a_auth_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scope-based auth delegation implemented.",
+        "Tests pass."
       ]
     }
   ]
