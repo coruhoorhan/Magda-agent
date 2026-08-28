@@ -12762,7 +12762,7 @@
     },
     {
       "id": "openclaw-rl-dynamic-behavior-v3",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "high",
       "title": "OpenClaw RL Dynamic Behavior v3",
@@ -30040,6 +30040,42 @@
       "acceptance": [
         "Scheduler periodically invokes reflection functions.",
         "Tests simulate idle triggers and verify reflection invocations."
+      ]
+    },
+    {
+      "id": "hermes-agent-skill-marketplace-v2",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "Hermes Agent Skill Marketplace Integration v1",
+      "description": "Inspired by Hermes Agent trend (agentskills.io). Implement a marketplace integration to fetch and publish standardized agent skills.",
+      "allowed_paths": [
+        "magda_agent/integration/skill_marketplace_v1.py",
+        "tests/test_skill_marketplace_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent can fetch skills from a mock marketplace.",
+        "Agent can publish local skills to the mock marketplace.",
+        "Tests pass using mock APIs."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-live-visualization-v9",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Canvas Live Visualization v9",
+      "description": "Inspired by OpenClaw trends (Canvas live visualization). Implement a real-time visualization exporter for internal state, memory layers, and active agents using WebSockets.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_exporter_v9.py",
+        "tests/test_canvas_exporter_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter can serialize agent state to JSON.",
+        "Exporter can broadcast state via mock WebSocket.",
+        "Tests pass."
       ]
     }
   ]
