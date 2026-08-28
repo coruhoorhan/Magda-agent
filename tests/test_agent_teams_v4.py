@@ -9,6 +9,7 @@ from magda_agent.architecture.agent_teams_v4 import (
     AgentWorktreeIsolationV4,
     AgentTeamManagerV4,
     GitWorktreeError,
+    AgentEvaluatorTeamV4,
 )
 
 @pytest.fixture
@@ -136,3 +137,67 @@ async def test_team_manager_disband_all(team_manager: AgentTeamManagerV4) -> Non
         assert mock_disband.call_count == 2
         mock_disband.assert_any_call("agent1")
         mock_disband.assert_any_call("agent2")
+
+
+@pytest.mark.asyncio
+async def test_agent_evaluator_team_v4(team_manager: AgentTeamManagerV4) -> None:
+    evaluators = ["eval1", "eval2"]
+    team = AgentEvaluatorTeamV4(evaluators=evaluators, team_manager=team_manager)
+
+    # Mock the LLM call using AsyncMock
+    with patch("magda_agent.llm_client.LLMClient.generate", new_callable=AsyncMock) as mock_generate, \
+         patch.object(team_manager, "spawn_agent", new_callable=AsyncMock) as mock_spawn, \
+         patch.object(team_manager, "disband_agent", new_callable=AsyncMock) as mock_disband:
+
+        mock_generate.side_effect = [
+            "PASSED: Code is good",
+            "PASSED: Looks fine"
+        ]
+
+        mock_spawn.side_effect = [
+            ("/tmp/eval1", {"MAGDA_WORKTREE_PATH": "/tmp/eval1"}),
+            ("/tmp/eval2", {"MAGDA_WORKTREE_PATH": "/tmp/eval2"})
+        ]
+
+        result = await team.evaluate_code("def foo(): pass", {"context": "test"})
+
+        assert result["passed"] is True
+        assert result["overall_score"] == 100
+        assert len(result["results"]) == 2
+
+        assert mock_generate.call_count == 2
+        assert mock_spawn.call_count == 2
+        assert mock_disband.call_count == 2
+
+        mock_spawn.assert_any_call("eval1")
+        mock_spawn.assert_any_call("eval2")
+        mock_disband.assert_any_call("eval1")
+        mock_disband.assert_any_call("eval2")
+
+
+@pytest.mark.asyncio
+async def test_agent_evaluator_team_v4_failed_eval(team_manager: AgentTeamManagerV4) -> None:
+    evaluators = ["eval1", "eval2"]
+    team = AgentEvaluatorTeamV4(evaluators=evaluators, team_manager=team_manager)
+
+    with patch("magda_agent.llm_client.LLMClient.generate", new_callable=AsyncMock) as mock_generate, \
+         patch.object(team_manager, "spawn_agent", new_callable=AsyncMock) as mock_spawn, \
+         patch.object(team_manager, "disband_agent", new_callable=AsyncMock) as mock_disband:
+
+        mock_generate.side_effect = [
+            "PASSED: Good",
+            "FAILED: Syntax Error"
+        ]
+
+        mock_spawn.side_effect = [
+            ("/tmp/eval1", {"MAGDA_WORKTREE_PATH": "/tmp/eval1"}),
+            ("/tmp/eval2", {"MAGDA_WORKTREE_PATH": "/tmp/eval2"})
+        ]
+
+        result = await team.evaluate_code("def foo() pass", {"context": "test"})
+
+        assert result["passed"] is False
+        assert result["overall_score"] == 75.0  # (100 + 50) / 2
+        assert len(result["results"]) == 2
+
+        assert mock_disband.call_count == 2

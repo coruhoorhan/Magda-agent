@@ -4,7 +4,7 @@ import os
 import shutil
 import uuid
 import time
-from typing import Optional, List, Dict, Tuple
+from typing import Optional, List, Dict, Tuple, Any
 
 
 class GitWorktreeError(Exception):
@@ -200,3 +200,81 @@ class AgentTeamManagerV4:
         agents_to_disband = list(self.agents)
         for agent_id in agents_to_disband:
             await self.disband_agent(agent_id)
+
+class AgentEvaluatorTeamV4:
+    """
+    Subagent evaluator pool that can test generator team code iteratively with strict sandboxing.
+    Inspired by Claude Agent SDK trend.
+    """
+
+    def __init__(self, evaluators: List[str], team_manager: Optional[AgentTeamManagerV4] = None) -> None:
+        """
+        Initialize the evaluator team.
+
+        Args:
+            evaluators (List[str]): The list of evaluator IDs.
+            team_manager (Optional[AgentTeamManagerV4]): Manager for strict sandboxing.
+        """
+        self.evaluators = evaluators
+        self.team_manager = team_manager or AgentTeamManagerV4()
+
+    async def evaluate_code(self, code: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Evaluate generator code iteratively within strict sandboxes.
+
+        Args:
+            code (str): The code to evaluate.
+            context (Dict[str, Any]): Additional context.
+
+        Returns:
+            Dict[str, Any]: The evaluation results.
+        """
+        results = []
+        for evaluator in self.evaluators:
+            # Sandbox setup
+            try:
+                worktree_path, isolated_env = await self.team_manager.spawn_agent(evaluator)
+            except ValueError:
+                # If already spawned, get the environment
+                isolated_env = self.team_manager.get_agent_env(evaluator) or {}
+
+            try:
+                result = await self._call_llm_evaluator(evaluator, code, context, isolated_env)
+                results.append(result)
+            finally:
+                # Ensure teardown for strict sandboxing
+                await self.team_manager.disband_agent(evaluator)
+
+        passed = bool(results) and all(r.get("passed", False) for r in results)
+
+        return {
+            "passed": passed,
+            "results": results,
+            "overall_score": sum(r.get("score", 0) for r in results) / len(results) if results else 0.0
+        }
+
+    async def _call_llm_evaluator(self, evaluator_id: str, code: str, context: Dict[str, Any], isolated_env: Dict[str, str]) -> Dict[str, Any]:
+        """
+        Call the LLM for evaluation.
+
+        Args:
+            evaluator_id (str): Evaluator identifier.
+            code (str): The code to evaluate.
+            context (Dict[str, Any]): Additional context.
+            isolated_env (Dict[str, str]): Environment details from sandbox.
+
+        Returns:
+            Dict[str, Any]: Evaluation result parsed from LLM response.
+        """
+        from magda_agent.llm_client import LLMClient
+        client = LLMClient()
+        prompt = f"Evaluate this code:\n{code}\nContext: {context}\nEvaluator ID: {evaluator_id}\nSandbox: {isolated_env.get('MAGDA_WORKTREE_PATH')}"
+
+        response = await client.generate(prompt=prompt)
+
+        return {
+            "evaluator_id": evaluator_id,
+            "passed": "PASSED" in response,
+            "score": 100 if "PASSED" in response else 50,
+            "feedback": response
+        }
