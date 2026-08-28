@@ -4,22 +4,20 @@ from typing import List, Dict, Any, Optional
 from magda_agent.memory.compression_v7 import ClaudeContextCompressorV7
 from magda_agent.memory.working import MemoryEntry
 from magda_agent.emotions.engine import PADState
-from unittest.mock import MagicMock, AsyncMock
+from unittest.mock import MagicMock, AsyncMock, patch
 
-class MockLLMClientV7:
-    """Mock LLM client for testing V7 compression without real API calls."""
-    async def chat_completion(self, messages: List[Dict[str, Any]], temperature: float = 0.0) -> str:
-        """Mocks the chat completion endpoint."""
-        for msg in messages:
-            if "Summarize the following memory context" in msg.get("content", ""):
-                return "V7 Compressed summary."
-        return "V7 fallback summary."
-
+def llm_generate_side_effect(prompt, temperature=0.0):
+    if "Summarize the following memory context" in prompt:
+        return "V7 Compressed summary."
+    return "V7 fallback summary."
 
 @pytest.mark.asyncio
-async def test_v7_compress_entries_with_retrieval() -> None:
+@patch('magda_agent.llm_client.LLMClient.generate', new_callable=AsyncMock)
+async def test_v7_compress_entries_with_retrieval(mock_generate) -> None:
     """Tests that entries exceeding the limit are first pruned by the retriever and then compressed via LLM."""
-    llm = MockLLMClientV7()
+    mock_generate.side_effect = llm_generate_side_effect
+    from magda_agent.llm_client import LLMClient
+    llm = LLMClient()
 
     mock_retriever = AsyncMock()
     # Mock retriever to prune the entries down to a smaller set
@@ -48,9 +46,12 @@ async def test_v7_compress_entries_with_retrieval() -> None:
     mock_retriever.prune_context.assert_called_once_with([e1, e2], max_tokens=5, query="architecture")
 
 @pytest.mark.asyncio
-async def test_v7_compress_entries_without_retrieval() -> None:
+@patch('magda_agent.llm_client.LLMClient.generate', new_callable=AsyncMock)
+async def test_v7_compress_entries_without_retrieval(mock_generate) -> None:
     """Tests that entries are compressed properly when no retriever is provided."""
-    llm = MockLLMClientV7()
+    mock_generate.side_effect = llm_generate_side_effect
+    from magda_agent.llm_client import LLMClient
+    llm = LLMClient()
 
     compressor = ClaudeContextCompressorV7(llm_client=llm)
     state = PADState(0, 0, 0)
@@ -67,9 +68,12 @@ async def test_v7_compress_entries_without_retrieval() -> None:
 
 
 @pytest.mark.asyncio
-async def test_v7_compress_entries_within_limit() -> None:
+@patch('magda_agent.llm_client.LLMClient.generate', new_callable=AsyncMock)
+async def test_v7_compress_entries_within_limit(mock_generate) -> None:
     """Tests that entries within the limit are not unnecessarily summarized via LLM if they fit."""
-    llm = MockLLMClientV7()
+    mock_generate.side_effect = llm_generate_side_effect
+    from magda_agent.llm_client import LLMClient
+    llm = LLMClient()
 
     mock_retriever = AsyncMock()
     state = PADState(0, 0, 0)
