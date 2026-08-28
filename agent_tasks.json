@@ -12981,7 +12981,7 @@
     },
     {
       "id": "claude-context-compression-v7",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Context Compression v7",
@@ -30689,6 +30689,57 @@
       "acceptance": [
         "Swarm architecture module supports hierarchical delegation.",
         "Tests pass."
+      ]
+    },
+    {
+      "id": "mcp-server-streaming-export-v2",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Server Streaming Export v2",
+      "description": "Inspired by MCP standard trend (June 2026): Implement an MCP tool exporter that supports JSON-RPC streaming, enabling Magda to yield progressive results for long-running tools.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_streaming_v2.py",
+        "tests/test_mcp_streaming_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter formats Python yields into MCP streaming chunks.",
+        "Tests verify chunk buffering."
+      ]
+    },
+    {
+      "id": "a2a-mesh-network-telemetry-v1",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "low",
+      "title": "A2A Mesh Network Telemetry V1",
+      "description": "Inspired by A2A Protocol tracing (June 2026): Implement an OpenTelemetry-compatible module to collect distributed metrics across the A2A mesh network.",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_mesh_telemetry_v1.py",
+        "tests/test_a2a_mesh_telemetry_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module collects overhead and communication metrics.",
+        "Tests mock OpenTelemetry sinks and verify formatting."
+      ]
+    },
+    {
+      "id": "openclaw-rl-interaction-pruning-v4",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw RL Interaction Pruning V4",
+      "description": "Inspired by OpenClaw RL patterns (June 2026): Add a mechanism to dynamically prune low-reward conversational trajectories from active context to optimize context engine.",
+      "allowed_paths": [
+        "magda_agent/learning/interaction_pruning_v4.py",
+        "tests/test_interaction_pruning_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Prunes context trajectories with cumulative reward below threshold.",
+        "Tests verify context memory shrinking based on mocked rewards."
       ]
     }
   ]

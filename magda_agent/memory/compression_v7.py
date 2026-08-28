@@ -67,14 +67,11 @@ class ClaudeContextCompressorV7:
             try:
                 logging.info(f"Compressing {len(pruned_entries)} entries with semantic context.")
                 prompt = (
+                    f"You are a memory context compressor. Output only the summarized text. "
                     f"Summarize the following memory context, maintaining key facts and semantic relationships "
                     f"within {token_limit} tokens.\n\n{combined_text}"
                 )
-                messages = [
-                    {"role": "system", "content": "You are a memory context compressor. Output only the summarized text."},
-                    {"role": "user", "content": prompt}
-                ]
-                compressed_text = await self.llm.chat_completion(messages, temperature=0.2)
+                compressed_text = await self.llm.generate(prompt, temperature=0.2)
                 compressed_text = compressed_text.strip()
             except Exception as e:
                 logging.error(f"Compression failed: {e}")
