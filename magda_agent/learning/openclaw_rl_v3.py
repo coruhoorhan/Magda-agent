@@ -2,6 +2,7 @@ import logging
 import re
 from typing import Dict, Any, Optional
 from magda_agent.llm_client import LLMClient
+from magda_agent.user_model.model import UserModel
 
 class OnlineRLFeedbackLoop:
     """
@@ -10,25 +11,28 @@ class OnlineRLFeedbackLoop:
     Inspired by OpenClaw-RL.
     """
 
-    def __init__(self, db_path: str = ":memory:", llm_client: Optional[LLMClient] = None) -> None:
+    def __init__(self, db_path: str = ":memory:", llm_client: Optional[LLMClient] = None, user_model: Optional[UserModel] = None) -> None:
         """
         Initializes the OnlineRLFeedbackLoop.
 
         Args:
             db_path (str): The path to the SQLite database. Defaults to in-memory.
             llm_client (Optional[LLMClient]): Optional LLMClient to extract rewards using LLM.
+            user_model (Optional[UserModel]): Optional UserModel to dynamically update behavior parameters.
         """
         self.q_table: Dict[str, float] = {}
         self.llm_client = llm_client
-        logging.info("Initialized OnlineRLFeedbackLoop with LLM Support")
+        self.user_model = user_model
+        logging.info("Initialized OnlineRLFeedbackLoop with LLM Support and Behavior Adaptation")
 
-    def process_feedback(self, skill_id: str, user_reply: str) -> None:
+    def process_feedback(self, skill_id: str, user_reply: str, user_id: Optional[str] = None) -> None:
         """
         Processes user feedback and updates the Q-value for a given skill.
 
         Args:
             skill_id (str): The identifier of the skill used.
             user_reply (str): The text of the user's reply.
+            user_id (Optional[str]): The identifier of the user to adapt behavior parameters.
         """
         reward = self._map_reply_to_reward(user_reply)
 
@@ -41,11 +45,14 @@ class OnlineRLFeedbackLoop:
         self.q_table[skill_id] = new_q
         logging.info(f"Updated Q-value for {skill_id}: {new_q:.2f} (Reward: {reward})")
 
+        self._adapt_behavior_parameters(reward, user_id)
+
     async def process_feedback_async(
         self,
         skill_id: str,
         user_reply: str,
-        tool_output: Optional[str] = None
+        tool_output: Optional[str] = None,
+        user_id: Optional[str] = None
     ) -> None:
         """
         Asynchronously processes user feedback, utilizing LLM to evaluate the reward
@@ -55,6 +62,7 @@ class OnlineRLFeedbackLoop:
             skill_id (str): The identifier of the skill used.
             user_reply (str): The text of the user's reply.
             tool_output (Optional[str]): Optional output from the tool execution.
+            user_id (Optional[str]): The identifier of the user to adapt behavior parameters.
         """
         reward = await self.extract_reward_llm(user_reply, tool_output)
 
@@ -64,6 +72,8 @@ class OnlineRLFeedbackLoop:
 
         self.q_table[skill_id] = new_q
         logging.info(f"Updated Q-value for {skill_id} asynchronously: {new_q:.2f} (Reward: {reward})")
+
+        self._adapt_behavior_parameters(reward, user_id)
 
     async def extract_reward_llm(self, user_reply: str, tool_output: Optional[str] = None) -> float:
         """
@@ -141,3 +151,33 @@ class OnlineRLFeedbackLoop:
             float: The current Q-value.
         """
         return self.q_table.get(skill_id, 0.0)
+
+    def _adapt_behavior_parameters(self, reward: float, user_id: Optional[str]) -> None:
+        """
+        Adapts the agent's behavior parameters (exploration, verbosity) based on user feedback.
+
+        Args:
+            reward (float): The calculated reward from the feedback.
+            user_id (Optional[str]): The identifier of the user.
+        """
+        if not self.user_model or user_id is None:
+            return
+
+        model_data = self.user_model.get_model(user_id)
+        behavior_weights = model_data.setdefault("behavior_weights", {
+            "exploration": 1.0,
+            "verbosity": 1.0,
+            "directness": 1.0
+        })
+
+        # Adapt exploration based on reward
+        if reward > 0.0:
+            behavior_weights["exploration"] = min(2.0, behavior_weights.get("exploration", 1.0) + reward * 0.2)
+            behavior_weights["verbosity"] = min(2.0, behavior_weights.get("verbosity", 1.0) + reward * 0.1)
+        elif reward < 0.0:
+            behavior_weights["exploration"] = max(0.5, behavior_weights.get("exploration", 1.0) + reward * 0.2)
+            behavior_weights["verbosity"] = max(0.5, behavior_weights.get("verbosity", 1.0) + reward * 0.1)
+
+        model_data["behavior_weights"] = behavior_weights
+        self.user_model.save_model(user_id, model_data)
+        logging.info(f"Adapted behavior parameters for user {user_id}: {behavior_weights}")

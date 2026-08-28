@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 from magda_agent.learning.openclaw_rl_v3 import OnlineRLFeedbackLoop
 from magda_agent.llm_client import LLMClient
+from magda_agent.user_model.model import UserModel
 
 def test_map_reply_to_reward_positive() -> None:
     """Tests parsing positive user replies to reward scores."""
@@ -107,3 +108,60 @@ async def test_process_feedback_async() -> None:
     # Second async feedback: reward is 0.5
     await loop.process_feedback_async("skill_async_1", "quite good", "success context")
     assert abs(loop.get_q_value("skill_async_1") - 0.095) < 1e-6  # 0.05 + 0.1 * (0.5 - 0.05)
+
+
+def test_process_feedback_with_user_id() -> None:
+    """Tests processing feedback and verifying behavior parameters update."""
+    mock_user_model = MagicMock(spec=UserModel)
+    mock_model_data = {
+        "behavior_weights": {
+            "exploration": 1.0,
+            "verbosity": 1.0,
+            "directness": 1.0
+        }
+    }
+    mock_user_model.get_model.return_value = mock_model_data
+
+    loop = OnlineRLFeedbackLoop(user_model=mock_user_model)
+
+    # Test positive feedback
+    loop.process_feedback("skill_1", "Great", user_id="user123")
+
+    mock_user_model.get_model.assert_called_with("user123")
+    assert mock_model_data["behavior_weights"]["exploration"] == 1.2
+    assert mock_model_data["behavior_weights"]["verbosity"] == 1.1
+    mock_user_model.save_model.assert_called_with("user123", mock_model_data)
+
+@pytest.mark.asyncio
+async def test_process_feedback_async_with_user_id() -> None:
+    """Tests async processing of feedback and verifying behavior parameters update."""
+    mock_llm = MagicMock(spec=LLMClient)
+    mock_llm.generate = AsyncMock(return_value="-0.8")
+
+    mock_user_model = MagicMock(spec=UserModel)
+    mock_model_data = {
+        "behavior_weights": {
+            "exploration": 1.0,
+            "verbosity": 1.0,
+            "directness": 1.0
+        }
+    }
+    mock_user_model.get_model.return_value = mock_model_data
+
+    loop = OnlineRLFeedbackLoop(llm_client=mock_llm, user_model=mock_user_model)
+
+    # Test negative feedback
+    await loop.process_feedback_async("skill_async_1", "terrible", "bad context", user_id="user123")
+
+    mock_user_model.get_model.assert_called_with("user123")
+    # -0.8 * 0.2 = -0.16 -> 1.0 - 0.16 = 0.84
+    assert abs(mock_model_data["behavior_weights"]["exploration"] - 0.84) < 1e-6
+    # -0.8 * 0.1 = -0.08 -> 1.0 - 0.08 = 0.92
+    assert abs(mock_model_data["behavior_weights"]["verbosity"] - 0.92) < 1e-6
+    mock_user_model.save_model.assert_called_with("user123", mock_model_data)
+
+def test_adapt_behavior_parameters_no_user_model() -> None:
+    """Tests that behavior adaptation is skipped if no user model is provided."""
+    loop = OnlineRLFeedbackLoop()
+    # Should not raise any errors
+    loop._adapt_behavior_parameters(1.0, "user123")
