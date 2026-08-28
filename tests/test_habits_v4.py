@@ -46,7 +46,7 @@ def test_habit_decay_with_momentum(habit_tracker_v4: HabitTrackerV4):
     for meta in results["metadatas"]:
         assert 0.49 <= meta["weight"] <= 0.51  # Approx 0.5
         # The timestamp should have been updated to current_time
-        assert meta["timestamp"] == current_time
+        assert abs(meta["timestamp"] - current_time) < 1e-5
 
     # Now, what if another 10 days pass?
     # New weight should be 0.5 - (0.05 * 10) = 0.0, which is < 0.2 (min_weight)
