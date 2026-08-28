@@ -12843,7 +12843,7 @@
         "Delegated tasks include trace IDs.",
         "Tests mock A2A calls and trace data."
       ],
-      "status": "todo"
+      "status": "done"
     },
     {
       "id": "openclaw-rl-habit-decay-v4",
@@ -30233,6 +30233,57 @@
       "acceptance": [
         "Tracker systematically records the test outcome metrics.",
         "Tests use mocked data points to guarantee accuracy."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-capabilities-sync-v1",
+      "title": "MCP Action Tool Capabilities Sync V1",
+      "description": "Inspired by MCP standards (June 2026): Implement an active syncing mechanism that negotiates available action capabilities between two distinct MCP tools before execution.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_capabilities_sync_v1.py",
+        "tests/test_mcp_capabilities_sync_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sync mechanism properly identifies and matches MCP capabilities.",
+        "Tests mock valid and invalid capability negotiation payloads."
+      ]
+    },
+    {
+      "id": "openclaw-rl-conversational-loop-v5",
+      "title": "OpenClaw RL Conversational Loop Extensions V5",
+      "description": "Inspired by OpenClaw RL (June 2026): Create conversational loop extensions that adapt tool selection priorities based on explicit conversational RL reward parameters.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/rl_conversational_loop_v5.py",
+        "tests/test_rl_conversational_loop_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "RL conversational loop captures explicit rewards and adapts tool selection appropriately.",
+        "Tests mock RL environments and verify tool selection adjustment."
+      ]
+    },
+    {
+      "id": "agent-teams-subagent-context-sync-v2",
+      "title": "Agent Teams Sub-Agent Context Syncing V2",
+      "description": "Inspired by Claude Agent SDK Agent Teams (June 2026): Implement a synchronization service for Agent Teams that ensures sub-agent virtual working memory is kept consistently in sync across distributed processes.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_context_sync_v2.py",
+        "tests/test_subagent_context_sync_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context sync mechanism successfully updates sub-agent virtual memory states across boundaries.",
+        "Tests simulate cross-process state sync using mocks."
       ]
     }
   ]
