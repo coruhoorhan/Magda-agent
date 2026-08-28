@@ -1,3 +1,4 @@
+from magda_agent.operations.mcp_governance_v6 import MCPGovernanceV6
 import httpx
 import json
 import uuid
@@ -13,6 +14,7 @@ class MCPClient:
         self.timeout = timeout
         self.registered_tools: Dict[str, Any] = {}
         self.registered_servers: Dict[str, Any] = {}
+        self.governance = MCPGovernanceV6()
 
     def register_mcp_server(self, server_name: str, connection_info: Any) -> None:
         """Register a remote MCP server for prefixed tool routing."""
@@ -59,6 +61,11 @@ class MCPClient:
             if server_name and server_name in self.registered_servers:
                 connection_info = self.registered_servers[server_name]
                 method_name = extracted_method
+
+        try:
+            self.governance.intercept_tool_execution(method_name, **kwargs)
+        except RuntimeError as e:
+            return f"Error: {e}"
 
         if not connection_info:
             return f"Error: Remote MCP skill '{name}' not found."

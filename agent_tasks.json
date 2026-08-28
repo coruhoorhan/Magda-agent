@@ -13152,7 +13152,7 @@
     },
     {
       "id": "mcp-action-tool-governance-v6",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "high",
       "title": "MCP Action Tool Governance V6",
@@ -31174,6 +31174,40 @@
       "acceptance": [
         "Old tokens are identified and summarized.",
         "Tests pass."
+      ]
+    },
+    {
+      "id": "acs-validation-checkpoints-v2-b6161be3-26ef-40e2-9877-b6b9608994f9",
+      "title": "ACS Validation Checkpoints V2",
+      "description": "Inspired by the ACS (Agent Control Specification) trend: Implement 5 validation checkpoints for runtime safety controls.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/acs_validation_v2.py",
+        "tests/test_acs_validation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The 5 validation checkpoints are implemented and correctly enforce runtime safety controls.",
+        "Tests verify each checkpoint successfully blocks invalid behavior."
+      ]
+    },
+    {
+      "id": "multi-agent-orchestration-isolation-v2-420bbc93-2ab1-4f44-8447-b1c0159135eb",
+      "title": "Multi-Agent Orchestration Isolation V2",
+      "description": "Inspired by the Multi-Agent Orchestration trend: Implement hierarchical delegation with isolation.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/hierarchical_isolation_v2.py",
+        "tests/test_hierarchical_isolation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Hierarchical delegation successfully isolates subagents.",
+        "Tests mock subagent spawning to ensure proper isolation."
       ]
     }
   ]
