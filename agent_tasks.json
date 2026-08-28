@@ -13135,7 +13135,7 @@
     },
     {
       "id": "a2a-discovery-mesh-cards-v6",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "medium",
       "title": "A2A Discovery Mesh Cards V6",
@@ -31123,6 +31123,57 @@
         "Module analyzes interactions to propose new Python skills.",
         "LLM integrations are properly mocked in testing.",
         "Tests verify extraction of skill structures."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-metrics-v8",
+      "status": "todo",
+      "area": "operations",
+      "risk": "medium",
+      "title": "OpenClaw RL Canvas Metrics V8",
+      "description": "Inspired by OpenClaw-RL trend: Create a WebSocket server to stream live telemetry metrics directly from next-state signals.",
+      "allowed_paths": [
+        "magda_agent/operations/live_rl_v8.py",
+        "tests/test_live_rl_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket server successfully created.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "hermes-skill-creator-v6",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "Hermes Skill Creator V6",
+      "description": "Inspired by Hermes Agent trend: Dynamically extract new skills directly from recent chat history and serialize as MCP json schemas.",
+      "allowed_paths": [
+        "magda_agent/learning/skills_creation_v6.py",
+        "tests/test_skills_creation_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "LLM client used to extract Python skill and schema.",
+        "Tests pass using mocked LLM."
+      ]
+    },
+    {
+      "id": "claude-context-compressor-v8",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Claude Context Compressor V8",
+      "description": "Inspired by Claude Agent SDK context management trend: Develop an explicit summarizer logic that dynamically trims out older token windows.",
+      "allowed_paths": [
+        "magda_agent/memory/compression_v8.py",
+        "tests/test_compression_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Old tokens are identified and summarized.",
+        "Tests pass."
       ]
     }
   ]
