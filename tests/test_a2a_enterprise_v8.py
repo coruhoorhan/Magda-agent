@@ -17,7 +17,8 @@ def test_delegate_task_securely_logs_and_manages_token() -> None:
 
     with patch("magda_agent.integration.a2a_enterprise_v8.A2AAuthTokenDelegation.generate_token") as mock_generate_token, \
          patch("magda_agent.integration.a2a_enterprise_v8.A2AAuthTokenDelegation.revoke_token") as mock_revoke_token, \
-         patch("magda_agent.integration.a2a_enterprise_v8.A2ATracingV4.securely_log_delegation_event") as mock_log_event:
+         patch("magda_agent.integration.a2a_enterprise_v8.A2ATracerV8.start_trace") as mock_log_event, \
+         patch("magda_agent.integration.a2a_enterprise_v8.A2ATracerV8.set_baggage") as mock_set_baggage:
 
         mock_generate_token.return_value = "mock_token_123"
         mock_log_event.return_value = "trace_abc123"
@@ -32,12 +33,9 @@ def test_delegate_task_securely_logs_and_manages_token() -> None:
         mock_generate_token.assert_called_once()
 
         # Verify secure logging was called with the correct parameters, including the token
-        mock_log_event.assert_called_once_with(
-            target_agent_id=target_agent_id,
-            capability=capability,
-            context=context,
-            token="mock_token_123"
-        )
+        mock_log_event.assert_called_once_with(f"delegate_to_{target_agent_id}")
+        mock_set_baggage.assert_any_call("trace_abc123", "capability", capability)
+        mock_set_baggage.assert_any_call("trace_abc123", "token", "mock_token_123")
 
         # Verify token was revoked after
         mock_revoke_token.assert_called_once_with("mock_token_123")
@@ -49,7 +47,8 @@ def test_delegate_task_with_real_auth_manager() -> None:
     auth_delegation = A2AAuthTokenDelegation()
     client = A2AEnterpriseClientV8(auth_delegation=auth_delegation)
 
-    with patch("magda_agent.integration.a2a_enterprise_v8.A2ATracingV4.securely_log_delegation_event") as mock_log_event:
+    with patch("magda_agent.integration.a2a_enterprise_v8.A2ATracerV8.start_trace") as mock_log_event, \
+         patch("magda_agent.integration.a2a_enterprise_v8.A2ATracerV8.set_baggage") as mock_set_baggage:
         mock_log_event.return_value = "trace_real_auth"
 
         # Execute
@@ -58,9 +57,10 @@ def test_delegate_task_with_real_auth_manager() -> None:
         # Assert trace id returned
         assert trace_id == "trace_real_auth"
 
-        # Assert the logger was called with a real token (starts with a2a_auth_)
-        called_args = mock_log_event.call_args[1]
-        token_used = called_args["token"]
+        # Assert the baggage setter was called with a real token
+        baggage_calls = mock_set_baggage.call_args_list
+        token_call = next(call for call in baggage_calls if call[0][1] == "token")
+        token_used = token_call[0][2]
         assert token_used.startswith("a2a_auth_")
 
         # The token should have been revoked, so it should not be active
