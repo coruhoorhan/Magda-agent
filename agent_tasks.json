@@ -13118,7 +13118,7 @@
     },
     {
       "id": "openclaw-rl-canvas-metrics-v7",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "low",
       "title": "OpenClaw RL Canvas Metrics V7",
@@ -31069,6 +31069,60 @@
       "acceptance": [
         "Subagent spawning provisions unique git worktrees.",
         "Tests mock subprocess calls to verify worktree git commands."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-export-v8",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Tool Export V8",
+      "description": "Inspired by MCP standard adoption: Enable dynamic export of internal Python skills as MCP action tools, exposing a robust JSON-RPC interface for subagents.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_export_v8.py",
+        "tests/test_mcp_export_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module exports internal skills as MCP JSON-RPC endpoints.",
+        "Tests verify export and invocation.",
+        "All functions have docstrings and type hints."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-mesh-v7",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "title": "A2A Task Delegation Mesh V7",
+      "description": "Inspired by A2A standard: Implement robust peer-to-peer task delegation with secure token propagation and distributed tracing across the A2A mesh network.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_delegation_v7.py",
+        "tests/test_a2a_delegation_v7.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module routes delegated tasks to discovered A2A peers.",
+        "Token propagation and enterprise tracing are integrated.",
+        "Tests verify delegation logic without real network calls."
+      ]
+    },
+    {
+      "id": "hermes-experience-skill-extractor-v6",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "Hermes Experience Skill Extractor V6",
+      "description": "Inspired by Hermes Agent self-improving loops: Create a module that extracts repeatable skills directly from episodic memory/experience using an LLM.",
+      "allowed_paths": [
+        "magda_agent/learning/experience_extractor_v6.py",
+        "tests/test_experience_extractor_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module analyzes interactions to propose new Python skills.",
+        "LLM integrations are properly mocked in testing.",
+        "Tests verify extraction of skill structures."
       ]
     }
   ]
