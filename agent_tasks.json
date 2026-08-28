@@ -13221,7 +13221,7 @@
     },
     {
       "id": "claude-subagent-spawner-v5",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Claude Subagent Spawner V5",
@@ -31365,6 +31365,40 @@
       "acceptance": [
         "Feedback stream receives and processes real-time user feedback.",
         "Tests mock feedback stream input and assert expected behavior."
+      ]
+    },
+    {
+      "id": "hermes-agent-cron-scheduler-v2",
+      "status": "todo",
+      "area": "operations",
+      "risk": "medium",
+      "title": "Hermes Agent Cron Scheduler V2",
+      "description": "Inspired by Hermes Agent trends: Implement a cron scheduler for scheduled operations like daily reports.",
+      "allowed_paths": [
+        "magda_agent/operations/cron_scheduler_v2.py",
+        "tests/test_cron_scheduler_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron scheduler successfully executes scheduled tasks.",
+        "Tests mock time and execution to verify behavior."
+      ]
+    },
+    {
+      "id": "mcp-kernel-policy-enforcement-v1",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Kernel Policy Enforcement V1",
+      "description": "Inspired by ASSERT/MCPKernel trends: Implement a policy-driven evaluation framework where every tool call passes through a policy layer.",
+      "allowed_paths": [
+        "magda_agent/safety/policy_enforcement_v1.py",
+        "tests/test_policy_enforcement_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tool calls are intercepted and evaluated against policy.",
+        "Tests verify that policy violations are blocked and valid ones pass."
       ]
     }
   ]
