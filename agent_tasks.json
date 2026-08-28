@@ -12660,7 +12660,7 @@
     },
     {
       "id": "mcp-action-tool-subagent-pattern-v2",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "MCP Action Tool Subagent Pattern V2",
@@ -29800,6 +29800,40 @@
       "acceptance": [
         "mDNS discovery utilizes localized caching.",
         "Tests mock network broadcasts and verify cache hits/misses."
+      ]
+    },
+    {
+      "id": "a2a-discovery-mesh-health-v6-bf23f351",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Mesh Network Health Monitor V6",
+      "description": "Inspired by A2A Protocol and Enterprise Tracing (June 2026): Implement an active health monitor that periodically evaluates the responsiveness of known A2A Agent Cards in the mesh and purges offline peers.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_health_monitor_v6.py",
+        "tests/test_a2a_health_monitor_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Health monitor tracks peer latency and removes unresponsive agents.",
+        "Tests mock A2A pings and verify cleanup logic."
+      ]
+    },
+    {
+      "id": "mcp-policy-dynamic-role-auth-v9-57a1d30e",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "title": "MCP Policy Dynamic Role Auth V9",
+      "description": "Inspired by MCP capabilities and enterprise standards: Implement a Role-Based Access Control (RBAC) wrapper for exported MCP action tools, requiring dynamic authentication roles per tool.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_rbac_v9.py",
+        "tests/test_mcp_rbac_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "RBAC module rejects MCP tool calls without sufficient role claims.",
+        "Tests verify blocking of unauthorized tool executions using mocks."
       ]
     }
   ]
