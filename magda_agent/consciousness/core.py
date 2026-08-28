@@ -16,7 +16,7 @@ from magda_agent.metacognition.evaluator import Evaluator
 from magda_agent.metacognition.assert_evaluator import AssertEvaluator
 from magda_agent.safety.assert_framework import AssertActionEvaluator
 from magda_agent.metacognition.confidence import ConfidenceCalibrator
-from magda_agent.learning.habits import HabitTracker
+from magda_agent.learning.habits_v4 import HabitTrackerV4 as HabitTracker
 from magda_agent.emotions.attachment import AttachmentModel
 from magda_agent.thalamus.router import Thalamus
 from magda_agent.action.selector import BasalGanglia

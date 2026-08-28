@@ -12860,7 +12860,7 @@
         "Habit weights decay over time with momentum.",
         "Decay logic is covered in tests."
       ],
-      "status": "todo"
+      "status": "done"
     },
     {
       "id": "claude-evaluator-subagent-teams-v4",
