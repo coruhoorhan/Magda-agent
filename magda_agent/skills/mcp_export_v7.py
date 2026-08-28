@@ -3,6 +3,7 @@ import logging
 from typing import Dict, Any, Callable, List, get_origin
 from magda_agent.skills.registry import SkillRegistry
 from magda_agent.skills.mcp_registry import MCPRegistry
+from magda_agent.telemetry.mcp_export_telemetry import MCPExportTelemetryTracker
 
 
 class MCPDynamicExporterV7:
@@ -22,6 +23,7 @@ class MCPDynamicExporterV7:
         self.skill_registry = skill_registry
         self.mcp_registry = mcp_registry
         self.logger = logging.getLogger(__name__)
+        self.telemetry_tracker = MCPExportTelemetryTracker()
 
     def _get_json_schema(self, func: Callable) -> Dict[str, Any]:
         """
@@ -101,6 +103,8 @@ class MCPDynamicExporterV7:
         success = self.mcp_registry.load_tool(mcp_tool_schema)
         if success:
             self.logger.info(f"Successfully exported skill '{skill_name}' to MCPRegistry.")
+            # Telemetry integration
+            self.telemetry_tracker.track_export(skill_name, {"schema": schema, "success": True})
         else:
             self.logger.error(f"Failed to export skill '{skill_name}' to MCPRegistry.")
 
