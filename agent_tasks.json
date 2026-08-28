@@ -12813,7 +12813,7 @@
     },
     {
       "id": "mcp-engine-prefixed-routing-v3-fallback",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Engine Prefixed Routing v3 Fallback",
@@ -30181,6 +30181,58 @@
         "Automated task runs to identify stale git worktrees.",
         "Stale worktrees are cleanly removed.",
         "Safe operation to avoid deleting active worktrees."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-online-learning-hook-v1",
+      "title": "OpenClaw Context Engine Online Learning Hook V1",
+      "description": "Inspired by OpenClaw-RL trend: Implement an online learning hook that learns from user replies to improve interaction loops directly.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/online_learning_hook_v1.py",
+        "tests/test_online_learning_hook_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Hook module accurately extracts signals from user replies.",
+        "Tests mock the hook behaviors and verify correctness."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-code-generator-v1",
+      "title": "Claude Agent Teams Code Generator V1",
+      "description": "Inspired by Claude Agent SDK: Create a code generation sub-agent configured to run in git worktree isolation to construct specific feature code independently.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/agents/code_generator_v1.py",
+        "tests/test_code_generator_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Sub-agent runs in isolated environment.",
+        "Code generation capabilities operate and yield file diffs correctly.",
+        "Tests verify process via isolation mocks."
+      ]
+    },
+    {
+      "id": "longitudinal-quality-metrics-smoke-test-v1",
+      "title": "Longitudinal Quality Metrics Smoke Test Tracker V1",
+      "description": "Inspired by continuous improvement loops trend: Implement a specialized tracker logging the pass/fail rates of daily smoke tests dynamically.",
+      "area": "telemetry",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/telemetry/quality_metrics_v1.py",
+        "tests/test_quality_metrics_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tracker systematically records the test outcome metrics.",
+        "Tests use mocked data points to guarantee accuracy."
       ]
     }
   ]
