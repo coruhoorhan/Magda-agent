@@ -103,6 +103,11 @@ class ACSGuardV5:
         return guard.evaluate(workflow_data)
 
     def checkpoint_4_state_transition(self, workflow_data: Dict[str, Any]) -> Tuple[bool, str]:
+        from magda_agent.safety.acs_state_transition_v5 import ACSStateTransitionV5
+        guard = ACSStateTransitionV5()
+        return guard.checkpoint_4_state_transition(workflow_data)
+
+    def _old_checkpoint_4_state_transition(self, workflow_data: Dict[str, Any]) -> Tuple[bool, str]:
         """
         Checkpoint 4: State Transition.
         Ensures the proposed state transition is valid within the cognitive architecture.
