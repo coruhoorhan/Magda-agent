@@ -30570,7 +30570,7 @@
     {
       "id": "claude-context-compression-v7-1",
       "title": "Claude Context Compressor V7",
-      "status": "todo",
+      "status": "done",
       "description": "Create a new ClaudeContextCompressorV7 that builds on V6 but introduces 'Selective Retrieval V3' for better clustering of semantic context before summarization.",
       "area": "memory",
       "risk": "medium",
@@ -30636,6 +30636,58 @@
       ],
       "acceptance": [
         "A2A discovery service implemented.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-auth-jwt-v1",
+      "title": "A2A Enterprise Auth JWT V1",
+      "description": "Inspired by A2A standard trend (June 2026): Implement JWT-based secure authentication for agent-to-agent task delegation replacing simple token hex.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_auth_jwt.py",
+        "tests/test_a2a_auth_jwt.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "JWT authentication correctly issues and validates tokens.",
+        "Tests mock JWT verification correctly."
+      ]
+    },
+    {
+      "id": "mcp-server-health-monitor-v1",
+      "title": "MCP Server Health Monitor V1",
+      "description": "Inspired by MCP standards (June 2026): Implement an active health monitor that periodically checks the heartbeat of dynamically discovered MCP servers.",
+      "area": "skills",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_health_monitor.py",
+        "tests/test_mcp_health_monitor.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Health monitor tracks server status.",
+        "Failing servers are marked as offline.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "openclaw-rl-swarm-multi-agent-v2",
+      "title": "OpenClaw RL Swarm Multi-Agent V2",
+      "description": "Inspired by OpenClaw-RL (June 2026): Enhance multi-agent swarm architecture to support hierarchical delegation utilizing RL.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/openclaw_rl_swarm_v2.py",
+        "tests/test_openclaw_rl_swarm_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Swarm architecture module supports hierarchical delegation.",
         "Tests pass."
       ]
     }
