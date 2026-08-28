@@ -1,5 +1,8 @@
 import logging
+import os
+import inspect
 from typing import Dict, Any, List, Protocol, runtime_checkable
+from magda_agent.teams.mcp_isolation_v5 import MCPIsolationManagerV5
 
 @runtime_checkable
 class MCPActionAdapter(Protocol):
@@ -21,15 +24,16 @@ class MCPRegistryV7:
     Allows for dynamic synchronization of action tools from registered adapters.
     """
 
-    """
-    Registry specialized in handling action tools exported via the Model Context Protocol (MCP) version 7.
-    Allows for dynamic synchronization of action tools from registered adapters.
-    """
-
-    def __init__(self) -> None:
+    def __init__(self, base_repo_path: str | None = None) -> None:
         """Initialize the MCP Registry V7 for action tools."""
         self.mcp_tools: Dict[str, Dict[str, Any]] = {}
         self.adapters: List[MCPActionAdapter] = []
+
+        # Use provided base_repo_path, or attempt to find the git root, or fallback to current dir
+        if base_repo_path is None:
+            base_repo_path = os.getcwd()
+
+        self.isolation_manager = MCPIsolationManagerV5(base_repo_path=base_repo_path)
 
     def register_tool(self, schema: Dict[str, Any]) -> bool:
         """
@@ -210,22 +214,52 @@ class MCPRegistryV7:
         logging.info(f"Synchronized {loaded_count} action tools from adapters.")
         return loaded_count
 
-
     def execute_tool(self, name: str, args: Dict[str, Any], auth_token: str | None = None) -> Any:
         """
-        Executes a registered MCP action tool through the Auth Sandbox if available.
+        Executes a registered MCP action tool within an isolated git worktree,
+        and optionally through the Auth Sandbox if available.
         """
         if name not in self.mcp_tools:
             raise Exception(f"Tool {name} not found")
-        if getattr(self, "auth_sandbox", None):
-            return self.auth_sandbox.execute_tool(name, args, auth_token)
 
-        # Fallback raw execution mock for non-sandboxed flows
+        worktree_path = None
         tool = self.mcp_tools[name]
-        func = tool.get("func")
-        if func:
-            return func(**args)
-        return {"status": "executed", "name": name, "args": args}
+        requires_isolation = tool.get("requires_isolation", False)
+
+        try:
+            if requires_isolation:
+                # Create an isolated worktree for the tool execution only if explicitly required
+                worktree_path = self.isolation_manager.create_isolated_worktree(name)
+
+            # Pass the isolated worktree directory to the execution context
+            # We inject the working directory into the args if the sandbox or function supports it
+            exec_args = args.copy()
+
+            if getattr(self, "auth_sandbox", None):
+                # Optionally pass cwd if auth_sandbox supports it
+                if worktree_path:
+                     exec_args["cwd"] = worktree_path
+                return self.auth_sandbox.execute_tool(name, exec_args, auth_token)
+
+            # Fallback raw execution mock for non-sandboxed flows
+            func = tool.get("func")
+            if func:
+                sig = inspect.signature(func)
+                # Check if the function accepts **kwargs or a specific 'cwd' parameter
+                if worktree_path and any(param.kind == inspect.Parameter.VAR_KEYWORD or param.name == "cwd" for param in sig.parameters.values()):
+                    exec_args["cwd"] = worktree_path
+                return func(**exec_args)
+
+            if worktree_path:
+                exec_args["cwd"] = worktree_path
+            return {"status": "executed", "name": name, "args": exec_args}
+
+        finally:
+            if worktree_path:
+                try:
+                    self.isolation_manager.cleanup_worktree(worktree_path)
+                except Exception as e:
+                    logging.error(f"Failed to cleanup isolated worktree for {name}: {e}")
 
     def clear(self) -> None:
         """
