@@ -1,6 +1,7 @@
 import logging
 import json
 import time
+import uuid
 from typing import Any, Dict, Optional
 
 class CanvasMemoryTelemetryV5:
@@ -29,6 +30,7 @@ class CanvasMemoryTelemetryV5:
         """
         payload = {
             "type": "episodic_memory_consolidation",
+            "event_id": str(uuid.uuid4()),
             "timestamp": time.time(),
             "data": {
                 "user_id": user_id,
@@ -50,7 +52,7 @@ class CanvasMemoryTelemetryV5:
             return
 
         try:
-            message = json.dumps(payload)
+            message = json.dumps(payload, default=str)
             # Support send_text (standard FastAPI style used in tests)
             if hasattr(self.websocket, "send_text"):
                 await self.websocket.send_text(message)

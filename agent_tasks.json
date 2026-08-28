@@ -13101,7 +13101,7 @@
     },
     {
       "id": "openclaw-rl-canvas-live-memory-telemetry-v7-6a29979c-e215-4b3c-a6e3-87be8ab9f990",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Canvas Live Memory Telemetry V7",
@@ -31018,6 +31018,57 @@
       "acceptance": [
         "Memory subagent successfully persists user preferences.",
         "Preferences are correctly retrieved for task execution."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-v1-173c3cce",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Plugin V1",
+      "description": "Inspired by OpenClaw Context Engine trends: Implement a flexible plugin architecture to hook into memory lifecycle events for context compression.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_v1.py",
+        "tests/test_context_engine_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context engine plugin base class implemented with lifecycle hooks.",
+        "Tests verify that hooks are triggered successfully."
+      ]
+    },
+    {
+      "id": "a2a-task-delegation-discovery-v8-0bb429dc",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "A2A Task Delegation Discovery V8",
+      "description": "Inspired by A2A Protocol trends: Implement peer-to-peer discovery and task delegation using Agent Cards to find active agents.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_discovery_v8.py",
+        "tests/test_a2a_discovery_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "A2A task delegation properly discovers active peer agents.",
+        "Tests mock network registry and verify agent card discovery."
+      ]
+    },
+    {
+      "id": "claude-agent-teams-git-worktree-v8-9c59dade",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "Claude Agent Teams Git Worktree Subagent V8",
+      "description": "Inspired by Claude Agent Teams: Enhance subagent isolation by automating git worktree provisioning during subagent spawning.",
+      "allowed_paths": [
+        "magda_agent/architecture/agent_teams_v8.py",
+        "tests/test_agent_teams_v8.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent spawning provisions unique git worktrees.",
+        "Tests mock subprocess calls to verify worktree git commands."
       ]
     }
   ]

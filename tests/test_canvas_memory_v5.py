@@ -18,8 +18,9 @@ def mock_websocket_send():
     return mock_ws
 
 @pytest.mark.asyncio
+@patch('uuid.uuid4', return_value='12345678-1234-5678-1234-567812345678')
 @patch('time.time', return_value=1234567890.0)
-async def test_broadcast_consolidation_event_with_send_text(mock_time, mock_websocket_send_text):
+async def test_broadcast_consolidation_event_with_send_text(mock_time, mock_uuid, mock_websocket_send_text):
     telemetry = CanvasMemoryTelemetryV5(websocket=mock_websocket_send_text)
     user_id = 42
     memories = [
@@ -31,6 +32,7 @@ async def test_broadcast_consolidation_event_with_send_text(mock_time, mock_webs
 
     expected_payload = {
         "type": "episodic_memory_consolidation",
+        "event_id": "12345678-1234-5678-1234-567812345678",
         "timestamp": 1234567890.0,
         "data": {
             "user_id": 42,
@@ -39,12 +41,13 @@ async def test_broadcast_consolidation_event_with_send_text(mock_time, mock_webs
         }
     }
 
-    expected_json = json.dumps(expected_payload)
+    expected_json = json.dumps(expected_payload, default=str)
     mock_websocket_send_text.send_text.assert_awaited_once_with(expected_json)
 
 @pytest.mark.asyncio
+@patch('uuid.uuid4', return_value='12345678-1234-5678-1234-567812345678')
 @patch('time.time', return_value=1234567890.0)
-async def test_broadcast_consolidation_event_with_send(mock_time, mock_websocket_send):
+async def test_broadcast_consolidation_event_with_send(mock_time, mock_uuid, mock_websocket_send):
     telemetry = CanvasMemoryTelemetryV5(websocket=mock_websocket_send)
     user_id = 42
     memories = [
@@ -55,6 +58,7 @@ async def test_broadcast_consolidation_event_with_send(mock_time, mock_websocket
 
     expected_payload = {
         "type": "episodic_memory_consolidation",
+        "event_id": "12345678-1234-5678-1234-567812345678",
         "timestamp": 1234567890.0,
         "data": {
             "user_id": 42,
@@ -63,7 +67,7 @@ async def test_broadcast_consolidation_event_with_send(mock_time, mock_websocket
         }
     }
 
-    expected_json = json.dumps(expected_payload)
+    expected_json = json.dumps(expected_payload, default=str)
     mock_websocket_send.send.assert_awaited_once_with(expected_json)
 
 @pytest.mark.asyncio
