@@ -15,6 +15,9 @@ from magda_agent.skills.web_navigation import web_navigate as web_navigation_ski
 from magda_agent.skills.web_navigation_v2 import web_navigate_v2 as web_navigation_skill_v2
 
 
+from magda_agent.skills.mcp_registry_sync_v11 import MCPRegistrySyncV11
+from magda_agent.skills.mcp_registry import MCPRegistry
+
 def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegistry:
     registry = SkillRegistry(policy_layer=policy_layer)
 
@@ -211,6 +214,36 @@ def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegi
         name="marketplace_sync",
         func=sync_marketplace_sync,
         description="Periodically fetches and synchronizes new skills from the external agentskills.io marketplace into the agent's skill registry."
+    )
+
+
+    # MCP Registry Sync V11 setup
+    mcp_registry_sync_registry = MCPRegistry()
+    mcp_registry_sync_v11 = MCPRegistrySyncV11(registry=mcp_registry_sync_registry, mcp_server_url="http://localhost:8080")
+
+    def sync_mcp_registry_v11() -> int:
+        import asyncio
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                import threading
+                result = None
+                def run_in_thread():
+                    nonlocal result
+                    result = asyncio.run(mcp_registry_sync_v11.sync_once())
+                t = threading.Thread(target=run_in_thread)
+                t.start()
+                t.join()
+                return 1
+        except RuntimeError:
+            pass
+        asyncio.run(mcp_registry_sync_v11.sync_once())
+        return 1
+
+    registry.register_skill(
+        name="mcp_registry_sync_v11",
+        func=sync_mcp_registry_v11,
+        description="Periodically polls a configured MCP server URL and dynamically registers or unregisters tools in the local MCPRegistry."
     )
 
     return registry
