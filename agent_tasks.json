@@ -12998,7 +12998,7 @@
     },
     {
       "id": "openclaw-semantic-memory-canvas-v3",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw Semantic Memory Canvas v3",
@@ -30740,6 +30740,57 @@
       "acceptance": [
         "Prunes context trajectories with cumulative reward below threshold.",
         "Tests verify context memory shrinking based on mocked rewards."
+      ]
+    },
+    {
+      "id": "a2a-enterprise-telemetry-metrics-v1",
+      "title": "A2A Enterprise Telemetry Metrics V1",
+      "description": "Inspired by A2A Protocol and enterprise tracing trends: Implement an enterprise-grade telemetry metrics module that aggregates cross-agent execution times and payload sizes, emitting them to a mock Prometheus sink.",
+      "area": "telemetry",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_metrics_v1.py",
+        "tests/test_a2a_metrics_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Telemetry module aggregates mock payload sizes and times correctly.",
+        "Tests mock the metrics sink and verify data formatting."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-security-policy-v1",
+      "title": "MCP Action Tool Security Policy V1",
+      "description": "Inspired by MCP standards (action tools) and ACS: Create a security policy validator for incoming MCP action tools that blocks tools with unrecognized schema keys or missing security headers.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_security_policy_v1.py",
+        "tests/test_mcp_security_policy_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Security policy validator blocks tools failing criteria.",
+        "Tests verify block and allow behavior using mock MCP tools."
+      ]
+    },
+    {
+      "id": "openclaw-rl-implicit-context-scoring-v1",
+      "title": "OpenClaw RL Implicit Context Scoring V1",
+      "description": "Inspired by OpenClaw RL and Context Engine trends: Add a background scorer that uses implicit user engagement signals (like follow-up prompt frequency) to weight active context chunks, aiding in selective retention.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/implicit_context_scorer_v1.py",
+        "tests/test_implicit_context_scorer_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scorer calculates and assigns weights to active context chunks.",
+        "Tests mock interaction frequencies to verify weight adjustments."
       ]
     }
   ]
