@@ -13032,7 +13032,7 @@
     },
     {
       "id": "claude-subagent-spawner-v4",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Claude Subagent Spawner V4",
@@ -30880,6 +30880,59 @@
       "acceptance": [
         "mDNS broadcast properly identifies peers.",
         "Tests mock mDNS calls and verify network sync logic."
+      ]
+    },
+    {
+      "id": "claude-agent-team-manager-v5-jules",
+      "title": "Claude Agent Team Manager V5",
+      "description": "Inspired by Claude Agent SDK (June 2026): Implement an upgraded team manager (V5) that persists team configurations dynamically and handles multi-tier subagent spawning.",
+      "area": "architecture",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/agent_teams_v5.py",
+        "tests/test_agent_teams_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "AgentTeamManagerV5 supports multi-tier subagent spawning.",
+        "Configurations can be dynamically persisted and loaded.",
+        "Tests pass."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-tool-concurrency-jules",
+      "title": "MCP Dynamic Tool Concurrency Manager",
+      "description": "Inspired by OpenAI Agents SDK (June 2026): Implement a runtime concurrency manager for MCP action tools to limit parallel execution rate-limits automatically based on dynamic payload checks.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_concurrency_v4.py",
+        "tests/test_mcp_concurrency_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP concurrency manager successfully throttles simultaneous tool executions.",
+        "Tests pass using mock execution payloads."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-policy-v2-jules",
+      "title": "Agent Guard Runtime Policy V2",
+      "description": "Inspired by ACS/Agent Guard trends (June 2026): Upgrade runtime policy layer to support pattern-based tool call interception, adding audit trails for every blocked malicious payload.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/runtime_policy_v2.py",
+        "tests/test_runtime_policy_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Runtime policy V2 intercepts pattern-matched payloads.",
+        "Audit trails are correctly generated for blocked payloads.",
+        "Tests verify block, allow behavior and audit trail generation."
       ]
     }
   ]
