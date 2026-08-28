@@ -13238,7 +13238,7 @@
     },
     {
       "id": "a2a-discovery-mesh-cards-v7",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Discovery Mesh Cards V7",
@@ -31399,6 +31399,42 @@
       "acceptance": [
         "Tool calls are intercepted and evaluated against policy.",
         "Tests verify that policy violations are blocked and valid ones pass."
+      ]
+    },
+    {
+      "id": "agent-guard-runtime-governance-v1-2e71d88d",
+      "title": "Agent Guard Runtime Governance V1",
+      "description": "Inspired by the Agent Guard trend: Implement a runtime governance layer between the agent and the external world to intercept and evaluate every tool call against policy rules.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/runtime_governance_v1.py",
+        "tests/test_runtime_governance_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tool calls are intercepted by the governance layer.",
+        "Policy rules are evaluated.",
+        "Tests verify that blocked calls are not executed."
+      ]
+    },
+    {
+      "id": "context-engine-lifecycle-hooks-v1-1e5434e2",
+      "title": "Context Engine Lifecycle Hooks V1",
+      "description": "Inspired by Context Engine trends: Add a plugin interface with lifecycle hooks (e.g., pre-summarize, post-retrieve) to the context engine.",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/architecture/context_engine_lifecycle_v1.py",
+        "tests/test_context_engine_lifecycle_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle hooks are defined and can be registered.",
+        "Hooks are invoked correctly during the context lifecycle.",
+        "Tests mock hooks and assert they are called at the right time."
       ]
     }
   ]
