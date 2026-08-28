@@ -2,6 +2,9 @@ import logging
 from typing import Optional, Dict, Any
 from magda_agent.metacognition.tracker import QualityTracker
 from magda_agent.learning.interactive_feedback import InteractiveFeedbackFormatter
+from magda_agent.api import openclaw_rl_canvas
+import asyncio
+
 
 class RLMetricsSystem:
     """
@@ -73,3 +76,15 @@ class RLMetricsSystem:
 
         self.quality_tracker.log_metric("rl_quality_score", quality_score, metadata)
         logging.info(f"RLMetricsSystem: Logged rl_quality_score={quality_score} for user {user_id}")
+
+        # Broadcast RL metrics to live canvas
+        if openclaw_rl_canvas and openclaw_rl_canvas.clients:
+            asyncio.create_task(openclaw_rl_canvas.broadcast_rl_event(
+                "quality_score_update",
+                {
+                    "user_id": user_id,
+                    "score": quality_score,
+                    "is_correction": is_correction,
+                    "explicit_score": explicit_score
+                }
+            ))

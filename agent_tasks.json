@@ -12915,7 +12915,7 @@
     },
     {
       "id": "openclaw-rl-canvas-live-v5",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw RL Canvas Live v5",
@@ -30440,6 +30440,60 @@
         "Heartbeat checker actively polls known A2A peers.",
         "Offline agents are purged.",
         "Tests mock network timeouts to verify resilience."
+      ]
+    },
+    {
+      "id": "mcp-kernel-taint-audit-logger-v1",
+      "title": "MCP Kernel Taint Audit Logger V1",
+      "description": "Inspired by MCPKernel trend (June 2026): Implement an audit logger that tracks and archives instances of tainted variables being used during MCP action tool execution for security review.",
+      "area": "safety",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_kernel_taint_audit_v1.py",
+        "tests/test_mcp_kernel_taint_audit_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Audit logger intercepts tainted variable usage.",
+        "Logger writes incidents to a secure audit stream.",
+        "Tests mock execution and verify logger captures events."
+      ]
+    },
+    {
+      "id": "openclaw-rl-canvas-memory-heatmap-v1",
+      "title": "OpenClaw RL Canvas Memory Heatmap V1",
+      "description": "Inspired by OpenClaw Canvas Live Visualization trend (June 2026): Create a specific visualizer component that overlays memory access frequency (working vs episodic) as a heatmap within the Canvas.",
+      "area": "visualization",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/openclaw_canvas_heatmap_v1.py",
+        "tests/test_openclaw_canvas_heatmap_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Heatmap component correctly translates memory access frequencies into visual density structures.",
+        "Canvas update mechanism broadcasts heatmap data.",
+        "Tests confirm data translation and broadcast logic."
+      ]
+    },
+    {
+      "id": "claude-evaluator-team-smoke-test-runner-v1",
+      "title": "Claude Evaluator Team Smoke Test Runner V1",
+      "description": "Inspired by Claude Agent SDK Agent Teams (June 2026): Implement a dedicated Evaluator sub-agent task that runs a specified suite of smoke tests on the Generator's PR before signaling acceptance.",
+      "area": "multi-agent",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/evaluator_smoke_test_v1.py",
+        "tests/test_evaluator_smoke_test_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator sub-agent successfully invokes the smoke test suite in an isolated environment.",
+        "Pass/fail signals correctly influence the Evaluator's final determination.",
+        "Tests mock sub-agent creation and test execution outcomes."
       ]
     }
   ]
