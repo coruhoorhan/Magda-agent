@@ -12745,7 +12745,7 @@
     },
     {
       "id": "a2a-auth-token-delegation-v4",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "high",
       "title": "A2A Auth Token Delegation v4",
@@ -29989,6 +29989,57 @@
       "acceptance": [
         "Evaluator subagent can parse diffs and assess their semantic risk.",
         "Tests mock diffs and verify that destructive changes are blocked."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swapping-v12",
+      "status": "todo",
+      "area": "memory",
+      "risk": "high",
+      "title": "OpenClaw Virtual Context Swapping V12",
+      "description": "Inspired by OpenClaw trends: Implement a more advanced virtual context swapping mechanism that transparently offloads inactive conversational threads to disk and restores them upon semantic hit.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_swapping_v12.py",
+        "tests/test_virtual_context_swapping_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Context pages out to disk cleanly when inactive.",
+        "Tests mock file I/O to verify state swapping logic."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-auth-negotiation-v10",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Dynamic Auth Negotiation V10",
+      "description": "Inspired by MCP standards: Implement multi-turn authentication negotiation for exported MCP tools, ensuring dynamic validation of role claims before execution.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_auth_negotiation_v10.py",
+        "tests/test_mcp_auth_negotiation_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "MCP authentication securely negotiates and verifies roles.",
+        "Tests verify successful and rejected negotiations."
+      ]
+    },
+    {
+      "id": "hermes-agent-scheduled-reflection-v5",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "Hermes Agent Scheduled Reflection V5",
+      "description": "Inspired by Hermes Agent trends: Implement a cron-like scheduler for delayed episodic memory reflection to extract generalized procedural skills during idle periods.",
+      "allowed_paths": [
+        "magda_agent/learning/scheduled_reflection_v5.py",
+        "tests/test_scheduled_reflection_v5.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Scheduler periodically invokes reflection functions.",
+        "Tests simulate idle triggers and verify reflection invocations."
       ]
     }
   ]

@@ -7,7 +7,7 @@ def test_a2a_auth_token_delegation_generate_token():
     token = auth_delegation.generate_token()
 
     assert token.startswith("a2a_auth_")
-    assert len(token) > len("a2a_auth_")
+    assert len(token) == len("a2a_auth_") + 64
     assert token in auth_delegation._active_tokens
 
 def test_a2a_auth_token_delegation_validate_token_success():

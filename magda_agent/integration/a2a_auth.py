@@ -1,4 +1,4 @@
-import uuid
+import secrets
 import logging
 from typing import Set
 
@@ -18,7 +18,7 @@ class A2AAuthTokenDelegation:
         Returns:
             str: The generated token prefixed with 'a2a_auth_'.
         """
-        token = f"a2a_auth_{uuid.uuid4().hex}"
+        token = f"a2a_auth_{secrets.token_hex(32)}"
         self._active_tokens.add(token)
         logging.info(f"Generated new A2A auth token (redacted: {token[:12]}...)")
         return token
