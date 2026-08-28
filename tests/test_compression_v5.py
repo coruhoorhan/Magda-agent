@@ -1,20 +1,16 @@
 import pytest
 import asyncio
+from unittest.mock import patch, AsyncMock
 from magda_agent.memory.compression_v5 import ClaudeContextCompressorV5
 from magda_agent.memory.working import MemoryEntry
 from magda_agent.emotions.engine import PADState
+from magda_agent.llm_client import LLMClient
 from typing import List, Dict, Any
-
-class MockLLMClientV5:
-    """Mock LLM client for testing V5 compression without real API calls."""
-    async def chat_completion(self, messages: List[Dict[str, Any]], temperature: float = 0.0) -> str:
-        """Mocks the chat completion endpoint."""
-        return "V5 Compressed summary."
 
 @pytest.mark.asyncio
 async def test_v5_compress_entries_within_limit() -> None:
     """Tests that entries within the limit are not unnecessarily summarized via LLM if they fit."""
-    llm = MockLLMClientV5()
+    llm = LLMClient(api_key="test_key")
     compressor = ClaudeContextCompressorV5(llm_client=llm)
     state = PADState(0, 0, 0)
 
@@ -32,7 +28,7 @@ async def test_v5_compress_entries_within_limit() -> None:
 @pytest.mark.asyncio
 async def test_v5_compress_entries_exceeds_limit() -> None:
     """Tests that entries exceeding the limit trigger the LLM for summarization."""
-    llm = MockLLMClientV5()
+    llm = LLMClient(api_key="test_key")
     compressor = ClaudeContextCompressorV5(llm_client=llm)
     state = PADState(0, 0, 0)
 
@@ -41,8 +37,10 @@ async def test_v5_compress_entries_exceeds_limit() -> None:
     e2 = MemoryEntry("Another long entry about things to make it long.", 0.6, state, tags=["long2"], user_id=1)
 
     # 10 tokens * 4 = 40 chars limit. Combined length is > 40 chars.
-    result = await compressor.compress_entries([e1, e2], token_limit=10)
-    assert result.content == "V5 Compressed summary."
+    with patch('magda_agent.llm_client.LLMClient.generate', new_callable=AsyncMock) as mock_generate:
+        mock_generate.return_value = "V5 Compressed summary."
+        result = await compressor.compress_entries([e1, e2], token_limit=10)
+        assert result.content == "V5 Compressed summary."
     assert result.importance == 0.55
     assert result.user_id == 1
     assert "long1" in result.tags
@@ -51,7 +49,7 @@ async def test_v5_compress_entries_exceeds_limit() -> None:
 @pytest.mark.asyncio
 async def test_v5_compress_workflow() -> None:
     """Tests that v5 compress_workflow respects token limits and handles fallbacks."""
-    llm = MockLLMClientV5()
+    llm = LLMClient(api_key="test_key")
     compressor = ClaudeContextCompressorV5(llm_client=llm)
 
     # Test within limit
@@ -61,8 +59,10 @@ async def test_v5_compress_workflow() -> None:
 
     # Test exceeding limit with LLM
     long_context = "A" * 500  # 500 characters
-    result_llm = await compressor.compress_workflow(long_context, 10) # 10 tokens * 4 = 40 chars limit
-    assert result_llm == "V5 Compressed summary."
+    with patch('magda_agent.llm_client.LLMClient.generate', new_callable=AsyncMock) as mock_generate:
+        mock_generate.return_value = "V5 Compressed summary."
+        result_llm = await compressor.compress_workflow(long_context, 10) # 10 tokens * 4 = 40 chars limit
+        assert result_llm == "V5 Compressed summary."
 
     # Test exceeding limit without LLM (fallback to truncation)
     compressor_no_llm = ClaudeContextCompressorV5(llm_client=None)

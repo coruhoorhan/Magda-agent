@@ -13066,7 +13066,7 @@
     },
     {
       "id": "claude-subagent-token-optimizer-v5-f7574180-20c7-4782-904b-523e23aaaf6a",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Claude Subagent Token Optimizer V5",
@@ -30967,6 +30967,57 @@
       "acceptance": [
         "Module accurately tracks context usage and initiates swap.",
         "Tests verify that inactive chunks are safely moved to episodic memory."
+      ]
+    },
+    {
+      "id": "openai-agents-sdk-realtime-guardrail-fallback-v1-6fa5acaf-b735-46e1-b61d-7c1cdde5d377",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "OpenAI Agents SDK Realtime Guardrail Fallback V1",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement realtime guardrail fallback mechanisms to recover gracefully from tool execution failures.",
+      "allowed_paths": [
+        "magda_agent/safety/realtime_guardrail_v3.py",
+        "tests/test_realtime_guardrail_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module successfully intercepts tool execution failures.",
+        "Fallback mechanism triggers a recovery state."
+      ]
+    },
+    {
+      "id": "claude-evaluator-code-review-v1-faadf983-9c80-4f90-905d-9a47a6392d42",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "medium",
+      "title": "Claude Evaluator Code Review V1",
+      "description": "Inspired by Claude SDK Agent Teams trend: Implement a specialized evaluator subagent for automated code review using semantic diffs.",
+      "allowed_paths": [
+        "magda_agent/evaluation/claude_code_review_v1.py",
+        "tests/test_claude_code_review_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator agent correctly analyzes semantic diffs.",
+        "Provides actionable feedback based on code changes."
+      ]
+    },
+    {
+      "id": "hermes-persistent-memory-subagent-v1-65976165-f710-4bc2-aa0e-57f4b3fa7993",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "Hermes Persistent Memory Subagent V1",
+      "description": "Inspired by Hermes Agent trend: Implement a persistent memory subagent that longitudinal tracks user preferences over time.",
+      "allowed_paths": [
+        "magda_agent/memory/hermes_persistent_v1.py",
+        "tests/test_hermes_persistent_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Memory subagent successfully persists user preferences.",
+        "Preferences are correctly retrieved for task execution."
       ]
     }
   ]
