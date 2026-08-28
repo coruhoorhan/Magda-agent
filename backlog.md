@@ -383,3 +383,7 @@
 * [ ] FEATURE: OpenClaw Context Engine Plugin V8 (openclaw-context-engine-plugin-v8-unique-new)
 * [ ] FEATURE: MCP Dynamic Capability Negotiation V5 (mcp-dynamic-capability-negotiation-v5-unique-new)
 * [ ] FEATURE: Claude Worktree Pruning and Resource Optimizer V1 (claude-worktree-pruning-optimizer-v1-unique-new)
+
+* [ ] FEATURE: Hermes Cron Nightly Backups V1 (hermes-cron-nightly-backups-v1)
+* [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
+* [x] FEATURE: A2A Delegation Circuit Breaker V7 v2 (a2a-delegation-circuit-breaker-v7-bc9e8aae)
