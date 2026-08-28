@@ -13049,7 +13049,7 @@
     },
     {
       "id": "a2a-discovery-mesh-cards-v5",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Discovery Mesh Cards V5",
@@ -30933,6 +30933,40 @@
         "Runtime policy V2 intercepts pattern-matched payloads.",
         "Audit trails are correctly generated for blocked payloads.",
         "Tests verify block, allow behavior and audit trail generation."
+      ]
+    },
+    {
+      "id": "agent-teams-subagent-spawning-v6-unique-12345",
+      "title": "Agent Teams Subagent Spawning V6",
+      "description": "Inspired by Claude Agent SDK Agent Teams trend: Implement subagent spawning mechanism V6 featuring dynamic git worktree recycling.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/subagent_spawner_v6.py",
+        "tests/test_subagent_spawner_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent spawner correctly initializes and recycles git worktrees based on a cache.",
+        "Tests verify worktree recycling and isolation using mocks."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swapping-v13",
+      "title": "OpenClaw Virtual Context Token Swapping V13",
+      "description": "Inspired by OpenClaw trends: Implement a context engine module that continuously swaps idle conversational chunks into episodic memory to maintain token headroom.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_swapping_v13.py",
+        "tests/test_virtual_context_swapping_v13.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module accurately tracks context usage and initiates swap.",
+        "Tests verify that inactive chunks are safely moved to episodic memory."
       ]
     }
   ]
