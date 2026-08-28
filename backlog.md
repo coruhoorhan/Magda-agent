@@ -271,6 +271,7 @@
 
 
 ## 📡 A2A mDNS & Self-Improvement Loops (June 2026 Trends)
+* [x] FEATURE: A2A Auth Token Delegation v4 (a2a-auth-token-delegation-v4)
 * [x] FEATURE: MCP Dynamic Skill Marketplace Sync v2 (mcp-skill-marketplace-sync-v2)
 * [x] FEATURE: MCP Kernel Sandboxing V2 (mcp-kernel-sandboxing-v2-94a2f1b0)
 * [ ] FEATURE: OpenClaw Virtual Context Lifecycle Manager V3 (openclaw-virtual-context-v3-7d8e9cfa)
