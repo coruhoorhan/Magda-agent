@@ -12,7 +12,8 @@ def valid_card_dict() -> dict:
         "description": "A test agent card v5",
         "capabilities": ["test_capability_1", "test_capability_2"],
         "endpoints": {"rpc": "http://localhost:8080/rpc"},
-        "protocol_version": "v5"
+        "protocol_version": "v5",
+        "health_status": "online"
     }
 
 @pytest.fixture
@@ -38,6 +39,30 @@ def test_agent_card_v5_serialization(valid_card_dict: dict, valid_card_json: str
     assert re_dict["agent_id"] == "test-agent-005"
     assert re_dict["name"] == "TestAgentV5"
     assert re_dict["protocol_version"] == "v5"
+    assert re_dict["health_status"] == "online"
+
+def test_service_filters_offline_agents(valid_card_dict: dict) -> None:
+    """
+    Test that the service filters out offline agents correctly.
+    """
+    service = A2ADiscoveryServiceV5()
+
+    online_card = AgentCardV5.from_json(json.dumps(valid_card_dict))
+    service.register_agent(online_card)
+
+    offline_dict = valid_card_dict.copy()
+    offline_dict["agent_id"] = "offline-agent-001"
+    offline_dict["health_status"] = "offline"
+    offline_card = AgentCardV5.from_json(json.dumps(offline_dict))
+    service.register_agent(offline_card)
+
+    all_agents = service.get_all_agents()
+    assert len(all_agents) == 1
+    assert all_agents[0].agent_id == "test-agent-005"
+
+    retrieved = service.get_agent_card("offline-agent-001")
+    assert retrieved is not None
+    assert retrieved.health_status == "offline"
 
 def test_service_register_and_get(valid_card_json: str) -> None:
     """

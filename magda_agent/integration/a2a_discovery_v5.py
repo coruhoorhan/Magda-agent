@@ -18,6 +18,7 @@ class AgentCardV5:
     capabilities: List[str]
     endpoints: Dict[str, str]
     protocol_version: str = "v5"
+    health_status: str = "online"
 
     def to_json(self) -> str:
         """
@@ -104,12 +105,12 @@ class A2ADiscoveryServiceV5:
 
     def get_all_agents(self) -> List[AgentCardV5]:
         """
-        Returns a list of all discovered agent cards.
+        Returns a list of all discovered agent cards, filtering out offline agents.
 
         Returns:
-            List[AgentCardV5]: A list of all AgentCardV5 objects in the registry.
+            List[AgentCardV5]: A list of online AgentCardV5 objects in the registry.
         """
-        return list(self._registry.values())
+        return [card for card in self._registry.values() if card.health_status != "offline"]
 
     async def discover_from_network(self, network_endpoint: str, auth_token: Optional[str] = None) -> List[AgentCardV5]:
         """
