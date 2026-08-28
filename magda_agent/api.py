@@ -52,7 +52,7 @@ from magda_agent.metacognition.evaluator import Evaluator
 from magda_agent.metacognition.assert_evaluator import AssertEvaluator
 from magda_agent.metacognition.confidence import ConfidenceCalibrator
 from magda_agent.metacognition.tracker import QualityTracker
-from magda_agent.learning.habits import HabitTracker
+from magda_agent.learning.habits_v4 import HabitTrackerV4 as HabitTracker
 from magda_agent.learning.online import OnlineLearner
 from magda_agent.learning.dialogue_v3 import DialogueOnlineLearnerV3
 from magda_agent.learning.online_rl import OnlineRLIntegrator
