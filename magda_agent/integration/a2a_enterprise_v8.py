@@ -2,7 +2,7 @@ import logging
 from typing import Any, Dict
 
 from magda_agent.integration.a2a_auth import A2AAuthTokenDelegation
-from magda_agent.integration.a2a_tracing_v4 import A2ATracingV4
+from magda_agent.integration.a2a_tracing_v8 import A2ATracerV8
 
 class A2AEnterpriseClientV8:
     """
@@ -40,12 +40,12 @@ class A2AEnterpriseClientV8:
         token = self.auth_delegation.generate_token()
 
         # 2. Securely Log the Delegation
-        trace_id = A2ATracingV4.securely_log_delegation_event(
-            target_agent_id=target_agent_id,
-            capability=capability,
-            context=context,
-            token=token
-        )
+
+        tracer = A2ATracerV8()
+        trace_id = tracer.start_trace(f"delegate_to_{target_agent_id}")
+        tracer.set_baggage(trace_id, "capability", capability)
+        tracer.set_baggage(trace_id, "token", token)
+
 
         # 3. (Simulation of JSON-RPC client call would happen here, injecting the token)
         # We simulate the network call and assume it completes.
