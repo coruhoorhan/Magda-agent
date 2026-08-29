@@ -13323,7 +13323,7 @@
     },
     {
       "id": "mcp-dynamic-evaluator-plugin-v2-a9ba9bdc-07ef-46ea-a5c8-a69fae9d45ed",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Dynamic Evaluator Plugin v2",
@@ -31644,6 +31644,40 @@
       "acceptance": [
         "Module dynamically adjusts weights based on explicit user feedback.",
         "Tests verify weight adjustments using mock interactions."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-hooks-v6-15458641",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Hooks V6",
+      "description": "Inspired by Context Engine plugin interface trends: Add V6 lifecycle hooks to allow pre-summarize and post-retrieve logic for the OpenClaw architecture.",
+      "allowed_paths": [
+        "magda_agent/architecture/hooks_v6.py",
+        "tests/test_hooks_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Hooks are implemented and documented.",
+        "Tests mock hooks and assert they are called at the right lifecycle stages."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backups-v1-ed4d6aac",
+      "status": "todo",
+      "area": "operations",
+      "risk": "medium",
+      "title": "Hermes Cron Nightly Backups V1",
+      "description": "Inspired by Hermes Agent cron scheduler trends: Implement a cron job scheduler configuration for daily state nightly backups.",
+      "allowed_paths": [
+        "magda_agent/operations/cron_backup_v1.py",
+        "tests/test_cron_backup_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron job is configured to perform nightly backups.",
+        "Tests verify the backup logic without actually writing backup files."
       ]
     }
   ]
