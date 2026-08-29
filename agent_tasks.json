@@ -13306,7 +13306,7 @@
     },
     {
       "id": "a2a-peer-delegation-v1",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "A2A Peer Task Delegation",
@@ -31593,6 +31593,57 @@
         "Monitor collects traces and metadata from A2A delegation.",
         "Monitor exposes telemetry data in a structured format.",
         "Tests mock A2A transactions and verify tracing output."
+      ]
+    },
+    {
+      "id": "openai-agents-mcp-concurrency-v1",
+      "status": "todo",
+      "area": "skills",
+      "risk": "high",
+      "title": "OpenAI Agents MCP Tool Concurrency V1",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement runtime function tool concurrency to allow the agent to execute multiple MCP tool calls in parallel safely.",
+      "allowed_paths": [
+        "magda_agent/skills/mcp_concurrency_v4.py",
+        "tests/test_mcp_concurrency_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Agent can execute multiple tool calls in parallel using asyncio.gather.",
+        "Tests verify parallel execution logic without true side-effects."
+      ]
+    },
+    {
+      "id": "claude-agent-evaluator-v1",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "Claude Agent Evaluator Component V1",
+      "description": "Inspired by Claude Agent SDK Planner/Generator/Evaluator architecture: Implement a specialized Evaluator subagent component that reviews generated output before presenting it to the user.",
+      "allowed_paths": [
+        "magda_agent/teams/evaluator_subagent_v1.py",
+        "tests/test_evaluator_subagent_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Evaluator component can score generation artifacts.",
+        "Tests mock LLM evaluations and confirm integration."
+      ]
+    },
+    {
+      "id": "hermes-agent-learning-loop-v1",
+      "status": "todo",
+      "area": "learning",
+      "risk": "high",
+      "title": "Hermes Agent Built-in Learning Loop V1",
+      "description": "Inspired by Hermes Agent trend (self-improving with built-in learning loop): Develop a module that passively listens to user corrections and updates procedural memory weights dynamically.",
+      "allowed_paths": [
+        "magda_agent/learning/learning_loop_v1.py",
+        "tests/test_learning_loop_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module dynamically adjusts weights based on explicit user feedback.",
+        "Tests verify weight adjustments using mock interactions."
       ]
     }
   ]
