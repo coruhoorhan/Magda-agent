@@ -17,6 +17,7 @@ from magda_agent.skills.web_navigation_v2 import web_navigate_v2 as web_navigati
 
 from magda_agent.skills.mcp_registry_sync_v11 import MCPRegistrySyncV11
 from magda_agent.skills.mcp_registry import MCPRegistry
+from magda_agent.skills.mcp_eval_v2 import MCPEvaluatorPluginV2
 
 def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegistry:
     registry = SkillRegistry(policy_layer=policy_layer)
@@ -246,7 +247,35 @@ def initialize_skills(policy_layer: Optional["PolicyLayer"] = None) -> SkillRegi
         description="Periodically polls a configured MCP server URL and dynamically registers or unregisters tools in the local MCPRegistry."
     )
 
+
+    mcp_evaluator_v2 = MCPEvaluatorPluginV2()
+
+    def run_mcp_evaluator_v2(tool_schema: dict, sandbox_url: str) -> dict:
+        import asyncio
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                import threading
+                result = None
+                def run_in_thread():
+                    nonlocal result
+                    result = asyncio.run(mcp_evaluator_v2.evaluate_skill(tool_schema, sandbox_url))
+                t = threading.Thread(target=run_in_thread)
+                t.start()
+                t.join()
+                return result
+        except RuntimeError:
+            pass
+        return asyncio.run(mcp_evaluator_v2.evaluate_skill(tool_schema, sandbox_url))
+
+    registry.register_skill(
+        name="mcp_evaluator_v2",
+        func=run_mcp_evaluator_v2,
+        description="Evaluates new skills against an MCP dynamic verification sandbox. Input: 'tool_schema' dict, 'sandbox_url' string."
+    )
+
     return registry
+
 
 from magda_agent.skills.marketplace import fetch_and_register_skills
 from magda_agent.skills.dynamic_generation import DynamicSkillGenerator, TrajectoryStep
