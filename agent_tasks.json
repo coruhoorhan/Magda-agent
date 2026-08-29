@@ -13357,7 +13357,7 @@
     },
     {
       "id": "a2a-discovery-mesh-cards-v8-0ee4892e-796f-4470-b084-0579481e265e",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Discovery Mesh Cards V8",
@@ -31678,6 +31678,58 @@
       "acceptance": [
         "Cron job is configured to perform nightly backups.",
         "Tests verify the backup logic without actually writing backup files."
+      ]
+    },
+    {
+      "id": "hermes-skill-market-export-v3-d67b3ca2",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Skill Market Export V3",
+      "description": "Inspired by Hermes Agent trends: Implement a tool exporter to package learned skills for the agentskills.io standard marketplace.",
+      "allowed_paths": [
+        "magda_agent/skills/hermes_export_v3.py",
+        "tests/test_hermes_export_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter module successfully packages local skills into compatible format.",
+        "Tests pass using mock skills."
+      ]
+    },
+    {
+      "id": "openclaw-live-canvas-telemetry-v9-895dcf05",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "title": "OpenClaw Live Canvas Telemetry V9",
+      "description": "Inspired by OpenClaw trends: Expose a websocket server to broadcast live local reinforcement learning telemetry and PAD shifts.",
+      "allowed_paths": [
+        "magda_agent/operations/live_rl_v9.py",
+        "tests/test_live_rl_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Websocket server broadcasts PAD telemetry correctly.",
+        "Tests pass mimicking WebSocket connections."
+      ]
+    },
+    {
+      "id": "claude-worktree-multi-agent-planning-v4-133b6ecd",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "Claude Worktree Multi-Agent Planning V4",
+      "description": "Inspired by Claude Agent Teams: Build a dependency graph orchestrator for the Planner subagent to distribute subtasks across isolated git worktrees.",
+      "allowed_paths": [
+        "magda_agent/teams/planner_graph_v4.py",
+        "tests/test_planner_graph_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Planner parses task dependency graph correctly.",
+        "Planner orchestrates parallel tasks across worktrees.",
+        "Tests verify graph resolution and coordination."
       ]
     }
   ]
