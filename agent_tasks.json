@@ -13340,7 +13340,7 @@
     },
     {
       "id": "openclaw-rl-canvas-live-metrics-v8-dbdf3a77-d78e-47b0-8c8a-7f683d60b2e7",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "low",
       "title": "OpenClaw RL Canvas Live Metrics v8",
