@@ -3,6 +3,7 @@ from typing import Optional, List
 
 from magda_agent.learning.habits import HabitTracker
 from magda_agent.emotions.mirror_neurons import MirrorNeurons
+from magda_agent.learning.rl_tuner_v5 import OnlineRLParameterTunerV5
 
 class OpenClawRLV6:
     """
@@ -25,6 +26,7 @@ class OpenClawRLV6:
         """
         self.habit_tracker = habit_tracker
         self.mirror_neurons = mirror_neurons
+        self.parameter_tuner = OnlineRLParameterTunerV5()
 
     def _calculate_reward(self, p_shift: float, tool_output: Optional[str]) -> float:
         """
@@ -77,16 +79,27 @@ class OpenClawRLV6:
 
         reward = self._calculate_reward(p_shift, tool_output)
 
+        uncertainty = abs(a_shift)
+        metrics = {'reward': reward, 'uncertainty': uncertainty}
+        tuned_lr = self.parameter_tuner.tune_learning_rate(metrics)
+
+        # Apply tuned_lr to scale the reward instead of only logging it.
+        # It's an online RL param tuner, so we scale it explicitly.
+        adjusted_reward = reward * (1.0 + tuned_lr)
+        adjusted_reward = max(0.0, min(10.0, adjusted_reward))
+
+        logging.debug(f"OpenClawRLV6: Tuned learning rate is {tuned_lr:.4f} for metrics {metrics}. Adjusted reward: {adjusted_reward:.2f}")
+
         if reward > 5.0:
             # Positive signal, reinforce habits
             for skill in skills:
                 self.habit_tracker.record_usage(
                     input_text=action_context,
                     skill_used=skill,
-                    evaluation_score=reward,
+                    evaluation_score=adjusted_reward,
                     user_id=user_id
                 )
-            logging.info(f"OpenClawRLV6: Positive signal received (reward={reward:.2f}). Reinforced skills: {skills}")
+            logging.info(f"OpenClawRLV6: Positive signal received (reward={adjusted_reward:.2f}). Reinforced skills: {skills}")
         else:
             # Negative or low neutral signal
-            logging.info(f"OpenClawRLV6: Low/Negative signal (reward={reward:.2f}). No usage recorded.")
+            logging.info(f"OpenClawRLV6: Low/Negative signal (reward={adjusted_reward:.2f}). No usage recorded.")
