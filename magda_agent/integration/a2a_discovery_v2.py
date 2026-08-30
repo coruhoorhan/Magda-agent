@@ -105,33 +105,109 @@ class A2ADiscoveryV2:
         """
         return self._discovered_agents.get(agent_id)
 
-    def find_agents_by_capability(self, capability: str) -> List[AgentCardV2]:
+    def find_agents_by_capability(self, capability: str, prefix_match: bool = False) -> List[AgentCardV2]:
         """
         Returns a list of Agent Cards that support the given capability.
+        Supports optional prefix matching for capability strings.
         """
-        agent_ids = self._capability_index.get(capability, [])
-        return [self._discovered_agents[aid] for aid in agent_ids]
+        if not prefix_match:
+            agent_ids = self._capability_index.get(capability, [])
+            return [self._discovered_agents[aid] for aid in agent_ids]
 
-    def find_agents_by_capabilities(self, capabilities: List[str], match_all: bool = True) -> List[AgentCardV2]:
+        matching_agents = []
+        for card in self._discovered_agents.values():
+            if any(c == capability or c.startswith(capability) for c in card.capabilities):
+                matching_agents.append(card)
+        return matching_agents
+
+    def find_agents_by_capabilities(
+        self, capabilities: List[str], match_all: bool = True, prefix_match: bool = False
+    ) -> List[AgentCardV2]:
         """
         Returns a list of Agent Cards that support the given list of capabilities.
         If match_all is True, the agent must support all specified capabilities.
         If match_all is False, the agent must support at least one of the specified capabilities.
+        Supports optional prefix matching.
         """
         if not capabilities:
             return list(self._discovered_agents.values())
 
         matching_agents = []
         for card in self._discovered_agents.values():
-            card_caps = set(card.capabilities)
-            req_caps = set(capabilities)
-            if match_all:
-                if req_caps.issubset(card_caps):
+            if prefix_match:
+                matches = [
+                    any(c == req or c.startswith(req) for c in card.capabilities)
+                    for req in capabilities
+                ]
+                if match_all and all(matches):
+                    matching_agents.append(card)
+                elif not match_all and any(matches):
                     matching_agents.append(card)
             else:
-                if req_caps.intersection(card_caps):
+                card_caps = set(card.capabilities)
+                req_caps = set(capabilities)
+                if match_all and req_caps.issubset(card_caps):
+                    matching_agents.append(card)
+                elif not match_all and req_caps.intersection(card_caps):
                     matching_agents.append(card)
         return matching_agents
+
+    def discover_workflow_subagents(
+        self,
+        required_capabilities: List[str],
+        optional_capabilities: Optional[List[str]] = None,
+        prefix_match: bool = True,
+    ) -> List[Dict[str, object]]:
+        """
+        Discovers subagents suitable for workflow delegation based on required and optional capabilities.
+        Returns a list of dictionary descriptors containing the agent card and a score.
+        """
+        optional_capabilities = optional_capabilities or []
+        candidates = self.find_agents_by_capabilities(
+            required_capabilities, match_all=True, prefix_match=prefix_match
+        )
+
+        results = []
+        for card in candidates:
+            score = 100.0
+            if optional_capabilities:
+                opt_matches = sum(
+                    1
+                    for opt in optional_capabilities
+                    if any(
+                        c == opt or (prefix_match and c.startswith(opt))
+                        for c in card.capabilities
+                    )
+                )
+                score += (opt_matches / len(optional_capabilities)) * 50.0
+
+            results.append({
+                "card": card,
+                "agent_id": card.agent_id,
+                "score": score,
+                "matched_required": required_capabilities,
+            })
+
+        results.sort(key=lambda x: x["score"], reverse=True)
+        return results
+
+    def select_subagent_for_workflow_task(
+        self,
+        required_capabilities: List[str],
+        optional_capabilities: Optional[List[str]] = None,
+        prefix_match: bool = True,
+    ) -> Optional[AgentCardV2]:
+        """
+        Selects the single best subagent for a workflow task, or None if no candidate satisfies required capabilities.
+        """
+        scored_subagents = self.discover_workflow_subagents(
+            required_capabilities=required_capabilities,
+            optional_capabilities=optional_capabilities,
+            prefix_match=prefix_match,
+        )
+        if not scored_subagents:
+            return None
+        return scored_subagents[0]["card"]
 
     async def register_with_registry(self, registry_url: str, auth_token: Optional[str] = None) -> bool:
         """

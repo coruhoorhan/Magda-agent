@@ -179,3 +179,47 @@ async def test_register_with_registry_failure_v2(local_card_v2: AgentCardV2) -> 
 
     success = await discovery.register_with_registry(registry_url)
     assert success is False
+
+
+@pytest.mark.asyncio
+async def test_prefix_matching_and_workflow_subagent_discovery_v2(
+    local_card_v2: AgentCardV2, remote_card_1_v2: AgentCardV2, remote_card_2_v2: AgentCardV2
+) -> None:
+    discovery = A2ADiscoveryV2(local_card=local_card_v2)
+
+    # Remote 1 capabilities: ["image_generation", "chat"]
+    # Remote 2 capabilities: ["code_execution", "linting"]
+    network_envelopes = [
+        json.dumps({"type": "a2a_discovery_broadcast", "version": "2.0", "payload": remote_card_1_v2.to_json()}),
+        json.dumps({"type": "a2a_discovery_broadcast", "version": "2.0", "payload": remote_card_2_v2.to_json()})
+    ]
+
+    await discovery.fetch_cards(network_envelopes=network_envelopes)
+
+    # Prefix match test
+    code_subagents = discovery.find_agents_by_capability("code_", prefix_match=True)
+    assert len(code_subagents) == 1
+    assert code_subagents[0].agent_id == remote_card_2_v2.agent_id
+
+    # Test workflow subagent discovery ranking
+    discovered = discovery.discover_workflow_subagents(
+        required_capabilities=["code_"],
+        optional_capabilities=["linting"],
+        prefix_match=True,
+    )
+    assert len(discovered) == 1
+    assert discovered[0]["agent_id"] == remote_card_2_v2.agent_id
+    assert discovered[0]["score"] == 150.0
+
+    # Select subagent for workflow task
+    selected = discovery.select_subagent_for_workflow_task(
+        required_capabilities=["code_execution"], prefix_match=False
+    )
+    assert selected is not None
+    assert selected.agent_id == remote_card_2_v2.agent_id
+
+    # Non-matching subagent selection
+    no_match = discovery.select_subagent_for_workflow_task(
+        required_capabilities=["unsupported_task"], prefix_match=True
+    )
+    assert no_match is None
