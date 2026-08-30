@@ -5,6 +5,7 @@ from typing import Dict, Any, Optional
 import httpx
 
 from magda_agent.skills.mcp_registry import MCPRegistry
+from magda_agent.safety.mcp_audit_v1 import MCPAuditTrailV1
 
 
 class MCPRegistrySyncV11:
@@ -29,6 +30,7 @@ class MCPRegistrySyncV11:
         self._running = False
         self._task: Optional[asyncio.Task[None]] = None
         self.logger = logging.getLogger(__name__)
+        self.mcp_audit = MCPAuditTrailV1()
 
     async def _sync_loop(self) -> None:
         """
@@ -130,3 +132,30 @@ class MCPRegistrySyncV11:
                 pass
             self._task = None
         self.logger.info("Stopped MCPRegistrySyncV11 loop.")
+
+    async def execute_tool(self, tool_name: str, **kwargs: Any) -> Any:
+        """
+        Executes a synchronized tool and logs the execution to the MCP audit trail.
+
+        Args:
+            tool_name (str): The name of the tool to execute.
+            kwargs: Arguments to pass to the tool.
+
+        Returns:
+            The result of the tool execution.
+        """
+        import time
+        start_time = time.time()
+        status = "success"
+        result = None
+        try:
+            result = await self.registry.execute_tool(tool_name, **kwargs)
+            return result
+        except Exception as e:
+            status = "error"
+            result = {"error": str(e)}
+            self.logger.error(f"Error executing synced tool '{tool_name}': {e}")
+            raise
+        finally:
+            duration = time.time() - start_time
+            await self.mcp_audit.log_mcp_invocation(server_name=self.mcp_server_url, tool_name=tool_name, arguments=kwargs, result=result, duration=duration, status=status)

@@ -13476,7 +13476,7 @@
     },
     {
       "id": "mcp-agent-action-tools-audit-v1-68f664a0-eec9-49f9-ab30-330a32f42c16",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Agent Action Tools Audit V1",
@@ -31917,6 +31917,59 @@
       "acceptance": [
         "Aggregator generates accurate activity strings from dummy database items.",
         "Tests mock DB records and assert output format."
+      ]
+    },
+    {
+      "id": "acs-guard-memory-v1-0943e5c6",
+      "status": "todo",
+      "area": "safety",
+      "risk": "medium",
+      "title": "ACS Memory Governance Guard V1",
+      "description": "Inspired by ACS controls trend: Implement a specialized ACS governance guard that specifically filters and verifies memory retrieval operations to prevent taint poisoning.",
+      "allowed_paths": [
+        "magda_agent/safety/acs_memory_guard_v1.py",
+        "tests/test_acs_memory_guard_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The memory guard intercepts and sanitizes retrieved memory context based on taint annotations.",
+        "Tests verify the guard accurately filters or blocks poisoned memory snippets without executing actual LLM requests."
+      ]
+    },
+    {
+      "id": "a2a-skill-delegation-protocol-v3-6442ba2c",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "A2A Skill Delegation Protocol V3",
+      "description": "Inspired by A2A Protocol trends: Implement a discovery and delegation protocol that maps local procedural skills to generic Agent Cards for multi-agent peer delegation over HTTP.",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_skill_delegation_v3.py",
+        "tests/test_a2a_skill_delegation_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Protocol correctly formats local skills into valid A2A Agent Cards.",
+        "Delegator can dispatch a structured HTTP request representing a skill execution to a peer agent.",
+        "Tests pass using mocked httpx responses and mocked skills."
+      ]
+    },
+    {
+      "id": "hermes-procedural-memory-consolidation-v2-40dbd7ad",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "Hermes Procedural Memory Consolidation V2",
+      "description": "Inspired by Hermes Agent self-improving loops: Create an offline sub-routine that evaluates the audit trail of tool invocations (using AuditTrail and MCPAuditTrailV1) to detect successful patterns and consolidate them into new procedural memory skills.",
+      "allowed_paths": [
+        "magda_agent/learning/hermes_procedural_consolidation_v2.py",
+        "tests/test_hermes_procedural_consolidation_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Routine extracts sequences of successful tool calls from the audit logs.",
+        "Routine generates proposed new procedural skill definitions from those patterns.",
+        "Tests mock the audit log and LLM summarizer correctly."
       ]
     }
   ]
