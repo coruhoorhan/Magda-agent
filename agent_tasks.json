@@ -13493,7 +13493,7 @@
     },
     {
       "id": "agent-teams-parallel-subagents-v4-228d45c3-ed5c-4968-a69d-8e0b61e3425b",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Agent Teams Parallel Subagents V4",
@@ -31970,6 +31970,59 @@
         "Routine extracts sequences of successful tool calls from the audit logs.",
         "Routine generates proposed new procedural skill definitions from those patterns.",
         "Tests mock the audit log and LLM summarizer correctly."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-user-feedback-v10-new",
+      "title": "OpenClaw RL Multimodal User Feedback V10",
+      "description": "Inspired by OpenClaw RL trends: Automatically extract RL rewards from multimodal feedback signals including explicit textual sentiment and implicit interaction length.",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/learning/multimodal_feedback_v10.py",
+        "tests/test_multimodal_feedback_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Pipeline successfully extracts and normalizes reward scalars from all modalities.",
+        "Habit weights correctly reflect combined multimodal inputs.",
+        "Tests mock multi-turn responses."
+      ]
+    },
+    {
+      "id": "a2a-swarm-intelligence-consensus-v6-new",
+      "title": "A2A Swarm Intelligence Consensus Protocol V6",
+      "description": "Inspired by Swarm Intelligence and A2A trends (June 2026): Create a consensus protocol for the A2A mesh that allows peer sub-agents to vote on critical task parameters before taking an action.",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_consensus_v6.py",
+        "tests/test_a2a_consensus_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Protocol handles distributed voting from multiple discovered peer agents.",
+        "Consensus requirement prevents execution until a quorum is reached.",
+        "Tests verify voting resolution and quorum conditions."
+      ]
+    },
+    {
+      "id": "mcp-dynamic-capability-negotiation-v11-new",
+      "title": "MCP Dynamic Capability Negotiation V11",
+      "description": "Inspired by June 2026 AI Agent trends (MCP tools): Implement multi-turn capability negotiation for MCP tools between agents.",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_negotiation_v11.py",
+        "tests/test_mcp_negotiation_v11.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Capability negotiation module created.",
+        "Tests mock tool negotiation correctly."
       ]
     }
   ]
