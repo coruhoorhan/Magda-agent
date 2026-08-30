@@ -13374,7 +13374,7 @@
     },
     {
       "id": "3d08bc96-e512-4caa-898b-cc7ac78f185a",
-      "status": "todo",
+      "status": "done",
       "area": "multi-agent",
       "risk": "medium",
       "title": "A2A Workflow Subagent Discovery V2",
