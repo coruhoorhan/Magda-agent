@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional
 from magda_agent.emotions.engine import PADState
 from magda_agent.memory.working import WorkingMemory, MemoryEntry
+from magda_agent.safety.taint_context_v5 import TaintedWorkingMemory
 from magda_agent.memory.selective_retrieval_v2 import SelectiveRetrievalV2
 from magda_agent.memory.episodic import EpisodicMemory
 from magda_agent.memory.virtual_context import VirtualContextManager
@@ -22,7 +23,7 @@ class MemorySystem:
     """
     def __init__(self, short_term_limit: int = 10, persist_directory: str = "./memory_db", llm: Optional[LLMClient] = None, context_engine: Optional[ContextEngine] = None):
         self.short_term_limit = short_term_limit
-        self.working_memory = WorkingMemory(limit=short_term_limit, context_engine=context_engine)
+        self.working_memory = TaintedWorkingMemory(limit=short_term_limit, context_engine=context_engine)
         self.episodic_memory = EpisodicMemory(persist_directory=persist_directory)
         self.virtual_context_manager = VirtualContextManager(llm_client=llm)
         self.working_memory.virtual_context_manager = self.virtual_context_manager

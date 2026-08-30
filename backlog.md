@@ -388,3 +388,6 @@
 * [ ] FEATURE: Hermes Cron Nightly Backups V1 (hermes-cron-nightly-backups-v1)
 * [ ] FEATURE: OpenClaw Context Engine Hooks V6 (openclaw-context-engine-hooks-v6)
 * [x] FEATURE: A2A Delegation Circuit Breaker V7 v2 (a2a-delegation-circuit-breaker-v7-bc9e8aae)
+
+* [ ] FEATURE: OpenClaw Virtual Context Lifecycle Manager V2 (openclaw-virtual-context-lifecycle-manager-v2-unique)
+* [ ] FEATURE: Claude SDK Task Dependency Graph V2 (claude-sdk-dependency-graph-v2-unique)

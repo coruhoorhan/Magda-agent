@@ -13408,7 +13408,7 @@
     },
     {
       "id": "ac8c2801-1ada-489f-95d8-9db5b6c97c93",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Kernel Taint Tracking Context Integrator V5",
@@ -31730,6 +31730,40 @@
         "Planner parses task dependency graph correctly.",
         "Planner orchestrates parallel tasks across worktrees.",
         "Tests verify graph resolution and coordination."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-lifecycle-manager-v2-unique",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Virtual Context Lifecycle Manager V2",
+      "description": "Inspired by OpenClaw trends: Implement a Virtual Context Lifecycle Manager to handle automatic paging in and out of episodic memory to manage the context window.",
+      "allowed_paths": [
+        "magda_agent/memory/virtual_context_v2.py",
+        "tests/test_virtual_context_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Lifecycle manager automatically swaps context out to episodic memory.",
+        "Tests verify paging logic without hitting actual LLM endpoints."
+      ]
+    },
+    {
+      "id": "claude-sdk-dependency-graph-v2-unique",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "medium",
+      "title": "Claude SDK Task Dependency Graph V2",
+      "description": "Inspired by Claude Agent SDK: Develop a dependency graph orchestrator to manage sub-tasks execution order and dependencies.",
+      "allowed_paths": [
+        "magda_agent/architecture/dependency_graph_v2.py",
+        "tests/test_dependency_graph_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Orchestrator can resolve and execute tasks in order based on dependencies.",
+        "Tests verify graph resolution logic."
       ]
     }
   ]
