@@ -11,6 +11,7 @@
 
 ## 🧠 Архитектура мозга
 
+* [x] FEATURE: OpenClaw RL Canvas Skills Metrics V2 (openclaw-rl-canvas-skills-metrics-v2-3fd53530-b2f2-4fa2-a905-96e6577ec73c)
 * [x] MODULE: **Mirror Neuron System (Система зеркальных нейронов)** — модуль `magda_agent/emotions/mirror_neurons.py`. (2026-06-04)
   Отвечает за базовую эмпатию: анализирует текст пользователя на наличие позитивных/негативных слов и возвращает сдвиг для PAD (Pleasure, Arousal, Dominance).
   Метод `empathize(text)` — возвращает кортеж (p_shift, a_shift, d_shift) в зависимости от тональности.

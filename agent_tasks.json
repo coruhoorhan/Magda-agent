@@ -13510,7 +13510,7 @@
     },
     {
       "id": "openclaw-rl-canvas-skills-metrics-v2-3fd53530-b2f2-4fa2-a905-96e6577ec73c",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw RL Canvas Skills Metrics V2",
@@ -32023,6 +32023,57 @@
       "acceptance": [
         "Capability negotiation module created.",
         "Tests mock tool negotiation correctly."
+      ]
+    },
+    {
+      "id": "claude-code-subagent-evaluation-v6-0f831bc6",
+      "title": "Claude Code Subagent Evaluation V6",
+      "description": "Inspired by Claude Code and Agent Teams: Implement a subagent task capable of evaluating multi-step planner outputs independently before merging results.",
+      "area": "evaluation",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/evaluation/claude_subagent_v6.py",
+        "tests/test_claude_subagent_v6.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagent spawns in isolation and evaluates input context.",
+        "Tests mock subagent execution and verify results."
+      ]
+    },
+    {
+      "id": "mcp-server-dynamic-discovery-v15-0c9b2e8d",
+      "title": "MCP Server Dynamic Discovery V15",
+      "description": "Inspired by MCP standard adoption: Implement a background polling mechanism to dynamically discover new MCP capabilities from an external registry without restarting.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_discovery_v15.py",
+        "tests/test_mcp_discovery_v15.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Mechanism successfully polls and registers new capabilities.",
+        "Tests verify background execution and capability synchronization."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-realtime-rl-v12-6880a606",
+      "title": "OpenClaw Canvas Realtime RL State Visualizer V12",
+      "description": "Inspired by OpenClaw Canvas Live Visualization: Develop an extension for the Canvas server to display RL behavior weights and user interaction penalties in real time.",
+      "area": "visualization",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_rl_state_v12.py",
+        "tests/test_canvas_rl_state_v12.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "WebSocket updates include live RL weight metrics.",
+        "Tests mock internal RL state changes and assert WebSocket payload validity."
       ]
     }
   ]
