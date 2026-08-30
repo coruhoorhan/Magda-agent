@@ -6,6 +6,7 @@ import pytest
 
 from magda_agent.skills.mcp_registry import MCPRegistry
 from magda_agent.skills.mcp_registry_sync_v11 import MCPRegistrySyncV11
+from unittest.mock import AsyncMock
 
 @pytest.fixture
 def registry() -> MCPRegistry:
@@ -163,3 +164,40 @@ async def test_start_stop() -> None:
         assert sync._task is None
 
         mock_sync_once.assert_called()
+
+@pytest.mark.asyncio
+async def test_execute_tool(registry):
+
+    sync_instance = MCPRegistrySyncV11(registry, "http://example.com")
+    registry.execute_tool = AsyncMock(return_value="mock_result")
+
+    # Mock the audit trail
+    sync_instance.mcp_audit.log_mcp_invocation = AsyncMock()
+
+    result = await sync_instance.execute_tool("my_tool", arg1="val1")
+
+    assert result == "mock_result"
+    registry.execute_tool.assert_called_once_with("my_tool", arg1="val1")
+    sync_instance.mcp_audit.log_mcp_invocation.assert_called_once()
+    args, kwargs = sync_instance.mcp_audit.log_mcp_invocation.call_args
+    assert kwargs["server_name"] == "http://example.com"
+    assert kwargs["tool_name"] == "my_tool"
+    assert kwargs["arguments"] == {"arg1": "val1"}
+    assert kwargs["result"] == "mock_result"
+    assert kwargs["status"] == "success"
+
+@pytest.mark.asyncio
+async def test_execute_tool_error(registry):
+
+    sync_instance = MCPRegistrySyncV11(registry, "http://example.com")
+    registry.execute_tool = AsyncMock(side_effect=Exception("mock_error"))
+
+    sync_instance.mcp_audit.log_mcp_invocation = AsyncMock()
+
+    with pytest.raises(Exception):
+        await sync_instance.execute_tool("my_tool", arg1="val1")
+
+    sync_instance.mcp_audit.log_mcp_invocation.assert_called_once()
+    args, kwargs = sync_instance.mcp_audit.log_mcp_invocation.call_args
+    assert kwargs["status"] == "error"
+    assert kwargs["result"] == {"error": "mock_error"}
