@@ -13459,7 +13459,7 @@
     },
     {
       "id": "online-rl-parameter-tuner-v5-5572f5ce-b7db-42c1-9e8f-7256c1d8effb",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "Online RL Parameter Tuner V5",
@@ -31866,6 +31866,57 @@
       "acceptance": [
         "Concurrent tool calls properly isolate their internal context variables for taint.",
         "Tests verify isolated propagation with asyncio tasks."
+      ]
+    },
+    {
+      "id": "mcp-to-a2a-bridge-protocol-v1-c47bc5a8",
+      "status": "todo",
+      "area": "integration",
+      "risk": "high",
+      "title": "MCP to A2A Bridge Protocol V1",
+      "description": "Inspired by MCP and A2A trends: Create a bridge protocol to allow MCP tools to be exposed as A2A services for peer delegation.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_a2a_bridge_v1.py",
+        "tests/test_mcp_a2a_bridge_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Bridge protocol module parses and maps MCP tool descriptions to A2A capabilities.",
+        "Tests mock MCP inputs and verify A2A formatted output."
+      ]
+    },
+    {
+      "id": "openclaw-live-canvas-multi-agent-ui-v1-8e439b6f",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "medium",
+      "title": "OpenClaw Canvas Multi-Agent UI Streamer V1",
+      "description": "Inspired by OpenClaw Live Canvas and Agent Teams: Stream multi-agent planning dependencies and states via websocket to UI.",
+      "allowed_paths": [
+        "magda_agent/visualization/multi_agent_streamer_v1.py",
+        "tests/test_multi_agent_streamer_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer successfully serializes subagent graphs.",
+        "Tests pass mocking WebSocket transmission."
+      ]
+    },
+    {
+      "id": "hermes-cron-daily-reports-v1-dab66bb1",
+      "status": "todo",
+      "area": "operations",
+      "risk": "low",
+      "title": "Hermes Cron Daily Reports V1",
+      "description": "Inspired by Hermes Cron scheduled tasks: Implement a daily aggregator that builds a markdown report of agent activity and sends it to a configured channel.",
+      "allowed_paths": [
+        "magda_agent/operations/cron_daily_reports_v1.py",
+        "tests/test_cron_daily_reports_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Aggregator generates accurate activity strings from dummy database items.",
+        "Tests mock DB records and assert output format."
       ]
     }
   ]
