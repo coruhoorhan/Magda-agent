@@ -13425,7 +13425,7 @@
     },
     {
       "id": "a2a-service-auth-v2-42adfdd1-9357-4277-b424-22ca3f62d174",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "high",
       "title": "A2A Service Authentication V2",
@@ -31764,6 +31764,57 @@
       "acceptance": [
         "Orchestrator can resolve and execute tasks in order based on dependencies.",
         "Tests verify graph resolution logic."
+      ]
+    },
+    {
+      "id": "hermes-agent-skills-discovery-v1-a2661f73",
+      "status": "todo",
+      "area": "skills",
+      "risk": "medium",
+      "title": "Hermes Agent Skills Discovery V1",
+      "description": "Inspired by Hermes Agent trend: Implement proactive skill discovery that analyzes new files and updates registry.",
+      "allowed_paths": [
+        "magda_agent/skills/discovery_v1.py",
+        "tests/test_discovery_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery module correctly parses unmapped files and updates the skills registry.",
+        "Tests mock file parsing to verify the behavior."
+      ]
+    },
+    {
+      "id": "openclaw-live-canvas-telemetry-v10-666e50a5",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Live Canvas Telemetry V10",
+      "description": "Inspired by OpenClaw trends: Implement live state synchronization for subagents and episodic memory layers via Websockets.",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_live_v10.py",
+        "tests/test_canvas_live_v10.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Websocket module correctly streams the state JSON to connected clients.",
+        "Tests mock WebSocket interaction and verify data structure."
+      ]
+    },
+    {
+      "id": "mcp-server-schema-caching-v1-fe74e03f",
+      "status": "todo",
+      "area": "integration",
+      "risk": "medium",
+      "title": "MCP Server Schema Caching V1",
+      "description": "Inspired by OpenAI Agents SDK trend: Implement a caching mechanism for MCP capability negotiation to avoid redundant lookups.",
+      "allowed_paths": [
+        "magda_agent/integration/mcp_caching_v1.py",
+        "tests/test_mcp_caching_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "The caching module correctly stores and retrieves MCP capabilities.",
+        "Tests mock caching logic and ensure faster retrievals."
       ]
     }
   ]
