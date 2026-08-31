@@ -13579,7 +13579,7 @@
     },
     {
       "id": "trend-openclaw-rl-pad-shift-analysis-0667e36f",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL PAD Shift Analysis Module",
@@ -32176,6 +32176,40 @@
       "acceptance": [
         "Fuzzer successfully tests registered action tools with corrupted payloads.",
         "Tests pass verifying that tools reject invalid inputs."
+      ]
+    },
+    {
+      "id": "openclaw-rl-dynamic-weight-scaling-v2-8d5d9e8b",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw-RL Dynamic Weight Scaling V2",
+      "description": "Inspired by OpenClaw-RL trend: Dynamically scale learning rates and reinforcement weights based on empathy magnitude and user interaction length.",
+      "allowed_paths": [
+        "magda_agent/learning/dynamic_weight_scaling_v2.py",
+        "tests/test_dynamic_weight_scaling_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module dynamic weight scaling factors properly calculated.",
+        "Tests correctly verify weight boundaries and limits."
+      ]
+    },
+    {
+      "id": "claude-triad-agent-sandbox-v2-fba52c65",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "title": "Claude Triad Agent Sandbox V2",
+      "description": "Inspired by Claude Agent SDK triad architecture: Expand planner-evaluator isolation to allow for intermediate checkpointing and rollback during failure states.",
+      "allowed_paths": [
+        "magda_agent/architecture/triad_agent_sandbox_v2.py",
+        "tests/test_triad_agent_sandbox_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Triad agent correctly checkpoints internal states.",
+        "Rollback mechanism recovers prior state successfully in mock workflows."
       ]
     }
   ]
