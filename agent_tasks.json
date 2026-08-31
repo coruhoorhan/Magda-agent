@@ -13544,7 +13544,7 @@
     },
     {
       "id": "openclaw-rl-canvas-learning-viz-v9-5a29889f",
-      "status": "todo",
+      "status": "done",
       "area": "visualization",
       "risk": "low",
       "title": "OpenClaw RL Canvas Learning Viz v9",
@@ -32074,6 +32074,57 @@
       "acceptance": [
         "WebSocket updates include live RL weight metrics.",
         "Tests mock internal RL state changes and assert WebSocket payload validity."
+      ]
+    },
+    {
+      "id": "hermes-cron-nightly-backups-v2-98fc4111",
+      "status": "todo",
+      "area": "operations",
+      "risk": "low",
+      "title": "Hermes Cron Nightly Backups V2",
+      "description": "Inspired by Hermes Agent's 'Cron scheduler: daily reports, nightly backups, scheduled tasks' trend: Implement a background job for nightly backups of agent state to SQLite.",
+      "allowed_paths": [
+        "magda_agent/operations/cron_nightly_backups_v2.py",
+        "tests/test_cron_nightly_backups_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Cron backup module successfully packages SQLite DB state.",
+        "Tests verify execution does not crash."
+      ]
+    },
+    {
+      "id": "openclaw-context-engine-plugin-v9-55d7ca78",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "title": "OpenClaw Context Engine Plugin V9",
+      "description": "Inspired by OpenClaw's 'Context Engine plugin interface с lifecycle hooks' trend: Create a plugin interface for virtual context management that allows hooking into pre-save and post-load operations.",
+      "allowed_paths": [
+        "magda_agent/memory/context_engine_plugin_v9.py",
+        "tests/test_context_engine_plugin_v9.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin interface properly defined with abstract hooks.",
+        "Tests mock the interface and trigger the hooks correctly."
+      ]
+    },
+    {
+      "id": "claude-subagent-dependency-graphs-v1-66883917",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "high",
+      "title": "Claude Subagent Dependency Graphs V1",
+      "description": "Inspired by Claude Agent SDK's 'Task system с dependency graphs' trend: Develop a task orchestration module capable of parsing dependencies and spawning isolated subagents in topological order.",
+      "allowed_paths": [
+        "magda_agent/teams/subagent_dependency_graph_v1.py",
+        "tests/test_subagent_dependency_graph_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Graph parsing correctly resolves topological execution order.",
+        "Tests mock subagent dispatch and assert order."
       ]
     }
   ]
