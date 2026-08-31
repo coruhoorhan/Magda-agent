@@ -13596,7 +13596,7 @@
     },
     {
       "id": "trend-claude-planner-generator-eval-trio-a73a7a3d",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Claude-inspired Planner/Generator/Evaluator Workflow Sandbox",
@@ -32197,7 +32197,7 @@
     },
     {
       "id": "claude-triad-agent-sandbox-v2-fba52c65",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "high",
       "title": "Claude Triad Agent Sandbox V2",
@@ -32210,6 +32210,60 @@
       "acceptance": [
         "Triad agent correctly checkpoints internal states.",
         "Rollback mechanism recovers prior state successfully in mock workflows."
+      ]
+    },
+    {
+      "id": "openclaw-virtual-context-swap-v1-1113a7f1",
+      "title": "OpenClaw Context Engine Virtual Memory Swap V1",
+      "description": "Inspired by OpenClaw trends: Implement a context engine plugin hook to intelligently swap out least recently used conversational turns from Working Memory to Episodic Memory when context size limits are breached.",
+      "status": "todo",
+      "area": "memory",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/memory/context_swap_v1.py",
+        "tests/test_context_swap_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Plugin properly measures context size against thresholds.",
+        "Plugin extracts and moves older context tokens out without corrupting ongoing thought.",
+        "Tests verify swapping logic via mocks."
+      ]
+    },
+    {
+      "id": "a2a-mesh-peer-task-tracer-v1-e13fd13c",
+      "title": "A2A Mesh Peer Task Tracer V1",
+      "description": "Inspired by A2A Protocol enterprise tracing trend: Create a tracer module that injects and extracts OpenTelemetry-compatible span context headers during peer-to-peer task delegations across the agent mesh.",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "low",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_mesh_tracer_v1.py",
+        "tests/test_a2a_mesh_tracer_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tracer can format tracing headers for outgoing requests.",
+        "Tracer can decode headers from incoming requests.",
+        "Tests mock tracing payloads and verify encoding/decoding."
+      ]
+    },
+    {
+      "id": "mcp-kernel-action-guardrails-v2-e64e69cd",
+      "title": "MCP Kernel Action Guardrails V2",
+      "description": "Inspired by MCP Kernel and Agent Guard trends: Implement a specialized guardrail module that prevents the execution of MCP action tools which require local file writes outside of explicitly designated sandbox directories.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_kernel_guard_v2.py",
+        "tests/test_mcp_kernel_guard_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Guardrail successfully blocks MCP tools attempting to write outside allowed paths.",
+        "Guardrail allows safe executions.",
+        "Tests mock file paths and verify blocking behavior."
       ]
     }
   ]
