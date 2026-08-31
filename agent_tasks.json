@@ -13561,7 +13561,7 @@
     },
     {
       "id": "mcp-action-tool-policy-auditor-v11-7b3a0524",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Action Tool Policy Auditor v11",
@@ -32125,6 +32125,57 @@
       "acceptance": [
         "Graph parsing correctly resolves topological execution order.",
         "Tests mock subagent dispatch and assert order."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-subagent-live-streamer-v1-uuid1",
+      "title": "OpenClaw Canvas Subagent Live Streamer V1",
+      "description": "Inspired by OpenClaw Live Canvas trend (June 2026): Develop a multi-agent streamer that aggregates active context and memory transitions for isolated subagents and streams them into the UI.",
+      "area": "visualization",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/visualization/canvas_subagent_streamer_v1.py",
+        "tests/test_canvas_subagent_streamer_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Streamer successfully serializes subagent graphs.",
+        "Tests pass mocking WebSocket transmission."
+      ]
+    },
+    {
+      "id": "a2a-mesh-protocol-rate-limiter-v1-uuid2",
+      "title": "A2A Mesh Protocol Rate Limiter V1",
+      "description": "Inspired by A2A standard trend (June 2026): Implement an asynchronous rate limiter to prevent localized discovery storms when many agent cards are gossiped concurrently.",
+      "area": "integration",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/integration/a2a_mesh_rate_limiter_v1.py",
+        "tests/test_a2a_mesh_rate_limiter_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Rate limiter correctly queues or drops excessive A2A requests.",
+        "Tests verify limiter bounds under mocked high load."
+      ]
+    },
+    {
+      "id": "mcp-action-tool-input-fuzzer-v1-uuid3",
+      "title": "MCP Action Tool Input Fuzzer V1",
+      "description": "Inspired by MCP standards and runtime safety controls (June 2026): Create a fuzz testing harness to periodically evaluate exported MCP tools against malformed or explicitly tainted inputs.",
+      "area": "safety",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_fuzzer_v1.py",
+        "tests/test_mcp_fuzzer_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Fuzzer successfully tests registered action tools with corrupted payloads.",
+        "Tests pass verifying that tools reject invalid inputs."
       ]
     }
   ]
