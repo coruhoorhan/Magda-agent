@@ -18,7 +18,7 @@ def mock_procedural_memory() -> ProceduralMemory:
 
 @pytest.mark.asyncio
 async def test_generate_skill_success(mock_llm_client: LLMClient, mock_procedural_memory: ProceduralMemory) -> None:
-    mock_response = """
+    mock_response = r"""
 Here is the extracted skill:
 ```python
 def extract_ips_from_logs(logs):
@@ -63,7 +63,7 @@ And the schema:
 
 @pytest.mark.asyncio
 async def test_generate_skill_missing_code(mock_llm_client: LLMClient, mock_procedural_memory: ProceduralMemory) -> None:
-    mock_response = """
+    mock_response = r"""
     I generated a schema for you:
     ```json
     {
@@ -82,7 +82,7 @@ async def test_generate_skill_missing_code(mock_llm_client: LLMClient, mock_proc
 
 @pytest.mark.asyncio
 async def test_generate_skill_invalid_schema(mock_llm_client: LLMClient, mock_procedural_memory: ProceduralMemory) -> None:
-    mock_response = """
+    mock_response = r"""
     ```python
     def foo(): pass
     ```

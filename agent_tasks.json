@@ -13632,7 +13632,7 @@
     },
     {
       "id": "8a857a8b-360a-4a5a-aff1-9d05fdd8ece1",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "MemGPT Virtual Context Integration V2",
@@ -32264,6 +32264,57 @@
         "Guardrail successfully blocks MCP tools attempting to write outside allowed paths.",
         "Guardrail allows safe executions.",
         "Tests mock file paths and verify blocking behavior."
+      ]
+    },
+    {
+      "id": "hermes-rpc-subagent-v1-daac3de5",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "Hermes Agent RPC Subagent Delegation v1",
+      "description": "Inspired by Hermes Agent trend: Implement RPC-based sub-agents for parallel tasks, giving each their own isolated context.",
+      "allowed_paths": [
+        "magda_agent/architecture/hermes_rpc_subagent_v1.py",
+        "tests/test_hermes_rpc_subagent_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "RPC subagent can be spawned with isolated context.",
+        "Tests mock RPC communication and verify subagent lifecycle."
+      ]
+    },
+    {
+      "id": "openclaw-canvas-live-v1-e84cdf47",
+      "status": "todo",
+      "area": "visualization",
+      "risk": "low",
+      "title": "OpenClaw Live Visualization Canvas v1",
+      "description": "Inspired by OpenClaw trend: Implement a Canvas component for live visualization of the agent's internal state.",
+      "allowed_paths": [
+        "magda_agent/visualization/openclaw_canvas_v1.py",
+        "tests/test_openclaw_canvas_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Canvas component correctly formats internal state for visualization.",
+        "Tests verify rendering logic with mock states."
+      ]
+    },
+    {
+      "id": "claude-dependency-graph-v1-2bc98275",
+      "status": "todo",
+      "area": "planning",
+      "risk": "high",
+      "title": "Claude Agent SDK Dependency Graph Tasks v1",
+      "description": "Inspired by Claude Agent SDK trend: Implement a task system that supports dependency graphs for task execution.",
+      "allowed_paths": [
+        "magda_agent/planning/dependency_graph_tasks_v1.py",
+        "tests/test_dependency_graph_tasks_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Task system can parse and execute dependency graphs.",
+        "Tests verify execution order based on dependencies."
       ]
     }
   ]
