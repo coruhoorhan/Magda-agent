@@ -13650,7 +13650,7 @@
     },
     {
       "id": "cc58a34c-3f1a-41aa-9db6-ddff979cb589",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "Prempti Tool Interception Logger V1",
@@ -32315,6 +32315,57 @@
       "acceptance": [
         "Task system can parse and execute dependency graphs.",
         "Tests verify execution order based on dependencies."
+      ]
+    },
+    {
+      "id": "a2a-mesh-peer-discovery-4c0e53fc",
+      "status": "todo",
+      "area": "multi-agent",
+      "risk": "medium",
+      "title": "A2A Mesh Peer Discovery V3",
+      "description": "Inspired by A2A Protocol trends: Implement a discovery module that allows agents to broadcast and receive 'Agent Cards' over a virtual mesh network to discover peers.",
+      "allowed_paths": [
+        "magda_agent/teams/a2a_mesh_discovery_v3.py",
+        "tests/test_a2a_mesh_discovery_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Module can serialize and broadcast Agent Cards.",
+        "Tests verify peer discovery logic with mocked network."
+      ]
+    },
+    {
+      "id": "openclaw-rl-multimodal-user-feedback-4d83bef3",
+      "status": "todo",
+      "area": "learning",
+      "risk": "medium",
+      "title": "OpenClaw-RL Multimodal Feedback V4",
+      "description": "Inspired by OpenClaw-RL trends: Implement a reward signal aggregator that computes learning weights based on response delay and user interaction length.",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_multimodal_v4.py",
+        "tests/test_openclaw_rl_multimodal_v4.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Aggregator correctly normalizes implicit reward signals.",
+        "Tests pass verifying weight bounds."
+      ]
+    },
+    {
+      "id": "claude-team-evaluator-semantic-diff-e95f49cd",
+      "status": "todo",
+      "area": "evaluation",
+      "risk": "low",
+      "title": "Claude Team Evaluator Semantic Diff V2",
+      "description": "Inspired by Claude Agent SDK Evaluator trend: Build an evaluator subagent tool that compares abstract syntax tree differences rather than pure text diffs to evaluate code changes.",
+      "allowed_paths": [
+        "magda_agent/evaluation/claude_evaluator_ast_diff_v2.py",
+        "tests/test_claude_evaluator_ast_diff_v2.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Tool generates semantic change summaries from AST.",
+        "Tests mock AST trees and verify diff output."
       ]
     }
   ]
