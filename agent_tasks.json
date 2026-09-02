@@ -13668,7 +13668,7 @@
     },
     {
       "id": "7fb16e93-1c84-4e9e-b85f-42b18bc3f423",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Magentic-One Multi-Agent Orchestration V3",
@@ -32366,6 +32366,58 @@
       "acceptance": [
         "Tool generates semantic change summaries from AST.",
         "Tests mock AST trees and verify diff output."
+      ]
+    },
+    {
+      "id": "claude-subagent-checkpointing-v1-new4",
+      "title": "Claude Subagent Checkpointing V1",
+      "description": "Inspired by Claude Agent SDK task checkpointing trend (June 2026): Implement an intermediate state persistence layer for subagents to checkpoint execution and rollback upon unexpected failures.",
+      "area": "architecture",
+      "risk": "high",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/architecture/claude_subagent_checkpoint_v1.py",
+        "tests/test_claude_subagent_checkpoint_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagents can write checkpoints.",
+        "Subagents can restore from the last checkpoint upon failure.",
+        "Tests verify rollback mechanism."
+      ]
+    },
+    {
+      "id": "openclaw-rl-reflection-metric-v1-new5",
+      "title": "OpenClaw RL Reflection Metric Exporter V1",
+      "description": "Inspired by OpenClaw online RL trends (June 2026): Build an exporter that periodically bundles implicit RL signals (response delay, user tone) and streams them to a centralized metric aggregation service.",
+      "area": "learning",
+      "risk": "medium",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/learning/openclaw_rl_reflection_metric_v1.py",
+        "tests/test_openclaw_rl_reflection_metric_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter can serialize accumulated RL rewards into standard metric payloads.",
+        "Tests verify periodic flushing logic."
+      ]
+    },
+    {
+      "id": "a2a-discovery-cache-v1-new6",
+      "title": "A2A Discovery Cache Layer V1",
+      "description": "Inspired by A2A Protocol enterprise mesh trends (June 2026): Add a time-to-live (TTL) in-memory cache to the A2A Peer Discovery layer to prevent repetitive gossip broadcasts and reduce mesh chatter.",
+      "area": "multi-agent",
+      "risk": "low",
+      "status": "todo",
+      "allowed_paths": [
+        "magda_agent/teams/a2a_discovery_cache_v1.py",
+        "tests/test_a2a_discovery_cache_v1.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Discovery layer prioritizes cache retrieval over active mesh broadcasting if TTL is valid.",
+        "Tests assert TTL expiration and re-broadcasting via mocks."
       ]
     }
   ]
