@@ -22,6 +22,9 @@ class LLMClient:
         self.model = model or os.getenv("OPENAI_MODEL", "gpt-4o")
         self.base_url = base_url or os.getenv("OPENAI_BASE_URL")
         self.client = None
+        # Retry policy for transient API errors (rate limits, 5xx).
+        self.max_retries = int(os.getenv("LLM_MAX_RETRIES", "3"))
+        self.retry_base = float(os.getenv("LLM_RETRY_BASE_SECONDS", "2.0"))
 
         if AsyncOpenAI and self.api_key:
             client_kwargs: Dict[str, Any] = {"api_key": self.api_key}
@@ -37,20 +40,37 @@ class LLMClient:
     async def chat_completion(self, messages: List[Dict[str, str]], temperature: float = 0.7) -> str:
         """
         Sends a list of messages to the LLM and returns the response content asynchronously.
+        Retries transient API errors (rate limits / 5xx) with exponential backoff.
         """
         if not self.client:
             return "Error: LLM Client not initialized. Please check OPENAI_API_KEY."
 
-        try:
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=temperature
-            )
-            return response.choices[0].message.content
-        except Exception as e:
-            logging.error(f"LLM API Error: {e}")
-            return f"Error: I encountered an issue while thinking. ({e})"
+        last_error: Optional[Exception] = None
+        for attempt in range(self.max_retries + 1):
+            try:
+                response = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=messages,
+                    temperature=temperature
+                )
+                return response.choices[0].message.content
+            except Exception as e:
+                last_error = e
+                status = getattr(e, "status_code", None)
+                if status is None:
+                    status = getattr(getattr(e, "response", None), "status_code", None)
+                retriable = status in (408, 409, 429, 500, 502, 503, 504) or (status is None and "429" in str(e))
+                if not retriable or attempt >= self.max_retries:
+                    logging.error(f"LLM API Error: {e}")
+                    return f"Error: I encountered an issue while thinking. ({e})"
+                wait = self.retry_base * (2 ** attempt)
+                logging.warning(
+                    f"LLM API transient error (status={status}); "
+                    f"retrying in {wait:.1f}s (attempt {attempt + 1}/{self.max_retries})"
+                )
+                await asyncio.sleep(wait)
+
+        return f"Error: I encountered an issue while thinking. ({last_error})"
 
     async def generate(self, prompt: str, temperature: float = 0.7) -> str:
         """

@@ -18,6 +18,16 @@ CONSCIOUSNESS_API_URL = os.getenv("CONSCIOUSNESS_API_URL", "http://consciousness
 # Initialize Bot and Dispatcher
 BOT_TOKEN = os.getenv("BOT_TOKEN", "dummy_token")
 
+# Optional API auth token shared with the consciousness service.
+MAGDA_API_TOKEN = os.getenv("MAGDA_API_TOKEN", "")
+
+
+def _api_headers() -> dict:
+    """Return auth headers for consciousness API calls, if a token is configured."""
+    if MAGDA_API_TOKEN:
+        return {"Authorization": f"Bearer {MAGDA_API_TOKEN}"}
+    return {}
+
 class WhitelistMiddleware(BaseMiddleware):
     def __init__(self):
         super().__init__()
@@ -56,7 +66,7 @@ async def command_start_handler(message: Message) -> None:
 async def command_state_handler(message: Message) -> None:
     """Returns the internal state of the agent from the microservice."""
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
+        async with httpx.AsyncClient(timeout=10.0, headers=_api_headers()) as client:
             # Pass user_id if available to get user-specific state
             params = {}
             if message.from_user and message.from_user.id:
@@ -99,7 +109,7 @@ async def command_task_handler(message: Message) -> None:
         await message.answer("Usage: <code>/task &lt;goal&gt;</code>\nExample: <code>/task research the top 3 Python web frameworks and summarize tradeoffs</code>")
         return
     try:
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with httpx.AsyncClient(timeout=15.0, headers=_api_headers()) as client:
             payload = {"goal": goal}
             if message.from_user and message.from_user.id:
                 payload["user_id"] = message.from_user.id
@@ -122,7 +132,7 @@ async def command_tasks_handler(message: Message) -> None:
         params = {}
         if message.from_user and message.from_user.id:
             params["user_id"] = message.from_user.id
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with httpx.AsyncClient(timeout=15.0, headers=_api_headers()) as client:
             response = await client.get(f"{CONSCIOUSNESS_API_URL}/tasks", params=params)
             response.raise_for_status()
             tasks = response.json().get("tasks", [])
@@ -147,7 +157,7 @@ async def _task_action(message: Message, action: str) -> None:
         await message.answer(f"Usage: <code>/{action} &lt;task_id&gt;</code>")
         return
     try:
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with httpx.AsyncClient(timeout=15.0, headers=_api_headers()) as client:
             response = await client.post(f"{CONSCIOUSNESS_API_URL}/tasks/{task_id}/{action}")
         if response.status_code == 200:
             await message.answer(f"Task <code>{task_id}</code>: {action} requested.")
@@ -181,7 +191,7 @@ async def task_progress_poller(bot: Bot, interval: float = 5.0) -> None:
     while True:
         await asyncio.sleep(interval)
         try:
-            async with httpx.AsyncClient(timeout=15.0) as client:
+            async with httpx.AsyncClient(timeout=15.0, headers=_api_headers()) as client:
                 resp = await client.get(f"{CONSCIOUSNESS_API_URL}/tasks")
                 resp.raise_for_status()
                 tasks = resp.json().get("tasks", [])
@@ -231,7 +241,7 @@ async def voice_message_handler(message: Message) -> None:
             os.remove(local_ogg)
 
         # Send to Consciousness API
-        async with httpx.AsyncClient(timeout=180.0) as client:
+        async with httpx.AsyncClient(timeout=180.0, headers=_api_headers()) as client:
             payload = {"text": text}
             if message.from_user and message.from_user.id:
                 payload["user_id"] = message.from_user.id
@@ -268,7 +278,7 @@ async def main_message_handler(message: Message) -> None:
     await message.bot.send_chat_action(chat_id=message.chat.id, action="typing")
 
     try:
-        async with httpx.AsyncClient(timeout=180.0) as client:
+        async with httpx.AsyncClient(timeout=180.0, headers=_api_headers()) as client:
             payload = {"text": message.text}
             if message.from_user and message.from_user.id:
                 payload["user_id"] = message.from_user.id
