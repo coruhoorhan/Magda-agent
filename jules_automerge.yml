@@ -41,3 +41,28 @@ jobs:
           gh pr review ${{ github.event.pull_request.number }} --approve
           # Слияние ветки и удаление временной ветки агента
           gh pr merge ${{ github.event.pull_request.number }} --merge --delete-branch
+
+      - name: Mark task done on merge
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          REPO: ${{ github.repository }}
+        run: |
+          PR_NUM=${{ github.event.pull_request.number }}
+          TITLE=$(curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/repos/$REPO/pulls/$PR_NUM | python -c "import sys, json; print(json.load(sys.stdin)['title'])")
+          TASK_ID=$(echo "$TITLE" | awk '{print $1}')
+          CONTENT=$(curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/repos/$REPO/contents/agent_tasks.json)
+          SHA=$(echo "$CONTENT" | python -c "import sys, json; print(json.load(sys.stdin)['sha'])")
+          FILE=$(echo "$CONTENT" | python -c "import sys, json, base64; data=json.load(sys.stdin)['content']; print(base64.b64decode(data).decode())")
+          python - <<PY
+import json, sys
+data = json.loads("""$FILE""")
+for t in data.get('tasks', []):
+    if t.get('id') == "$TASK_ID":
+        t['status'] = 'done'
+print(json.dumps(data, indent=2))
+PY > new.json
+          NEW_CONTENT=$(base64 -w0 new.json)
+          curl -X PUT -H "Authorization: token $GH_TOKEN" \
+            -d "{\"message\":\"Mark $TASK_ID done\",\"content\":\"$NEW_CONTENT\",\"sha\":\"$SHA\"}" \
+            https://api.github.com/repos/$REPO/contents/agent_tasks.json
