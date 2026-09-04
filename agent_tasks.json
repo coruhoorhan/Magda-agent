@@ -14681,7 +14681,7 @@
     },
     {
       "id": "letta-virtual-context-advanced-sync-v3",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Letta Virtual Context Advanced Sync V3",
@@ -32405,6 +32405,59 @@
       ],
       "created_at": 1788510497.9629478,
       "created_by": "Magda Fullstack LLM Watchdog"
+    },
+    {
+      "id": "mcp-guardrail-taint-tracking-v3",
+      "title": "MCP Guardrail Taint Tracking V3",
+      "description": "Inspired by MCPKernel and Prempti: Add advanced taint tracking for MCP action tools to prevent data leaks by verifying if tool outputs are sent to unauthorized external systems.",
+      "status": "todo",
+      "area": "safety",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/safety/mcp_taint_tracking_v3.py",
+        "tests/test_mcp_taint_tracking_v3.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Taint tracker marks MCP tool output properly.",
+        "Guardrail intercepts unauthorized leakage.",
+        "Tests verify taint propagation with mocked data."
+      ]
+    },
+    {
+      "id": "agent-team-git-worktree-isolation-v1",
+      "title": "Agent Team Git Worktree Isolation",
+      "description": "Inspired by Claude Agent SDK Agent Teams: Sandbox each subagent inside its own git worktree so concurrent operations do not collide on the same repository files.",
+      "status": "todo",
+      "area": "architecture",
+      "risk": "high",
+      "allowed_paths": [
+        "magda_agent/architecture/git_worktree_sandbox.py",
+        "tests/test_git_worktree_sandbox.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Subagents correctly instantiate into separate git worktrees.",
+        "Git operations do not affect the main working tree during execution.",
+        "Tests verify worktree creation/destruction using mocked git commands."
+      ]
+    },
+    {
+      "id": "a2a-mesh-metrics-exporter-v1",
+      "title": "A2A Mesh Telemetry Metrics Exporter",
+      "description": "Inspired by A2A Protocol trends: Export agent mesh interactions to Prometheus format for enterprise tracing, providing insight into agent-to-agent delegation latency and success rates.",
+      "status": "todo",
+      "area": "telemetry",
+      "risk": "medium",
+      "allowed_paths": [
+        "magda_agent/telemetry/a2a_prometheus_exporter.py",
+        "tests/test_a2a_prometheus_exporter.py",
+        "agent_tasks.json"
+      ],
+      "acceptance": [
+        "Exporter can format agent interactions into valid Prometheus metrics payload.",
+        "Tests pass verifying export format."
+      ]
     }
   ],
   "updated_at": 1788510497.9629514
