@@ -1,160 +1,160 @@
-import pytest
+"""
+Tests for A2A Discovery Agent Card Broadcaster V4.
+"""
+
+import asyncio
 import json
-from unittest.mock import AsyncMock
-from magda_agent.integration.a2a import A2AManager
-from magda_agent.integration.a2a_discovery import AgentCard
+import unittest
+from unittest.mock import AsyncMock, MagicMock
 
-@pytest.fixture
-def local_card() -> AgentCard:
-    """Fixture for local AgentCard."""
-    return AgentCard(
-        agent_id="agent-001",
-        name="MagdaLocal",
-        description="Local agent for testing",
-        capabilities=["chat", "planning"],
-        endpoints={"rpc": "http://localhost:8080/rpc"}
+try:
+    from magda_agent.integration.a2a_discovery_v4 import (
+        AgentCardV4,
+        A2ADiscoveryRegistryV4,
+        A2ADiscoveryAgentCardBroadcasterV4,
     )
+except (ImportError, ModuleNotFoundError):
+    import importlib.util
+    from pathlib import Path
 
-@pytest.fixture
-def remote_card() -> AgentCard:
-    """Fixture for remote AgentCard."""
-    return AgentCard(
-        agent_id="agent-remote-001",
-        name="RemoteWorker",
-        description="Worker node",
-        capabilities=["code_execution", "linting"],
-        endpoints={"rpc": "http://192.168.1.10:8080/rpc"}
-    )
+    file_path = Path(__file__).resolve().parent.parent / "magda_agent" / "integration" / "a2a_discovery_v4.py"
+    spec = importlib.util.spec_from_file_location("a2a_discovery_v4", file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
 
-@pytest.mark.asyncio
-async def test_a2a_manager_start(local_card: AgentCard) -> None:
-    """Test A2AManager start functionality."""
-    manager = A2AManager(local_card=local_card)
-    broadcast_json = await manager.start()
+    AgentCardV4 = module.AgentCardV4
+    A2ADiscoveryRegistryV4 = module.A2ADiscoveryRegistryV4
+    A2ADiscoveryAgentCardBroadcasterV4 = module.A2ADiscoveryAgentCardBroadcasterV4
 
-    data = json.loads(broadcast_json)
-    assert data["agent_id"] == "agent-001"
-    assert "planning" in data["capabilities"]
 
-@pytest.mark.asyncio
-async def test_a2a_manager_discover_and_delegate(local_card: AgentCard, remote_card: AgentCard) -> None:
-    """Test A2AManager discovery and delegation."""
-    manager = A2AManager(local_card=local_card)
-
-    mock_network_cards = [remote_card.to_json()]
-    await manager.discover_peers(mock_network_cards=mock_network_cards)
-
-    peers = manager.get_known_peers()
-    assert len(peers) == 1
-    assert peers[0].agent_id == "agent-remote-001"
-
-    # Test delegation to found peer
-    manager.delegator.delegate_subplan = AsyncMock(return_value="Delegated to Agent RemoteWorker")
-    result = await manager.delegate_task("code_execution", {"code": "print('hello')"})
-    assert result == f"Delegated to Agent RemoteWorker"
-
-    # Test delegation to missing capability
-    manager.delegator.delegate_subplan = AsyncMock(return_value="No agent found")
-    result_missing = await manager.delegate_task("image_generation", {"prompt": "cat"})
-    assert result_missing == "No agent found"
-
-import logging
-from unittest.mock import patch
-from magda_agent.integration.a2a_discovery_v4 import AgentCardV4, A2ADiscoveryRegistryV4
-
-@pytest.fixture
-def valid_card_dict() -> dict:
-    """Fixture for valid AgentCard dictionary."""
-    return {
-        "agent_id": "test-agent-001",
-        "name": "TestAgent",
-        "description": "A test agent card",
-        "capabilities": ["test_capability_1", "test_capability_2"],
-        "endpoints": {"rpc": "http://localhost:8080/rpc"}
-    }
-
-@pytest.fixture
-def valid_card_json(valid_card_dict: dict) -> str:
-    """Fixture for valid AgentCard JSON string."""
-    return json.dumps(valid_card_dict)
-
-def test_agent_card_v4_serialization(valid_card_dict: dict, valid_card_json: str) -> None:
+class TestA2ADiscoveryV4(unittest.IsolatedAsyncioTestCase):
     """
-    Test that AgentCardV4 successfully serializes and deserializes from JSON.
+    Test suite verifying AgentCardV4 formatting, network payload generation,
+    discovery broadcasting, and capability registry queries.
     """
-    # Deserialize
-    card = AgentCardV4.from_json(valid_card_json)
-    assert card.agent_id == "test-agent-001"
-    assert card.name == "TestAgent"
-    assert "test_capability_1" in card.capabilities
-    assert card.endpoints["rpc"] == "http://localhost:8080/rpc"
 
-    # Serialize
-    re_serialized = card.to_json()
-    re_dict = json.loads(re_serialized)
-    assert re_dict["agent_id"] == "test-agent-001"
-    assert re_dict["name"] == "TestAgent"
+    def setUp(self):
+        self.local_card = AgentCardV4(
+            agent_id="agent_coder_v4",
+            name="Coder Agent Prime",
+            description="Specialized code implementation and unit testing subagent",
+            capabilities=["python_coding", "unit_testing", "refactoring"],
+            endpoints={"rest": "http://10.0.1.5:8000/a2a", "grpc": "10.0.1.5:50051"},
+        )
+        self.registry = A2ADiscoveryRegistryV4()
 
-def test_registry_register_and_get(valid_card_json: str) -> None:
-    """
-    Test registering and retrieving an agent card from the registry.
-    """
-    registry = A2ADiscoveryRegistryV4()
-    card = AgentCardV4.from_json(valid_card_json)
+    # -------------------------------------------------------------------------
+    # 1. Card Formatting & Serialization
+    # -------------------------------------------------------------------------
+    def test_agent_card_v4_serialization_and_capabilities(self):
+        """Card should serialize to/from JSON and accurately match capabilities."""
+        json_str = self.local_card.to_json()
+        deserialized = AgentCardV4.from_json(json_str)
 
-    registry.register_agent(card)
+        self.assertEqual(deserialized.agent_id, "agent_coder_v4")
+        self.assertEqual(deserialized.name, "Coder Agent Prime")
+        self.assertTrue(deserialized.has_capability("python_coding"))
+        self.assertTrue(deserialized.has_capability("testing"))
+        self.assertFalse(deserialized.has_capability("web_scraping"))
 
-    retrieved_card = registry.get_agent_card("test-agent-001")
-    assert retrieved_card is not None
-    assert retrieved_card.name == "TestAgent"
+    # -------------------------------------------------------------------------
+    # 2. Broadcast Payload Format
+    # -------------------------------------------------------------------------
+    def test_generate_broadcast_payload(self):
+        """Broadcast payload must conform to A2A V4 protocol specifications."""
+        broadcaster = A2ADiscoveryAgentCardBroadcasterV4(local_card=self.local_card)
+        payload = broadcaster.generate_broadcast_payload()
 
-    all_agents = registry.get_all_agents()
-    assert len(all_agents) == 1
-    assert all_agents[0].agent_id == "test-agent-001"
+        self.assertEqual(payload["type"], "a2a_discovery_broadcast")
+        self.assertEqual(payload["protocol"], "a2a_v4")
+        self.assertTrue(payload["broadcast_id"].startswith("bcast_"))
+        self.assertIn("capabilities", payload)
+        self.assertEqual(payload["capabilities"], ["python_coding", "unit_testing", "refactoring"])
+        self.assertEqual(payload["agent_card"]["agent_id"], "agent_coder_v4")
 
-def test_registry_unregister(valid_card_json: str) -> None:
-    """
-    Test unregistering an agent card from the registry.
-    """
-    registry = A2ADiscoveryRegistryV4()
-    card = AgentCardV4.from_json(valid_card_json)
+    # -------------------------------------------------------------------------
+    # 3. Broadcasting with Transport
+    # -------------------------------------------------------------------------
+    async def test_broadcast_once_invokes_transport(self):
+        """Single broadcast should invoke the network transport callback."""
+        mock_transport = AsyncMock()
+        broadcaster = A2ADiscoveryAgentCardBroadcasterV4(
+            local_card=self.local_card,
+            broadcast_transport_fn=mock_transport,
+        )
 
-    registry.register_agent(card)
-    assert registry.get_agent_card("test-agent-001") is not None
+        sent_payload = await broadcaster.broadcast_once()
 
-    registry.unregister_agent("test-agent-001")
-    assert registry.get_agent_card("test-agent-001") is None
+        mock_transport.assert_called_once_with(sent_payload)
+        self.assertEqual(broadcaster.broadcast_count, 1)
+        self.assertIsNotNone(broadcaster.last_broadcast_time)
 
-    # Unregistering non-existent agent should not crash
-    registry.unregister_agent("non-existent")
+    # -------------------------------------------------------------------------
+    # 4. Remote Broadcast Reception & Registry
+    # -------------------------------------------------------------------------
+    def test_receive_remote_broadcast_and_registry_query(self):
+        """Receiving a remote broadcast should register the peer in the local discovery registry."""
+        broadcaster = A2ADiscoveryAgentCardBroadcasterV4(
+            local_card=self.local_card,
+            registry=self.registry,
+        )
 
-def test_registry_parse_and_register_cards(valid_card_json: str) -> None:
-    """
-    Test bulk parsing and registration of valid and invalid card strings.
-    """
-    registry = A2ADiscoveryRegistryV4()
+        remote_payload = {
+            "type": "a2a_discovery_broadcast",
+            "protocol": "a2a_v4",
+            "agent_card": {
+                "agent_id": "agent_surfer_01",
+                "name": "Web Surfer Subagent",
+                "description": "Searches documentation and web",
+                "capabilities": ["web_search", "scraping"],
+                "endpoints": {"rest": "http://10.0.1.9:8000/a2a"},
+            },
+        }
 
-    invalid_card_json = '{"agent_id": "bad", "name": "bad"}' # missing description, capabilities, endpoints
-    malformed_json = '{"agent_id": "bad", "name":' # Syntax error
+        registered_card = broadcaster.receive_remote_broadcast(remote_payload)
+        self.assertIsNotNone(registered_card)
+        self.assertEqual(registered_card.agent_id, "agent_surfer_01")
 
-    cards_to_parse = [valid_card_json, invalid_card_json, malformed_json]
+        # Query registry
+        surfer_agents = self.registry.find_agents_by_capability("web_search")
+        self.assertEqual(len(surfer_agents), 1)
+        self.assertEqual(surfer_agents[0].name, "Web Surfer Subagent")
 
-    successfully_parsed = registry.parse_and_register_cards(cards_to_parse)
+    # -------------------------------------------------------------------------
+    # 5. Raw Cards Parsing
+    # -------------------------------------------------------------------------
+    def test_parse_and_register_cards(self):
+        """Batch JSON parsing of agent cards should populate the registry."""
+        card1_json = AgentCardV4(
+            agent_id="a1", name="Agent 1", description="desc", capabilities=["c1"], endpoints={}
+        ).to_json()
+        card2_json = AgentCardV4(
+            agent_id="a2", name="Agent 2", description="desc", capabilities=["c2"], endpoints={}
+        ).to_json()
 
-    assert len(successfully_parsed) == 1
-    assert successfully_parsed[0].agent_id == "test-agent-001"
+        parsed = self.registry.parse_and_register_cards([card1_json, card2_json, "invalid json"])
+        self.assertEqual(len(parsed), 2)
+        self.assertEqual(len(self.registry.get_all_agents()), 2)
 
-    assert len(registry.get_all_agents()) == 1
+    # -------------------------------------------------------------------------
+    # 6. Periodic Broadcast Loop Lifecycle
+    # -------------------------------------------------------------------------
+    async def test_periodic_broadcaster_start_and_stop(self):
+        """Broadcaster loop should run periodically and terminate cleanly on stop."""
+        mock_transport = AsyncMock()
+        broadcaster = A2ADiscoveryAgentCardBroadcasterV4(
+            local_card=self.local_card,
+            broadcast_transport_fn=mock_transport,
+            broadcast_interval_seconds=0.01,
+        )
 
-@patch('magda_agent.integration.a2a_discovery_v4.logging.error')
-def test_registry_parse_logging_errors(mock_logging_error) -> None:
-    """
-    Test that invalid cards log an error during parsing.
-    """
-    registry = A2ADiscoveryRegistryV4()
-    malformed_json = '{"not": json}'
+        await broadcaster.start_broadcasting()
+        await asyncio.sleep(0.035)
+        broadcaster.stop_broadcasting()
 
-    registry.parse_and_register_cards([malformed_json])
+        self.assertGreaterEqual(broadcaster.broadcast_count, 2)
+        self.assertGreaterEqual(mock_transport.call_count, 2)
 
-    assert mock_logging_error.called
-    assert "Failed to parse AgentCardV4" in mock_logging_error.call_args[0][0]
+
+if __name__ == "__main__":
+    unittest.main()

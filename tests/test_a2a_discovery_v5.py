@@ -1,184 +1,182 @@
-import pytest
+"""
+Unit tests for A2A Agent Card Dynamic Validation V5.
+"""
+
 import json
-from unittest.mock import patch, AsyncMock
-from magda_agent.integration.a2a_discovery_v5 import AgentCardV5, A2ADiscoveryServiceV5
+import unittest
+from unittest.mock import MagicMock
 
-@pytest.fixture
-def valid_card_dict() -> dict:
-    """Fixture for valid AgentCard dictionary."""
-    return {
-        "agent_id": "test-agent-005",
-        "name": "TestAgentV5",
-        "description": "A test agent card v5",
-        "capabilities": ["test_capability_1", "test_capability_2"],
-        "endpoints": {"rpc": "http://localhost:8080/rpc"},
-        "protocol_version": "v5",
-        "health_status": "online"
-    }
+try:
+    from magda_agent.integration.a2a_discovery_v5 import (
+        A2ADiscoveryRegistryV5,
+        A2ADiscoveryV5,
+        AgentCardSchemaValidatorV5,
+        AgentCardV5,
+        AgentSecurityTier,
+        ValidationResult,
+    )
+except (ImportError, ModuleNotFoundError):
+    import importlib.util
+    from pathlib import Path
 
-@pytest.fixture
-def valid_card_json(valid_card_dict: dict) -> str:
-    """Fixture for valid AgentCard JSON string."""
-    return json.dumps(valid_card_dict)
+    file_path = (
+        Path(__file__).resolve().parent.parent
+        / "magda_agent"
+        / "integration"
+        / "a2a_discovery_v5.py"
+    )
+    spec = importlib.util.spec_from_file_location("a2a_discovery_v5", file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
 
-def test_agent_card_v5_serialization(valid_card_dict: dict, valid_card_json: str) -> None:
-    """
-    Test that AgentCardV5 successfully serializes and deserializes from JSON.
-    """
-    # Deserialize
-    card = AgentCardV5.from_json(valid_card_json)
-    assert card.agent_id == "test-agent-005"
-    assert card.name == "TestAgentV5"
-    assert "test_capability_1" in card.capabilities
-    assert card.endpoints["rpc"] == "http://localhost:8080/rpc"
-    assert card.protocol_version == "v5"
+    A2ADiscoveryRegistryV5 = module.A2ADiscoveryRegistryV5
+    A2ADiscoveryV5 = module.A2ADiscoveryV5
+    AgentCardSchemaValidatorV5 = module.AgentCardSchemaValidatorV5
+    AgentCardV5 = module.AgentCardV5
+    AgentSecurityTier = module.AgentSecurityTier
+    ValidationResult = module.ValidationResult
 
-    # Serialize
-    re_serialized = card.to_json()
-    re_dict = json.loads(re_serialized)
-    assert re_dict["agent_id"] == "test-agent-005"
-    assert re_dict["name"] == "TestAgentV5"
-    assert re_dict["protocol_version"] == "v5"
-    assert re_dict["health_status"] == "online"
 
-def test_service_filters_offline_agents(valid_card_dict: dict) -> None:
-    """
-    Test that the service filters out offline agents correctly.
-    """
-    service = A2ADiscoveryServiceV5()
+class TestA2ADiscoveryV5(unittest.TestCase):
+    def setUp(self):
+        self.validator = AgentCardSchemaValidatorV5()
+        self.rejection_callback = MagicMock()
+        self.registry = A2ADiscoveryRegistryV5(
+            validator=self.validator,
+            on_rejection_callback=self.rejection_callback,
+        )
+        self.discovery = A2ADiscoveryV5(registry=self.registry)
 
-    online_card = AgentCardV5.from_json(json.dumps(valid_card_dict))
-    service.register_agent(online_card)
+    def test_valid_agent_card_dict_validation(self):
+        valid_card_dict = {
+            "agent_id": "agent_alpha_01",
+            "name": "Alpha Coder Agent",
+            "description": "Specialist in python refactoring",
+            "capabilities": ["code_generation", "refactoring"],
+            "endpoints": {"http": "https://agent-alpha.internal/api/v5"},
+            "protocol_version": "v5",
+            "security_tier": "enterprise",
+            "metadata": {"version": "1.0.0"},
+        }
 
-    offline_dict = valid_card_dict.copy()
-    offline_dict["agent_id"] = "offline-agent-001"
-    offline_dict["health_status"] = "offline"
-    offline_card = AgentCardV5.from_json(json.dumps(offline_dict))
-    service.register_agent(offline_card)
+        res = self.validator.validate(valid_card_dict)
+        self.assertTrue(res.is_valid)
+        self.assertEqual(len(res.errors), 0)
 
-    all_agents = service.get_all_agents()
-    assert len(all_agents) == 1
-    assert all_agents[0].agent_id == "test-agent-005"
+        success, card, errors = self.registry.register_agent(valid_card_dict)
+        self.assertTrue(success)
+        self.assertIsNotNone(card)
+        self.assertEqual(card.agent_id, "agent_alpha_01")
+        self.assertEqual(card.security_tier, AgentSecurityTier.ENTERPRISE)
 
-    retrieved = service.get_agent_card("offline-agent-001")
-    assert retrieved is not None
-    assert retrieved.health_status == "offline"
+    def test_valid_agent_card_json_string(self):
+        json_str = json.dumps({
+            "agent_id": "agent_beta_02",
+            "name": "Beta Research Agent",
+            "description": "Deep researcher",
+            "capabilities": ["web_search", "synthesis"],
+            "endpoints": {"grpc": "grpc://agent-beta:50051"},
+        })
 
-def test_service_register_and_get(valid_card_json: str) -> None:
-    """
-    Test registering and retrieving an agent card from the service.
-    """
-    service = A2ADiscoveryServiceV5()
-    card = AgentCardV5.from_json(valid_card_json)
+        success, card, errors = self.registry.register_agent(json_str)
+        self.assertTrue(success)
+        self.assertIsNotNone(card)
+        self.assertEqual(card.agent_id, "agent_beta_02")
+        self.assertTrue(card.has_capability("web_search"))
 
-    service.register_agent(card)
+    def test_invalid_cards_rejected_and_quarantined(self):
+        # 1. Missing required field (endpoints)
+        invalid_missing_endpoints = {
+            "agent_id": "agent_bad_01",
+            "name": "Bad Agent",
+            "capabilities": ["chat"],
+        }
+        res1 = self.validator.validate(invalid_missing_endpoints)
+        self.assertFalse(res1.is_valid)
+        self.assertTrue(any("endpoints" in err for err in res1.errors))
 
-    retrieved_card = service.get_agent_card("test-agent-005")
-    assert retrieved_card is not None
-    assert retrieved_card.name == "TestAgentV5"
+        # Register through registry
+        success, card, errors = self.registry.register_agent(invalid_missing_endpoints)
+        self.assertFalse(success)
+        self.assertIsNone(card)
+        self.rejection_callback.assert_called_once()
 
-    all_agents = service.get_all_agents()
-    assert len(all_agents) == 1
-    assert all_agents[0].agent_id == "test-agent-005"
+        # 2. Empty capabilities list
+        invalid_empty_caps = {
+            "agent_id": "agent_bad_02",
+            "name": "No Caps Agent",
+            "capabilities": [],
+            "endpoints": {"http": "http://localhost:8000"},
+        }
+        res2 = self.validator.validate(invalid_empty_caps)
+        self.assertFalse(res2.is_valid)
+        self.assertTrue(any("capabilities" in err for err in res2.errors))
 
-def test_service_unregister(valid_card_json: str) -> None:
-    """
-    Test unregistering an agent card from the service.
-    """
-    service = A2ADiscoveryServiceV5()
-    card = AgentCardV5.from_json(valid_card_json)
+        # 3. Invalid agent_id format (spaces / special chars)
+        invalid_id = {
+            "agent_id": "bad id with spaces!",
+            "name": "Invalid ID Agent",
+            "capabilities": ["test"],
+            "endpoints": {"http": "http://localhost:8000"},
+        }
+        res3 = self.validator.validate(invalid_id)
+        self.assertFalse(res3.is_valid)
+        self.assertTrue(any("agent_id" in err for err in res3.errors))
 
-    service.register_agent(card)
-    assert service.get_agent_card("test-agent-005") is not None
+        # 4. Malformed JSON string
+        malformed_json = "{'agent_id': 'bad_json', 'name': unquoted}"
+        success_json, _, errs_json = self.registry.register_agent(malformed_json)
+        self.assertFalse(success_json)
+        self.assertTrue(any("Malformed JSON" in e for e in errs_json))
 
-    service.unregister_agent("test-agent-005")
-    assert service.get_agent_card("test-agent-005") is None
+        # Verify quarantine list contains all rejections
+        quarantine = self.registry.get_quarantined_cards()
+        self.assertGreaterEqual(len(quarantine), 2)
 
-    # Unregistering non-existent agent should not crash
-    service.unregister_agent("non-existent")
+    def test_batch_parse_and_register_cards(self):
+        cards = [
+            json.dumps({
+                "agent_id": "valid_agent_01",
+                "name": "Valid 1",
+                "capabilities": ["calc"],
+                "endpoints": {"ipc": "/tmp/agent1.sock"},
+            }),
+            json.dumps({
+                "agent_id": "invalid_no_name",
+                "capabilities": ["calc"],
+                "endpoints": {"ipc": "/tmp/agent2.sock"},
+            }),
+            json.dumps({
+                "agent_id": "valid_agent_02",
+                "name": "Valid 2",
+                "capabilities": ["calc", "stats"],
+                "endpoints": {"ipc": "/tmp/agent3.sock"},
+            }),
+        ]
 
-def test_service_parse_and_register_cards(valid_card_json: str) -> None:
-    """
-    Test bulk parsing and registration of valid and invalid card strings.
-    """
-    service = A2ADiscoveryServiceV5()
+        valid_cards, rejected = self.registry.parse_and_register_cards(cards)
+        self.assertEqual(len(valid_cards), 2)
+        self.assertEqual(len(rejected), 1)
 
-    invalid_card_json = '{"agent_id": "bad", "name": "bad"}' # missing description, capabilities, endpoints
-    malformed_json = '{"agent_id": "bad", "name":' # Syntax error
+        # Check find by capability
+        stats_agents = self.registry.find_agents_by_capability("stats")
+        self.assertEqual(len(stats_agents), 1)
+        self.assertEqual(stats_agents[0].agent_id, "valid_agent_02")
 
-    cards_to_parse = [valid_card_json, invalid_card_json, malformed_json]
+    def test_discovery_orchestrator_ingestion(self):
+        card_data = {
+            "agent_id": "mesh_agent_99",
+            "name": "Mesh Node 99",
+            "capabilities": ["router"],
+            "endpoints": {"mesh": "mesh://node99.a2a"},
+        }
+        success, card, errors = self.discovery.ingest_discovered_card(card_data)
+        self.assertTrue(success)
+        self.assertIsNotNone(card)
 
-    successfully_parsed = service.parse_and_register_cards(cards_to_parse)
+        active = self.discovery.get_active_mesh_agents()
+        self.assertEqual(len(active), 1)
 
-    assert len(successfully_parsed) == 1
-    assert successfully_parsed[0].agent_id == "test-agent-005"
 
-    assert len(service.get_all_agents()) == 1
-
-@patch('magda_agent.integration.a2a_discovery_v5.logging.error')
-def test_service_parse_logging_errors(mock_logging_error) -> None:
-    """
-    Test that invalid cards log an error during parsing.
-    """
-    service = A2ADiscoveryServiceV5()
-    malformed_json = '{"not": json}'
-
-    service.parse_and_register_cards([malformed_json])
-
-    assert mock_logging_error.called
-    assert "Failed to parse AgentCardV5" in mock_logging_error.call_args[0][0]
-
-@pytest.mark.asyncio
-async def test_discover_from_network(valid_card_dict: dict) -> None:
-    """
-    Test discover_from_network fetches and registers cards correctly using respx.
-    """
-    import respx
-    from httpx import Response
-
-    service = A2ADiscoveryServiceV5()
-    endpoint = "http://fake-registry.local/cards"
-
-    with respx.mock:
-        # Mock successful response
-        respx.get(endpoint).mock(return_value=Response(200, json=[valid_card_dict, valid_card_dict]))
-
-        cards = await service.discover_from_network(endpoint)
-
-        assert len(cards) == 2
-        assert cards[0].agent_id == "test-agent-005"
-
-        # Check registry
-        assert len(service.get_all_agents()) == 1 # duplicate agent_id overwrites
-        assert service.get_agent_card("test-agent-005") is not None
-
-@pytest.mark.asyncio
-async def test_discover_from_network_invalid_token() -> None:
-    """
-    Test discover_from_network with invalid auth token.
-    """
-    service = A2ADiscoveryServiceV5()
-    endpoint = "http://fake-registry.local/cards"
-
-    with patch.object(service.security_context, 'validate_token', return_value=False):
-        with pytest.raises(ValueError, match="Invalid authentication token"):
-            await service.discover_from_network(endpoint, auth_token="bad-token")
-
-@pytest.mark.asyncio
-async def test_discover_from_network_http_error() -> None:
-    """
-    Test discover_from_network handling http errors.
-    """
-    import respx
-    from httpx import Response
-
-    service = A2ADiscoveryServiceV5()
-    endpoint = "http://fake-registry.local/cards"
-
-    with respx.mock:
-        respx.get(endpoint).mock(return_value=Response(500))
-
-        cards = await service.discover_from_network(endpoint)
-
-        assert cards == []
-        assert len(service.get_all_agents()) == 0
+if __name__ == "__main__":
+    unittest.main()

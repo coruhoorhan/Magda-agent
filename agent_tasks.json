@@ -13668,7 +13668,7 @@
     },
     {
       "id": "7fb16e93-1c84-4e9e-b85f-42b18bc3f423",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Magentic-One Multi-Agent Orchestration V3",
@@ -13685,7 +13685,7 @@
     },
     {
       "id": "3a7bb365-8d58-4c05-bfba-cf78ee024091",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Tool Runtime Execution Policy Sandbox V4",
@@ -13702,7 +13702,7 @@
     },
     {
       "id": "d11098fc-9600-4fb2-a17b-68efa4eab388",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Workflow Auth Delegation Tokens",
@@ -13719,7 +13719,7 @@
     },
     {
       "id": "e7fb872a-ebce-4600-acca-7d6ba7ac4739",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Hierarchical Delegation Telemetry Exporter v2",
@@ -13736,7 +13736,7 @@
     },
     {
       "id": "3aea55f9-c46a-4e15-973e-819f9c57cb7f",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "low",
       "title": "ACS Control Fallback Strategy v5",
@@ -13753,7 +13753,7 @@
     },
     {
       "id": "2d0966fd-8abe-4b49-8ac8-73aa7d00068a",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Magentic-One Task Dependency Resolution Engine v4",
@@ -13771,7 +13771,7 @@
     },
     {
       "id": "640fdf1f-cd6c-4543-9eb5-dbaffad4e745",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "MemGPT Semantic Cluster Virtual Context Pager v2",
@@ -13789,7 +13789,7 @@
     },
     {
       "id": "6d8ad2d6-3cec-40d9-b1bf-68c2995ab826",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Online Reward Propagator v6",
@@ -13807,7 +13807,7 @@
     },
     {
       "id": "eae22bdf-ac48-486d-ba69-38dbb06ecf2a",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "A2A Distributed Telemetry Collection v8",
@@ -13824,7 +13824,7 @@
     },
     {
       "id": "34786d8b-7329-4f97-b93e-ada7d9ab06ac",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Action Tool Concurrency v4",
@@ -13841,7 +13841,7 @@
     },
     {
       "id": "ef032098-856e-4e96-8e46-383cfbd55bbd",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Virtual Context Compression V4",
@@ -13858,7 +13858,7 @@
     },
     {
       "id": "464cfb79-7ffc-4573-8f84-b49d3a9fa201",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Tool Registry Auth Interceptor V2",
@@ -13875,7 +13875,7 @@
     },
     {
       "id": "6547409a-f763-4793-a53d-94dded9863f7",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "low",
       "title": "Hierarchical Planner Subagent Dependency Resolver",
@@ -13892,7 +13892,7 @@
     },
     {
       "id": "232aaef3-a110-4064-88d2-48104a0a0c93",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "MemGPT Procedural Memory Manager",
@@ -13909,7 +13909,7 @@
     },
     {
       "id": "96c3b83b-8572-42d7-9ec1-e4041374df51",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Discovery Agent Card Broadcaster V4",
@@ -13926,7 +13926,7 @@
     },
     {
       "id": "f5a908a1-4008-47a8-8cb1-60faf53ff94a",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Dynamic Verification Sandbox Hook V2",
@@ -13943,7 +13943,7 @@
     },
     {
       "id": "69833305-d25f-4b77-9472-65747ad0e5f4",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "MemGPT Virtual Context Compression Trigger V3",
@@ -13960,7 +13960,7 @@
     },
     {
       "id": "a961f497-7231-4129-b058-bc19f8a5ab8e",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "Hermes-inspired Dynamic Skill Optimizer V2",
@@ -13978,7 +13978,7 @@
     },
     {
       "id": "ff002869-57a4-4a3b-a7ae-f96da0500728",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "high",
       "title": "MCPKernel Taint Tracking Sandbox V3",
@@ -13996,7 +13996,7 @@
     },
     {
       "id": "ffcc3daa-d337-460a-8e3d-9686ec7a1ede",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "A2A Peer Delegation Routing V2",
@@ -14014,7 +14014,7 @@
     },
     {
       "id": "a2a-discovery-agent-card-validation-v5-6af99633",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Agent Card Dynamic Validation V5",
@@ -14032,7 +14032,7 @@
     },
     {
       "id": "acs-guard-checkpoint-runtime-v7-4e1d186a",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ACS Agent Control Specification Runtime Guard V7",
@@ -14050,7 +14050,7 @@
     },
     {
       "id": "agent-teams-git-worktree-isolation-v4-6cee8930",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Agent Teams Git Worktree Isolation V4",
@@ -14068,7 +14068,7 @@
     },
     {
       "id": "782bc0da-552a-4121-bb33-04f21a8d56b0",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Agent Teams Git Worktree Synchronization V5",
@@ -14085,7 +14085,7 @@
     },
     {
       "id": "a173247b-c719-4ce6-8a17-f5a87d18ddfc",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "MemGPT Virtual Context Semantic Compressor V5",
@@ -14102,7 +14102,7 @@
     },
     {
       "id": "6075b249-f42e-4786-b0a8-aececa6a2c80",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCPKernel A2A Guardrail Runtime Checkpoint V4",
@@ -14119,7 +14119,7 @@
     },
     {
       "id": "47c649d8-ed2b-40bc-99b4-122e210d7b91",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Context Engine Semantic Clustering V2",
@@ -14136,7 +14136,7 @@
     },
     {
       "id": "6fed0f15-f976-4ce8-afe4-187237a11c25",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Agent Teams Worktree State Diffing V1",
@@ -14153,7 +14153,7 @@
     },
     {
       "id": "8de63680-bfd0-44c1-a314-23b76d215261",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Action Tool Rate Limiting V1",
@@ -14170,7 +14170,7 @@
     },
     {
       "id": "openclaw-rl-context-b7616d3b",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw Context Engine Online RL Implementation",
@@ -14187,7 +14187,7 @@
     },
     {
       "id": "acs-guardrails-policy-f8f43db8",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "ACS Compliance Policy Guardrails V7",
@@ -14204,7 +14204,7 @@
     },
     {
       "id": "9d27c5fc-0ce1-4476-b12a-b13b32e3e37a",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Agent Teams Distributed Tracing V9",
@@ -14221,7 +14221,7 @@
     },
     {
       "id": "78af6406-b0ef-4b72-822e-be43e41edb3e",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Action Tool Policy Interceptor V8",
@@ -14238,7 +14238,7 @@
     },
     {
       "id": "openclaw-rl-interactive-learning-v4-7cdc8b40",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Interactive Learning Integration V4",
@@ -14255,7 +14255,7 @@
     },
     {
       "id": "a2a-agent-discovery-cards-v3-5578da62",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Agent Discovery Cards Integration V3",
@@ -14272,7 +14272,7 @@
     },
     {
       "id": "hermes-agent-nightly-backups-bb325590",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "low",
       "title": "Hermes Agent Scheduled Nightly Backups",
@@ -14289,7 +14289,7 @@
     },
     {
       "id": "claude-subagent-dependency-graph-0641a915",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Claude Subagent Dependency Graph V2",
@@ -14306,7 +14306,7 @@
     },
     {
       "id": "mcp-action-tools-export-v2-58dbbdbc",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "MCP Action Tools Export Compatibility V2",
@@ -14323,7 +14323,7 @@
     },
     {
       "id": "0e0bb8a5-f4ce-4dde-bbc2-a8546536550d",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Claude Agent SDK Hierarchical Planner V3",
@@ -14340,7 +14340,7 @@
     },
     {
       "id": "b056049d-7c41-4464-af65-5fd6a1342101",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Magentic-One Pattern Agent Teams V2",
@@ -14357,7 +14357,7 @@
     },
     {
       "id": "c6b00e16-7b87-4313-b486-2e5e9fb0e9f9",
-      "status": "todo",
+      "status": "done",
       "area": "evaluation",
       "risk": "low",
       "title": "Aider Style Post-Merge Smoke Tests V1",
@@ -14374,7 +14374,7 @@
     },
     {
       "id": "4d3e907f-d2e9-44f1-b4f8-f9b4733e731a",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Canvas Live Reflection Tracing",
@@ -14391,7 +14391,7 @@
     },
     {
       "id": "1a68b69f-2238-495c-9a7c-57c1447a365c",
-      "status": "todo",
+      "status": "done",
       "area": "safety",
       "risk": "medium",
       "title": "MCP Server Taint Context Isolation",
@@ -14408,7 +14408,7 @@
     },
     {
       "id": "81d7564a-5ff7-4a2b-9e9f-4776e139f832",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Letta Virtual Context Routine Builder",
@@ -14426,7 +14426,7 @@
     },
     {
       "id": "602790d1-4a47-4ca0-98c8-743101b3fe34",
-      "status": "todo",
+      "status": "done",
       "area": "operations",
       "risk": "low",
       "title": "Hermes Agent Scheduled Tasks Export Integration",
@@ -14443,7 +14443,7 @@
     },
     {
       "id": "c639a867-2e61-43c5-aac4-0f20995f7a93",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "medium",
       "title": "OpenClaw Context Engine Canvas Visualization V2",
@@ -14460,7 +14460,7 @@
     },
     {
       "id": "689bf4c3-d060-4f17-aae1-3fa0bed483b0",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Agent Peer Authentication V2",
@@ -14494,7 +14494,7 @@
     },
     {
       "id": "4d78fb0f-566e-4a65-965c-10a9bb2fee26",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "OpenClaw-RL Habit Decay Parameterization",
@@ -14511,7 +14511,7 @@
     },
     {
       "id": "60cfa7dd-4b71-457d-b396-4c3d49f037b5",
-      "status": "todo",
+      "status": "done",
       "area": "integration",
       "risk": "medium",
       "title": "A2A Workflow Auth Delegation Manager V3",
@@ -14545,7 +14545,7 @@
     },
     {
       "id": "openclaw-canvas-live-reflection-v2-5678efgh",
-      "status": "todo",
+      "status": "done",
       "area": "telemetry",
       "risk": "low",
       "title": "OpenClaw Canvas Live Reflection Tracing V2",
@@ -14562,7 +14562,7 @@
     },
     {
       "id": "letta-virtual-context-routine-builder-v2-9012ijkl",
-      "status": "todo",
+      "status": "done",
       "area": "memory",
       "risk": "medium",
       "title": "Letta Virtual Context Routine Builder V2",
@@ -14579,7 +14579,7 @@
     },
     {
       "id": "hermes-agent-skill-improvement-v1-abcd",
-      "status": "todo",
+      "status": "done",
       "area": "learning",
       "risk": "medium",
       "title": "Hermes Agent Experience Skill Improvement V1",
@@ -14596,7 +14596,7 @@
     },
     {
       "id": "claude-agent-subagent-spawning-v4-efgh",
-      "status": "todo",
+      "status": "done",
       "area": "architecture",
       "risk": "medium",
       "title": "Claude Agent Teams Context Compression V4",
@@ -14613,7 +14613,7 @@
     },
     {
       "id": "mcp-kernel-runtime-function-concurrency-v1-ijkl",
-      "status": "todo",
+      "status": "done",
       "area": "skills",
       "risk": "medium",
       "title": "OpenAI SDK Runtime Function Tool Concurrency V1",
@@ -14633,7 +14633,7 @@
       "title": "Agent Teams Parallel Subagents V6",
       "area": "architecture",
       "risk": "medium",
-      "status": "todo",
+      "status": "done",
       "description": "Inspired by Agent Teams isolation trend: Implement parallel execution manager for subagents operating in isolated git worktrees.",
       "allowed_paths": [
         "magda_agent/architecture/parallel_execution_v6.py",
@@ -14650,7 +14650,7 @@
       "title": "MCP Dynamic Skill Marketplace Poller V2",
       "area": "integration",
       "risk": "medium",
-      "status": "todo",
+      "status": "done",
       "description": "Inspired by agentskills.io standard: Implement a background cron job that periodically syncs with the agentskills.io marketplace.",
       "allowed_paths": [
         "magda_agent/integration/mcp_marketplace_poller_v2.py",
@@ -14667,7 +14667,7 @@
       "title": "OpenClaw Memory Compaction Cron V2",
       "area": "memory",
       "risk": "medium",
-      "status": "todo",
+      "status": "done",
       "description": "Inspired by OpenClaw virtual context: Implement a cron job that automatically compacts episodic memory overnight.",
       "allowed_paths": [
         "magda_agent/scheduler/memory_compaction_cron_v2.py",
@@ -32367,6 +32367,45 @@
         "Tool generates semantic change summaries from AST.",
         "Tests mock AST trees and verify diff output."
       ]
+    },
+    {
+      "id": "security-rate-limit-input-sanitization",
+      "status": "todo",
+      "area": "security",
+      "risk": "medium",
+      "title": "Add rate limiting and input sanitization to API endpoints",
+      "description": "Implement a request‑rate‑limiting middleware (e.g., express‑rate‑limit) in server.js to protect public endpoints from brute‑force and DoS attacks. Add a validation layer using a schema library (e.g., Joi) in src/lib/db.js and route handlers to sanitize and validate all incoming parameters (search queries, booking dates, user IDs). This prevents injection attacks and ensures only well‑formed data reaches the database.",
+      "allowed_paths": [
+        "server.js",
+        "src/lib/db.js"
+      ],
+      "acceptance": [
+        "Requests exceeding 100 per minute from the same IP receive HTTP 429 responses.",
+        "All API payloads are validated against defined Joi schemas; malformed requests return HTTP 400 with a clear error message.",
+        "No SQL injection or XSS payload can be persisted in the database (verified with automated security tests)."
+      ],
+      "created_at": 1788510497.9315858,
+      "created_by": "Magda Fullstack LLM Watchdog"
+    },
+    {
+      "id": "backend-db-connection-pooling-caching",
+      "status": "todo",
+      "area": "backend",
+      "risk": "medium",
+      "title": "Introduce DB connection pooling and in‑memory caching for listings",
+      "description": "Refactor src/lib/db.js to use a connection pool (e.g., pg‑pool for PostgreSQL) instead of creating a new client per request, reducing latency and resource usage. Add a simple LRU cache (e.g., node‑cache) for the most‑requested listings (GET /listings) and search results, with a TTL of 5 minutes. Update server.js to serve cached data when available and fall back to the DB otherwise.",
+      "allowed_paths": [
+        "server.js",
+        "src/lib/db.js"
+      ],
+      "acceptance": [
+        "Database connections are reused; the number of active connections never exceeds the pool size (e.g., 20).",
+        "Cache hit rate for listings is at least 60% in load tests.",
+        "Response time for GET /listings drops by ≥30% compared to baseline (measured with a simple load test)."
+      ],
+      "created_at": 1788510497.9629478,
+      "created_by": "Magda Fullstack LLM Watchdog"
     }
-  ]
+  ],
+  "updated_at": 1788510497.9629514
 }

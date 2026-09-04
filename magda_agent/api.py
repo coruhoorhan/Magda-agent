@@ -84,6 +84,7 @@ from magda_agent.tracing.tracer import ThoughtChainTracer
 from magda_agent.architecture.sub_agents import SubAgentRPCManager
 from magda_agent.integration.cross_platform import CrossPlatformDispatcher
 from magda_agent.integration.discord_bridge import DiscordBridge
+from magda_agent.cekirdek_bridge import CekirdekBridgeError, author_task
 
 logging.basicConfig(level=logging.INFO)
 
@@ -430,6 +431,32 @@ async def resume_task(task_id: str):
     if not ok:
         raise HTTPException(status_code=409, detail="Task cannot be resumed")
     return {"status": "ok"}
+
+
+# --- Cekirdek task authoring bridge ---------------------------------------
+
+
+class CekirdekTaskRequest(BaseModel):
+    goal: str
+    user_id: Optional[int] = None
+
+
+class CekirdekTaskResponse(BaseModel):
+    task_id: str
+    title: str
+    pr_number: int
+    pr_url: str
+
+
+@app.post("/cekirdek/tasks", response_model=CekirdekTaskResponse)
+async def create_cekirdek_task(req: CekirdekTaskRequest):
+    """Draft a structured task via Magda's LLM and author it into cekirdek's
+    agent_tasks.json by opening a PR (auto-merged by the cekirdek loop)."""
+    try:
+        result = await author_task(llm_client, req.goal)
+    except CekirdekBridgeError as e:
+        raise HTTPException(status_code=502, detail=str(e))
+    return CekirdekTaskResponse(**result)
 
 
 @app.websocket("/ws/canvas")

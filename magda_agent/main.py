@@ -103,26 +103,36 @@ async def command_state_handler(message: Message) -> None:
 
 @dp.message(Command("task"))
 async def command_task_handler(message: Message) -> None:
-    """Enqueue a long-running autonomous task: /task <goal>."""
+    """Author a task to the cekirdek repo via Magda: /task <goal>.
+    Magda drafts a structured task entry, opens a PR on cekirdek's
+    agent_tasks.json, and the autonomous loop picks it up."""
     goal = (message.text or "").partition(" ")[2].strip()
     if not goal:
-        await message.answer("Usage: <code>/task &lt;goal&gt;</code>\nExample: <code>/task research the top 3 Python web frameworks and summarize tradeoffs</code>")
+        await message.answer(
+            "Usage: <code>/task &lt;goal&gt;</code>\n"
+            "Example: <code>/task login sayfasina captcha ekle</code>\n\n"
+            "Magda görevi yapılandırıp <b>cekirdek</b> repo'suna gönderir. "
+            "Jules otomatik olarak sırası geldiğinde kodlar."
+        )
         return
     try:
-        async with httpx.AsyncClient(timeout=15.0, headers=_api_headers()) as client:
+        async with httpx.AsyncClient(timeout=30.0, headers=_api_headers()) as client:
             payload = {"goal": goal}
             if message.from_user and message.from_user.id:
                 payload["user_id"] = message.from_user.id
-            response = await client.post(f"{CONSCIOUSNESS_API_URL}/tasks", json=payload)
+            response = await client.post(f"{CONSCIOUSNESS_API_URL}/cekirdek/tasks", json=payload)
             response.raise_for_status()
-            task = response.json().get("task", {})
+            data = response.json()
         await message.answer(
-            f"Task queued. id: <code>{task.get('id')}</code>\nI'll work on it in the background and post progress here.\n"
-            f"Use <code>/tasks</code> to list, <code>/cancel {task.get('id')}</code> to stop."
+            f"<b>Görev oluşturuldu</b>\n"
+            f"ID: <code>{data.get('task_id')}</code>\n"
+            f"Başlık: {data.get('title')}\n"
+            f"PR: <a href=\"{data.get('pr_url')}\">#{data.get('pr_number')}</a>\n\n"
+            f"PR otomatik merge edilecek, ardından Jules sırası gelince çalışmaya başlayacak."
         )
     except Exception as e:
-        logging.error(f"Failed to create task: {e}")
-        await message.answer("Error: could not queue the task (Consciousness API unreachable).")
+        logging.error(f"Failed to author cekirdek task: {e}")
+        await message.answer("Hata: Görev oluşturulamadı. Magda Consciousness API'ye ulaşılamadı veya hata döndü.")
 
 
 @dp.message(Command("tasks"))
@@ -268,10 +278,66 @@ async def voice_message_handler(message: Message) -> None:
         logging.error(f"Failed to process voice input: {e}")
         await message.answer("Error processing your voice message.")
 
+import re
+
+_TASK_VERBS = re.compile(
+    r"\b(ekle|yap|oluştur|geliştir|yaz|sil|kaldır|düzelt|temizle|"
+    r"entegre|bağla|taşı|güncelle|değiştir|refactor|dönüştür|çıkar|"
+    r"add|implement|create|build|fix|remove|delete|update|change|"
+    r"migrate|convert|integrate|enable|support|setup|config)\b",
+    re.IGNORECASE,
+)
+_QUESTION_GREETING = re.compile(
+    r"^(nasıl|ne|hangi|neden|niçin|kim|nerede|merhaba|selam|hey|hello|hi|slm)\b",
+    re.IGNORECASE,
+)
+
+
+async def _try_cekirdek_task(message: Message) -> bool:
+    """Try to route a plain-text message to the cekirdek bridge.
+    Returns True if handled (task created), False if caller should fall back to chat."""
+    goal = message.text.strip()
+    if not goal:
+        return False
+    if _QUESTION_GREETING.match(goal):
+        return False
+    if not _TASK_VERBS.search(goal):
+        return False
+    # Looks like a task request — try the bridge
+    try:
+        async with httpx.AsyncClient(timeout=30.0, headers=_api_headers()) as client:
+            payload = {"goal": goal}
+            if message.from_user and message.from_user.id:
+                payload["user_id"] = message.from_user.id
+            response = await client.post(
+                f"{CONSCIOUSNESS_API_URL}/cekirdek/tasks", json=payload
+            )
+            if response.status_code != 200:
+                # Bridge rejected it — fall back to normal chat
+                return False
+            data = response.json()
+            await message.answer(
+                f"<b>Gorev olusturuldu</b>\n"
+                f"ID: <code>{data.get('task_id')}</code>\n"
+                f"Baslik: {data.get('title')}\n"
+                f"PR: <a href=\"{data.get('pr_url')}\">#{data.get('pr_number')}</a>\n\n"
+                f"PR otomatik merge edilecek, ardindan Jules siraasi gelince calismaya baslayacak.\n"
+                f"Istersen her zaman <code>/task &lt;hedef&gt;</code> ile de gonderebilirsin."
+            )
+            return True
+    except Exception as e:
+        logging.debug(f"Bridge attempt failed for plain message: {e}")
+        return False
+
+
 @dp.message()
 async def main_message_handler(message: Message) -> None:
     """Processes all incoming messages through Magda's Consciousness microservice."""
     if not message.text:
+        return
+
+    # Try cekirdek task routing first for imperative task requests
+    if await _try_cekirdek_task(message):
         return
 
     # Show typing status to user
@@ -289,7 +355,9 @@ async def main_message_handler(message: Message) -> None:
             )
             response.raise_for_status()
             resp_text = response.json().get("response", "No response from API.")
-            await message.answer(resp_text)
+            # Free-form LLM replies often contain HTML-looking tokens (e.g. braces,
+            # angle brackets); send them as plain text so Telegram never rejects them.
+            await message.answer(resp_text, parse_mode=None)
     except Exception as e:
         logging.error(f"Failed to process input: {e}")
         await message.answer("Error: Consciousness API is unreachable or returned an error.")
