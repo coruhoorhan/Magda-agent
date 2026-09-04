@@ -1,94 +1,159 @@
-import os
-import logging
 import asyncio
-from typing import List, Dict, Any, Optional
+import json
+import logging
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
+from typing import Any, Dict, List, Optional
+
+from magda_agent.safety.secret_redaction import SecretRedactor
 
 try:
     from openai import AsyncOpenAI
 except ImportError:
     AsyncOpenAI = None
 
+logger = logging.getLogger(__name__)
+
+
 class LLMClient:
     """
-    Unified interface for interacting with Large Language Models (OpenAI API).
+    Unified interface for interacting with Large Language Models (OpenAI/Inception compatible).
+    Includes pure standard-library HTTP fallback if openai package is not installed.
     """
+
     def __init__(
         self,
         api_key: Optional[str] = None,
         model: Optional[str] = None,
         base_url: Optional[str] = None,
+        default_max_tokens: int = 2048,
     ):
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        self.model = model or os.getenv("OPENAI_MODEL", "gpt-4o")
-        self.base_url = base_url or os.getenv("OPENAI_BASE_URL")
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY", "")
+        self.model = model or os.getenv("OPENAI_MODEL", "mercury-2")
+        self.base_url = (base_url or os.getenv("OPENAI_BASE_URL", "https://api.inceptionlabs.ai/v1")).rstrip("/")
+        self.default_max_tokens = default_max_tokens
         self.client = None
-        # Retry policy for transient API errors (rate limits, 5xx).
+
         self.max_retries = int(os.getenv("LLM_MAX_RETRIES", "3"))
-        self.retry_base = float(os.getenv("LLM_RETRY_BASE_SECONDS", "2.0"))
+        self.retry_base = float(os.getenv("LLM_RETRY_BASE_SECONDS", "1.5"))
 
         if AsyncOpenAI and self.api_key:
-            client_kwargs: Dict[str, Any] = {"api_key": self.api_key}
-            if self.base_url:
-                client_kwargs["base_url"] = self.base_url
-            self.client = AsyncOpenAI(**client_kwargs)
-        else:
-            if not AsyncOpenAI:
-                logging.warning("OpenAI library (Async) not installed.")
-            if not self.api_key:
-                logging.warning("OPENAI_API_KEY not found in environment.")
+            try:
+                client_kwargs: Dict[str, Any] = {"api_key": self.api_key}
+                if self.base_url:
+                    client_kwargs["base_url"] = self.base_url
+                self.client = AsyncOpenAI(**client_kwargs)
+            except Exception as e:
+                logger.warning(f"Failed to initialize AsyncOpenAI: {e}. Using native HTTP client fallback.")
+                self.client = None
 
-    async def chat_completion(self, messages: List[Dict[str, str]], temperature: float = 0.7) -> str:
+    def _sync_http_completion(
+        self,
+        messages: List[Dict[str, str]],
+        temperature: float = 0.7,
+        max_tokens: Optional[int] = None,
+    ) -> str:
+        """Standard-library HTTP POST to OpenAI-compatible chat/completions endpoint."""
+        url = f"{self.base_url}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": "MagdaAgent/2.0",
+        }
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens or self.default_max_tokens,
+        }
+
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            choice = data["choices"][0]["message"]
+            content = choice.get("content") or ""
+            return content.strip()
+
+    async def chat_completion(
+        self,
+        messages: List[Dict[str, str]],
+        temperature: float = 0.7,
+        max_tokens: Optional[int] = None,
+    ) -> str:
         """
         Sends a list of messages to the LLM and returns the response content asynchronously.
-        Retries transient API errors (rate limits / 5xx) with exponential backoff.
+        Retries transient API errors with exponential backoff.
+        Automatically redacts secrets before sending and restores them on response.
         """
-        if not self.client:
-            return "Error: LLM Client not initialized. Please check OPENAI_API_KEY."
+        if not self.api_key:
+            return "Error: OPENAI_API_KEY not provided."
 
-        last_error: Optional[Exception] = None
+        tokens = max_tokens or self.default_max_tokens
+        last_error = None
+
+        # Pre-LLM redaction: mask secrets in all message content fields
+        _vault: Dict[str, str] = {}
+        _clean_messages: List[Dict[str, str]] = []
+        for msg in messages:
+            content = msg.get("content") or ""
+            if content:
+                try:
+                    masked, partial_vault = SecretRedactor.mask(content)
+                except Exception as exc:
+                    logger.warning(f"SecretRedactor.mask failed, sending unmasked: {exc}")
+                    masked, partial_vault = content, {}
+                _vault.update(partial_vault)
+                _clean_messages.append({**msg, "content": masked})
+            else:
+                _clean_messages.append(msg)
+        messages = _clean_messages
+
         for attempt in range(self.max_retries + 1):
             try:
-                response = await self.client.chat.completions.create(
-                    model=self.model,
-                    messages=messages,
-                    temperature=temperature
+                # 1. Try official AsyncOpenAI client if available
+                if self.client:
+                    response = await self.client.chat.completions.create(
+                        model=self.model,
+                        messages=messages,
+                        temperature=temperature,
+                        max_tokens=tokens,
+                    )
+                    content = response.choices[0].message.content or ""
+                    try:
+                        return SecretRedactor.restore(content.strip(), _vault)
+                    except Exception as exc:
+                        logger.warning(f"SecretRedactor.restore failed: {exc}")
+                        return content.strip()
+
+                # 2. Fallback to native HTTP in async thread pool
+                raw_result = await asyncio.to_thread(
+                    self._sync_http_completion, messages, temperature, tokens
                 )
-                return response.choices[0].message.content
+                try:
+                    return SecretRedactor.restore(raw_result, _vault)
+                except Exception as exc:
+                    logger.warning(f"SecretRedactor.restore failed: {exc}")
+                    return raw_result
+
             except Exception as e:
                 last_error = e
-                status = getattr(e, "status_code", None)
-                if status is None:
-                    status = getattr(getattr(e, "response", None), "status_code", None)
-                retriable = status in (408, 409, 429, 500, 502, 503, 504) or (status is None and "429" in str(e))
-                if not retriable or attempt >= self.max_retries:
-                    logging.error(f"LLM API Error: {e}")
-                    return f"Error: I encountered an issue while thinking. ({e})"
-                wait = self.retry_base * (2 ** attempt)
-                logging.warning(
-                    f"LLM API transient error (status={status}); "
-                    f"retrying in {wait:.1f}s (attempt {attempt + 1}/{self.max_retries})"
-                )
-                await asyncio.sleep(wait)
+                logger.warning(f"LLM API request attempt {attempt + 1}/{self.max_retries} failed: {e}")
+                if attempt < self.max_retries:
+                    await asyncio.sleep(self.retry_base * (2 ** attempt))
 
-        return f"Error: I encountered an issue while thinking. ({last_error})"
+        logger.error(f"LLM API call permanently failed after {self.max_retries} retries: {last_error}")
+        return f"Error: LLM service temporarily unavailable ({last_error})"
 
-    async def generate(self, prompt: str, temperature: float = 0.7) -> str:
-        """
-        Generates a response from a single prompt.
-        """
+    async def generate(self, prompt: str, temperature: float = 0.7, max_tokens: Optional[int] = None) -> str:
+        """Generates a response from a single prompt string."""
         messages = [{"role": "user", "content": prompt}]
-        return await self.chat_completion(messages, temperature=temperature)
-
-    def get_system_prompt(self, context: str, emotions: str) -> str:
-        return f"""
-You are Magda, a sophisticated AGI agent.
-You have a hierarchical cognitive architecture including Consciousness, Subconsciousness, and an Emotional Engine.
-
-CURRENT EMOTIONAL STATE: {emotions}
-RELEVANT CONTEXT/MEMORIES: {context}
-
-Guidelines:
-1. Respond based on your current emotional state and memories.
-2. Be helpful, autonomous, and self-reflective.
-3. If the user asks about your internal state, you can share insights from your PAD model.
-"""
+        return await self.chat_completion(messages, temperature=temperature, max_tokens=max_tokens)
