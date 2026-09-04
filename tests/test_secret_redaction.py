@@ -88,7 +88,7 @@ class TestLLMClientRedactionIntegration(unittest.TestCase):
     """Integration tests verifying LLMClient redaction and restoration."""
 
     def test_llm_client_sync_fallback_redaction(self):
-        client = LLMClient()
+        client = LLMClient(api_key="test-key")
         client.client = None  # Ensure fallback path
 
         captured_messages = []
@@ -111,7 +111,7 @@ class TestLLMClientRedactionIntegration(unittest.TestCase):
         self.assertEqual(result, "Command to run: ssh root@10.0.2.1 -p SuperSecret999")
 
     def test_llm_client_async_openai_path_redaction(self):
-        client = LLMClient()
+        client = LLMClient(api_key="test-key")
         mock_openai = MagicMock()
         mock_choice = MagicMock()
         mock_choice.message.content = "Received token: <SECRET_01>"

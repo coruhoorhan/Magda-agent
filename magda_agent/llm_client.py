@@ -32,8 +32,9 @@ class LLMClient:
         default_max_tokens: int = 2048,
     ):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY", "")
-        self.model = model or os.getenv("OPENAI_MODEL", "mercury-2")
-        self.base_url = (base_url or os.getenv("OPENAI_BASE_URL", "https://api.inceptionlabs.ai/v1")).rstrip("/")
+        self.model = model or os.getenv("OPENAI_MODEL", "gpt-4o")
+        _raw_base = base_url or os.getenv("OPENAI_BASE_URL")
+        self.base_url = _raw_base.rstrip("/") if _raw_base else None
         self.default_max_tokens = default_max_tokens
         self.client = None
 
@@ -50,6 +51,20 @@ class LLMClient:
                 logger.warning(f"Failed to initialize AsyncOpenAI: {e}. Using native HTTP client fallback.")
                 self.client = None
 
+    def get_system_prompt(self, context: str, emotions: str) -> str:
+        return f"""
+You are Magda, a sophisticated AGI agent.
+You have a hierarchical cognitive architecture including Consciousness, Subconsciousness, and an Emotional Engine.
+
+CURRENT EMOTIONAL STATE: {emotions}
+RELEVANT CONTEXT/MEMORIES: {context}
+
+Guidelines:
+1. Respond based on your current emotional state and memories.
+2. Be helpful, autonomous, and self-reflective.
+3. If the user asks about your internal state, you can share insights from your PAD model.
+"""
+
     def _sync_http_completion(
         self,
         messages: List[Dict[str, str]],
@@ -57,7 +72,8 @@ class LLMClient:
         max_tokens: Optional[int] = None,
     ) -> str:
         """Standard-library HTTP POST to OpenAI-compatible chat/completions endpoint."""
-        url = f"{self.base_url}/chat/completions"
+        base = self.base_url or "https://api.openai.com/v1"
+        url = f"{base}/chat/completions"
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
