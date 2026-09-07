@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Search, Menu, Heart, Briefcase, PlusCircle, Home, Bell, Check, Sparkles, Globe, Compass, Waves, MessageCircle, Sun, Moon, Gift, Star } from "lucide-react";
 import { getAvailableCurrencies } from "../lib/currencyEngine.js";
+import { usePushNotifications } from "./PushNotificationProvider.jsx";
 
 export function Navbar({ 
   currentUser, 
@@ -23,6 +24,9 @@ export function Navbar({
   loyaltyTier = null
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { isSupported, isSubscribed, subscribe, unsubscribe } = usePushNotifications();
+
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark" ||
            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -317,6 +321,19 @@ export function Navbar({
 
 
                 <div className="border-t border-charcoal-border/50 dark:border-white/10 py-1">
+
+                  {isSupported && (
+                    <button
+                      onClick={() => {
+                        isSubscribed ? unsubscribe() : subscribe();
+                      }}
+                      className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2.5 cursor-pointer border-t border-gray-100"
+                    >
+                      <Bell className="w-4 h-4 text-gray-400" />
+                      <span>{isSubscribed ? "Disable Notifications" : "Enable Notifications"}</span>
+                    </button>
+                  )}
+
                   <button
                     onClick={async () => {
                       try {

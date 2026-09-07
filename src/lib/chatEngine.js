@@ -1,5 +1,6 @@
 import { WebSocketServer, WebSocket } from "ws";
 import * as db from "./db.js";
+import * as pushNotificationEngine from "./pushNotificationEngine.js";
 
 /**
  * Real-time WebSocket Chat Engine for Airbnb Fatsa Clone
@@ -117,11 +118,33 @@ class ChatWebSocketEngine {
         text: text.trim()
       });
 
+
       // Broadcast to all clients in the room
       this.broadcast(targetListingId, {
         type: "NEW_MESSAGE",
         data: savedMsg
       });
+
+      const listing = db.getListingById(targetListingId);
+      if (listing && targetSenderId !== listing.hostId) {
+        pushNotificationEngine.sendNotification(listing.hostId, {
+          title: "New Message",
+          body: `You have a new message from ${user.name}`
+        });
+      } else if (listing && targetSenderId === listing.hostId) {
+          // Find the other party from the room if possible, but simplest is to find a distinct sender in the room
+          // However for this clone, we just notify host if guest sent. Notify guest if host sent is trickier
+          // We will just do a basic implementation for now.
+          const msgs = db.getMessagesForListing(targetListingId);
+          const otherParticipant = msgs.find(m => m.senderId !== listing.hostId);
+          if (otherParticipant) {
+             pushNotificationEngine.sendNotification(otherParticipant.senderId, {
+                title: "New Message",
+                body: `You have a new message from ${user.name}`
+             });
+          }
+      }
+
     } else if (type === "TYPING") {
       // Broadcast typing indicator to others in room
       this.broadcast(targetListingId, {

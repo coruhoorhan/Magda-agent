@@ -109,6 +109,8 @@ import { createRateLimiter } from "./src/lib/rateLimiter.js";
 import cookieParser from "cookie-parser";
 import validator from "validator";
 import { authMiddleware, csrfMiddleware, generateToken, generateCsrfToken } from "./src/lib/auth.js";
+import * as pushNotificationEngine from "./src/lib/pushNotificationEngine.js";
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -914,6 +916,13 @@ app.put("/api/bookings/:id/status", authMiddleware, csrfMiddleware, (req, res) =
   const updated = updateBookingStatus(req.params.id, status, cancelReason);
   if (!updated) return res.status(404).json({ error: "Rezervasyon bulunamadı" });
 
+  if (updated && updated.guestId) {
+    pushNotificationEngine.sendNotification(updated.guestId, {
+      title: "Booking Update",
+      body: `Your booking status was updated to ${status}`
+    });
+  }
+
   // Loyalty: award points when a pending booking is confirmed by the host
   if (status === "confirmed" && updated && updated.guestId) {
     try {
@@ -942,6 +951,14 @@ app.post("/api/bookings/:id/cancel", authMiddleware, csrfMiddleware, (req, res) 
     const refund = calculateCancellationRefund(booking.checkIn, booking.totalPrice, booking.nightlyPrice, policy, cancelledByHost, Date.now());
 
     updateBookingStatus(req.params.id, "cancelled", cancelReason || null);
+
+    if (booking.guestId) {
+      pushNotificationEngine.sendNotification(booking.guestId, {
+        title: "Booking Cancelled",
+        body: `Your booking has been cancelled.`
+      });
+    }
+
     if (booking.paymentStatus === "paid" && refund.refundAmount > 0) {
       updateBookingPayment(req.params.id, "refunded", booking.paymentId);
     }
@@ -1107,6 +1124,44 @@ app.put("/api/listings/:id/last-minute", (req, res) => {
     res.status(400).json({ success: false, error: err.message });
   }
 });
+
+
+
+
+app.get("/api/notifications/vapid-public-key", (req, res) => {
+  res.json({ publicKey: pushNotificationEngine.getPublicKey() });
+});
+
+app.post("/api/notifications/subscribe", authMiddleware, csrfMiddleware, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const subscription = req.body;
+    if (!subscription || !subscription.endpoint || !subscription.keys) {
+      return res.status(400).json({ success: false, error: "Invalid subscription object" });
+    }
+    pushNotificationEngine.saveSubscription(userId, subscription);
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Error saving push subscription", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post("/api/notifications/unsubscribe", authMiddleware, csrfMiddleware, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { endpoint } = req.body;
+    if (!endpoint) {
+      return res.status(400).json({ success: false, error: "Endpoint required" });
+    }
+    pushNotificationEngine.removeSubscription(userId, endpoint);
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Error removing push subscription", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 app.get("/api/notifications", (req, res) => {
   try {

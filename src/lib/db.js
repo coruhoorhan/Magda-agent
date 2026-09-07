@@ -315,6 +315,17 @@ db.exec(`
     FOREIGN KEY(hostId) REFERENCES users(id) ON DELETE CASCADE
   );
 
+
+  CREATE TABLE IF NOT EXISTS push_subscriptions (
+    id TEXT PRIMARY KEY,
+    userId TEXT NOT NULL,
+    endpoint TEXT NOT NULL,
+    keysP TEXT NOT NULL,
+    keysAuth TEXT NOT NULL,
+    createdAt INTEGER NOT NULL,
+    FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+  );
+
   CREATE TABLE IF NOT EXISTS experience_reservations (
     id TEXT PRIMARY KEY,
     experienceId TEXT NOT NULL,
@@ -1262,4 +1273,23 @@ export function setListingCalendarSyncUrl(listingId, url) {
 export function removeListingCalendarSync(listingId) {
   db.prepare("UPDATE listings SET calendarSyncUrl = NULL, calendarSyncStatus = 'disabled', lastSyncedAt = NULL WHERE id = ?").run(listingId);
   return getListingById(listingId);
+}
+
+
+// --- Push Subscriptions ---
+export function insertPushSubscription(sub) {
+  const { id, userId, endpoint, keysP, keysAuth } = sub;
+  const createdAt = Date.now();
+  db.prepare(`
+    INSERT INTO push_subscriptions (id, userId, endpoint, keysP, keysAuth, createdAt)
+    VALUES (@id, @userId, @endpoint, @keysP, @keysAuth, @createdAt)
+  `).run({ id, userId, endpoint, keysP, keysAuth, createdAt });
+}
+
+export function removePushSubscription(userId, endpoint) {
+  db.prepare("DELETE FROM push_subscriptions WHERE userId = ? AND endpoint = ?").run(userId, endpoint);
+}
+
+export function getPushSubscriptionsForUser(userId) {
+  return db.prepare("SELECT * FROM push_subscriptions WHERE userId = ?").all(userId);
 }
