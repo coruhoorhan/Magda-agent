@@ -202,13 +202,25 @@ def parse_age_hours(ts):
 def main():
     dry_run = "--dry-run" in sys.argv
     api_key = os.getenv("JULES_API_KEY", "")
+    steer_sid = os.getenv("STEER_SESSION", "").strip()
+    steer_msg = os.getenv("STEER_MESSAGE", "").strip()
+    if steer_sid and steer_msg:
+        payload = {"prompt": f"{MARKER}\n{steer_msg}"}
+        print(f"steer -> session {steer_sid}: {steer_msg[:300]}")
+        if dry_run:
+            print("[dry-run] would send steer message.")
+            return
+        jules_request("POST", f"/sessions/{steer_sid}:sendMessage", api_key, payload)
+        print("steer message sent.")
+        return
     openai_key = os.getenv("OPENAI_API_KEY", "")
     base = os.getenv("OPENAI_BASE_URL", "https://api.inceptionlabs.ai/v1")
     model = os.getenv("OPENAI_MODEL", "mercury-2")
     repo = os.getenv("TARGET_REPO", "coruhoorhan/airbnb-app")
     gh_token = os.getenv("GH_PAT") or os.getenv("GITHUB_TOKEN", "")
-    target_title = os.getenv("TARGET_TITLE", "Autonomous Airbnb")
-    max_age = float(os.getenv("MAX_AGE_HOURS", "2"))
+    target_titles = [t.strip().lower()
+                   for t in os.getenv("TARGET_TITLE", "Autonomous Airbnb").split(",")]
+    max_age = float(os.getenv("MAX_AGE_HOURS", "72"))
     max_answers = int(os.getenv("MAX_ANSWERS", "3"))
 
     if not api_key:
@@ -228,12 +240,12 @@ def main():
         age_h = parse_age_hours(update_time)
         print(f"- {sid} | {title[:60]} | state={state} | age={age_h:.1f}h")
 
-        if target_title.lower() not in (title or "").lower():
+        if not any(tt in (title or "").lower() for tt in target_titles):
             continue
-        if age_h > max_age:
-            print("  skip: stale session."); continue
         if state not in ("AWAITING_USER_FEEDBACK", "AWAITING_PLAN_APPROVAL"):
             continue
+        if age_h > max_age:
+            print(f"  session age {age_h:.1f}h exceeds max {max_age}h, but state is {state}. Proceeding to auto-respond.")
 
         if state == "AWAITING_PLAN_APPROVAL":
             print("  plan approval needed.")
