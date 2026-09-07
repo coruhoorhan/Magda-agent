@@ -31,3 +31,4 @@ cekirdek/
 *.tmp
 *.bak
 *.pyc
+node_modules/
