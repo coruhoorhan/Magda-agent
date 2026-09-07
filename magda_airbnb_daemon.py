@@ -18,6 +18,7 @@ import logging
 import os
 import re
 import sqlite3
+import subprocess
 import sys
 import time
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -155,7 +156,7 @@ class AirbnbTasksManifestManager:
 
 
 class FullstackLLMCodeReviewer:
-    """7/24 Senior Fullstack Engineer powered by Inception Labs Mercury-2 LLM."""
+    """7/24 Senior Fullstack Principal Engineer & Architect powered by Inception Labs Mercury-2 LLM."""
 
     def __init__(self, app_root: str = APP_ROOT):
         self.app_root = app_root
@@ -172,47 +173,66 @@ class FullstackLLMCodeReviewer:
         except Exception:
             return ""
 
-    async def analyze_and_propose_improvements(self, existing_task_ids: Set[str]) -> List[Dict[str, Any]]:
-        """Analyzes codebase with Mercury-2 LLM and proposes structured tasks."""
+    async def analyze_and_propose_improvements(
+        self,
+        existing_tasks: List[Dict[str, Any]],
+        existing_task_ids: Set[str]
+    ) -> List[Dict[str, Any]]:
+        """Analyzes fullstack codebase with Mercury-2 LLM and proposes structured tasks for Jules."""
         if not self.llm:
             logger.warning("LLMClient not available for LLM code review.")
             return []
 
-        # Gather codebase snapshots
-        server_code = self._read_file_snippet("server.js", 150)
+        # Gather rich multi-layer codebase snapshots
+        server_code = self._read_file_snippet("server.js", 120)
         db_code = self._read_file_snippet("src/lib/db.js", 100)
-        app_jsx = self._read_file_snippet("App.jsx", 100)
+        app_jsx = self._read_file_snippet("src/App.jsx", 100)
+        booking_widget = self._read_file_snippet("src/components/BookingWidget.jsx", 60)
+        pricing_engine = self._read_file_snippet("src/lib/pricingEngine.js", 60)
 
-        prompt = f"""You are a Senior Fullstack Principal Engineer & Security Architect reviewing the Airbnb Fatsa Clone project.
+        # Existing task summary for full deduplication awareness
+        tasks_summary = "\n".join([
+            f"- [{t.get('status', 'todo')}] {t.get('id')}: {t.get('title')} ({t.get('area', 'feature')})"
+            for t in existing_tasks
+        ])
 
-CURRENT CODEBASE SNAPSHOT:
+        prompt = f"""You are Magda-Agent's 7/24 Principal Architect & Fullstack Guardian reviewing the Airbnb Fatsa Clone application (React, Vite, Node.js, Express, SQLite, GraphQL).
+
+CURRENT CODEBASE SNAPSHOTS:
 --- server.js ---
 {server_code}
 
 --- src/lib/db.js ---
 {db_code}
 
---- App.jsx ---
+--- src/App.jsx ---
 {app_jsx}
 
-EXISTING TASKS ALREADY CREATED (DO NOT DUPLICATE THESE):
-{list(existing_task_ids)}
+--- src/components/BookingWidget.jsx ---
+{booking_widget}
 
-TASK:
-Identify exactly 1-2 critical, high-impact improvements (Frontend UX/Responsive, Backend Performance/API, or Security).
-Return ONLY a valid JSON array of objects with the exact schema:
+--- src/lib/pricingEngine.js ---
+{pricing_engine}
+
+EXISTING TASKS IN MANIFEST (DO NOT DUPLICATE OR PROPOSE SIMILAR TASKS):
+{tasks_summary}
+
+MISSION:
+Identify exactly 1 high-value, novel, and concrete product or architectural capability for the Airbnb application (e.g., Host Payout & Revenue Analytics, Interactive Map Clustering, Multi-currency Checkout, Guest Review Moderation, Push Notification Engine, Calendar Availability iCal Sync, Instant Booking Approval Flow).
+
+Return ONLY a valid JSON array with exactly 1 task object adhering strictly to the schema:
 [
   {{
-    "id": "feat-or-fix-unique-slug",
-    "area": "frontend" | "backend" | "security",
+    "id": "feat-or-fix-unique-descriptive-slug",
+    "area": "frontend" | "backend" | "fullstack" | "security",
     "risk": "low" | "medium",
-    "title": "Short descriptive title in Turkish or English",
-    "description": "Concrete technical description of what to implement and why",
-    "allowed_paths": ["server.js", "src/components/...", "agent_tasks.json"],
-    "acceptance": ["Verification criteria 1", "Verification criteria 2"]
+    "title": "Clear concise descriptive title",
+    "description": "Concrete technical description of what to implement, which files to modify, and the expected behavior",
+    "allowed_paths": ["server.js", "src/components/...", "src/lib/...", "agent_tasks.json"],
+    "acceptance": ["Concrete verification step 1", "Concrete verification step 2"]
   }}
 ]
-Do NOT return any explanation or markdown wrapping outside JSON. Only the JSON array."""
+Output ONLY raw JSON array. No markdown fences, no explanatory text."""
 
         try:
             raw_resp = await self.llm.generate(prompt, temperature=0.3, max_tokens=1024)
@@ -226,7 +246,8 @@ Do NOT return any explanation or markdown wrapping outside JSON. Only the JSON a
             if isinstance(tasks, list):
                 valid_tasks = []
                 for t in tasks:
-                    if t.get("id") and t.get("title") and t.get("id") not in existing_task_ids:
+                    tid = t.get("id", "")
+                    if tid and t.get("title") and tid not in existing_task_ids:
                         valid_tasks.append(t)
                 return valid_tasks
         except Exception as e:
@@ -253,6 +274,7 @@ class MagdaAutonomousWatchdog:
         self._last_scan_result: Dict[str, Any] = {}
         self._is_running = False
         self._llm_scan_counter = 0
+        self._scan_count = 0
 
     def get_connection(self) -> Optional[sqlite3.Connection]:
         if not os.path.exists(self.db_path):
@@ -396,6 +418,79 @@ class MagdaAutonomousWatchdog:
         except Exception as e:
             logger.error(f"Failed to record guardian issue: {e}")
 
+    def _git_commit_and_push(self, message: str) -> bool:
+        """Commits agent_tasks.json changes and pushes to origin/main."""
+        try:
+            # Validate agent_tasks.json before committing
+            validator_script = os.path.join(self.app_root, "scripts", "validate_agent_tasks.py")
+            manifest_file = os.path.join(self.app_root, "agent_tasks.json")
+            if os.path.exists(validator_script) and os.path.exists(manifest_file):
+                v_res = subprocess.run(
+                    [sys.executable, validator_script, manifest_file],
+                    cwd=self.app_root,
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
+                )
+                if v_res.returncode != 0:
+                    logger.error(f"Task validation failed before push: {v_res.stderr or v_res.stdout}. Skipping push.")
+                    return False
+
+            subprocess.run(["git", "add", "agent_tasks.json"], cwd=self.app_root, check=True, capture_output=True, text=True, timeout=15)
+            # Check if there is anything to commit
+            status_res = subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=self.app_root)
+            if status_res.returncode == 0:
+                logger.info("No staged changes to commit for agent_tasks.json.")
+                return False
+
+            commit_res = subprocess.run(
+                ["git", "commit", "-m", message],
+                cwd=self.app_root,
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=15,
+            )
+            logger.info(f"Git commit successful: {commit_res.stdout.strip()}")
+
+            push_res = subprocess.run(
+                ["git", "push", "origin", "main"],
+                cwd=self.app_root,
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            logger.info(f"Git push successful: {push_res.stdout.strip() or 'OK'}")
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Git commit/push failed (exit {e.returncode}): {e.stderr or e.stdout}")
+            return False
+        except Exception as e:
+            logger.error(f"Git commit/push unexpected error: {e}")
+            return False
+
+    def _git_pull(self) -> bool:
+        """Pulls latest changes from origin/main."""
+        try:
+            logger.info("Executing periodic git pull origin main...")
+            res = subprocess.run(
+                ["git", "pull", "origin", "main"],
+                cwd=self.app_root,
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            logger.info(f"Git pull result: {res.stdout.strip()}")
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.warning(f"Git pull failed (exit {e.returncode}): {e.stderr or e.stdout}")
+            return False
+        except Exception as e:
+            logger.warning(f"Git pull error: {e}")
+            return False
+
     async def execute_full_scan(self) -> Dict[str, Any]:
         """Executes a full diagnostic and health scan across codebase, database, and tasks."""
         start_t = time.perf_counter()
@@ -413,21 +508,25 @@ class MagdaAutonomousWatchdog:
         self._llm_scan_counter += 1
         llm_proposed_count = 0
 
-        logger.info("Triggering Inception Labs Mercury-2 Fullstack AI Code Reviewer...")
-        new_llm_tasks = await self.llm_reviewer.analyze_and_propose_improvements(existing_ids)
-        for nt in new_llm_tasks:
-            success = self.manifest_mgr.add_task(
-                task_id=nt["id"],
-                title=nt["title"],
-                description=nt["description"],
-                area=nt.get("area", "backend"),
-                risk=nt.get("risk", "medium"),
-                allowed_paths=nt.get("allowed_paths"),
-                acceptance=nt.get("acceptance"),
-            )
-            if success:
-                llm_proposed_count += 1
-                logger.info(f"✨ LLM Reviewer added new task: [{nt['id']}] {nt['title']}")
+        # 7/24 Autonomous Magda Brain: Propose next improvements when queue is low or on schedule
+        should_run_llm = len(todo_tasks) < 5 or (self._llm_scan_counter % 5 == 0)
+        new_llm_tasks = []
+        if should_run_llm:
+            logger.info("🧠 Triggering Inception Labs Mercury-2 Fullstack AI Code Reviewer...")
+            new_llm_tasks = await self.llm_reviewer.analyze_and_propose_improvements(tasks, existing_ids)
+            for nt in new_llm_tasks:
+                success = self.manifest_mgr.add_task(
+                    task_id=nt["id"],
+                    title=nt["title"],
+                    description=nt["description"],
+                    area=nt.get("area", "backend"),
+                    risk=nt.get("risk", "medium"),
+                    allowed_paths=nt.get("allowed_paths"),
+                    acceptance=nt.get("acceptance"),
+                )
+                if success:
+                    llm_proposed_count += 1
+                    logger.info(f"✨ Magda Brain added new task: [{nt['id']}] {nt['title']}")
 
         manifest_data = self.manifest_mgr.load_manifest()
         tasks = manifest_data.get("tasks", [])
@@ -455,6 +554,15 @@ class MagdaAutonomousWatchdog:
             "active_todo_tasks": todo_tasks[:5],
         }
 
+        # Count newly added tasks from DB issues that resulted in new tasks
+        db_tasks_added = sum(1 for d in db_issues if d.get("task_id"))
+        total_new_tasks = llm_proposed_count + db_tasks_added
+
+        if total_new_tasks > 0:
+            commit_msg = f"chore(daemon): auto-sync task queue — {total_new_tasks} new task(s)"
+            logger.info(f"New tasks detected ({total_new_tasks}). Triggering auto-sync commit & push...")
+            self._git_commit_and_push(commit_msg)
+
         self._last_scan_result = result
         logger.info(
             f"Full scan complete in {elapsed:.1f}ms. DB anomalies: {len(db_issues)}, "
@@ -469,6 +577,9 @@ class MagdaAutonomousWatchdog:
 
         while self._is_running:
             try:
+                self._scan_count += 1
+                if self._scan_count % 10 == 0:
+                    self._git_pull()
                 await self.execute_full_scan()
             except Exception as e:
                 logger.error(f"Error in watchdog cycle: {e}", exc_info=True)

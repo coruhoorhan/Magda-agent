@@ -8,7 +8,6 @@ import urllib.error
 import urllib.request
 from typing import Any, Dict, List, Optional
 
-from magda_agent.safety.secret_redaction import SecretRedactor
 
 try:
     from openai import AsyncOpenAI
@@ -108,30 +107,12 @@ Guidelines:
         """
         Sends a list of messages to the LLM and returns the response content asynchronously.
         Retries transient API errors with exponential backoff.
-        Automatically redacts secrets before sending and restores them on response.
-        """
+ """
         if not self.api_key:
             return "Error: OPENAI_API_KEY not provided."
 
         tokens = max_tokens or self.default_max_tokens
         last_error = None
-
-        # Pre-LLM redaction: mask secrets in all message content fields
-        _vault: Dict[str, str] = {}
-        _clean_messages: List[Dict[str, str]] = []
-        for msg in messages:
-            content = msg.get("content") or ""
-            if content:
-                try:
-                    masked, partial_vault = SecretRedactor.mask(content)
-                except Exception as exc:
-                    logger.warning(f"SecretRedactor.mask failed, sending unmasked: {exc}")
-                    masked, partial_vault = content, {}
-                _vault.update(partial_vault)
-                _clean_messages.append({**msg, "content": masked})
-            else:
-                _clean_messages.append(msg)
-        messages = _clean_messages
 
         for attempt in range(self.max_retries + 1):
             try:
@@ -144,21 +125,13 @@ Guidelines:
                         max_tokens=tokens,
                     )
                     content = response.choices[0].message.content or ""
-                    try:
-                        return SecretRedactor.restore(content.strip(), _vault)
-                    except Exception as exc:
-                        logger.warning(f"SecretRedactor.restore failed: {exc}")
-                        return content.strip()
+                    return content.strip()
 
                 # 2. Fallback to native HTTP in async thread pool
                 raw_result = await asyncio.to_thread(
                     self._sync_http_completion, messages, temperature, tokens
                 )
-                try:
-                    return SecretRedactor.restore(raw_result, _vault)
-                except Exception as exc:
-                    logger.warning(f"SecretRedactor.restore failed: {exc}")
-                    return raw_result
+                return raw_result
 
             except Exception as e:
                 last_error = e

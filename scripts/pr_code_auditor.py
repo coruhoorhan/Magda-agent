@@ -136,13 +136,17 @@ Then follow with:
     
     review_body = f"## 🤖 Magda AI Independent Code Auditor Quality Gate\n\n{review_content}\n\n---\n*Audited autonomously by Inception Labs Mercury-2 Cognitive Quality Gate.*"
     
-    # 6. Post review to GitHub PR
+    # 6. Post review to GitHub PR.
+    # NOTE: Always use COMMENT (never APPROVE): GitHub rejects APPROVE reviews
+    # with 422 when reviewer == PR author (Jules opens PRs via the owner's
+    # account). The gate decision is enforced via process exit code below,
+    # not via GitHub approval state. On 422, fall back to an issue comment.
     post_review_url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/reviews"
     review_post_payload = {
         "body": review_body,
-        "event": "APPROVE" if verdict == "APPROVED" else "COMMENT"
+        "event": "COMMENT"
     }
-    
+
     req_post = urllib.request.Request(
         post_review_url,
         data=json.dumps(review_post_payload).encode("utf-8"),
@@ -153,9 +157,25 @@ Then follow with:
         },
         method="POST"
     )
-    
-    with urllib.request.urlopen(req_post) as resp:
-        print(f"✅ Review posted to PR #{pr_number}. Decision: [{verdict}] (Status: {resp.status})")
+
+    try:
+        with urllib.request.urlopen(req_post) as resp:
+            print(f"✅ Review posted to PR #{pr_number}. Decision: [{verdict}] (Status: {resp.status})")
+    except urllib.error.HTTPError as post_err:
+        print(f"⚠️ PR review POST failed ({post_err.code}); falling back to issue comment.")
+        issue_comment_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+        req_fallback = urllib.request.Request(
+            issue_comment_url,
+            data=json.dumps({"body": review_body}).encode("utf-8"),
+            headers={
+                "Authorization": f"token {token}",
+                "Accept": "application/vnd.github.v3+json",
+                "Content-Type": "application/json"
+            },
+            method="POST"
+        )
+        with urllib.request.urlopen(req_fallback) as resp_fb:
+            print(f"✅ Fallback comment posted to PR #{pr_number}. Decision: [{verdict}] (Status: {resp_fb.status})")
     
     # 7. Write local summary artifact
     with open("audit_verdict.json", "w", encoding="utf-8") as f:
@@ -172,7 +192,7 @@ Then follow with:
 
 if __name__ == "__main__":
     pr_num = int(sys.argv[1]) if len(sys.argv) > 1 else 8
-    repo = sys.argv[2] if len(sys.argv) > 2 else "coruhoorhan/airbnb-app"
+    repo = sys.argv[2] if len(sys.argv) > 2 else "coruhoorhan/Magda-agent"
     token = os.getenv("GH_PAT") or os.getenv("GITHUB_TOKEN")
     openai_key = os.getenv("OPENAI_API_KEY")
     openai_base = os.getenv("OPENAI_BASE_URL", "https://api.inceptionlabs.ai/v1")

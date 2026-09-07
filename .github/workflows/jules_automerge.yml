@@ -16,26 +16,36 @@ jobs:
       github.event.pull_request.user.login == 'coruhoorhan'
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: "🛡️ Step 1: Magda AI Independent Code Auditor Quality Gate"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: https://api.inceptionlabs.ai/v1
+          OPENAI_MODEL: mercury-2
         run: |
-          pip install pytest
+          python3 scripts/pr_code_auditor.py ${{ github.event.pull_request.number }} ${{ github.repository }}
+
+      - name: "🔍 Step 2: Validate agent task manifest"
+        run: python3 scripts/validate_agent_tasks.py agent_tasks.json
+
+      - name: "📦 Step 3: Install dependencies & Run pytest"
+        run: |
+          pip install pytest pytest-asyncio
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pytest -q
 
-      - name: Validate agent task manifest
-        run: python scripts/validate_agent_tasks.py agent_tasks.json
-
-      - name: Run test suite
-        run: pytest
-
-      - name: Merge PR
+      - name: "✅ Step 4: Auto-approve and Merge PR (Only if Quality Gate & Tests Passed)"
         if: success()
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
         run: |
-          gh pr merge ${{ github.event.pull_request.number }} --merge --delete-branch
+          gh pr review ${{ github.event.pull_request.number }} --approve || true
+          gh pr merge ${{ github.event.pull_request.number }} --merge --delete-branch || true

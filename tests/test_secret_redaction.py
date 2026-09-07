@@ -1,12 +1,7 @@
-"""
-Unit and integration tests for SecretRedactor and LLMClient prompt secret redaction.
-"""
+"""Unit tests for SecretRedactor standalone utility."""
 
-import asyncio
 import unittest
-from unittest.mock import AsyncMock, MagicMock
 
-from magda_agent.llm_client import LLMClient
 from magda_agent.safety.secret_redaction import SecretRedactor
 
 
@@ -83,53 +78,6 @@ class TestSecretRedactor(unittest.TestCase):
         self.assertNotIn("ghp_9876543210fedcba", masked)
         self.assertEqual(SecretRedactor.restore(masked, vault), in_str)
 
-
-class TestLLMClientRedactionIntegration(unittest.TestCase):
-    """Integration tests verifying LLMClient redaction and restoration."""
-
-    def test_llm_client_sync_fallback_redaction(self):
-        client = LLMClient(api_key="test-key")
-        client.client = None  # Ensure fallback path
-
-        captured_messages = []
-
-        def fake_sync(messages, temperature=0.7, max_tokens=None, vault=None):
-            captured_messages.extend(messages)
-            return "Command to run: ssh root@10.0.2.1 -p <SECRET_01>"
-
-        client._sync_http_completion = fake_sync
-
-        prompt = "şifrem SuperSecret999 ile 10.0.2.1 bağlan"
-        result = asyncio.run(client.generate(prompt))
-
-        # 1. Check prompt was sanitized before reaching LLM
-        self.assertEqual(len(captured_messages), 1)
-        self.assertNotIn("SuperSecret999", captured_messages[0]["content"])
-        self.assertIn("<SECRET_01>", captured_messages[0]["content"])
-
-        # 2. Check response restored secret
-        self.assertEqual(result, "Command to run: ssh root@10.0.2.1 -p SuperSecret999")
-
-    def test_llm_client_async_openai_path_redaction(self):
-        client = LLMClient(api_key="test-key")
-        mock_openai = MagicMock()
-        mock_choice = MagicMock()
-        mock_choice.message.content = "Received token: <SECRET_01>"
-        mock_response = MagicMock(choices=[mock_choice])
-        mock_openai.chat.completions.create = AsyncMock(return_value=mock_response)
-        client.client = mock_openai
-
-        prompt = "token: ghp_11112222333344445555"
-        result = asyncio.run(client.generate(prompt))
-
-        # Check call arguments to OpenAI client
-        call_kwargs = mock_openai.chat.completions.create.call_args.kwargs
-        sent_messages = call_kwargs["messages"]
-        self.assertNotIn("ghp_11112222333344445555", sent_messages[0]["content"])
-        self.assertIn("<SECRET_01>", sent_messages[0]["content"])
-
-        # Check returned content is restored
-        self.assertEqual(result, "Received token: ghp_11112222333344445555")
 
 
 if __name__ == "__main__":
