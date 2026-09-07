@@ -342,98 +342,38 @@
       ]
     },
     {
-      "id": "feat-interactive-map-clustering",
+      "id": "batch-01-frontend-design-suite",
       "area": "frontend",
-      "risk": "low",
-      "title": "Fatsa Haritasında İnteraktif İlan Kümeleme (Leaflet Map Clustering)",
-      "description": "Leaflet haritasında çok sayıda ilan olduğunda pinleri sayı baloncukları olarak kümele. Harita yakınlaştırıldığında (zoom in) baloncuklar açılarak bireysel fiyat etiketli pinlere dönüşsün.",
+      "risk": "medium",
+      "title": "5'li Arayüz ve Tasarım Süper Paketi (Map Clustering, Lightbox, Dark Mode, AI Recommendations, Lazy Loading)",
+      "description": "Implement the complete 5-feature Frontend & Design suite in a single integrated PR:\n1. Leaflet Map Clustering: Cluster listing markers into number bubbles when zoomed out (< 13); smooth zoom on click; individual price badges when zoomed in.\n2. 5-Photo Grid & Lightbox: Airbnb standard 1 large + 4 small photo grid on ListingDetail.jsx; click opens full-screen accessible Lightbox modal with keyboard navigation (ESC, arrow keys).\n3. Dark / Light Mode Toggle: Smooth animated sun/moon theme switch button on Navbar.jsx; persist in localStorage; apply Tailwind dark: styles across all cards and modals.\n4. AI-Powered Recommendations Carousel: RecommendationCarousel.jsx on home page showing smart matching listings based on category & viewed listings.\n5. Responsive & Lazy-Load Images: Add loading=\"lazy\" and responsive srcset across ListingCard.jsx, ListingDetail.jsx, and ExperienceCard.jsx.",
       "allowed_paths": [
         "src/components/MapView.jsx",
         "src/lib/mapClusterEngine.js",
-        "src/components/ListingCard.jsx",
-        "agent_tasks.json"
-      ],
-      "acceptance": [
-        "Zoom seviyesi 13 altındayken pinler küme baloncuklarında toplanır",
-        "Kümeye tıklandığında yumuşak animasyonla o bölgeye zoom yapar",
-        "100+ ilan haritada 60 FPS akıcı şekilde render edilir"
-      ],
-      "status": "todo"
-    },
-    {
-      "id": "ui-photo-gallery-lightbox",
-      "area": "frontend",
-      "risk": "low",
-      "title": "Airbnb Tarzı 5'li Fotoğraf Izgarası ve Tam Ekran Lightbox Galeri",
-      "description": "İlan detay sayfasında Airbnb standardı olan 1 büyük + 4 küçük fotoğraf düzenini uygula. Fotoğraflara tıklandığında klavye (sağ/sol/ESC) ile gezilebilen tam ekran Lightbox galeri modalı aç.",
-      "allowed_paths": [
         "src/components/ListingDetail.jsx",
         "src/components/PhotoLightbox.jsx",
-        "agent_tasks.json"
-      ],
-      "acceptance": [
-        "Detay sayfasında 5 fotoğraflı grid kusursuz görünür",
-        "Fotoğrafa tıklandığında tam ekran Lightbox modalı açılır",
-        "Klavyedeki ESC tuşu modalı kapatır, sağ/sol ok tuşları fotoğrafları değiştirir"
-      ],
-      "status": "todo"
-    },
-    {
-      "id": "ui-dark-light-mode-toggle",
-      "area": "frontend",
-      "risk": "low",
-      "title": "Akıcı Karanlık ve Aydınlık Mod (Dark/Light Theme Toggle)",
-      "description": "Navbar'a güneş/ay ikonlu akıcı geçişli bir tema butonu ekle. Tercihi localStorage'ta sakla. Tailwind dark: sınıflarını tüm kart, modal ve çubuklarda kusursuz hale getir.",
-      "allowed_paths": [
         "src/components/Navbar.jsx",
-        "src/App.jsx",
-        "src/index.css",
-        "agent_tasks.json"
-      ],
-      "acceptance": [
-        "Navbar'daki tema butonuna basıldığında sayfa anında karanlık/aydınlık moda geçer",
-        "Kullanıcının tema tercihi sayfa yenilendiğinde hatırlanır",
-        "Tüm metin ve arka plan renkleri WCAG kontrast standartlarına uygun kalır"
-      ],
-      "status": "todo"
-    },
-    {
-      "id": "feat-ai-powered-listing-recommendations",
-      "area": "frontend",
-      "risk": "low",
-      "title": "Yapay Zekâ Destekli Kişiselleştirilmiş İlan Öneri Karuseli (UI)",
-      "description": "Anasayfada seçilen kategoriye ve kullanıcının incelediği son ilanlara göre benzer Fatsa konaklama yerlerini gösteren kaydırmalı (carousel) öneri bileşeni ekle.",
-      "allowed_paths": [
-        "src/App.jsx",
+        "src/components/ListingCard.jsx",
+        "src/components/ExperienceCard.jsx",
         "src/components/RecommendationCarousel.jsx",
         "src/lib/recommendationEngine.js",
+        "src/App.jsx",
+        "src/index.css",
+        "tests/frontend_design_suite.test.js",
         "agent_tasks.json"
       ],
       "acceptance": [
-        "Anasayfada İlgili İlanlar karuseli listelenir",
-        "Kategori değiştiğinde öneriler dinamik olarak güncellenir",
-        "Kullanıcı son gezdiği kategoriye uygun önerileri görür"
+        "1. Map Clustering: Zooming out clusters listing markers; clicking zooms into the cluster area smoothly.",
+        "2. Photo Lightbox: 5-photo grid renders on detail page; clicking any image opens full-screen gallery with ESC/arrow key controls.",
+        "3. Theme Switcher: Theme button toggles between light and dark modes with persistent localStorage state.",
+        "4. Recommendation Carousel: Matching listings carousel renders on home page without layout shifts.",
+        "5. Lazy Loading: Off-screen images have loading=\"lazy\" and load on demand as user scrolls.",
+        "6. Test Coverage: All tests in tests/frontend_design_suite.test.js pass cleanly with 0 failures."
       ],
-      "status": "todo"
-    },
-    {
-      "id": "frontend-responsive-image-loading",
-      "area": "frontend",
-      "risk": "low",
-      "title": "Responsive ve Lazy-Load Görsel Yükleme Optimizasyonu",
-      "description": "ListingCard, ListingDetail ve ExperienceCard bileşenlerindeki tüm görsel etiketlerini loading=\"lazy\" ve srcset ile duyarlı hale getirerek açılış hızını optimize et.",
-      "allowed_paths": [
-        "src/components/ListingCard.jsx",
-        "src/components/ListingDetail.jsx",
-        "src/components/ExperienceCard.jsx",
-        "agent_tasks.json"
-      ],
-      "acceptance": [
-        "Ekranda görünmeyen görseller kullanıcı aşağı kaydırana kadar indirilmez",
-        "Sayfa ilk açılış süresi ve veri tüketimi optimize edilir"
-      ],
-      "status": "todo"
+      "status": "todo",
+      "created_at": 1788786000,
+      "created_by": "Magda Principal Architect"
     }
   ],
-  "updated_at": 1788784178.184475
+  "updated_at": 1788785418.93944
 }
