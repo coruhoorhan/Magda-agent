@@ -300,10 +300,11 @@ class MagdaAutonomousWatchdog:
                     })
         return errors
 
-    def scan_database_and_payments(self) -> Tuple[List[Dict[str, Any]], int]:
+    def scan_database_and_payments(self) -> Tuple[List[Dict[str, Any]], int, int]:
         """Scans database for integrity violations, payment anomalies, and booking conflicts."""
         detected = []
         healed_count = 0
+        newly_added_tasks = 0
 
         conn = self.get_connection()
         if not conn:
@@ -326,7 +327,7 @@ class MagdaAutonomousWatchdog:
                     task_id = f"fix-booking-conflict-{c['b1_id']}-{c['b2_id']}"
                     desc = f"Çakışan rezervasyon tespit edildi: #{c['b1_id']} ve #{c['b2_id']} (İlan #{c['listingId']}). Tarihler: {c['checkIn']} - {c['checkOut']}"
                     self._record_guardian_issue(conn, "Booking Date Conflict", desc, severity="high")
-                    self.manifest_mgr.add_task(
+                    added = self.manifest_mgr.add_task(
                         task_id=task_id,
                         title=f"Resolve Booking Conflict #{c['b1_id']} vs #{c['b2_id']}",
                         description=desc,
@@ -335,6 +336,8 @@ class MagdaAutonomousWatchdog:
                         allowed_paths=["src/lib/bookingEngine.js", "server.js", "agent_tasks.json"],
                         acceptance=["Booking conflict is resolved and overlapping booking refunded or rescheduled."],
                     )
+                    if added:
+                        newly_added_tasks += 1
                     detected.append({"type": "booking_conflict", "description": desc, "task_id": task_id})
             except Exception:
                 pass
@@ -385,7 +388,7 @@ class MagdaAutonomousWatchdog:
                     task_id = f"reconcile-payment-booking-{fp['booking_id']}"
                     desc = f"Ödemesi başarısız veya eksik olan onaylı rezervasyon: #{fp['booking_id']} (Tutar: {fp['totalPrice']} TL)"
                     self._record_guardian_issue(conn, "Unpaid Confirmed Booking Anomaly", desc, severity="high")
-                    self.manifest_mgr.add_task(
+                    added = self.manifest_mgr.add_task(
                         task_id=task_id,
                         title=f"Reconcile Payment for Booking #{fp['booking_id']}",
                         description=desc,
@@ -394,6 +397,8 @@ class MagdaAutonomousWatchdog:
                         allowed_paths=["server.js", "src/lib/db.js", "agent_tasks.json"],
                         acceptance=["Payment reconciliation verified with iyzico payment gateway API."],
                     )
+                    if added:
+                        newly_added_tasks += 1
                     detected.append({"type": "payment_anomaly", "description": desc, "task_id": task_id})
             except Exception:
                 pass
@@ -401,7 +406,7 @@ class MagdaAutonomousWatchdog:
         finally:
             conn.close()
 
-        return detected, healed_count
+        return detected, healed_count, newly_added_tasks
 
     def _record_guardian_issue(
         self,
@@ -522,7 +527,7 @@ class MagdaAutonomousWatchdog:
         start_t = time.perf_counter()
         logger.info("Executing Magda-Agent Autonomous Watchdog Full Scan...")
         diag_report = self.guardian_engine.run_full_diagnostics()
-        db_issues, healed_count = self.scan_database_and_payments()
+        db_issues, healed_count, db_tasks_added = self.scan_database_and_payments()
         syntax_errors = self.scan_codebase_syntax()
 
         manifest_data = self.manifest_mgr.load_manifest()
@@ -581,10 +586,7 @@ class MagdaAutonomousWatchdog:
             "active_todo_tasks": todo_tasks[:5],
         }
 
-        # Count newly added tasks from DB issues that resulted in new tasks
-        db_tasks_added = sum(1 for d in db_issues if d.get("task_id"))
         total_new_tasks = llm_proposed_count + db_tasks_added
-
         if total_new_tasks > 0:
             commit_msg = f"chore(daemon): auto-sync task queue — {total_new_tasks} new task(s)"
             logger.info(f"New tasks detected ({total_new_tasks}). Triggering auto-sync commit & push...")
