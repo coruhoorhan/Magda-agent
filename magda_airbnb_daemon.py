@@ -278,7 +278,7 @@ class MagdaAutonomousWatchdog:
         self._is_running = False
         self._llm_scan_counter = 0
         self._scan_count = 0
-
+        self._last_push_time = 0
     def get_connection(self) -> Optional[sqlite3.Connection]:
         if not os.path.exists(self.db_path):
             return None
@@ -427,9 +427,12 @@ class MagdaAutonomousWatchdog:
             logger.error(f"Failed to record guardian issue: {e}")
 
     def _git_commit_and_push(self, message: str) -> bool:
-        """Commits agent_tasks.json changes and pushes to origin/main."""
+        """Commits agent_tasks.json changes and pushes to origin/main with debounce protection."""
+        now = time.time()
+        if (now - self._last_push_time) < 1800:
+            logger.info(f"Debounce Governor: Skipping git push (cooldown: {int(1800 - (now - self._last_push_time))}s remaining).")
+            return False
         try:
-            # Validate agent_tasks.json before committing
             validator_script = os.path.join(self.app_root, "scripts", "validate_agent_tasks.py")
             manifest_file = os.path.join(self.app_root, "agent_tasks.json")
             if os.path.exists(validator_script) and os.path.exists(manifest_file):
@@ -470,6 +473,7 @@ class MagdaAutonomousWatchdog:
                 timeout=30,
             )
             logger.info(f"Git push successful: {push_res.stdout.strip() or 'OK'}")
+            self._last_push_time = now
             return True
         except subprocess.CalledProcessError as e:
             logger.error(f"Git commit/push failed (exit {e.returncode}): {e.stderr or e.stdout}")
