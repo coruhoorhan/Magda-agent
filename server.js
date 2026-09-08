@@ -1,3 +1,8 @@
+import fs from "fs";
+import { generateIcsFeed, syncExternalIcal } from "./src/lib/calendarSync.js";
+import { getAvailableCurrencies, convertCurrency } from "./src/lib/currencyEngine.js";
+import { saveSubscription as saveSubOld, removeSubscription as removeSubOld, getUserNotifications, markNotificationRead } from "./src/lib/notifications.js";
+import { saveSubscription, removeSubscription, sendNotification } from "./src/lib/pushNotificationEngine.js";
 import http from "http";
 import { setupChatWebSocketServer, chatEngine } from "./src/lib/chatEngine.js";
 import "express-async-errors";
@@ -400,6 +405,22 @@ app.get("/api/admin/guardian/export-github/:id", (req, res) => {
 // Cache setup for listings
 const listingsCache = new NodeCache({ stdTTL: 300 }); // 5 minutes TTL
 
+
+// ==========================================
+// Recommendation Engine Endpoint
+// ==========================================
+app.get("/api/recommendations", async (req, res) => {
+  try {
+    const { getRecommendedListings } = await import("./src/lib/recommendationEngine.js");
+    const limit = parseInt(req.query.limit) || 6;
+    const userId = req.query.userId || null;
+    const recommendations = getRecommendedListings(userId, limit);
+    res.json({ success: true, data: recommendations });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.get("/api/listings", (req, res) => {
   const cacheKey = JSON.stringify(req.query);
   const cachedData = listingsCache.get(cacheKey);
@@ -700,6 +721,16 @@ app.post("/api/payments/iyzico/direct-pay", paymentRateLimiter, async (req, res)
       Date.now()
     );
 
+    sendNotification(listing.hostId, {
+      title: 'Ödeme Alındı & Rezervasyon Onaylandı 💳',
+      body: `${checkIn} - ${checkOut} tarihleri için ₺${finalTotalPrice} tutarında iyzico ödemesi başarıyla alındı. Rezervasyon anında onaylandı.`
+    });
+
+  sendNotification(listing.hostId, {
+    title: 'Yeni Rezervasyon Talebi 🔔',
+    body: `${checkIn} - ${checkOut} tarihleri için rezervasyon talebi alındı. Tutar: ₺${finalTotalPrice}${discountAmount > 0 ? ` (₺${discountAmount} Kupon İndirimi)` : ''}`
+  });
+
     res.status(201).json({
       success: true,
       message: "Ödeme ve rezervasyon başarıyla tamamlandı.",
@@ -892,6 +923,11 @@ app.post("/api/bookings", authMiddleware, csrfMiddleware, (req, res) => {
     Date.now()
   );
 
+  sendNotification(listing.hostId, {
+    title: 'Yeni Rezervasyon Talebi 🔔',
+    body: `${checkIn} - ${checkOut} tarihleri için rezervasyon talebi alındı. Tutar: ₺${finalTotalPrice}${discountAmount > 0 ? ` (₺${discountAmount} Kupon İndirimi)` : ''}`
+  });
+
   // Award loyalty points to the guest when the booking is instantly confirmed
   if (listing.instantBook) {
     awardLoyaltyPoints(guestId || "usr_guest_01", newBooking.id, Math.max(0, afterCouponPrice - listing.serviceFee));
@@ -948,6 +984,11 @@ app.post("/api/bookings/:id/cancel", authMiddleware, csrfMiddleware, (req, res) 
 
     db.prepare(`INSERT INTO notifications (id, userId, type, title, body, isRead, createdAt) VALUES (?, ?, 'cancelled', 'Rezervasyon İptal Edildi', ?, 0, ?)`)
       .run(`notif_${Date.now()}`, booking.guestId, `${refund.description} İade: ₺${refund.refundAmount}`, Date.now());
+
+    sendNotification(booking.guestId, {
+      title: 'Rezervasyon İptal Edildi',
+      body: `${refund.description} İade: ₺${refund.refundAmount}`
+    });
 
     res.json({ success: true, data: { ...refund, bookingId: req.params.id, status: "cancelled" } });
   } catch (err) {
@@ -1108,6 +1149,52 @@ app.put("/api/listings/:id/last-minute", (req, res) => {
   }
 });
 
+
+// --- Push Notification Endpoints ---
+app.post('/api/notifications/subscribe', authMiddleware, csrfMiddleware, (req, res) => {
+  const { subscription } = req.body;
+  const userId = req.user.id;
+  if (!subscription) {
+    return res.status(400).json({ success: false, error: "subscription alanı zorunludur." });
+  }
+  saveSubscription(userId, subscription);
+  res.json({ success: true });
+});
+
+app.post('/api/notifications/unsubscribe', authMiddleware, csrfMiddleware, (req, res) => {
+  const userId = req.user.id;
+  removeSubscription(userId);
+  res.json({ success: true });
+});
+
+
+// --- iCal Calendar Sync Endpoints ---
+app.get("/api/calendar/:listingId.ics", (req, res) => {
+  const { listingId } = req.params;
+  const feed = generateIcsFeed(listingId);
+  if (!feed) {
+    return res.status(404).send("Listing not found");
+  }
+  res.setHeader("Content-Type", "text/calendar; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="${listingId}.ics"`);
+  res.send(feed);
+});
+
+app.post("/api/calendar/:listingId/sync", async (req, res) => {
+  try {
+    const { listingId } = req.params;
+    const { icalUrl, icalData } = req.body;
+    const source = icalUrl || icalData;
+    if (!source) {
+      return res.status(400).json({ success: false, error: "icalUrl veya icalData zorunludur." });
+    }
+    const result = await syncExternalIcal(listingId, source);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
 app.get("/api/notifications", (req, res) => {
   try {
     const { userId, limit = 50 } = req.query;
@@ -1167,6 +1254,30 @@ app.post("/api/messages", authMiddleware, csrfMiddleware, messageRateLimiter, (r
     }
     const msg = insertMessage({ listingId, senderId, senderName: user.name, text });
     broadcastToListing(listingId, msg);
+
+    // Find the receiver (if sender is guest, receiver is host, else receiver is guest)
+    const listing = getListingById(listingId);
+    if (listing) {
+      const isSenderHost = senderId === listing.hostId;
+      // In our basic model, guest is the one who initiated the conversation or booked.
+      // If we don't have explicit guestId in messages table, we can assume the host gets notified if sender is not host.
+      if (!isSenderHost) {
+        sendNotification(listing.hostId, {
+          title: `Yeni Mesaj: ${user.name}`,
+          body: text
+        });
+      } else {
+        // Find guest in the thread...
+        const guestMsgs = getMessagesForListing(listingId).filter(m => m.senderId !== listing.hostId);
+        if (guestMsgs.length > 0) {
+          sendNotification(guestMsgs[0].senderId, {
+            title: `Yeni Mesaj: ${user.name}`,
+            body: text
+          });
+        }
+      }
+    }
+
     res.status(201).json({ success: true, data: msg });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -1337,6 +1448,18 @@ app.get("/api/magda/status", (req, res) => {
   });
 });
 
+app.get("/api/magda/backend-tasks", (req, res) => {
+  const p = path.join(__dirname, "backend_tasks.json");
+  if (!fs.existsSync(p)) {
+    return res.json({ schema_version: 1, tasks: [] });
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(p, "utf8"));
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 app.get("/api/magda/tasks", (req, res) => {
   execFile("python3", ["/opt/airbnb-app/magda_airbnb_daemon.py", "tasks"], (error, stdout, stderr) => {
     if (error) {

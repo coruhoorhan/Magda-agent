@@ -31,3 +31,5 @@ cekirdek/
 *.tmp
 *.bak
 *.pyc
+veyyon-session-*.html
+.codexclaw/
