@@ -54,10 +54,10 @@ class TestSecretRedactor(unittest.TestCase):
         self.assertEqual(SecretRedactor.restore(masked, vault), in_str)
 
     def test_openai_key_case(self):
-        in_str = "OPENAI_API_KEY=sk_bd34705e2b5f716f243d90fa5701c807"
+        in_str = "OPENAI_API_KEY=sk_test_mock_secret_key_00000000000000000000"
         masked, vault = SecretRedactor.mask(in_str)
         self.assertEqual(masked, "OPENAI_API_KEY=<SECRET_01>")
-        self.assertEqual(vault, {"<SECRET_01>": "sk_bd34705e2b5f716f243d90fa5701c807"})
+        self.assertEqual(vault, {"<SECRET_01>": "sk_test_mock_secret_key_00000000000000000000"})
         self.assertEqual(SecretRedactor.restore(masked, vault), in_str)
 
     def test_bearer_token(self):

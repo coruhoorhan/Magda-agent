@@ -16,9 +16,9 @@ indexer = AirbnbCodebaseIndexer("/opt/airbnb-app")
 code_map = indexer.build_full_codebase_knowledge_graph()
 
 llm = LLMClient(
-    api_key="sk_bd34705e2b5f716f243d90fa5701c807",
-    base_url="https://api.inceptionlabs.ai/v1",
-    model="mercury-2",
+    api_key=os.getenv("OPENAI_API_KEY", ""),
+    base_url=os.getenv("OPENAI_BASE_URL", "https://api.inceptionlabs.ai/v1"),
+    model=os.getenv("OPENAI_MODEL", "mercury-2"),
     default_max_tokens=2500
 )
 
