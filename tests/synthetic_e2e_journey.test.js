@@ -193,7 +193,11 @@ describe("Autonomous Synthetic Full-Stack E2E User Journey Suite", () => {
     });
 
     it("should clear session cookie on logout", async () => {
-      const res = await request(app).post("/api/auth/logout");
+      const res = await request(app)
+        .post("/api/auth/logout")
+        .set("Authorization", `Bearer ${guestToken}`)
+        .set("x-csrf-token", csrfToken)
+        .set("Cookie", csrfCookie);
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
 
@@ -241,8 +245,10 @@ describe("Autonomous Synthetic Full-Stack E2E User Journey Suite", () => {
 
       const payRes = await request(app)
         .post("/api/payments/iyzico/direct-pay")
+        .set("Authorization", `Bearer ${guestToken}`)
+        .set("x-csrf-token", csrfToken)
+        .set("Cookie", csrfCookie)
         .send({
-          listingId: testListing.id,
           guestId: guestUser.id,
           checkIn: payCheckIn,
           checkOut: payCheckOut,
@@ -404,6 +410,8 @@ describe("Autonomous Synthetic Full-Stack E2E User Journey Suite", () => {
       const res = await request(app)
         .post("/graphql")
         .set("Authorization", `Bearer ${hostToken}`)
+        .set("x-csrf-token", csrfToken)
+        .set("Cookie", csrfCookie)
         .send({
           query: mutation,
           variables: {

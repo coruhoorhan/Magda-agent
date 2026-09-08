@@ -8,8 +8,16 @@ on:
       dry_run:
         description: "Dry run (list only, send nothing)"
         required: false
-        default: "true"
-
+        type: boolean
+        default: false
+      session_id:
+        description: "Specific session ID to steer (leave empty for all awaiting sessions)"
+        required: false
+        default: ""
+      steer_message:
+        description: "Custom steer message (optional)"
+        required: false
+        default: ""
 permissions:
   contents: read
   issues: write
@@ -34,8 +42,9 @@ jobs:
           OPENAI_MODEL: mercury-2
           GH_PAT: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
-          TARGET_TITLE: Brain Module
-        run: |
+          TARGET_TITLE: "Autonomous Airbnb,Airbnb,Revise,Feature,Brain Module,agent_tasks"
+          STEER_SESSION: ${{ inputs.session_id }}
+          STEER_MESSAGE: ${{ inputs.steer_message }}
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
             python3 scripts/jules_responder.py --dry-run
           else
